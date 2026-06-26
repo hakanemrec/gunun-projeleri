@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Trending — Günün Projeleri</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">⌥</span>
+        <div>
+          <h1>Günün Projeleri</h1>
+          <p class="tagline">GitHub Trending — senin ilgi alanına göre, jargonuyla ve sözlüğüyle</p>
+        </div>
+      </div>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Ara: proje, dil, terim…" autocomplete="off" />
+        <nav class="tabs">
+          <button class="tab active" data-tab="feed">Akış</button>
+          <button class="tab" data-tab="bookmarks">⭐ Yer İşaretleri <span id="bm-count" class="badge">0</span></button>
+          <button class="tab" data-tab="glossary">📖 Sözlük <span id="gl-count" class="badge">0</span></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- içerik JS ile dolar -->
+  </main>
+
+  <footer class="foot">
+    <span>Local sürüm • veriler <code>data/feed.js</code> dosyasından okunur</span>
+  </footer>
+
+  <!-- Not paneli -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div>
+        <h3 id="drawer-title">Not</h3>
+        <div class="sub" id="drawer-sub"></div>
+      </div>
+      <button class="drawer-close" id="drawer-close" title="Kapat">×</button>
+    </div>
+    <textarea id="drawer-text" placeholder="Bu proje hakkında notun… (neden ilginç, ne denerim, nereye yarar?)"></textarea>
+    <div class="drawer-actions">
+      <button class="btn primary" id="drawer-save">Kaydet</button>
+      <button class="btn" id="drawer-cancel">İptal</button>
+      <button class="btn danger" id="drawer-delete">Sil</button>
+    </div>
+  </aside>
+
+  <script src="data/feed.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
