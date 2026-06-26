@@ -89,6 +89,82 @@ window.__FEED__ = [
     ]
   },
   {
+    date: "22 Haziran 2026",
+    projects: [
+      {
+        name: "chopratejas/headroom",
+        url: "https://github.com/chopratejas/headroom",
+        stars: "45k",
+        language: "Python",
+        sections: {
+          serves: "<p>AI agent'ları (Claude Code, Cursor, Codex, LangChain) çalıştırırken en büyük gizli maliyet kalemi: araç çıktıları, log'lar ve RAG sonuçlarının ham haliyle <b>LLM</b>'e gönderilmesi. Headroom, bu içeriği LLM'e ulaşmadan önce yakalayıp sıkıştıran bir ara katman (middleware) sunuyor — aynı cevap kalitesini koruyarak <b>%60-95 daha az token</b> harcatıyor.</p>",
+          tech: "<p>Çok dilli bir mimari: <b>Python (%78.8)</b> proxy/CLI/kütüphane katmanı için, <b>Rust (%16.7)</b> performans-kritik sıkıştırma işlemleri için, <b>TypeScript (%2.4)</b> Node uyumluluğu için. Pipeline şöyle işliyor: ContentRouter içerik tipini tanır → SmartCrusher JSON yapılarını sıkıştırır → CodeCompressor kod için <b>AST</b> analizi yapar → Kompress-base (agentic <b>trace</b>'lerle eğitilmiş özel bir HuggingFace modeli) doğal dil/log metnini sıkıştırır → CacheAligner prefix'leri sabitleyip sağlayıcının <b>KV cache</b>'ini isabet ettirir. Sıkıştırma <b>reversible (geri döndürülebilir)</b>: orijinaller lokalde saklanıyor, model isterse <code>headroom_retrieve</code> ile tam içeriği geri çekebiliyor.</p>",
+          why: "<p>LLM'ler token başına ücretlendiriliyor; agent'lar büyüdükçe maliyet patlıyor. Headroom kod değişikliği gerektirmeden (<code>headroom proxy --port 8787</code>) devreye giriyor, bu da benimsemeyi kolaylaştırıyor. Kod aramada 17.765 token'dan 1.408 token'a (%92 tasarruf) gibi somut benchmark'lar ve veri lokalde kalması (gizlilik) ilgiyi açıklıyor — hype değil, doğrudan maliyet kalemine dokunan bir araç.</p>",
+          evolve: "<p>IFS Marble/PL-SQL hata ayıklamasında ürettiğin uzun log çıktılarını veya trace dosyalarını bir AI asistanına vermeden önce bu proxy'den geçirip token maliyetini düşürebilirsin. Daha ilginç senaryo: <code>headroom learn</code> komutu başarısız oturumlardan ders çıkarıp CLAUDE.md/AGENTS.md dosyasına düzeltme yazıyor — kendi ERP geliştirme akışın için otomatik 'öğrenen' bir kural seti oluşturabilirsin.</p>"
+        },
+        glossary: [
+          { term: "LLM (Large Language Model)", def: "Metin üretebilen, büyük miktarda veriyle eğitilmiş yapay zeka modeli. ChatGPT, Claude gibi sistemlerin temelidir." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim. Modelin maliyeti ve bağlam sınırı token sayısıyla ölçülür." },
+          { term: "Middleware (ara katman)", def: "İki sistem arasında veriyi işleyip ileten yazılım katmanı. Burada agent ile LLM arasına girip içeriği sıkıştırıyor." },
+          { term: "Proxy", def: "İstekleri bir uçtan diğerine ileten, arada işlem yapabilen ara sunucu. Kod değişikliği gerektirmeden devreye sokulabilir." },
+          { term: "AST (Abstract Syntax Tree)", def: "Kodun yapısını ağaç şeklinde temsil eden veri yapısı. Kodu satır satır değil, anlamsal olarak analiz etmeyi sağlar." },
+          { term: "KV cache", def: "LLM sağlayıcılarının tekrar eden prompt başlangıçlarını yeniden hesaplamadan önbellekten okumasını sağlayan mekanizma. Hız ve maliyet kazandırır." },
+          { term: "RAG (Retrieval-Augmented Generation)", def: "LLM'in cevap üretirken harici bir bilgi kaynağından ilgili parçaları çekip bağlama eklediği teknik." },
+          { term: "Rust", def: "C kadar hızlı ama hafıza güvenliğini derleme zamanında garantileyen sistem programlama dili." },
+          { term: "HuggingFace modeli", def: "HuggingFace platformunda paylaşılan, önceden eğitilmiş yapay zeka modeli. Burada metin sıkıştırma için özel eğitilmiş bir model kullanılıyor." },
+          { term: "Reversible compression (geri döndürülebilir sıkıştırma)", def: "Sıkıştırılan verinin orijinalinin saklanıp gerektiğinde tam haliyle geri getirilebildiği sıkıştırma yöntemi." },
+          { term: "MCP server", def: "AI asistanlarının dış araçlara standart bir protokolle bağlanmasını sağlayan sunucu bileşeni." }
+        ]
+      },
+      {
+        name: "firecrawl/firecrawl",
+        url: "https://github.com/firecrawl/firecrawl",
+        stars: "136k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Web sitelerinden temiz, kullanılabilir veri çekmeyi tek bir <b>API</b> arkasında topluyor. JavaScript ile render edilen sayfalar, dönen <b>proxy</b>'ler, <b>rate limiting</b> gibi klasik web scraping dertlerini Firecrawl arkada hallediyor; sen sadece URL veya arama sorgusu veriyorsun, o sana temiz <b>markdown</b>/<b>JSON</b> döndürüyor.</p>",
+          tech: "<p>Kod tabanının %67.7'si <b>TypeScript</b> (API/SDK çekirdeği), %15.7'si <b>Python</b> (SDK ve araçlar), %4.8'i <b>Rust</b> (hız-kritik scraping işlemleri) — çoklu dil SDK desteğiyle (Java, PHP, C# dahil) geniş ekosistem erişimi hedeflenmiş. Search, Scrape, Interact, Agent, Crawl, Map ve Batch Scrape adlı ayrı uç noktaları var. Büyük işler (crawl gibi) <b>job</b> tabanlı asenkron çalışıyor: istek atıyorsun, bir <b>job ID</b> alıyorsun, durumu sorguluyorsun. Interact uç noktası sayfada tıklama/scroll/yazma gibi etkileşimler yapıp sonra içerik çekebiliyor. P95 gecikme 3.4 saniye, web'in %96'sını kapsadığı belirtiliyor.</p>",
+          why: "<p>Klasik scraping kütüphaneleri JS-ağırlıklı modern sitelerde, anti-bot korumalarında ve tutarsız çıktı formatlarında zorlanır. Firecrawl çıktıyı doğrudan LLM'e verilecek şekilde (<em>'spend fewer tokens, build better AI apps'</em>) optimize ediyor ve <b>MCP</b> desteğiyle AI agent'lara native bağlanıyor — bu da onu RAG/agent pipeline'larının standart bileşenlerinden biri haline getirmiş. Açık kaynak (AGPL-3.0) + bulut hosting kombinasyonu da benimsemeyi hızlandırmış.</p>",
+          evolve: "<p>Tedarikçi fiyat listeleri, rakip ürün sayfaları veya resmi kur/mevzuat siteleri gibi dış kaynakları düzenli olarak çekip IFS'e veya bir ara veritabanına aktaran bir entegrasyon kurulabilir. Crawl uç noktasıyla bir siteyi toptan tarayıp, sonucu PL/SQL tarafında işlenecek yapılandırılmış JSON'a çevirmek gerçekçi bir otomasyon projesi olur — MCP entegrasyonu sayesinde bunu doğrudan bir AI asistanına da bağlayabilirsin.</p>"
+        },
+        glossary: [
+          { term: "API (Application Programming Interface)", def: "Farklı yazılımların birbiriyle konuşmasını sağlayan, tanımlı istek/cevap kuralları kümesi." },
+          { term: "Proxy (dönen proxy)", def: "İsteklerin farklı IP adresleri üzerinden gönderilmesini sağlayan ara sunucu; engellenmeyi ve hız sınırlarını aşmaya yardımcı olur." },
+          { term: "Rate limiting (hız sınırlama)", def: "Bir sunucunun belirli sürede kabul ettiği istek sayısını sınırlaması. Aşırı istek gönderen istemciler engellenir." },
+          { term: "Markdown", def: "Başlık, liste, kalın yazı gibi basit işaretlerle biçimlendirilen, hem insan hem makine tarafından kolay okunan metin formatı." },
+          { term: "JSON", def: "Verinin anahtar-değer çiftleri ve listeler şeklinde yapılandırılmış, programların kolayca okuyup yazabildiği metin formatı." },
+          { term: "Job / asenkron işlem", def: "Uzun sürecek bir işin arka planda başlatılıp bir kimlikle takip edilmesi; sonucu hazır olduğunda sorgulanır." },
+          { term: "MCP (Model Context Protocol)", def: "AI asistanlarının dış araçlara standart bir protokolle bağlanmasını sağlayan açık protokol." },
+          { term: "SDK (Software Development Kit)", def: "Bir servisi belirli bir programlama dilinden kullanmayı kolaylaştıran hazır kütüphane ve araç seti." },
+          { term: "AGPL-3.0", def: "Açık kaynak yazılım lisansı; yazılımı değiştirip ağ üzerinden sunan herkesi kaynak kodu da paylaşmaya zorlar." },
+          { term: "Docker", def: "Bir uygulamayı bağımlılıklarıyla birlikte paketleyip her ortamda aynı şekilde çalıştırmayı sağlayan konteyner teknolojisi." },
+          { term: "n8n / Zapier", def: "Kod yazmadan farklı servisleri birbirine bağlayıp otomasyon akışları kurmaya yarayan no-code araçlar." }
+        ]
+      },
+      {
+        name: "modem-dev/hunk",
+        url: "https://github.com/modem-dev/hunk",
+        stars: "5.3k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>AI coding agent'larının (Claude, Copilot vb.) ürettiği çok-dosyalı değişiklikleri incelemek için <code>git diff</code>, <code>delta</code>, <code>difftastic</code> gibi klasik araçlar yetersiz kalıyor — onlar insan tarafından satır satır yazılan değişiklikler için tasarlanmış. Hunk, agent çıktılarını hızlıca tarayıp not almak ve iterasyon yapmak için 'review-first' (önce inceleme) felsefesiyle tasarlanmış bir terminal diff arayüzü sunuyor.</p>",
+          tech: "<p><b>TypeScript (%96.6)</b> ile yazılmış, çalışma zamanı olarak Node yerine daha hızlı olan <b>Bun</b> kullanılmış (<code>bunfig.toml</code>, <code>bun.lock</code> dosyalarından anlaşılıyor). Render motoru olarak <b>OpenTUI</b> (terminal arayüz çatısı) ve diff mantığı için <b>Pierre</b> kütüphanesi kullanılmış; <code>HunkDiffView</code> bileşeni başka terminal uygulamalarına da gömülebiliyor. Split, stack ve responsive olmak üzere üç görünüm modu var; <b>watch mode</b> ile dosyalar değiştikçe canlı güncelleniyor. Git'in yanı sıra <b>Jujutsu</b> ve <b>Sapling</b> gibi modern <b>VCS</b>'leri otomatik tanıyor.</p>",
+          why: "<p>Agentic coding'in patlamasıyla geliştiriciler artık tek bir commit değil, bir agent'ın tek seferde değiştirdiği onlarca dosyayı hızlıca değerlendirmek zorunda. Hunk'ın öne çıkan farkı: agent'ların kod yanına satır-içi not/açıklama ekleyebildiği (<code>inline AI annotations</code>) ve <code>hunk skill path</code> ile agent'ların aktif review oturumuna katılabildiği çift yönlü bir iş akışı sunması — rakiplerinde bu yok. Modem (bir AI coding şirketi) tarafından sponsorlu olması da agentic geliştirme ekosistemine ne kadar gömülü olduğunu gösteriyor.</p>",
+          evolve: "<p>Claude Code ile IFS Marble veya PL/SQL paketlerinde çok-dosyalı bir refactor yaptırdığında, sonucu <code>git diff</code> yerine Hunk'tan geçirip değişiklikleri dosya dosya, satır-içi notlarla inceleyebilirsin — özellikle çoklu paket/trigger değişen senaryolarda klasik diff araçlarından daha hızlı bir gözden geçirme deneyimi sunar. <code>HunkDiffView</code> bileşenini kendi dahili geliştirici aracına gömüp ERP değişiklik onay sürecine entegre etmek de mümkün.</p>"
+        },
+        glossary: [
+          { term: "Terminal UI (TUI)", def: "Grafik arayüz değil, komut satırı/terminal içinde çalışan ama yine de pencere, menü, renk gibi görsel öğeler sunan arayüz türü." },
+          { term: "Bun", def: "Node.js'e alternatif, daha hızlı başlatma ve çalışma süresine sahip JavaScript/TypeScript çalışma zamanı." },
+          { term: "Diff (fark görüntüleme)", def: "İki dosya veya iki sürüm arasındaki satır bazlı farkları gösteren işlem/araç." },
+          { term: "VCS (Version Control System)", def: "Kod değişikliklerini zaman içinde takip eden sistem. Git en yaygın örneğidir; Jujutsu ve Sapling daha yeni alternatiflerdir." },
+          { term: "Watch mode (izleme modu)", def: "Dosyalardaki değişiklikleri sürekli izleyip arayüzü otomatik güncelleyen çalışma modu." },
+          { term: "Skill file", def: "Bir AI agent'ına belirli bir görevi veya aracı nasıl kullanacağını öğreten, yapılandırılmış talimat dosyası." },
+          { term: "stdin (standart girdi)", def: "Bir programa terminal üzerinden veri aktarmanın standart yolu; burada diff/patch verisi bu şekilde Hunk'a aktarılabiliyor." }
+        ]
+      }
+    ]
+  },
+  {
     date: "20 Haziran 2026",
     projects: [
       {
