@@ -2,6 +2,91 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "28 Haziran 2026",
+    projects: [
+      {
+        name: "dbt-labs/dbt-core",
+        url: "https://github.com/dbt-labs/dbt-core",
+        stars: "13.2k",
+        language: "Rust",
+        sections: {
+          serves: "<p>dbt (data build tool), ham veriyi analiz-hazır veri setlerine dönüştürme işini SQL ile, yazılım mühendisliği pratikleriyle (versiyon kontrolü, test, modülerlik) yapmayı sağlayan bir transformasyon framework'ü. Veri ekiplerinin <b>ELT</b> pipeline'ının T (transform) kısmını — ham tablolar yüklendikten sonraki kısmı — standardize ediyor.</p>",
+          tech: "<p>Mimarinin merkezinde <b>model</b> kavramı var: her model bir SELECT ifadesi, dbt bu modelleri birbirine bağlayıp bir <b>DAG</b> (yönlendirilmiş döngüsüz çizge) çıkarıyor — hangi tablo hangisine bağımlı otomatik tespit ediliyor. <b>Jinja templating</b> ile SQL'e değişken/döngü/makro eklenebiliyor (PL/SQL'deki dinamik SQL'e benzer ama derleme zamanında render ediliyor). Her model bir <b>materialization</b> stratejisiyle (table, view, incremental, ephemeral) gerçek bir tabloya/görünüme dönüşüyor. <b>Adapter</b> sistemi sayesinde Snowflake, BigQuery, Redshift, Postgres gibi farklı <b>data warehouse</b>'lara aynı SQL mantığıyla bağlanılabiliyor. v2.0 ile proje Python'dan <b>Rust</b>'a yeniden yazılıyor; amaç parse/derleme hızını artırmak, tek bir self-contained binary dağıtmak ve <b>Parquet</b> tabanlı ölçeklenebilir artifact'lar üretmek.</p>",
+          why: "<p>Veri ekiplerinin SQL script'lerini ad-hoc, test'siz, versiyon kontrolsüz şekilde yönetmesi büyük bir disiplin sorunuydu. dbt 'analytics engineering' diye yeni bir disiplin yarattı: SQL'i git, <b>CI/CD</b>, test ve dokümantasyonla bir yazılım gibi yönetmek. 9.500'den fazla projede kullanılması ve büyük Rust rewrite'ın ilgi çekmesi hype değil — gerçek bir disiplin boşluğunu doldurmasından geliyor.</p>",
+          evolve: "<p>PL/SQL'de büyük view/prosedür zincirleri yazan biri için dbt'nin model+DAG yaklaşımı tanıdık gelecektir; fark, dbt'nin bağımlılıkları otomatik çıkarması ve her modeli ayrı test edilebilir/dokümante edilebilir bir birim haline getirmesi. IFS'ten çekilen raporlama verilerini bir data warehouse'a (Snowflake/Postgres gibi) aktarıp dbt ile 'stage → intermediate → mart' katmanlarına ayırmak, raporlama tarafını PL/SQL'den ayrıştırıp test edilebilir hale getirebilir.</p>"
+        },
+        glossary: [
+          { term: "dbt (data build tool)", def: "Ham veriyi SQL ile, yazılım mühendisliği pratikleriyle analiz-hazır hale getiren açık kaynak transformasyon aracı." },
+          { term: "ELT (Extract, Load, Transform)", def: "Veriyi önce kaynaktan çekip (extract) hedef sisteme yükleyip (load), dönüşümü (transform) sonra yapma yaklaşımı." },
+          { term: "Model", def: "dbt'de bir SELECT ifadesiyle tanımlanan, tek bir veri dönüşüm adımını temsil eden birim." },
+          { term: "DAG (Directed Acyclic Graph)", def: "Yönlendirilmiş döngüsüz çizge; modeller arası bağımlılıkları gösteren, döngü içermeyen ağ yapısı." },
+          { term: "Jinja templating", def: "SQL metni içine değişken, döngü ve makro yazmayı sağlayan, derleme zamanında metni üreten şablon dili." },
+          { term: "Materialization", def: "Bir dbt modelinin gerçek veritabanı nesnesine (table, view, incremental, ephemeral) dönüştürülme stratejisi." },
+          { term: "Adapter", def: "dbt'nin farklı veritabanı/veri ambarı türlerine bağlanmasını sağlayan bağlayıcı bileşen." },
+          { term: "Data warehouse (veri ambarı)", def: "Şirketin farklı kaynaklardan gelen verisini analiz için topladığı, büyük ölçekli veritabanı sistemi (Snowflake, BigQuery, Redshift gibi)." },
+          { term: "Rust", def: "C kadar hızlı ama hafıza güvenliğini derleme zamanında garanti eden sistem programlama dili." },
+          { term: "Parquet", def: "Büyük veri setlerini verimli şekilde saklamak için kullanılan, sütun bazlı (columnar) bir dosya formatı." },
+          { term: "Analytics engineering", def: "SQL tabanlı veri dönüşümünü, yazılım geliştirme pratikleri (test, versiyon kontrolü, CI/CD) ile yapan disiplin." },
+          { term: "CI/CD", def: "Kod değişikliklerinin otomatik test edilip (Continuous Integration) otomatik yayınlandığı (Continuous Deployment) süreç." }
+        ]
+      },
+      {
+        name: "keycloak/keycloak",
+        url: "https://github.com/keycloak/keycloak",
+        stars: "35.3k",
+        language: "Java",
+        sections: {
+          serves: "<p>Her uygulamanın kendi kullanıcı adı/şifre/oturum yönetimini sıfırdan yazması yerine, kimlik doğrulamayı (<b>authentication</b>) ve yetkilendirmeyi (<b>authorization</b>) merkezi bir servise devretmeyi sağlayan açık kaynak <b>IAM</b> platformu. 'Kullanıcı kim ve neye erişebilir' sorusunu uygulamalardan ayırıp tek bir yerde çözüyor.</p>",
+          tech: "<p>Mimarinin temel birimi <b>realm</b> — her realm kendi kullanıcı, rol ve client setine sahip izole bir kimlik alanı (bir şirketin farklı departmanlarını ya da farklı müşterilerini ayırmak için kullanılabilir). <b>Client</b> her realm içinde kayıtlı bir uygulamayı temsil ediyor. Keycloak; <b>OAuth2</b>, <b>OIDC</b> (OpenID Connect) ve <b>SAML</b> protokollerini destekliyor — yani hem modern API/SPA tabanlı hem de eski kurumsal <b>SSO</b> senaryolarını kapsıyor. <b>Identity provider federation</b> ile Google, GitHub, <b>LDAP/Active Directory</b> gibi dış kimlik kaynaklarına bağlanabiliyor. Java (<b>Quarkus</b> tabanlı) çekirdek üzerine TypeScript ile yazılmış bir admin konsolu kurulu.</p>",
+          why: "<p>Her şirketin kendi login/şifre sıfırlama/2FA mantığını yazıp güvenlik açığı riskine girmesi yerine, sektör standardı protokolleri (OIDC/SAML) uygulayan, <b>OpenSSF</b> sertifikalı bir açık kaynak çözüme yönelmesi mantıklı. 35k+ yıldız, gerçek bir altyapı ihtiyacına (SSO, merkezi kimlik yönetimi) cevap verdiğinin göstergesi — hype değil, on yıllardır var olan bir problemin olgun çözümü.</p>",
+          evolve: "<p>IFS gibi kurumsal ERP sistemlerinde genelde her modülün/uygulamanın kendi kullanıcı yönetimi olur; Keycloak'ı önüne koyup IFS'e ve diğer şirket içi uygulamalara (intranet, raporlama araçları) tek bir SSO girişiyle bağlanmak, kullanıcı yönetimini merkezileştirip <b>password fatigue</b>'u (parola yorgunluğu) azaltabilir. AI asistanlarının/agent'ların kurumsal sistemlere erişiminde de OIDC token'ları üzerinden ince taneli (<b>fine-grained</b>) yetkilendirme kurulabilir.</p>"
+        },
+        glossary: [
+          { term: "IAM (Identity and Access Management)", def: "Kimin hangi kaynağa hangi işlemi yapabileceğini tanımlayan kimlik ve yetkilendirme sistemi." },
+          { term: "Authentication (kimlik doğrulama)", def: "Bir kullanıcının iddia ettiği kişi olduğunu doğrulama işlemi (örn. şifre, parmak izi ile giriş)." },
+          { term: "Authorization (yetkilendirme)", def: "Doğrulanmış bir kullanıcının hangi kaynaklara/işlemlere erişebileceğini belirleme işlemi." },
+          { term: "Realm", def: "Keycloak'ta kendi kullanıcı, rol ve uygulama setine sahip izole bir kimlik alanı." },
+          { term: "Client", def: "Bir realm içinde kayıtlı, Keycloak üzerinden kimlik doğrulama yapan uygulama." },
+          { term: "OAuth2", def: "Uygulamaların kullanıcı adına, şifreyi paylaşmadan sınırlı yetkiyle kaynaklara erişmesini sağlayan yetkilendirme protokolü." },
+          { term: "OIDC (OpenID Connect)", def: "OAuth2 üzerine inşa edilmiş, kullanıcı kimlik bilgisini standart bir şekilde taşıyan kimlik doğrulama protokolü." },
+          { term: "SAML", def: "Kurumsal ortamlarda yaygın, XML tabanlı eski bir kimlik doğrulama ve tekil oturum açma protokolü." },
+          { term: "SSO (Single Sign-On)", def: "Bir kez giriş yaparak birden çok uygulamaya erişebilme; her uygulamaya ayrı ayrı giriş yapmaya gerek kalmaz." },
+          { term: "Identity provider federation", def: "Dış kimlik sağlayıcılarla (Google, LDAP gibi) entegre olup onların kullanıcılarını kabul etme yeteneği." },
+          { term: "LDAP / Active Directory", def: "Kurumsal ağlarda kullanıcı ve kaynak bilgisini merkezi olarak saklayan dizin servisleri." },
+          { term: "Quarkus", def: "Java için hızlı başlatma ve düşük bellek kullanımı hedefleyen modern bir uygulama framework'ü." },
+          { term: "OpenSSF", def: "Açık kaynak yazılımların güvenlik standartlarını belirleyen, Linux Foundation çatısındaki bir girişim." },
+          { term: "Password fatigue (parola yorgunluğu)", def: "Kullanıcının çok sayıda farklı şifreyi yönetmek zorunda kalmasından doğan güvenlik ve kullanılabilirlik sorunu." },
+          { term: "Fine-grained authorization", def: "Erişim kontrolünü genel roller yerine, çok detaylı ve duruma özgü kurallarla yapma yaklaşımı." }
+        ]
+      },
+      {
+        name: "Fission-AI/OpenSpec",
+        url: "https://github.com/Fission-AI/OpenSpec",
+        stars: "57.1k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>AI coding agent'larla (Claude Code, Cursor, Copilot vb.) çalışırken en büyük risk: gereksinimlerin sadece chat geçmişinde yaşaması — agent'ın bir sonraki oturumda ne yapacağını 'hatırlaması' mümkün değil, bağlam kaybolur. OpenSpec, kod yazılmadan önce insan ile AI'ın ne inşa edileceği üzerinde hizalanmasını sağlayan, hafif bir <b>spec-driven development</b> (şartnameye dayalı geliştirme) katmanı sunuyor.</p>",
+          tech: "<p>Çalışma mantığı <b>slash command</b>'lar üzerinden ilerliyor (<code>/opsx:propose</code>, <code>/opsx:explore</code> gibi) — desteklenen AI araçlarında çağrılıyor. Her değişiklik için bir 'change folder' oluşturuluyor; bu klasör <b>proposal</b> (niyeti açıklayan belge), <b>spec</b> (gereksinim tanımları), <b>design</b> (teknik yaklaşım dokümantasyonu) ve <b>task checklist</b> (uygulama takip listesi) içeriyor. Katı faz kapıları (<b>phase gate</b>) yok — kullanıcı süreç içinde herhangi bir artifact'ı güncelleyebiliyor, iteratif çalışma destekleniyor. TypeScript ile yazılmış, <b>npm</b> paketi olarak dağıtılıyor, Node.js 20.19+ gerektiriyor, 25'ten fazla AI aracıyla entegre çalışıyor.</p>",
+          why: "<p>AI agent'ların kod üretme hızı arttıkça 'agent ne yapacağını tam anlamadı, yanlış şeyi hızlıca inşa etti' sorunu büyüdü. OpenSpec, ağır bir süreç yükü (Jira/Confluence tarzı) getirmeden hafif bir hizalama katmanı sunarak bu boşluğu dolduruyor. 57k+ yıldız ve 25+ araç desteği gerçek bir ihtiyaca denk geldiğini gösteriyor — ama 'spec-driven' terimi güncel AI-agent trendinin de parçası olduğundan kısmen hype payı var.</p>",
+          evolve: "<p>IFS Marble/PL-SQL geliştirmede yeni bir özellik veya entegrasyon talebi geldiğinde, koda dalmadan önce OpenSpec benzeri bir 'önce spec yaz, sonra kodla' disiplini kurmak — özellikle birden fazla geliştiricinin/AI asistanının aynı değişiklik üzerinde çalıştığı senaryolarda — gereksinim kaymasını (<b>scope creep</b>) azaltabilir. Kendi kurumsal değişiklik talebi şablonlarını (RFC benzeri) bu mantıkla bir AI asistanına bağlayabilirsin.</p>"
+        },
+        glossary: [
+          { term: "AI coding agent", def: "Kod yazma, çalıştırma ve değişiklik yapma görevlerini doğal dil talimatlarıyla yürüten yapay zeka asistanı." },
+          { term: "Spec-driven development (şartnameye dayalı geliştirme)", def: "Kod yazılmadan önce ne yapılacağının yazılı bir şartname/spesifikasyonla netleştirildiği geliştirme yaklaşımı." },
+          { term: "Slash command", def: "Bir araca '/' ile başlayan kısa komutlar yazarak belirli bir işlemi tetikleme yöntemi." },
+          { term: "Proposal", def: "Bir değişikliğin neden ve ne amaçla yapılacağını açıklayan belge." },
+          { term: "Spec", def: "Bir değişikliğin teknik gereksinimlerini detaylı şekilde tanımlayan belge." },
+          { term: "Design doc", def: "Bir değişikliğin teknik çözüm yaklaşımını/mimarisini açıklayan belge." },
+          { term: "Task checklist", def: "Bir değişikliğin uygulanması için yapılması gereken adımların listesi." },
+          { term: "Phase gate", def: "Bir sürecin bir aşamadan diğerine geçmesi için onay gerektiren katı kontrol noktası." },
+          { term: "npm", def: "JavaScript/TypeScript paketlerini dağıtmak ve kurmak için kullanılan paket yöneticisi." },
+          { term: "Node.js", def: "JavaScript'i tarayıcı dışında, sunucu veya komut satırı ortamında çalıştırmaya yarayan çalışma zamanı (runtime)." },
+          { term: "Scope creep (gereksinim kayması)", def: "Bir projenin kapsamının, başta planlanmadan, zamanla kontrolsüz şekilde büyümesi." }
+        ]
+      }
+    ]
+  },
+  {
     date: "26 Haziran 2026",
     projects: [
       {
