@@ -2,6 +2,79 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "29 Haziran 2026",
+    projects: [
+      {
+        name: "opendatalab/MinerU",
+        url: "https://github.com/opendatalab/MinerU",
+        stars: "71.5k",
+        language: "Python",
+        sections: {
+          serves: "<p>PDF, DOCX, PPTX, XLSX gibi karmaşık belgeleri LLM'lerin sindirebileceği temiz Markdown/JSON'a çeviren bir doküman ayrıştırma motoru. Klasik <b>PDF extraction</b> araçları taranmış sayfalarda, çok sütunlu düzenlerde, el yazısında ve karmaşık tablolarda çuvallar; MinerU bu zor senaryoları hedefliyor — yani bir <b>RAG</b> sistemine ya da AI ajanına 'belgeyi oku' dedirtmenin önündeki en sık karşılaşılan engeli kaldırıyor.</p>",
+          tech: "<p>İki ayrı motor sunuyor: CPU-dostu bir <b>pipeline backend</b> (klasik OCR + layout modelleri zinciri, OmniDocBench'te %86.47 doğruluk) ve bir <b>VLM</b> (vision-language model) tabanlı motor (%95+ doğruluk ama GPU gerektiriyor). Süreç sırayla şöyle: önce <b>layout detection</b> sayfayı paragraf/tablo/formül/başlık bloklarına bölüyor, sonra <b>OCR</b> (PaddleOCR tabanlı) ve <b>formula recognition</b> (UniMERNet ile LaTeX'e çeviri) her bloğu kendi türüne göre işliyor, son olarak okuma sırası (<b>reading order</b>) yeniden inşa ediliyor — çok sütunlu bir sayfada hangi paragrafın hangisinden önce geldiğini anlamak. Sunucu tarafı FastAPI/Gradio ile, ağır VLM motorları vLLM/LMDeploy ile hızlandırılıyor; çıktı Markdown, JSON veya zengin ara temsil olarak alınabiliyor.</p>",
+          why: "<p>LLM'lere veri besleme işinin en sıkıcı ve hataya açık kısmı 'belgeyi düzgün metne çevirmek'; MinerU bunu üretim kalitesinde çözdüğü için 71k+ yıldız ve 150'den fazla bağımlı proje topladı. Son sürümde lisansın daha kısıtlayıcı AGPLv3'ten Apache 2.0 tabanlı bir lisansa geçmesi de kurumsal kullanımın önündeki en büyük engeli kaldırdı — bu kısmen organik popülerlik, kısmen de stratejik bir lisans hamlesinin sonucu.</p>",
+          evolve: "<p>IFS'te biriken PDF formatındaki eski raporları, sözleşmeleri veya teknik dokümantasyonu bir AI asistanına/agent'a sorgulatılabilir hale getirmek istersen, önce MinerU ile bunları temiz Markdown'a çevirip sonra bir vektör veritabanına (RAG için) yüklemek doğal bir ilk adım olur — özellikle taranmış/eski PDF'lerde klasik metin çıkarmadan çok daha iyi sonuç verir.</p>"
+        },
+        glossary: [
+          { term: "PDF extraction", def: "Bir PDF dosyasından metin, tablo veya görsel içeriği program aracılığıyla çıkarma işlemi." },
+          { term: "RAG (Retrieval-Augmented Generation)", def: "Bir dil modelinin cevap üretirken önce ilgili belgeleri arayıp bulduğu bilgiyi cevaba dahil etmesini sağlayan teknik." },
+          { term: "VLM (Vision-Language Model)", def: "Hem görseli hem metni anlayabilen, ikisini birlikte işleyen yapay zeka modeli türü." },
+          { term: "Pipeline backend", def: "Birbirini takip eden ayrı işleme adımlarından (OCR, layout, vb.) oluşan klasik işleme zinciri." },
+          { term: "Layout detection", def: "Bir sayfa görselini paragraf, tablo, başlık, formül gibi anlamlı bloklara ayırma işlemi." },
+          { term: "OCR (Optical Character Recognition)", def: "Görsel/taranmış bir sayfadaki yazıyı makine tarafından okunabilir metne çevirme teknolojisi." },
+          { term: "Formula recognition", def: "Bir görseldeki matematiksel formülü tanıyıp LaTeX gibi yazılabilir bir biçime çevirme işlemi." },
+          { term: "Reading order (okuma sırası)", def: "Çok sütunlu veya karmaşık bir sayfada metin bloklarının doğru okunma sırasını belirleme işlemi." },
+          { term: "FastAPI", def: "Python ile hızlı API sunucuları yazmak için kullanılan modern bir web framework'ü." },
+          { term: "vLLM / LMDeploy", def: "Büyük dil/görsel-dil modellerini GPU üzerinde hızlı ve verimli şekilde çalıştırmaya yarayan servis kütüphaneleri." }
+        ]
+      },
+      {
+        name: "vercel-labs/skills",
+        url: "https://github.com/vercel-labs/skills",
+        stars: "24k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Claude Code, Cursor, Copilot gibi onlarca farklı AI coding agent'ın kendine özgü, birbiriyle uyumsuz 'agent'a talimat öğretme' formatları var; bu da herkesin aynı işi (örn. 'PR açarken şu kurallara uy') her araç için yeniden yazmasına yol açıyor. <code>npx skills</code>, tek bir standart <b>skill</b> formatını 70'ten fazla agent'a kurup paylaşılabilir hale getiren bir CLI.</p>",
+          tech: "<p>Bir skill, en basit haliyle <code>SKILL.md</code> adlı bir dosya: başında <b>YAML frontmatter</b> (zorunlu <code>name</code> ve <code>description</code> alanları) var, altında ise agent'a verilecek Markdown talimat metni duruyor. CLI bu dosyaları GitHub URL'si, yerel yol veya git deposu gibi farklı kaynaklardan çekip <code>.claude/skills/</code>, <code>.agents/skills/</code> gibi araca özel klasörlere kopyalıyor (<code>npx skills add</code>), proje veya global ölçekte kurabiliyor, kurmadan tek seferlik prompt da üretebiliyor (<code>npx skills use</code>) ve <code>npx skills find</code> ile merkezi bir kayıt deposunda (skills.sh) arama yapabiliyor. TypeScript ile yazılmış, npm üzerinden dağıtılan, bağımlılığı minimal bir CLI paketi.</p>",
+          why: "<p>AI agent ekosistemi hızla çoğaldı ama her araç kendi 'eklenti'/'talimat' formatını icat etti — bu, tam olarak paket yöneticilerinin (npm, pip) çözdüğü dağıtım/standardizasyon sorununun agent dünyasında tekrarı. Vercel'in arkasında olması ve 70+ aracı tek formatla kapsaması gerçek bir ekosistem boşluğunu dolduruyor; 24k yıldız organik bir ihtiyaca işaret ediyor, hype'tan çok pratik fayda.</p>",
+          evolve: "<p>IFS Marble/PL-SQL ekibinde tekrar eden işler için (örn. 'değişiklik talebi şablonuna göre commit mesajı yaz', 'PL/SQL paket başlığına şu yorum formatını ekle') kendi <code>SKILL.md</code> dosyalarını yazıp ekip içinde <code>npx skills add</code> ile dağıtmak, her geliştiricinin AI asistanının aynı kurumsal kurallara uymasını sağlayabilir — tam da kullanıcının bu konuşmada zaten kullandığı 'skill' mekanizmasının kendisi.</p>"
+        },
+        glossary: [
+          { term: "AI coding agent", def: "Doğal dil talimatlarıyla kod yazan, çalıştıran ve değiştiren yapay zeka asistanı (Claude Code, Cursor, Copilot gibi)." },
+          { term: "Skill", def: "Bir AI agent'ın yeteneklerini genişleten, yeniden kullanılabilir talimat paketi." },
+          { term: "YAML frontmatter", def: "Bir Markdown dosyasının başında, anahtar-değer çiftleriyle meta bilgi taşıyan kısa yapılandırılmış blok." },
+          { term: "CLI (Command Line Interface)", def: "Komut satırından çalıştırılan, grafik arayüzü olmayan program." },
+          { term: "npm / npx", def: "JavaScript paketlerini kurmak (npm) ve kurmadan doğrudan çalıştırmak (npx) için kullanılan araçlar." },
+          { term: "Paket yöneticisi", def: "Yazılım bağımlılıklarını indirip kurup sürümlerini yöneten araç (npm, pip gibi)." }
+        ]
+      },
+      {
+        name: "diegosouzapw/OmniRoute",
+        url: "https://github.com/diegosouzapw/OmniRoute",
+        stars: "7.4k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Birden fazla LLM sağlayıcısıyla (OpenAI, Anthropic, ücretsiz kotalı küçük sağlayıcılar dahil 200'den fazla) çalışan geliştiriciler için, her birinin farklı API'sini, kotasını ve fiyatını ayrı ayrı yönetme zahmetini kaldıran yerel bir <b>AI gateway</b> / <b>proxy</b>. Tek bir adrese (localhost) istek gönderiyorsun, OmniRoute arkada hangi sağlayıcıya yönlendireceğine karar veriyor.</p>",
+          tech: "<p>Mimarinin kalbinde bir <b>routing engine</b> var: öncelik, maliyet, gecikme (<b>latency</b>), sağlayıcı sağlığı gibi dokuz faktöre göre skor hesaplayıp en uygun sağlayıcıyı seçen 'auto-combo' motoru. Bir sağlayıcı kotasını tükettiğinde veya hata verdiğinde sistem sessizce diğerine kayıyor (<b>failover</b>) — dört kademeli bir öncelik sırası (abonelik kotası → API key → ucuz sağlayıcı → ücretsiz sağlayıcı) ve <b>circuit breaker</b> deseniyle sağlık takibi yapılıyor. Üstüne bir <b>prompt compression</b> hattı oturtulmuş: tekrarlayan oturum verisini, araç çıktısı gürültüsünü ve gereksiz <b>prose</b>'u (düz metin anlatımı) ML tabanlı tekniklerle (LLMLingua-2 gibi) sıkıştırıp token harcamasını düşürüyor; kod blokları değişmeden kalıyor. TypeScript/Node.js üzerine kurulu, SQLite ile yerel veri saklıyor, <b>MCP</b> ve <b>A2A</b> protokolleriyle agent ekosistemine bağlanabiliyor.</p>",
+          why: "<p>AI araçlarının (Claude Code, Cursor, Copilot) maliyeti ve kota sınırları geliştiriciler için gerçek bir sorun; OmniRoute tek bir yapılandırmayla 16+ aracı birden fazla sağlayıcıya bağlayıp maliyeti düşürme vaadiyle popülerlik kazandı. Ama '%95 token tasarrufu' ve 'aylık 1.6 milyar ücretsiz token' gibi iddialar pazarlama diline yakın; ücretsiz kotaları art arda toplama (kota arbitrajı) yaklaşımının sağlayıcıların kullanım koşullarıyla ne kadar uyumlu olduğu tartışmalı — bu projede gerçek mühendislik (routing, circuit breaker, compression) var ama hype payı da göz ardı edilmemeli.</p>",
+          evolve: "<p>Kurumsal bir ortamda (IFS gibi) birden fazla LLM sağlayıcısını (örn. bir bulut sağlayıcı + kendi sunucunda vLLM ile servis edilen açık kaynak model) tek bir iç API arkasında birleştirip, hangi isteğin nereye gideceğini maliyet/gizlilik kriterine göre otomatik seçen daha sade, kurum içi bir 'routing' katmanı kurmak — burada görülen circuit breaker ve fallback mantığını örnek alarak — pratik bir fikir olur.</p>"
+        },
+        glossary: [
+          { term: "AI gateway / proxy", def: "İstemci uygulamalar ile birden çok AI sağlayıcısı arasında aracılık yapan, istekleri yönlendiren ara katman." },
+          { term: "Routing engine", def: "Gelen bir isteği hangi hedefe (burada: hangi AI sağlayıcısına) yönlendireceğine karar veren bileşen." },
+          { term: "Latency (gecikme)", def: "Bir isteğin gönderilmesiyle cevabın alınması arasında geçen süre." },
+          { term: "Failover", def: "Bir sistem bileşeni hata verdiğinde otomatik olarak yedek/alternatif bileşene geçiş yapma yeteneği." },
+          { term: "Circuit breaker", def: "Sürekli hata veren bir bileşene istek göndermeyi geçici olarak durdurup sistemi koruyan tasarım deseni." },
+          { term: "Prompt compression", def: "Bir dil modeline gönderilen metni, anlamı bozmadan daha az token kullanacak şekilde kısaltma tekniği." },
+          { term: "Prose", def: "Düz, anlatımsal yazılmış metin; burada kod/yapılandırılmış veri olmayan kısımlara işaret ediyor." },
+          { term: "MCP (Model Context Protocol)", def: "AI modellerinin dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+          { term: "A2A (Agent-to-Agent)", def: "Farklı AI agent'larının birbiriyle standart bir şekilde haberleşmesini sağlayan protokol." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim, yaklaşık bir kelime parçası." }
+        ]
+      }
+    ]
+  },
+  {
     date: "28 Haziran 2026",
     projects: [
       {
