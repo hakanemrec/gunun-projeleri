@@ -1,0 +1,42 @@
+name: Günlük Trending
+
+on:
+  schedule:
+    # ~08:17 Türkiye saati (05:17 UTC). GitHub Actions cron'u yoğunlukta gecikebilir.
+    - cron: "17 5 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-trending
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: feed.js üret (Gemini)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/generate.mjs
+
+      - name: Commit & push
+        run: |
+          git config user.name "trending-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/feed.js
+          if git diff --staged --quiet; then
+            echo "Değişiklik yok."
+          else
+            git commit -m "Günlük trending (otomatik): $(TZ=Europe/Istanbul date +%d-%m-%Y)"
+            git push
+          fi
