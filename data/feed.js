@@ -2,6 +2,111 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "1 Temmuz 2026",
+    projects: [
+      {
+        name: "D4Vinci/Scrapling",
+        url: "https://github.com/D4Vinci/Scrapling",
+        stars: "67.4k",
+        language: "Python",
+        sections: {
+          serves: "<p>Web scraping dünyası dağınık: tek bir <code>requests</code> çağrısı için ayrı, JavaScript'le render edilen siteler için ayrı, anti-bot korumalı (Cloudflare gibi) siteler için bambaşka araçlar gerekiyor. Üstüne site tasarımını değiştirdiğinde yazdığın <b>selector</b>'lar bozulup scraper'ın çöküyor. Scrapling tek bir framework'te bunların hepsini topluyor: hem yüksek performanslı <b>parsing</b>, hem <b>adaptive</b> (siteyi değişse bile elementi yeniden bulan) tracking, hem anti-bot atlatma.</p>",
+          tech: "<p>Çekirdekte C tabanlı <b>lxml</b> üstüne kurulu bir parser var; <b>CSS selector</b> ve <b>XPath</b> ile element seçip, BeautifulSoup tarzı DOM gezintisi (parent/sibling/child) yapabiliyorsun — ama 5000 elementlik bir sayfada BeautifulSoup'tan yüzlerce kat hızlı. Asıl ayırt edici özellik <b>adaptive element tracking</b>: <code>adaptive=True</code> verdiğinde, site yeniden tasarlanıp <b>DOM</b> yapısı değişse bile benzerlik algoritmalarıyla aynı elementi yeniden buluyor. Üç farklı <b>fetcher</b> katmanı var: düz <b>Fetcher</b> (<b>TLS fingerprint</b> taklidi + HTTP/3 ile tarayıcı gibi görünür), <b>StealthyFetcher</b> (<b>Playwright</b> ile headless Chromium çalıştırıp Cloudflare Turnstile çözer), ve <b>DynamicFetcher</b> (tam tarayıcı otomasyonu, form doldurma). Scrapy benzeri bir <b>Spider</b> katmanı <code>asyncio</code> ile eşzamanlı crawl yapıyor; <b>checkpoint</b> ile durdur-devam et desteği var. Ayrıca yerleşik bir <b>MCP server</b> ile Claude/Cursor'a içeriği önceden filtreleyip <b>token</b> maliyetini düşürerek besliyor.</p>",
+          why: "<p>67k yıldız boşuna değil: scraping herkesin ara sıra ihtiyaç duyduğu ama her seferinde 'hangi aracı kullanayım' diye bocaladığı bir alan. Scrapling'in iddiası somut ve ölçülebilir — parsing'de BeautifulSoup'a göre ~780x hız, ve gerçek bir acıyı (site değişince scraper'ın bozulması) <code>adaptive</code> tracking ile çözmesi. Bu hype değil, mühendislik değeri. Tek dikkat: anti-bot atlatma özelliklerinin, scrape ettiğin sitenin kullanım şartlarına ve yasalara uygun, yetkili biçimde kullanılması gerekir.</p>",
+          evolve: "<p>IFS dışındaki kaynaklardan (tedarikçi portalları, döviz/fiyat siteleri, kamu veri sayfaları) düzenli veri toplayıp PL/SQL tarafında bir staging tablosuna akıtmak istersen, Scrapling'in <code>adaptive</code> tracking'i bu entegrasyonların 'site değişti, job kırıldı' bakım yükünü ciddi azaltır. Ayrıca topladığın ham HTML'i MCP server üzerinden bir LLM'e önceden filtreleyip besleyerek, yapılandırılmamış web verisini IFS'e girilebilir yapılandırılmış kayda çevirebilirsin.</p>"
+        },
+        glossary: [
+          { term: "Web scraping", def: "Web sayfalarından otomatik olarak veri çekme işlemi." },
+          { term: "Selector", def: "Bir HTML sayfasında belirli bir elementi (örn. fiyat, başlık) hedeflemek için yazılan adresleme ifadesi." },
+          { term: "Parsing", def: "Ham bir metni (örn. HTML) program tarafından anlaşılır bir yapıya ayrıştırma işlemi." },
+          { term: "lxml", def: "Python'da HTML/XML'i çok hızlı işlemek için kullanılan, C ile yazılmış bir kütüphane." },
+          { term: "CSS selector", def: "Web'de elementleri sınıf/etiket/kimliğe göre seçmek için kullanılan, CSS'ten gelen kısa ifade biçimi." },
+          { term: "XPath", def: "XML/HTML belgelerinde elementlere yol tarifi vererek erişmeyi sağlayan sorgu dili." },
+          { term: "DOM (Document Object Model)", def: "Bir web sayfasının tarayıcıdaki ağaç biçimli yapısal temsili." },
+          { term: "Adaptive element tracking", def: "Sitenin yapısı değişse bile benzerlik analiziyle aranan elementi yeniden bulabilme yeteneği." },
+          { term: "Fetcher", def: "Bir web sayfasının içeriğini getiren (indirme/istek yapan) bileşen." },
+          { term: "TLS fingerprint", def: "Bir istemcinin şifreli bağlantı kurarken bıraktığı, hangi araç/tarayıcı olduğunu ele veren imza; taklit edilince scraper tarayıcı gibi görünür." },
+          { term: "Playwright", def: "Gerçek bir tarayıcıyı programatik olarak (görünmez/headless dahil) kontrol etmeye yarayan otomasyon kütüphanesi." },
+          { term: "Headless tarayıcı", def: "Ekranda pencere açmadan, arka planda çalışan tarayıcı." },
+          { term: "Cloudflare Turnstile", def: "Cloudflare'ın bot trafiğini engellemek için kullandığı insan-doğrulama mekanizması." },
+          { term: "asyncio", def: "Python'da aynı anda çok sayıda işi (örn. yüzlerce isteği) beklemeden yürütmeyi sağlayan eşzamanlılık altyapısı." },
+          { term: "Spider / crawl", def: "Linkleri takip ederek çok sayıda sayfayı sırayla gezip veri toplayan scraping bileşeni/işlemi." },
+          { term: "Checkpoint", def: "Uzun bir işin durumunu kaydedip, kesilince kaldığı yerden devam etmesini sağlayan ara kayıt noktası." },
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim; maliyet ve sınırlar token sayısına göre belirlenir." }
+        ]
+      },
+      {
+        name: "surrealdb/surrealdb",
+        url: "https://github.com/surrealdb/surrealdb",
+        stars: "32.6k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Tipik bir uygulamada veriyi tutmak için bir veritabanı, ona erişmek için ayrı bir API katmanı, bir de kimlik doğrulama (<b>auth</b>) servisi yazarsın — üç ayrı sistemi birbirine bağlamak külfetli. SurrealDB bu üçünü tek bir platformda birleştiriyor: aynı motorda <b>document</b>, <b>graph</b> (ilişki), klasik <b>relational</b> tablo, zaman serisi, coğrafi ve <b>vector</b> veriyi tutabiliyor; üstüne yetkilendirme ve gerçek zamanlı abonelikleri kendisi sağlıyor.</p>",
+          tech: "<p>Tamamı <b>Rust</b> ile yazılmış tek bir binary; hem uygulamanın içine gömülü (<b>embedded</b>) kütüphane olarak, hem WebAssembly ile tarayıcıda, hem de dağıtık bir sunucu kümesi (<b>cluster</b>) olarak çalışabiliyor. Sorgu dili <b>SurrealQL</b>, SQL'e benziyor ama graph ilişkilerini pahalı <b>JOIN</b>'ler olmadan gezebiliyorsun: <code>RELATE</code> ile iki kayıt arasına özellikli, yönlü bir <b>edge</b> kuruyor, <b>record link</b>'lerle iç içe veriyi tek sorguda çekiyorsun. <b>ACID</b> transaction'ları çok tablo/çok satır üzerinde tablo kilidi olmadan destekliyor. <b>Live query</b> denen özellikle bir sorguya WebSocket üzerinden abone olup veri değiştikçe <b>DIFF/PATCH</b> güncellemeleri alıyorsun — yani 'gerçek zamanlı' uygulamalar için polling'e gerek kalmıyor. Şema tarafında hem <b>schemafull</b> (katı, tip kısıtlı) hem <b>schemaless</b> (esnek) modu var; satır düzeyinde izin (<b>permission</b>) kuralları ve gömülü JavaScript fonksiyonları ile iş mantığını veri katmanına taşıyabiliyorsun.</p>",
+          why: "<p>32.6k yıldız, 'tek araçla çok-model + API + auth' vaadinin gerçek bir ihtiyaca dokunduğunu gösteriyor; özellikle bilgi grafları ve AI agent backend'leri için graph + vector + document'i tek yerde tutabilmek cazip. Dürüst olmak gerekirse her şeyi yapan tek motor iddiası dikkat ister: olgunluk ve operasyonel deneyim PostgreSQL kadar oturmuş değil ve çekirdek <b>BSL (Business Source License)</b> ile geliyor (saf açık kaynak değil). Yani değer gerçek, ama production kararı öncesi kendi yükünle test etmek lazım.</p>",
+          evolve: "<p>Sen günlük işinde Oracle/IFS'in katı relational dünyasında ve PL/SQL'de çalışıyorsun; SurrealDB'yi bir yan projede kurcalamak, ilişki-ağırlıklı veriyi (örn. parça-tedarikçi-sipariş zincirleri) Oracle'da <code>CONNECT BY</code> / özyinelemeli sorgularla uğraşmadan <code>RELATE</code> ve graph traversal ile modellemenin nasıl bir his olduğunu gösterir. SurrealQL'i SQL'le kıyaslamak, JOIN'siz graph gezintisi ve live query gibi kavramların PL/SQL refleksini nasıl değiştirdiğini somut biçimde öğretir.</p>"
+        },
+        glossary: [
+          { term: "Auth (kimlik doğrulama)", def: "Bir kullanıcının/iste­ğin gerçekten kim olduğunu ve neye yetkili olduğunu denetleme süreci." },
+          { term: "Document (belge) veritabanı", def: "Veriyi katı tablolar yerine esnek JSON benzeri belgeler halinde tutan veritabanı modeli." },
+          { term: "Graph veritabanı", def: "Veriyi düğümler ve aralarındaki ilişkiler (kenarlar) olarak tutan, ilişki gezintisinde güçlü model." },
+          { term: "Relational (ilişkisel) veritabanı", def: "Veriyi satır-sütun tablolarında tutan ve tabloları anahtarlarla ilişkilendiren klasik model (örn. Oracle)." },
+          { term: "Vector (vektör) arama", def: "Veriyi sayı dizisi (vektör) olarak temsil edip anlamca en yakın kayıtları bulma tekniği; AI/benzerlik aramasının temeli." },
+          { term: "Rust", def: "Bellek güvenliğini derleme aşamasında garanti eden, yüksek performanslı bir sistem programlama dili." },
+          { term: "Binary", def: "Doğrudan çalıştırılabilen, derlenmiş tek program dosyası." },
+          { term: "Embedded (gömülü) veritabanı", def: "Ayrı bir sunucu kurmadan, doğrudan uygulamanın içinde kütüphane olarak çalışan veritabanı." },
+          { term: "Cluster (küme)", def: "Birlikte tek bir sistem gibi davranan, yükü ve veriyi paylaşan birden çok sunucu." },
+          { term: "SurrealQL", def: "SurrealDB'nin SQL'e benzeyen, ama graph gezintisi ve gerçek zamanlı sorguları da kapsayan sorgu dili." },
+          { term: "JOIN", def: "İlişkisel veritabanında birden çok tabloyu ortak alan üzerinden birleştirme işlemi; büyük veride pahalı olabilir." },
+          { term: "Edge (kenar)", def: "Graph veritabanında iki kayıt arasındaki ilişkiyi temsil eden, kendine ait özellikleri olabilen bağlantı." },
+          { term: "Record link", def: "Bir kaydın başka bir kayda JOIN olmadan doğrudan referans vermesini sağlayan bağlantı." },
+          { term: "ACID", def: "Bir veritabanı işleminin bölünmez, tutarlı, izole ve kalıcı olmasını garanti eden dört temel özellik." },
+          { term: "Transaction", def: "Ya tamamı başarılı olan ya da hiç uygulanmayan, bir bütün olarak ele alınan işlem grubu." },
+          { term: "Live query (canlı sorgu)", def: "Sonucu bir kez döndürmek yerine, veri değiştikçe abonelere otomatik güncelleme gönderen sorgu." },
+          { term: "WebSocket", def: "İstemci ile sunucu arasında çift yönlü, sürekli açık kalan iletişim kanalı." },
+          { term: "DIFF/PATCH", def: "Tüm veriyi tekrar göndermek yerine sadece değişen kısmı (farkı) iletme yöntemi." },
+          { term: "Schemafull / Schemaless", def: "Verinin alanlarının katı kurallarla tanımlı olması (schemafull) ya da serbest/esnek olması (schemaless)." },
+          { term: "Permission (izin)", def: "Hangi kullanıcının hangi veriyi okuyup yazabileceğini belirleyen erişim kuralı." },
+          { term: "BSL (Business Source License)", def: "Kaynağı açık ama ticari kullanımına süreli kısıt getiren, tam 'özgür yazılım' sayılmayan lisans türü." },
+          { term: "Graph traversal", def: "Bir graph'ta düğümden düğüme ilişkileri takip ederek gezinme işlemi." }
+        ]
+      },
+      {
+        name: "superradcompany/microsandbox",
+        url: "https://github.com/superradcompany/microsandbox",
+        stars: "6.7k",
+        language: "Rust",
+        sections: {
+          serves: "<p>AI'ın ürettiği kodu, kullanıcıdan gelen eklentileri veya güvenmediğin CI işlerini çalıştırmak risklidir: kötü niyetli kod host makineye zarar verebilir. Klasik çözüm olan <b>container</b>'lar (Docker) kernel'i host ile paylaştığı için izolasyonu tam değil; bulut <b>serverless</b> ise vendor'a bağımlı. microsandbox, donanım sanallaştırması kullanan <b>microVM</b>'lerle, untrusted kodu host'tan donanım düzeyinde yalıtılmış biçimde, ama yüz milisaniyenin altında açılış hızıyla çalıştırıyor.</p>",
+          tech: "<p>Temelde <b>libkrun</b> ile hafif sanal makineler (microVM) başlatıyor ve <b>smoltcp</b> ile ağ yığınını sağlıyor; her sandbox kendi <b>guest kernel</b>'ı ile çalıştığı için container'ların paylaşılan kernel zafiyetlerinden etkilenmiyor (<b>hardware-level isolation</b>). Yine de pratik: ortalama <b>boot</b> süresi 100ms altı, ve Docker Hub/GHCR gibi herhangi bir <b>OCI</b> registry'sinden standart container imajlarını çekip çalıştırabiliyor — yani yeni bir format öğrenmene gerek yok. Uzun ömürlü bir <b>daemon</b> ya da sunucu kurmadan, SDK ile (Rust, Python, TypeScript, Go) doğrudan kendi kodunun içinden microVM doğurabiliyorsun: <code>Sandbox.builder()</code> ile CPU/RAM ayarlanıp <code>.exec()</code> ile komut çalıştırılıyor. <b>Secret injection</b> özelliğinde API anahtarları host'ta kalıp VM'e hiç girmediği için, içeride çalışan kod sızdıramıyor. macOS (HVF), Linux (<b>KVM</b>), Windows (WHP) destekli ve AI agent'lara bağlanmak için bir <b>MCP server</b> sunuyor.</p>",
+          why: "<p>AI'ın kod üretmesi yaygınlaştıkça 'bu üretilen kodu nerede güvenle çalıştıracağım' sorusu gerçek ve büyüyen bir ihtiyaç; microsandbox tam buraya oynuyor ve Y Combinator destekli. 6.7k yıldız henüz erken-aşama bir benimsenmeye işaret ediyor — SurrealDB veya Scrapling kadar olgun değil. Buradaki değer mühendislik açısından somut (container'ın izolasyon açığını microVM ile kapatmak), ama 'AI çağının altyapısı' söyleminin bir kısmı da zamanlama/hype'tan besleniyor; üretim kullanımında dikkatli değerlendirmek gerekir.</p>",
+          evolve: "<p>Bir agent'a IFS için PL/SQL veya yardımcı script üret-ve-çalıştır yaptırıyorsan, bu üretilen kodu doğrudan gerçek ortamda denemek tehlikeli olur; microsandbox gibi bir microVM içinde izole çalıştırıp çıktısını gözlemledikten sonra onaylamak güvenli bir 'deneme tahtası' kurar. Aynı mantık, güvenmediğin üçüncü-parti scriptleri veya veri dönüştürme işlerini host'a bulaştırmadan koşturmak için de geçerli.</p>"
+        },
+        glossary: [
+          { term: "Container (konteyner)", def: "Uygulamayı bağımlılıklarıyla paketleyip izole çalıştıran, ama işletim sistemi kernel'ini host ile paylaşan teknoloji (örn. Docker)." },
+          { term: "Serverless", def: "Sunucuyu sen yönetmeden, kodun talep geldikçe bulutta çalıştırıldığı model." },
+          { term: "microVM", def: "Çok hızlı açılan, hafif ama gerçek donanım sanallaştırması sunan küçük sanal makine." },
+          { term: "Kernel (çekirdek)", def: "İşletim sisteminin donanımı yöneten en alt katmanı; container'lar bunu paylaşır, microVM'ler ayrı tutar." },
+          { term: "libkrun", def: "Hafif sanal makineleri hızlıca başlatmak için kullanılan açık kaynak kütüphane." },
+          { term: "smoltcp", def: "Rust ile yazılmış, küçük ve gömülü ortamlara uygun bir ağ (TCP/IP) yığını." },
+          { term: "Guest kernel", def: "Bir sanal makinenin içinde, host'tan bağımsız çalışan kendi işletim sistemi çekirdeği." },
+          { term: "Hardware-level isolation (donanım düzeyinde yalıtım)", def: "İşlemcinin sanallaştırma özellikleriyle sağlanan, yazılım sınırından daha güçlü güvenlik ayrımı." },
+          { term: "Boot (önyükleme)", def: "Bir makinenin/sanal makinenin sıfırdan başlayıp çalışır hale gelmesi süreci." },
+          { term: "OCI (Open Container Initiative) imajı", def: "Docker dahil araçların ortak kullandığı standart konteyner imaj formatı." },
+          { term: "Registry", def: "Konteyner imajlarının yüklenip indirildiği depo (örn. Docker Hub, GHCR)." },
+          { term: "Daemon", def: "Arka planda sürekli çalışan, hizmet veren program." },
+          { term: "SDK (Software Development Kit)", def: "Bir aracı kendi koduna entegre etmek için sağlanan kütüphane ve araç seti." },
+          { term: "Secret injection", def: "API anahtarı gibi gizli değerleri, kodun göremeyeceği şekilde kontrollü biçimde sisteme aktarma yöntemi." },
+          { term: "KVM / HVF / WHP", def: "Sırasıyla Linux, macOS ve Windows üzerinde donanım sanallaştırmasını sağlayan altyapılar." },
+          { term: "Untrusted kod", def: "Kaynağına veya niyetine güvenilmeyen, zarar verme ihtimali olan kod." },
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve servislere standart biçimde bağlanmasını sağlayan protokol." },
+          { term: "Y Combinator", def: "Erken aşama girişimlere yatırım yapan, tanınmış bir startup hızlandırma programı." }
+        ]
+      }
+    ]
+  },
+  {
     date: "30 Haziran 2026",
     projects: [
       {
