@@ -2,6 +2,79 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "30 Haziran 2026",
+    projects: [
+      {
+        name: "obra/superpowers",
+        url: "https://github.com/obra/superpowers",
+        stars: "242k",
+        language: "Shell",
+        sections: {
+          serves: "<p>AI coding agent'ların (Claude Code, Cursor, Copilot, Gemini vb.) doğrudan koda atlayıp gelişigüzel sonuç üretmesi yerine, profesyonel bir yazılım mühendisi gibi planlayıp test edip review'dan geçmesini zorunlu kılan bir <b>metodoloji + skill kütüphanesi</b>. Hedef: agent'ın güvenilirliğini prompt yazma becerisine değil, tekrarlanabilir bir sürece bağlamak.</p>",
+          tech: "<p>Çekirdekte <b>composable skills system</b> var: context'e göre otomatik tetiklenen, yeniden kullanılabilir workflow paketleri (test yazma, debug etme, brainstorm yapma, hatta yeni skill üretme). Bunun üstüne zorunlu bir <b>sequential pipeline</b> oturtulmuş: brainstorming → git kurulumu → planlama → implementasyon+code review → test → branch finalize etme. <b>Subagent-driven development</b> denilen yaklaşımda her görev taze bir subagent'a veriliyor ve iki aşamalı review'dan geçiyor (önce 'spesifikasyona uydu mu', sonra 'kod kalitesi yeterli mi') — bu da agent'ın saatlerce gözetimsiz, otonom çalışabilmesini sağlıyor. Tüm bu mantık plugin olarak paketlenmiş ve Claude Code, Cursor, Copilot dahil çok sayıda araca aynı şekilde kurulabiliyor.</p>",
+          why: "<p>242 bin yıldız, AI agent dünyasının şu an en acil sorununa (agent'lar güvenilir, tutarlı, production-kalitesinde kod üretsin) cevap verdiğinin kanıtı. red-green-refactor, YAGNI gibi mühendislik prensiplerini serbest metin tavsiyesi yerine 'otomatik tetiklenen bileşenler' haline getirmesi, gerçek bir tasarım katkısı — hype'tan çok pratik güven sorununu çözüyor. Discord topluluğu ve ticari destek seçenekleri de benimsemeyi kolaylaştırmış.</p>",
+          evolve: "<p>Bu görevin kendisi zaten bir 'skill' (SKILL.md) olarak çalışıyor — yani kullanıcı bu fikrin küçük bir versiyonunu günlük olarak kullanıyor. Superpowers'taki 'zorunlu sequential pipeline' ve 'iki aşamalı review' fikrini, IFS'te büyük PL/SQL paket değişikliklerinde agent'a uygulatmak (önce brainstorm/plan adımını zorunlu kılıp, implementasyondan sonra ayrı bir review adımı eklemek) hataları daha erken yakalayabilir.</p>"
+        },
+        glossary: [
+          { term: "AI coding agent", def: "Doğal dil talimatlarıyla kod yazan, çalıştıran ve değiştiren yapay zeka asistanı." },
+          { term: "Skill", def: "Bir AI agent'a belirli bir görevi nasıl yapacağını öğreten, yeniden kullanılabilir talimat paketi." },
+          { term: "Composable skills system", def: "Bağlama göre otomatik devreye giren, birbirine eklenebilir küçük workflow parçalarından oluşan sistem." },
+          { term: "Pipeline", def: "Bir işin sırayla geçtiği, her aşaması belirli bir görevi yapan zorunlu adımlar dizisi." },
+          { term: "Subagent", def: "Ana bir agent tarafından belirli bir alt görevi yürütmek için başlatılan, kendi bağlamına sahip ayrı bir agent örneği." },
+          { term: "Code review", def: "Yazılan kodun başka biri (veya başka bir agent) tarafından kalite ve doğruluk açısından gözden geçirilmesi." },
+          { term: "Red-green-refactor (TDD döngüsü)", def: "Önce başarısız bir test yazıp (red), sonra testi geçirecek minimum kodu yazıp (green), ardından kodu temizleme (refactor) döngüsü." },
+          { term: "YAGNI (You Aren't Gonna Need It)", def: "İhtiyaç duyulmadan önce özellik/soyutlama eklememe prensibi." },
+          { term: "Plugin", def: "Bir ana programa sonradan eklenip onun yeteneklerini genişleten yazılım parçası." }
+        ]
+      },
+      {
+        name: "usestrix/strix",
+        url: "https://github.com/usestrix/strix",
+        stars: "27.9k",
+        language: "Python",
+        sections: {
+          serves: "<p>Şirketlerin uygulamalarındaki güvenlik açıklarını bulmak için yapılan manuel <b>pentest (penetration testing)</b> pahalı ve yavaş, statik analiz araçları ise çok fazla <b>false positive</b> (yanlış pozitif) üretiyor. Strix, gerçek bir red team gibi davranan otonom AI ajanlarıyla uygulamayı aktif olarak saldırıp, teorik rapor yerine gerçek çalışan exploit'lerle açıkları kanıtlıyor.</p>",
+          tech: "<p>Mimarinin kalbinde bir <b>multi-agent orchestration</b> sistemi var: keşif (<b>reconnaissance</b>), istismar (<b>exploitation</b>) ve sömürü-sonrası (<b>post-exploitation</b>) aşamalarına özelleşmiş ayrı agent'lar bulgularını birbirine aktarıp açıkları zincirliyor (<b>chained vulnerabilities</b>) — profesyonel bir red team'in çalışma şeklini taklit ediyor. Agent'lara HTTP intercept proxy'leri, tarayıcı otomasyonu, shell çalıştırma ortamları, Python sandbox'ları ve <b>OSINT</b> araçları gibi gerçek bir pentester'ın araç seti veriliyor. Bulguyu sadece işaretlemek yerine kodu dinamik çalıştırıp gerçek bir exploit üretiyor — bu da false positive oranını neredeyse sıfırlıyor. CLI, web uygulaması (GitHub/domain entegrasyonu) ve CI/CD pipeline modlarında kullanılabiliyor; OpenAI, Anthropic, Google gibi farklı LLM sağlayıcılarını destekliyor.</p>",
+          why: "<p>Pentesting endüstrisinin kronik sorunu şu: insan kaynaklı test pahalı/yavaş, otomatik tarayıcılar gürültülü/güvenilmez. Strix LLM'lerin akıl yürütme + araç kullanma yeteneğiyle ikisinin arasını dolduruyor; 'rapor değil kanıt üretiyoruz' iddiası somut ve doğrulanabilir olduğu için 27.9k yıldız gerçek bir güvene işaret ediyor. GitHub Actions entegrasyonu CI/CD'ye sürtünmesiz giriş sağlıyor.</p>",
+          evolve: "<p>IFS gibi büyük bir ERP'nin web arayüzlerinde (Marble ile yazılmış özel ekranlar dahil) CI/CD pipeline'ına düzenli, otomatik bir güvenlik taraması eklenebilir — özellikle yetkilendirme hatalarını veya dinamik SQL kullanımından kaynaklanan injection risklerini erken yakalamak için. Bu tür araçların yalnızca kendi sistemlerinizi test etmek için, yetkili ve kontrollü bir ortamda kullanılması gerektiğini unutmamak gerekir.</p>"
+        },
+        glossary: [
+          { term: "Pentest (penetration testing)", def: "Bir sistemin güvenlik açıklarını bulmak için gerçek bir saldırgan gibi davranarak yapılan yetkili test süreci." },
+          { term: "False positive (yanlış pozitif)", def: "Bir aracın aslında var olmayan bir sorunu varmış gibi raporlaması." },
+          { term: "Multi-agent orchestration", def: "Birden fazla AI agent'ının görev paylaşarak birlikte, koordineli çalışmasını yöneten sistem." },
+          { term: "Reconnaissance (keşif)", def: "Bir saldırı/test öncesinde hedef sistem hakkında bilgi toplama aşaması." },
+          { term: "Exploitation / Exploit", def: "Bir güvenlik açığını kullanarak sisteme fiilen sızma işlemi/bunu yapan kod parçası." },
+          { term: "Post-exploitation (sömürü-sonrası)", def: "Bir sisteme sızıldıktan sonra erişimi genişletme veya kalıcı kılma aşaması." },
+          { term: "Chained vulnerabilities (zincirleme açıklar)", def: "Tek başına zararsız görünen birkaç küçük açığın art arda kullanılarak büyük bir sızmaya dönüştürülmesi." },
+          { term: "OSINT (Open Source Intelligence)", def: "Herkese açık kaynaklardan (web, sosyal medya vb.) bilgi toplama tekniği." },
+          { term: "CI/CD", def: "Kod değişikliklerinin otomatik test edilip otomatik yayınlandığı sürekli entegrasyon/teslimat süreci." },
+          { term: "LLM sağlayıcı", def: "OpenAI, Anthropic, Google gibi büyük dil modeli API'si sunan şirket." }
+        ]
+      },
+      {
+        name: "ogulcancelik/herdr",
+        url: "https://github.com/ogulcancelik/herdr",
+        stars: "8.9k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Birden fazla AI coding agent'ı (Claude Code, Devin, Copilot, Cursor vb.) aynı anda çalıştıran geliştiriciler için, her birini ayrı pencerede takip etmek yerine tek bir terminal arayüzünden hepsinin anlık durumunu (bloklandı, çalışıyor, bitti, boşta) görmeyi sağlayan bir <b>agent multiplexer</b>.</p>",
+          tech: "<p>~10MB'lık tek bir Rust binary'si, kalıcı bir server-client mimarisiyle çalışıyor: terminali kapatsanız bile agent'lar arka planda çalışmaya devam ediyor, istediğiniz terminalden yeniden bağlanabiliyorsunuz (<b>session persistence</b>). Her agent'ın çıktısı simüle edilmiş değil gerçek terminal render'ı olarak gösteriliyor, böylece tam <b>TUI</b> uyumluluğu korunuyor. Workspace/tab/pane şeklinde hiyerarşik organizasyon ve mouse desteği var. Agent durumu tespiti, process adı eşleştirme + terminal çıktısının <b>heuristic</b> (sezgisel) analiziyle otomatik yapılıyor; ayrıca yerel bir Unix <b>socket</b> API'si üzerinden agent'lar herdr'ı programatik olarak kontrol edebiliyor (workspace oluşturma, çıktı okuma, durum değişikliklerine abone olma). <b>SSH</b> üzerinden uzak sunuculara da aynı özelliklerle (görsel yapıştırma dahil) erişilebiliyor.</p>",
+          why: "<p>tmux'ın agent çağına taşınmış hali gibi düşünülebilir: tmux'ın kalıcılık ve pane mantığını koruyup üstüne 'bu pane'deki agent ne durumda' farkındalığını ekliyor. Electron yok, abonelik yok, telemetri yok, SSH'ın ulaştığı her yerde çalışıyor — bu sadelik, geliştiricilerin çoklu agent yönetimindeki gerçek bir acısını çözdüğü için 8.9k yıldız organik bir ihtiyaca işaret ediyor.</p>",
+          evolve: "<p>Kullanıcı paralel olarak birden fazla Claude Code/agent oturumu açıp farklı IFS modüllerinde (örn. biri PL/SQL paket refactor'ü, diğeri Marble ekranı) çalışıyorsa, herdr ile bunları tek terminalde 'hangisi bloklandı, hangisi bitti' şeklinde anlık takip edip context switch maliyetini düşürebilir.</p>"
+        },
+        glossary: [
+          { term: "Agent multiplexer", def: "Birden fazla AI agent oturumunu tek bir arayüzden yönetip durumlarını izlemeyi sağlayan araç." },
+          { term: "TUI (Terminal User Interface)", def: "Grafik yerine terminal/konsol içinde çalışan kullanıcı arayüzü." },
+          { term: "Session persistence (oturum kalıcılığı)", def: "Bağlantı kesilse bile bir işlemin/oturumun arka planda çalışmaya devam etmesi." },
+          { term: "Heuristic (sezgisel analiz)", def: "Kesin bir kural yerine örüntü/ipucu tanıma ile sonuca varan analiz yöntemi." },
+          { term: "Socket", def: "İki program arasında veri alışverişi için kullanılan düşük seviyeli iletişim kanalı." },
+          { term: "SSH (Secure Shell)", def: "Uzak bir bilgisayara güvenli şekilde komut satırından bağlanmayı sağlayan protokol." },
+          { term: "Process", def: "İşletim sisteminde çalışan bir programın tek bir örneği." }
+        ]
+      }
+    ]
+  },
+  {
     date: "29 Haziran 2026",
     projects: [
       {
