@@ -2,6 +2,88 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "2 Temmuz 2026",
+    projects: [
+      {
+        name: "t8y2/dbx",
+        url: "https://github.com/t8y2/dbx",
+        stars: "8.1k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Farklı veritabanı motorları (MySQL, PostgreSQL, Oracle, MongoDB, Redis...) için ayrı ayrı, çoğu zaman ağır bir <b>runtime</b> (JVM gibi) gerektiren istemciler kullanmak külfetli. dbx, 60'tan fazla veritabanı türünü tek, ~15MB'lık hafif bir <b>binary</b>'de birleştiriyor; üstüne yerleşik bir yapay zeka asistanı ve <b>MCP</b> desteğiyle AI agent'ların doğrudan veritabanını sorgulamasına izin veriyor.</p>",
+          tech: "<p>Masaüstü katmanı <b>Tauri 2</b> ile kuruluyor (Rust backend + işletim sisteminin kendi webview'ı, Electron gibi Chromium gömmüyor); arayüz <b>Vue 3</b>, shadcn-vue ve Tailwind CSS ile, SQL editörü ise <b>CodeMirror 6</b> ile yazılmış. Veritabanı bağlantıları için Rust'ın <code>sqlx</code>, <code>tiberius</code>, <code>redis-rs</code>, <code>mongodb</code> gibi native <b>driver</b>'ları kullanılıyor; Snowflake, BigQuery, Neo4j, Cassandra gibi daha egzotik sistemler için <b>JDBC</b> köprüsü var. AI SQL asistanı Claude, OpenAI veya yerel <b>Ollama</b> modelleriyle sorgu üretip optimize edebiliyor; <b>MCP server</b> özelliğiyle Claude Code veya Cursor gibi araçlar dbx'e tanımlı veritabanlarını doğrudan sorgulayabiliyor. Ayrıca <b>ER diyagramı</b> çıkarma, <b>schema diff</b>, <b>explain plan</b> görüntüleme ve sanal kaydırmalı (<b>virtual scrolling</b>) veri tablosu gibi araçlar geliyor.</p>",
+          why: "<p>8.1k yıldız, DBeaver gibi JVM tabanlı ağır araçlar ya da her veritabanı için ayrı konsol kullanma yorgunluğuna gerçek bir cevap olmasından geliyor — tek, küçük bir binary. AI ve MCP entegrasyonu da agent'ların veri katmanına erişmesinin yaygınlaştığı bu dönemde zamanlaması isabetli. Dürüst olmak gerekirse proje henüz genç; 60'ın üzerindeki veritabanı desteğinin hepsi aynı olgunlukta değil, kritik prod ortamlarda güvenmeden önce kendi veritabanın üzerinde test etmek gerekir.</p>",
+          evolve: "<p>IFS'in altyapısı Oracle olduğu için dbx'i JDBC köprüsüyle Oracle'a bağlayıp DBeaver'a alternatif bir masaüstü istemcisi olarak deneyebilirsin. Daha ilginci: MCP entegrasyonu sayesinde bir AI agent'a IFS'in özelleştirilmiş tablo ve view'larını tanıtıp ad-hoc sorgular yazdırabilir, ER diyagramıyla yıllar içinde büyümüş bir şemayı elle reverse-engineering yapmadan görselleştirebilirsin.</p>"
+        },
+        glossary: [
+          { term: "Runtime", def: "Bir programın çalışması için gereken, arka planda hazır bulunması gereken ortam (örn. Java için JVM)." },
+          { term: "Binary", def: "Doğrudan çalıştırılabilen, derlenmiş tek program dosyası." },
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "Tauri", def: "Web teknolojileriyle arayüz yazıp, Rust ile küçük ve hızlı masaüstü uygulamaları paketlemeye yarayan framework." },
+          { term: "Vue", def: "Kullanıcı arayüzü oluşturmak için kullanılan bir JavaScript framework'ü." },
+          { term: "CodeMirror", def: "Web sayfalarına gömülebilen, sözdizimi renklendirmeli kod/metin editörü kütüphanesi." },
+          { term: "Driver (sürücü)", def: "Bir programın belirli bir veritabanı ya da donanımla konuşmasını sağlayan bağlantı katmanı." },
+          { term: "JDBC", def: "Java dünyasından gelen, farklı veritabanlarına ortak bir arayüzle bağlanmayı sağlayan standart." },
+          { term: "Ollama", def: "Büyük dil modellerini kendi bilgisayarında yerel olarak çalıştırmayı sağlayan araç." },
+          { term: "ER diyagramı", def: "Bir veritabanındaki tabloların ve aralarındaki ilişkilerin görsel şeması." },
+          { term: "Schema diff", def: "İki veritabanı şeması arasındaki farkları karşılaştırma işlemi." },
+          { term: "Explain plan", def: "Bir SQL sorgusunun veritabanı motoru tarafından nasıl çalıştırılacağını gösteren yürütme planı." },
+          { term: "Virtual scrolling", def: "Çok satırlı bir tabloda sadece ekranda görünen satırları render ederek performansı artıran teknik." }
+        ]
+      },
+      {
+        name: "langchain-ai/deepagents",
+        url: "https://github.com/langchain-ai/deepagents",
+        stars: "25.5k",
+        language: "Python",
+        sections: {
+          serves: "<p>Sıfırdan 'derin' bir agent (çok adımlı planlama, hafıza, alt görev delegasyonu yapabilen) kurmak her seferinde aynı iskeleti tekrar yazmak demek: görev bölme, <b>context window</b> yönetimi, araç <b>sandbox</b>'lama. deepagents bunu hazır ama üzerine yazılabilir (override edilebilir) bir <b>harness</b> olarak paketliyor; sıfırdan boilerplate yerine çalışan, production'a yakın bir agent'la başlıyorsun.</p>",
+          tech: "<p>Çekirdekte <b>LangGraph</b> (agent orkestrasyonunu bir graph/durum makinesi olarak çalıştıran runtime) var; bunun üstüne LangChain'in <code>create_agent</code>'ından daha sofistike bir harness olarak kuruluyor. Öne çıkan mekanizmalar: <b>sub-agent</b>'lar (bir alt görevi, ana konuşmayı kirletmeden izole bir <b>context window</b>'da çalışan başka bir agent'a devretme), <b>virtual filesystem</b> (agent'ın dosya okuma/yazma/düzenleme yapabildiği, arkada local/sandboxed/remote gibi farklı depolama backend'lerine bağlanabilen soyut dosya sistemi), otomatik context özetleme ve uzun tool çıktısını devre dışı bırakma (offload), yapılandırılabilir bir <b>sandbox</b> içinde shell erişimi, oturumlar arası kalıcı hafıza, riskli bir araç çağrısından önce onay bekleten <b>human-in-the-loop</b> kapıları, tekrar kullanılabilir davranış modülleri sunan <b>skills</b> sistemi ve <b>MCP</b> sunucularıyla araç entegrasyonu. <b>Model-agnostik</b>: tool calling destekleyen her LLM ile çalışıyor; <b>LangSmith</b> ile izleme/değerlendirme entegre.</p>",
+          why: "<p>25.5k yıldızın arkasında hem LangChain ekibinin güvenilirliği hem de gerçek bir boşluk var: agent framework'leri ya çok minimal (ham bir döngü) ya da çok katı oluyor; deepagents ortada duruyor — hazır varsayılanlar var ama her parçası değiştirilebilir. Oyuncak demo'nun ötesine geçen agent'lar kuran herkes için gerçek değer taşıyor; hype riski şu: 'deep agent' popüler bir terim ve hangi framework'ü kullanırsan kullan, production'da güvenilirlik yine dikkatli prompt ve araç tasarımına bağlı.</p>",
+          evolve: "<p>IFS/PL-SQL kod tabanını okuyup migration script'i öneren ya da dokümantasyon taslağı çıkaran bir AI agent kurmayı merak ediyorsan, deepagents'ın virtual filesystem + sub-agent deseni iyi bir şablon: ana agent planlıyor, 'X PL/SQL paketinin kullanıldığı yerleri bul' gibi bir alt görevi izole context'li bir sub-agent'a devrediyor, sonucu sanal dosyalara yazıyor, ve gerçek veritabanına dokunan herhangi bir komut çalıştırılmadan önce human-in-the-loop onay kapısından geçiyor.</p>"
+        },
+        glossary: [
+          { term: "Context window", def: "Bir dil modelinin tek seferde 'hafızasında' tutabildiği metin miktarı." },
+          { term: "Sandbox", def: "Bir programın/kodun, sistemin geri kalanına zarar veremeyeceği izole bir çalışma ortamı." },
+          { term: "Harness", def: "Bir sistemi (burada AI agent'ı) çalıştırmak, yönetmek ve test etmek için etrafına kurulan iskelet/altyapı." },
+          { term: "LangGraph", def: "Agent'ların adımlarını bir durum makinesi/graph olarak modelleyip yürüten orkestrasyon kütüphanesi." },
+          { term: "Sub-agent", def: "Ana agent tarafından belirli bir alt görevi yürütmek üzere devreye sokulan, kendi bağımsız bağlamına sahip başka bir agent." },
+          { term: "Virtual filesystem", def: "Gerçek bir diskten bağımsız, farklı depolama biçimlerine bağlanabilen soyut/simüle dosya sistemi arayüzü." },
+          { term: "Human-in-the-loop", def: "Otomatik bir sürecin riskli adımlarında insan onayının araya girdiği tasarım." },
+          { term: "Skills (agent skills)", def: "Bir agent'ın tekrar tekrar kullanabileceği, önceden tanımlanmış davranış/yetenek modülleri." },
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "Model-agnostik", def: "Belirli bir yapay zeka modeline bağlı kalmadan, farklı modellerle çalışabilme özelliği." },
+          { term: "LangSmith", def: "LangChain ekibinin agent çalışmalarını izlemek ve değerlendirmek için sunduğu gözlemlenebilirlik platformu." }
+        ]
+      },
+      {
+        name: "TencentCloud/CubeSandbox",
+        url: "https://github.com/TencentCloud/CubeSandbox",
+        stars: "6.9k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Bir AI agent'ın ürettiği kodu (Python/shell çıktısı gibi) çalıştırmak güvenlik riski taşır: Docker konteynerleri host'un çekirdeğini (<b>kernel</b>) paylaştığı için teorik olarak kaçış (<b>escape</b>) riski var. CubeSandbox her çalıştırmayı ~60ms'de ayağa kalkan, kendi <b>microVM</b>'inde izole ediyor; böylece agent'lar host makineyi riske atmadan rastgele kod çalıştırabiliyor.</p>",
+          tech: "<p>Modüler bir mimarisi var: <b>CubeAPI</b> (E2B SDK ile uyumlu REST <b>gateway</b>, yani mevcut E2B entegrasyonlarına birebir takılabiliyor), <b>CubeMaster</b> (küme orkestratörü/zamanlayıcı), <b>CubeProxy</b> (istekleri ilgili sandbox'a yönlendiren <b>reverse proxy</b>), <b>Cubelet</b> (node bazında sandbox yaşam döngüsü yönetimi), <b>CubeVS</b> (ağ izolasyonu için <b>eBPF</b> tabanlı sanal switch), <b>CubeEgress</b> (giden trafiği domain bazlı sınırlayan ve kimlik bilgilerini sandbox'ın dışında tutup enjekte eden güvenlik gateway'i), ve <b>CubeHypervisor/CubeShim</b> (<b>KVM</b> tabanlı <b>microVM</b> katmanı — Docker'daki gibi paylaşılan bir çekirdek değil, her sandbox kendi guest işletim sistemi çekirdeğine sahip). ~100ms'de <b>snapshot/rollback</b> alabiliyor, <b>OCI image</b>'ları sandbox şablonuna çeviriyor.</p>",
+          why: "<p>6.9k yıldız, agentic kodlama araçlarının yaygınlaşmasıyla 'AI'ın ürettiği koda güvenmeden çalıştırma' probleminin artık temel bir altyapı ihtiyacı haline gelmesinden geliyor. VM seviyesinde izolasyonu konteyner hızında sunma iddiası, eBPF + KVM microVM mühendisliğiyle gerçek bir teknik başarı, hype değil. Dikkat edilmesi gereken: proje henüz genç ve Tencent Cloud destekli; production'a bağlanmadan önce uzun vadeli destek taahhüdünü kontrol etmek, ve 6 ayrı bileşenden oluşan bu stack'i kendin barındırmanın (self-host) yönetilen bir E2B/Modal sandbox kullanmaktan daha karmaşık olduğunu bilmek gerekir.</p>",
+          evolve: "<p>İleride bir AI agent'a PL/SQL script'lerini ya da IFS Marble kod değişikliklerini sana göstermeden önce otomatik test ettirmek istersen, CubeSandbox'ın egress kontrolü (domain allowlist, credential vault) tam da istediğin güvenlik deseni: gerçek veritabanı kimlik bilgileriyle çalışan bir agent'ı çalıştırırken sırları sandbox'ın dışında tutup sadece gereken izni enjekte etmek, her giden isteği audit-log'lamak.</p>"
+        },
+        glossary: [
+          { term: "Kernel (çekirdek)", def: "İşletim sisteminin donanımla doğrudan konuşan, en temel katmanı." },
+          { term: "Escape (sandbox kaçışı)", def: "İzole bir ortamda çalışan kodun, o izolasyonu kırıp host sisteme erişmesi." },
+          { term: "MicroVM", def: "Normal bir sanal makineden çok daha hafif ve hızlı açılan, yine de kendi çekirdeğine sahip minimal sanal makine." },
+          { term: "Gateway", def: "Dış isteklerin bir sisteme girerken ilk uğradığı, yönlendirme/kontrol yapan giriş noktası." },
+          { term: "Reverse proxy", def: "Gelen istekleri arka plandaki doğru sunucuya yönlendiren ara katman." },
+          { term: "eBPF", def: "Linux çekirdeği içinde, çekirdeği değiştirmeden özel ağ/güvenlik/izleme mantığı çalıştırmaya yarayan teknoloji." },
+          { term: "KVM", def: "Linux'un donanım destekli sanallaştırma özelliği; sanal makinelerin neredeyse gerçek donanım hızında çalışmasını sağlar." },
+          { term: "Snapshot/rollback", def: "Bir sistemin o andaki durumunu kaydedip (snapshot), gerektiğinde o duruma geri dönme (rollback) yeteneği." },
+          { term: "OCI image", def: "Konteynerler için endüstri standardı haline gelmiş, taşınabilir paket/imaj formatı." },
+          { term: "Credential vault", def: "API anahtarı/şifre gibi hassas bilgilerin güvenli şekilde saklandığı ve kontrollü biçimde erişildiği kasa." },
+          { term: "Audit log", def: "Kim ne zaman ne yaptı bilgisini kaydeden, sonradan denetlenebilir işlem kaydı." }
+        ]
+      }
+    ]
+  },
+  {
     date: "1 Temmuz 2026",
     projects: [
       {
