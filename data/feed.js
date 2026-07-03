@@ -2,6 +2,85 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "3 Temmuz 2026",
+    projects: [
+      {
+        name: "ChromeDevTools/chrome-devtools-mcp",
+        url: "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+        stars: "45.2k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Bir AI kod asistanının (Claude Code, Cursor gibi) bir web sayfası hakkında konuşabilmesi için o sayfayı gerçekten 'görmesi' gerekir: tıklama yapabilmeli, konsol loglarını okuyabilmeli, ağ isteklerini inceleyip performans sorununu teşhis edebilmeli. Chrome DevTools ekibinin resmi <b>MCP</b> sunucusu tam bunu sağlıyor: agent'ları canlı bir Chrome örneğine bağlayıp DevTools'un tüm gücünü standart bir protokol üzerinden açıyor.</p>",
+          tech: "<p>Sunucu, agent'tan gelen istekleri <b>CDP</b> (Chrome DevTools Protocol) komutlarına çeviriyor; tarayıcı kontrolü için <b>Puppeteer</b> kullanılıyor, kod tabanının %95'i <b>TypeScript</b>. 50'den fazla <b>tool</b>, 8 kategoride toplanmış: otomasyon (tıklama, form doldurma, klavye), navigasyon, performans (<b>trace</b> kaydı + <b>CrUX</b> ile gerçek kullanıcı metrikleri), debugging (screenshot, konsol çıktısı, <b>source map</b>'li stack trace), memory analizi (<b>heap snapshot</b> + dominator ağacı), network inceleme, extension yönetimi ve deneysel 'vision' (koordinat bazlı etkileşim). 20'den fazla AI platformuyla (Gemini, Claude, Copilot) uyumlu çalışıyor.</p>",
+          why: "<p>45k yıldız ve günde +100'ün üzerinde artış tesadüf değil: VS Code, JetBrains ve Visual Studio gibi büyük IDE'ler bunu resmi olarak entegre etmiş durumda, yani gerçek bir prod talebi var; Chrome ekibinin kendi projesi olması da hobi kodu riskini ortadan kaldırıyor. Dikkat edilecek nokta: 50'den fazla tool sunmak, agent'ın <b>doğru tool'u doğru zamanda</b> seçmesini otomatik garanti etmiyor — protokolün varlığı, altındaki modelin/prompt'un kalitesinin yerine geçmiyor.</p>",
+          evolve: "<p>IFS Cloud'un web arayüzü Aurena'yı test eden bir AI agent kurmak istersen, chrome-devtools-mcp'nin performans <b>trace</b>'i ve network inceleme araçları, bir ekranın neden yavaş yüklendiğini agent'a sorup konsol loglarını okutarak PL/SQL katmanı dışında, frontend tarafında debugging yapmayı öğretir — IFS geliştiricisi olarak günlük işinde pek dokunmadığın bir katman.</p>"
+        },
+        glossary: [
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "CDP (Chrome DevTools Protocol)", def: "Chrome tarayıcısını dışarıdan programatik olarak kontrol etmeye ve içini incelemeye yarayan arayüz." },
+          { term: "Puppeteer", def: "Chrome/Chromium tarayıcısını kod ile otomatik kontrol etmeyi sağlayan Node.js kütüphanesi." },
+          { term: "TypeScript", def: "JavaScript'e tip (type) güvenliği ekleyen, derlenerek JavaScript'e çevrilen programlama dili." },
+          { term: "Tool (agent tool)", def: "Bir AI agent'ın çağırıp belirli bir işi (tıklama, sorgu, hesaplama vb.) yaptırabildiği tanımlı fonksiyon." },
+          { term: "Trace (performans trace)", def: "Bir sayfanın yüklenmesi sırasında adım adım neyin ne kadar sürdüğünü kaydeden performans kaydı." },
+          { term: "CrUX (Chrome User Experience Report)", def: "Google'ın gerçek Chrome kullanıcılarından topladığı, bir sitenin gerçek dünyadaki performansını gösteren veri seti." },
+          { term: "Source map", def: "Derlenmiş/küçültülmüş bir kodun hangi orijinal satıra karşılık geldiğini gösteren eşleme dosyası." },
+          { term: "Heap snapshot", def: "Bir programın o anki bellek (heap) kullanımının anlık görüntüsü; bellek sızıntısı aramada kullanılır." }
+        ]
+      },
+      {
+        name: "NousResearch/hermes-agent",
+        url: "https://github.com/NousResearch/hermes-agent",
+        stars: "208k",
+        language: "Python",
+        sections: {
+          serves: "<p>Kişisel bir AI agent kurmak isteyenler genelde her mesajlaşma platformu (Telegram, Discord, Slack, WhatsApp, Signal), her <b>LLM</b> sağlayıcısı ve hafıza/zamanlama ihtiyacı için ayrı ayrı, birbirinden kopuk entegrasyonlar yazmak zorunda kalıyor. Hermes Agent bunların hepsini tek bir kurulumda topluyor: <b>model-agnostik</b> bir çekirdek, çoklu mesajlaşma <b>gateway</b>'i, kalıcı hafıza, otonom <b>skill</b> üretimi ve <b>cron</b> tabanlı zamanlama.</p>",
+          tech: "<p>Kod tabanı ağırlıklı Python (%82), arayüz tarafı TypeScript/JS (%15). <b>Model-agnostik</b> tasarım sayesinde Nous Portal, OpenRouter, OpenAI, Anthropic veya özel bir endpoint arasında <code>hermes model</code> komutuyla kod değiştirmeden geçiş yapabiliyorsun. Çalışma ortamı (terminal backend) olarak local, Docker, SSH, Singularity ve <b>serverless</b> Modal/Daytona destekleniyor; agent boşta kaldığında Modal/Daytona'da <b>hibernate</b> olup neredeyse hiç maliyet üretmiyor. Skill sistemi açık agentskills.io standardıyla uyumlu ve agent kullanım sırasında kendi skill'lerini üretip iyileştirebiliyor ('kapalı öğrenme döngüsü'). Geçmiş konuşmaları <b>FTS5</b> ile arayabiliyor, periyodik 'hafıza dürtmesi' ile önemli bilgileri unutmuyor. İzole <b>subagent</b>'ları paralel çalıştırabiliyor; Python script'leri tool'ları <b>RPC</b> üzerinden çağırıyor. <b>MCP</b> entegrasyonu da mevcut.</p>",
+          why: "<p>208k yıldız görünce temkinli olmak gerekir: bu sayı, projenin yaşına göre organik birikim için oldukça yüksek — Nous Research'ün var olan Hermes model serisinden gelen tanınırlık etkisi olabilir ama bu ölçek dikkatle değerlendirilmeli. Gerçek mühendislik değeri şurada: model-agnostik tasarım ve serverless <b>hibernasyon</b> ('5 dolarlık VPS'den GPU cluster'a ölçeklenme' iddiası) somut ve inandırıcı. Ama 'otonom öğrenen agent' şu an popüler bir hype terimi; production'a almadan önce yıldız sayısına değil gerçek kullanım örneklerine ve topluluk aktivitesine bakmakta fayda var.</p>",
+          evolve: "<p>PL/SQL paket bakımı gibi tekrarlayan işleri (örn. her sabah bir batch job'ın loglarını özetleyip Telegram'a/Slack'e yazmak) otomatikleştirmek istersen, Hermes'in <b>cron</b> scheduler + mesajlaşma gateway deseni tam bunun için biçilmiş kaftan: agent'a 'her gün 08:00'de şu logu oku, özetle, bana yaz' görevini verip IFS ortamındaki periyodik kontrol/raporlama işlerini insansız hale getirebilirsin.</p>"
+        },
+        glossary: [
+          { term: "LLM (Large Language Model)", def: "Büyük miktarda metinle eğitilmiş, dil üretebilen/anlayabilen yapay zeka modeli." },
+          { term: "Model-agnostik", def: "Belirli bir yapay zeka modeline bağlı kalmadan, farklı modellerle çalışabilme özelliği." },
+          { term: "Gateway", def: "Dış isteklerin bir sisteme girerken ilk uğradığı, yönlendirme/kontrol yapan giriş noktası." },
+          { term: "Skill (agent skill)", def: "Bir agent'ın tekrar tekrar kullanabileceği, önceden tanımlanmış davranış/yetenek modülü." },
+          { term: "Cron", def: "Belirli zamanlarda otomatik olarak çalışacak görevleri zamanlayan klasik Unix mekanizması." },
+          { term: "Serverless", def: "Sunucu yönetimiyle uğraşmadan, kullanıldığı kadar kaynak tüketen bulut çalıştırma modeli." },
+          { term: "Hibernate (hibernasyon)", def: "Boşta kalan bir sürecin durumunu kaydedip kapanması, tekrar gerektiğinde kaldığı yerden uyanması." },
+          { term: "FTS5 (Full-Text Search)", def: "SQLite veritabanının metin içinde hızlı arama yapmasını sağlayan uzantısı." },
+          { term: "Subagent", def: "Ana agent tarafından belirli bir alt görevi yürütmek üzere devreye sokulan, kendi bağımsız bağlamına sahip başka bir agent." },
+          { term: "RPC (Remote Procedure Call)", def: "Bir programın başka bir süreçteki/bilgisayardaki bir fonksiyonu, yerel bir fonksiyon gibi çağırmasını sağlayan yöntem." },
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "VPS (Virtual Private Server)", def: "Fiziksel bir sunucunun sanallaştırılarak bölünmesiyle elde edilen, kiralanabilir küçük sunucu birimi." }
+        ]
+      },
+      {
+        name: "astral-sh/uv",
+        url: "https://github.com/astral-sh/uv",
+        stars: "87k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Python dünyasında bağımlılık yönetimi tarihsel olarak parçalı: paket kurmak için pip, sanal ortam için venv, CLI araçları için pipx, proje/lockfile yönetimi için Poetry, Python sürümü değiştirmek için pyenv — beş ayrı araç, beş ayrı öğrenme eğrisi. uv bunların hepsini tek bir Rust <b>binary</b>'sinde birleştiriyor.</p>",
+          tech: "<p>Kod tabanının %98'i <b>Rust</b>. Bağımlılık çözümlemesi (<b>dependency resolution</b>) için <b>PubGrub</b> algoritmasını kullanıyor — çakışan versiyon gereksinimlerini verimli çözen bir <b>constraint solver</b>. Global bir <b>cache</b> ile indirilen paketleri <b>deduplike</b> ediyor: aynı paket sürümü diskte tekrar tekrar tutulmuyor, projeler arasında paylaşılıyor. pip/pip-tools/virtualenv'e birebir yerine geçen (<b>drop-in replacement</b>) bir komut seti sunuyor; <code>uv init</code>/<code>uv add</code> ile Poetry tarzı proje + <b>lockfile</b> yönetimi, <code>uvx</code> ile pipx tarzı izole <b>CLI</b> tool çalıştırma, ve Python'un kendisini indirip sürümler arasında hızlı geçiş (pyenv'in işi) sağlıyor. Inline metadata destekli tek dosyalık script'lerde bile otomatik bağımlılık/ortam yönetimi var. Tasarımı pnpm, Orogene, Bun gibi diğer ekosistemlerin hızlı paket yöneticilerinden ilham almış.</p>",
+          why: "<p>87k yıldız ve 16.9k bağımlı repo, hype değil gerçek bir acıyı (Python tooling'in parçalılığı) çözmesinden geliyor — pip'e göre 10-100x hız iddiası özellikle <b>CI/CD</b> pipeline'larında gerçekten hissediliyor. Astral (Ruff'ın da yapımcısı) ekibinin sürdürdüğü, production'da yaygın kullanılan olgun bir araç; risk neredeyse yok, tek dikkat: eski scriptli/CI ortamlarında pip'ten uv'ye geçişte bazı uç durum (edge-case) davranış farkları çıkabiliyor.</p>",
+          evolve: "<p>IFS/PL-SQL tarafında yardımcı Python script'leri (veri migrasyonu, raporlama, web scraping vb.) yazıyorsan, uv'nin 'tek dosya, inline bağımlılık' yaklaşımıyla requirements.txt/venv kurma derdi olmadan <code>uv run script.py</code> deyip anında çalıştırabilirsin — zamanlanmış bir job'da ya da CI/CD'de Python ortamı kurma süresini saniyelere indirir.</p>"
+        },
+        glossary: [
+          { term: "Rust", def: "Bellek güvenliğini derleme aşamasında garanti eden, yüksek performanslı bir sistem programlama dili." },
+          { term: "Binary", def: "Doğrudan çalıştırılabilen, derlenmiş tek program dosyası." },
+          { term: "Dependency resolution (bağımlılık çözümleme)", def: "Bir projenin ihtiyaç duyduğu paketlerin, birbiriyle çakışmayan uyumlu sürümlerini bulma işlemi." },
+          { term: "PubGrub", def: "Çakışan paket sürüm gereksinimlerini verimli ve anlaşılır hata mesajlarıyla çözen bir bağımlılık çözümleme algoritması." },
+          { term: "Constraint solver", def: "Birbiriyle çelişebilecek kısıtlamalar (örn. sürüm gereksinimleri) arasında geçerli bir çözüm bulan sistem." },
+          { term: "Cache", def: "Daha sonra tekrar kullanmak üzere, bir sonucun veya dosyanın yerelde saklandığı ara depo." },
+          { term: "Deduplike etmek (deduplication)", def: "Aynı verinin/dosyanın birden fazla kopyasını tutmak yerine, tek bir kopyayı paylaşarak yer tasarrufu sağlamak." },
+          { term: "Drop-in replacement", def: "Var olan bir aracın yerine, kod/komut değiştirmeden birebir kullanılabilen alternatif." },
+          { term: "Lockfile", def: "Bir projede kullanılan tüm paketlerin tam sürümünü sabitleyen, tekrar üretilebilirliği garanti eden dosya." },
+          { term: "CLI (Command Line Interface)", def: "Komut satırından, yazarak kullanılan program arayüzü." },
+          { term: "CI/CD", def: "Kod değişikliklerinin otomatik test edilip (Continuous Integration) otomatik yayınlandığı (Continuous Deployment) geliştirme pratiği." }
+        ]
+      }
+    ]
+  },
+  {
     date: "2 Temmuz 2026",
     projects: [
       {
