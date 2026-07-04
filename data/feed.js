@@ -2,6 +2,90 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "4 Temmuz 2026",
+    projects: [
+      {
+        name: "microsoft/agent-governance-toolkit",
+        url: "https://github.com/microsoft/agent-governance-toolkit",
+        stars: "4.6k",
+        language: "Python",
+        sections: {
+          serves: "<p>Bir AI agent'a production ortamında serbest bırakınca asıl soru şu: 'bu agent'ın şu tool'u çağırmasına gerçekten izin var mı, kim yaptı, ve bunu ispatlayabiliyor muyum?' Microsoft'un AGT'si bu üç soruyu <b>prompt</b> seviyesinde 'nazik bir rica' olarak bırakmak yerine, agent'ın etrafına deterministik bir <b>middleware</b> katmanı koyarak cevaplıyor: policy enforcement, identity/kimlik ve <b>tamper-evident</b> audit log.</p>",
+          tech: "<p>Mimari bir <b>middleware intercept</b> modeli: her tool çağrısı çalışmadan önce durum tutmayan (stateless) bir <b>policy engine</b>'den (YAML/<b>OPA</b>/<b>Cedar</b> ile yazılan kurallar, Rust'ta çalışan runtime) geçiyor, ardından <b>SPIFFE</b>/<b>DID</b>/<b>mTLS</b> ile kimlik doğrulanıyor, sonuç <b>Merkle</b> tabanlı bir audit log'a yazılıyor. Bileşenler: Agent OS (policy engine + yaşam döngüsü), Agent Mesh (agent keşfi/yönlendirme/kimlik), Agent Runtime (<b>privilege ring</b>'lerle <b>sandbox</b>'lı çalıştırma), Agent SRE (kill switch, <b>SLO</b> izleme, <b>chaos testing</b>), Agent Compliance (<b>OWASP</b> doğrulama) ve bir MCP Security Gateway (tool zehirlenmesi tespiti). Python çekirdek + Rust policy engine üzerine TypeScript/.NET/Go/Rust SDK'ları var; Semantic Kernel, AutoGen, LangGraph, CrewAI, OpenAI SDK gibi <b>agent framework</b>'leriyle native uyumlu.</p>",
+          why: "<p>4.6k yıldız ve daha genç bir proje ama arkasındaki motivasyon sağlam: README'nin aktardığı araştırmalar, uyarlanabilir <b>prompt injection</b> saldırılarının büyük LLM'lerde '%100 başarı oranı'na ulaştığını gösteriyor — yani salt prompt talimatlarıyla güvenlik sağlamak yapısal olarak yetersiz. AGT'nin <b>fail-closed</b> varsayılanı (her şey varsayılan olarak reddedilir, izin açıkça verilmeli) ve 992 <b>conformance test</b>'le desteklenen resmi spesifikasyonlar gerçek bir mühendislik ciddiyeti gösteriyor. Dikkat edilecek nokta: Microsoft imzası güven verse de proje çok yeni, kurumsal ağırlıklı (SOC 2, EU AI Act gibi <b>compliance</b> ihtiyaçlarına göre tasarlanmış) ve küçük bir ekip/proje için fazla katmanlı kalabilir.</p>",
+          evolve: "<p>PL/SQL tarafında zaten aşina olduğun 'WHO/WHEN kolonları + audit tablosu' deseninin AI agent versiyonunu görüyorsun aslında: bir agent'a IFS ortamında SELECT yetkisi verip DELETE/UPDATE'i <b>fail-closed</b> policy ile yapısal olarak imkansız kılmak, PL/SQL'de bir trigger ya da rol bazlı yetkilendirmeyle yaptığın şeyin agent dünyasındaki karşılığı. Merkle audit log fikri de, kritik bir prod tablosuna dokunan her AI destekli script çalıştırmasını değiştirilemez biçimde loglamak istersen ilham verebilir.</p>"
+        },
+        glossary: [
+          { term: "Middleware", def: "Bir isteğin asıl hedefine ulaşmadan önce araya girip kontrol/dönüşüm yapan ara katman yazılımı." },
+          { term: "Policy engine", def: "Önceden tanımlanmış kurallara göre 'bu işlem yapılabilir mi' kararını veren bağımsız karar motoru." },
+          { term: "OPA (Open Policy Agent)", def: "Uygulamalardan bağımsız, genel amaçlı bir politika/karar motoru; kuralları ayrı bir dille tanımlamayı sağlar." },
+          { term: "Cedar", def: "Amazon'un geliştirdiği, yetkilendirme kurallarını yazmak için kullanılan politika dili." },
+          { term: "SPIFFE", def: "Dağıtık sistemlerde servislerin/agent'ların kriptografik olarak doğrulanabilir kimlik kazanmasını sağlayan standart." },
+          { term: "DID (Decentralized Identifier)", def: "Merkezi bir otoriteye bağlı olmadan doğrulanabilen, dağıtık kimlik tanımlayıcısı." },
+          { term: "mTLS (mutual TLS)", def: "Sadece sunucunun değil istemcinin de sertifikayla kimliğini kanıtladığı, çift yönlü şifreli bağlantı." },
+          { term: "Merkle (audit log)", def: "Her kaydın bir öncekinin özetini (hash) içerdiği, sonradan tek bir satır bile değiştirilirse anlaşılan sahtelenemez kayıt zinciri." },
+          { term: "Tamper-evident", def: "Üzerinde oynama yapılırsa bunun anlaşılabileceği, gizlice değiştirilemeyen kayıt biçimi." },
+          { term: "Sandbox", def: "Bir programın/agent'ın sistemin geri kalanına zarar veremeyeceği izole çalışma ortamı." },
+          { term: "Privilege ring", def: "Bir sürecin sistemde ne kadar yetkiye sahip olduğunu katmanlara ayıran güvenlik modeli." },
+          { term: "SLO (Service Level Objective)", def: "Bir sistemin performans/uptime açısından tutturması hedeflenen ölçülebilir eşik." },
+          { term: "Chaos testing", def: "Bir sisteme kasıtlı arızalar/aksaklıklar enjekte ederek dayanıklılığını test etme yöntemi." },
+          { term: "OWASP", def: "Web ve yazılım güvenliği konusunda kabul görmüş standartlar/kontrol listeleri yayınlayan kâr amacı gütmeyen topluluk." },
+          { term: "Fail-closed", def: "Bir hata/belirsizlik durumunda sistemin varsayılan olarak 'izin verme/reddet' tarafına düşmesi tasarımı." },
+          { term: "Conformance test", def: "Bir sistemin ilan ettiği spesifikasyona gerçekten uyup uymadığını doğrulayan test seti." },
+          { term: "Prompt injection", def: "Bir AI modelini, kendisine verilen talimatları görmezden gelip saldırganın istediğini yapmaya kandıran saldırı tekniği." },
+          { term: "Agent framework", def: "AI agent'lar kurmak için hazır yapı taşları (planlama, hafıza, araç çağırma) sunan yazılım kütüphanesi (örn. LangGraph, CrewAI)." },
+          { term: "Compliance (uyumluluk)", def: "Bir sistemin yasal/kurumsal düzenlemelere (SOC 2, EU AI Act gibi) uygunluğunu gösterme yükümlülüğü." }
+        ]
+      },
+      {
+        name: "wonderwhy-er/DesktopCommanderMCP",
+        url: "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+        stars: "6.2k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Claude Desktop varsayılan olarak sadece sohbet eder; senin bilgisayarında terminal komutu çalıştıramaz, dosya arayamaz, kod düzenleyemez. Desktop Commander bir <b>MCP</b> sunucusu olarak devreye girip Claude'a tam OS seviyesinde erişim veriyor: terminal, dosya sistemi, process yönetimi ve arama-değiştir (<b>search-replace</b>) tabanlı hassas kod düzenleme.</p>",
+          tech: "<p>TypeScript/Node.js ile yazılmış, MCP Filesystem Server temelinin üzerine kurulu bir <b>MCP server</b>. Öne çıkan özellikler: interaktif süreç kontrollü gelişmiş terminal komutları, derinlik sınırlı özyinelemeli dizin listeleme, markdown editörlü dosya önizleme arayüzü, akışlı (<b>streaming</b>) dosya arama, Excel/PDF/DOCX gibi formatlara native destek, ve her tool çağrısını kaydeden <b>audit logging</b> (10MB'de bir <b>rotation</b>). Güvenlik tarafında <b>symlink</b> (sembolik bağlantı) üzerinden dizin dışına çıkma girişimlerini engelliyor, isteğe bağlı <b>Docker</b> ile tam izolasyon sunuyor. Varsayılan olarak bir düzenlemede 50 satır yazma sınırı koyarak modelin dosyayı baştan yazmak yerine cerrahi (surgical) küçük değişiklikler yapmasını teşvik ediyor — hem token, hem hata riski açısından.</p>",
+          why: "<p>Cursor/Windsurf gibi araçlar bir IDE'nin içine hapsolmuşken, Desktop Commander'ın 'tüm işletim sistemiyle çalışıyorum, tek bir editörle değil' konumlanması gerçek bir boşluğu dolduruyor. Ayrıca API token'ı başına ücretlendirilen entegrasyonların aksine, sadece standart Claude Pro aboneliğiyle çalışması yoğun geliştirme kullanımı için ekonomik bir avantaj. Hype değil pratik bir üretkenlik aracı; tek dikkat edilecek nokta bir LLM'e doğrudan terminal + dosya sistemi erişimi vermenin doğası gereği riskli olması — audit log, symlink koruması ve Docker izolasyonu riski azaltıyor ama özellikle yıkıcı komutları (silme, üzerine yazma) yine de gözden geçirmek gerekiyor.</p>",
+          evolve: "<p>Kendi makinende kurup Claude Desktop'ı PL/SQL paketlerini/IFS Marble proje dosyalarını içeren bir klasöre bağlayabilir, terminale geçmeden sohbet içinden dosya arayıp script çalıştırabilirsin — günlük CLI/IDE geçişini tek bir sohbet penceresine indirgeyen doğrudan bir üretkenlik denemesi.</p>"
+        },
+        glossary: [
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "MCP server", def: "MCP protokolünü konuşarak bir AI modeline belirli araçları (dosya, terminal, veritabanı vb.) sunan sunucu bileşeni." },
+          { term: "Search-replace (arama-değiştir)", def: "Bir dosyanın tamamını yeniden yazmak yerine sadece belirli bir metin parçasını bulup değiştirme yöntemi." },
+          { term: "Streaming", def: "Verinin tamamı hazır olmadan, üretildikçe parça parça aktarılması/işlenmesi." },
+          { term: "Audit logging", def: "Kim ne zaman ne yaptı bilgisini kaydeden, sonradan denetlenebilir işlem kaydı tutma." },
+          { term: "Rotation (log rotation)", def: "Log dosyası belirli bir boyuta ulaşınca eskisini arşivleyip yeni bir dosyaya geçme yöntemi." },
+          { term: "Symlink (sembolik bağlantı)", def: "Bir dosya/dizine başka bir konumdan işaret eden kısayol niteliğinde dosya sistemi nesnesi." },
+          { term: "Docker", def: "Uygulamaları bağımlılıklarıyla birlikte izole bir konteyner içinde paketleyip çalıştıran teknoloji." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim; maliyet ve sınırlar token sayısına göre belirlenir." }
+        ]
+      },
+      {
+        name: "stablyai/orca",
+        url: "https://github.com/stablyai/orca",
+        stars: "11.8k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Birden fazla AI coding agent'ı (Claude Code, Codex vb.) aynı anda kullanmak genelde ayrı ayrı terminal pencereleri arasında geçiş yapmak demek. Orca, tek bir prompt'u birden fazla agent'a paralel 'fanlayıp' her birini izole bir <b>git worktree</b>'de çalıştıran, sonuçları tek bir masaüstü/mobil arayüzden karşılaştırmanı sağlayan bir <b>ADE</b> (agent development environment).</p>",
+          tech: "<p><b>Electron</b> tabanlı masaüstü uygulaması (TypeScript %97), iOS tarafı native <b>Swift</b>, mobil eşleşme React Native desenleriyle. Çekirdek: paralel <b>git worktree</b>'ler — aynı repo'nun birden fazla izole kopyasını eşzamanlı tutup her birine ayrı bir agent koşturma. WebGL ile render edilen, sonsuz bölünebilen (split) ve geçmişi (scrollback) tutan gelişmiş bir terminal emülatörü var; gömülü bir <b>Chromium</b> penceresi 'Design Mode' ile arayüz üzerinde doğrudan etkileşime izin veriyor. <b>SSH</b> üzerinden uzak makinelerde dosya düzenleme/git/terminal çalıştırılabiliyor; GitHub ve Linear entegrasyonu, bir mobil companion app ve iş akışlarını script'lemek için <b>CLI</b> aracı da geliyor.</p>",
+          why: "<p>11.8k yıldız, agent'lar arasında pencere değiştirme yorgunluğunun gerçek ve yaygın bir sorun olduğunu doğruluyor; 'kendi aboneliğinle istediğin CLI agent'ı çalıştır' iddiası da <b>vendor lock-in</b>'i azaltıyor. Dürüst olmak gerekirse pazarlama dili ('100x builder') hype kokuyor ve proje henüz genç — bir Electron uygulamasının içine terminal emülatörü, gömülü tarayıcı, SSH istemcisi ve mobil app gibi bu kadar çok ağır bileşeni sürdürmek büyük bir mühendislik yükü; olgunluğu zamanla görülecek.</p>",
+          evolve: "<p>Git worktree deseni IFS/PL-SQL tarafında da işe yarar bir fikir: aynı repo üzerinde bir agent'a bug fix'i, başka bir agent'a alternatif bir çözümü aynı anda yaptırıp izole worktree'lerde sonuçları karşılaştırarak hangisinin daha temiz/doğru çözüm ürettiğine karar verebilirsin — tek agent'ın tek denemesine güvenmek yerine küçük bir 'juri' mantığı.</p>"
+        },
+        glossary: [
+          { term: "Git worktree", def: "Aynı repo'nun birden fazla kopyasını, farklı dallarda eşzamanlı ve izole biçimde diskte tutmayı sağlayan git özelliği." },
+          { term: "ADE (Agent Development Environment)", def: "Klasik IDE'nin agent-merkezli versiyonu; kod yazmak yerine AI agent'ları yönetmek/karşılaştırmak için tasarlanmış ortam." },
+          { term: "Electron", def: "Web teknolojileriyle (HTML/CSS/JS) masaüstü uygulaması yazmayı sağlayan framework." },
+          { term: "Swift", def: "Apple platformları (iOS/macOS) için kullanılan native programlama dili." },
+          { term: "WebGL", def: "Tarayıcıda donanım hızlandırmalı 2D/3D grafik render etmeyi sağlayan API." },
+          { term: "Chromium", def: "Google Chrome'un da temelini oluşturan açık kaynaklı tarayıcı motoru." },
+          { term: "SSH (Secure Shell)", def: "Uzak bir bilgisayara güvenli, şifreli şekilde komut satırından bağlanmayı sağlayan protokol." },
+          { term: "CLI (Command Line Interface)", def: "Komut satırından, yazarak kullanılan program arayüzü." },
+          { term: "Vendor lock-in", def: "Bir ürünü/servisi kullanmaya başladıktan sonra başka bir alternatife geçmeyi zorlaştıran bağımlılık durumu." }
+        ]
+      }
+    ]
+  },
+  {
     date: "3 Temmuz 2026",
     projects: [
       {
