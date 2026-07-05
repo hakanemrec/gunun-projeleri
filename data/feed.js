@@ -2,6 +2,91 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "5 Temmuz 2026",
+    projects: [
+      {
+        name: "google/adk-python",
+        url: "https://github.com/google/adk-python",
+        stars: "20.5k",
+        language: "Python",
+        sections: {
+          serves: "<p>Google, Agentspace ve Customer Engagement Suite gibi kendi ürünlerinde kullandığı <b>agent framework</b>'ünü açık kaynak yaptı. Çözdüğü problem: birden fazla AI agent'ı bir arada koordine etmek (<b>multi-agent orchestration</b>) genelde her ekibin kendi ad-hoc çözümünü icat ettiği, standart bir deseni olmayan bir alan. ADK, agent tanımını 'code-first' yapıyor — davranışı config dosyasıyla değil doğrudan Python koduyla tarif ediyorsun.</p>",
+          tech: "<p>Python 3.10+ (kod tabanının %96.6'sı), Gemini modelleriyle native entegrasyon. Mimarinin merkezinde iki sınıf var: <b>Agent</b> (bir LLM modeli + doğal dilde talimatlar + dış sistemlerle konuşan tool tanımları) ve <b>Workflow</b> — <b>graph tabanlı</b> (yani sıralı bir zincir değil, düğümlerden oluşan bir <b>DAG</b>) bir orkestrasyon motoru: routing, <b>fan-out/fan-in</b>, döngü, retry, state yönetimi, <b>human-in-the-loop</b> ve iç içe workflow'ları destekliyor. Üçüncü bileşen Task, agent'lar arası çok turlu (multi-turn) görev devrini yönetiyor. Lokal geliştirme için hem <code>adk run</code> <b>CLI</b>'ı hem <code>adk web</code> ile bir web arayüzü geliyor; session'lar (oturumlar) kalıcı tutuluyor ve v1.28+ ile geriye dönük okunabiliyor.</p>",
+          why: "<p>20.5k yıldız ve 3.6k fork'un arkasında hem Google'ın kendi production kullanımı hem de iki haftada bir gelen 68 release'lik aktif geliştirme temposu var — bu bir hobi projesi değil, gerçek bir ekip tarafından sürdürülen altyapı. 'Code-first' konumlanması, LangGraph/CrewAI/AutoGen/Semantic Kernel gibi rakiplerine karşı 'config değil kod' tercihini netleştiriyor. Dikkat edilecek nokta: v2.0'da agent API'sinde ve event modelinde kırıcı (breaking) değişiklikler yapılmış — yani API henüz oturmamış, framework savaşının neresinde kalıcılaşacağı zamanla belli olacak.</p>",
+          evolve: "<p>ADK'nin fan-out/fan-in ve human-in-the-loop deseni, IFS'te bir customization onay akışına şaşırtıcı derecede benziyor: bir agent PL/SQL paketindeki değişikliği analiz etsin, ikinci bir agent ilgili unit testleri çalıştırsın, üçüncüsü sonucu insan onayına (approve/reject) sunsun — Workflow graph'ı bu üç adımı sıralı/paralel karışık bağlayabilir. Bu deseni bir IFS DevOps pipeline'ında 'AI destekli code review adımı' olarak taklit etmek mümkün.</p>"
+        },
+        glossary: [
+          { term: "Agent framework", def: "AI agent'lar kurmak için hazır yapı taşları (planlama, hafıza, araç çağırma) sunan yazılım kütüphanesi." },
+          { term: "Multi-agent orchestration", def: "Birden fazla AI agent'ın birbirleriyle koordineli, belirli bir sırayla veya paralel çalışmasını yönetme işi." },
+          { term: "Code-first", def: "Bir sistemin davranışının ayrı bir yapılandırma dosyası yerine doğrudan programlama koduyla tanımlanması yaklaşımı." },
+          { term: "LLM (Large Language Model)", def: "Büyük miktarda metinle eğitilmiş, dil üretebilen/anlayabilen yapay zeka modeli." },
+          { term: "Gemini", def: "Google'ın geliştirdiği büyük dil modeli ailesi." },
+          { term: "Tool (agent tool)", def: "Bir AI agent'ın çağırıp belirli bir işi (sorgu, hesaplama, dış sistem çağrısı vb.) yaptırabildiği tanımlı fonksiyon." },
+          { term: "Workflow (graph tabanlı)", def: "Görevlerin sabit bir sıra yerine düğümler ve bağlantılardan oluşan bir şema üzerinden yürütüldüğü orkestrasyon modeli." },
+          { term: "DAG (Directed Acyclic Graph)", def: "Aynı noktaya geri dönmeyen, yönlü bağlantılardan oluşan graf yapısı; iş akışlarını modellemekte sık kullanılır." },
+          { term: "Fan-out/fan-in", def: "Bir görevin birden fazla paralel alt göreve dağıtılması (fan-out) ve sonuçların tekrar tek bir noktada birleştirilmesi (fan-in)." },
+          { term: "Human-in-the-loop", def: "Otomatik bir sürecin belirli noktalarında kararın bir insanın onayına/gözden geçirmesine bırakılması tasarımı." },
+          { term: "CLI (Command Line Interface)", def: "Komut satırından, yazarak kullanılan program arayüzü." },
+          { term: "Session (oturum)", def: "Bir kullanıcı/agent etkileşiminin başlangıcından sonuna kadar tutulan durum/bağlam kaydı." },
+          { term: "API (Application Programming Interface)", def: "İki yazılım bileşeninin birbiriyle konuşmasını sağlayan tanımlı arayüz/sözleşme." },
+          { term: "LangGraph / CrewAI / AutoGen / Semantic Kernel", def: "ADK'ye rakip, agent orkestrasyonu için kullanılan diğer popüler açık kaynak framework'ler." }
+        ]
+      },
+      {
+        name: "tirth8205/code-review-graph",
+        url: "https://github.com/tirth8205/code-review-graph",
+        stars: "19.2k",
+        language: "Python",
+        sections: {
+          serves: "<p>Bir AI kod asistanına (Claude Code, Cursor gibi) bir <b>pull request</b>'u incelettirdiğinde, asistan genelde 'emin olmak için' repo'nun büyük bir kısmını okuyup token bütçesini tüketiyor. code-review-graph, kod tabanının statik bir yapısal haritasını (fonksiyon/sınıf/import/çağrı ilişkileri) önceden çıkarıp saklayarak, bir değişikliğin gerçekte neyi etkilediğini (<b>blast-radius</b>, etki alanı) hesaplıyor ve AI'a sadece o minimal ilgili dosya setini veriyor.</p>",
+          tech: "<p><b>Tree-sitter</b> ile 30'dan fazla dilde kaynak kodu <b>AST</b>'ye (syntax ağacına) çevirip fonksiyon/sınıf/import/çağrı düğümlerini çıkarıyor; bu graf yerel bir <b>SQLite</b> veritabanında (<code>.code-review-graph/</code> klasöründe, tamamen cihaz üzerinde, zero-telemetry) saklanıyor. Blast-radius analizi değişen fonksiyonun 'kimi çağırıyor' (outbound) ve 'neye bağımlı' (inbound) kenarlarını gezerek ilgili dosyaları + testleri buluyor. <b>MCP</b> üzerinden 30 tool expose ediyor (<code>get_impact_radius_tool</code>, <code>query_graph_tool</code> vb.) ve 10'dan fazla AI platformuyla entegre çalışıyor. Değişiklik algılamada dosya bazlı <b>SHA-256 hash</b> kullanılıyor, böylece 2900 dosyalık bir projede sadece değişen 5 dosya yeniden parse edilip güncelleme 2 saniyenin altında tamamlanıyor. Ekstra olarak <b>Leiden algoritması</b> ile <b>community detection</b> yapılıp kod tabanındaki 'hub' (çok bağlantılı) ve 'bridge' (darboğaz) fonksiyonlar tespit ediliyor; opsiyonel olarak sentence-transformers ile <b>semantic search</b> da ekleniyor.</p>",
+          why: "<p>Projenin 6 gerçek açık kaynak repo üzerinde ölçtüğü '82x medyan token azaltımı, bazı repo'larda (fastapi gibi) 528x'e kadar' iddiası somut ve tekrarlanabilir bir benchmark'a dayanıyor — havadan bir sayı değil. AST tabanlı deterministik kenarların (embedding benzerliği yerine) kullanılması yanlış-pozitif riskini azaltan bilinçli bir mühendislik tercihi. <b>Local-first</b> felsefesi (kod hiçbir yere gönderilmiyor) kurumsal/gizlilik hassasiyeti olan ekipler için önemli bir artı. Dikkat: niş bir problem çözüyor — büyük <b>monorepo</b>'larda AI code review token maliyetini düşürmek; küçük projelerde faydası sınırlı kalabilir.</p>",
+          evolve: "<p>IFS/PL-SQL dünyasında bir PACKAGE BODY'deki bir prosedürü değiştirdiğinde, onu çağıran diğer paketleri/view'ları/trigger'ları elle grep'lemek yerine tam bu tool'un çözdüğü problemle karşılaşıyorsun. Tree-sitter'ın PL/SQL grammar desteği sınırlı olsa da, <code>.code-review-graph/languages.toml</code> üzerinden özel bir dil eklenebiliyor — teorik olarak bir IFS customization'ının blast-radius'unu otomatik haritalayan bir MCP tool'una dönüştürülebilir bir temel.</p>"
+        },
+        glossary: [
+          { term: "Pull request (PR)", def: "Bir kod değişikliğinin gözden geçirilip ana koda birleştirilmesi için açılan talep." },
+          { term: "Blast-radius (etki alanı)", def: "Bir kod değişikliğinin, çağrı/bağımlılık zinciri üzerinden gerçekte hangi diğer parçaları etkileyebileceğinin kapsamı." },
+          { term: "Tree-sitter", def: "Kaynak kodu hızlıca ayrıştırıp bir syntax ağacına çeviren, birçok dili destekleyen açık kaynak parser kütüphanesi." },
+          { term: "AST (Abstract Syntax Tree)", def: "Bir kodun yapısını (fonksiyonlar, ifadeler, bloklar) ağaç biçiminde temsil eden veri yapısı." },
+          { term: "SQLite", def: "Ayrı bir sunucu gerektirmeyen, tek bir dosya üzerinde çalışan hafif ilişkisel veritabanı motoru." },
+          { term: "MCP (Model Context Protocol)", def: "AI agent'ların dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol." },
+          { term: "SHA-256 hash", def: "Bir verinin (örn. dosya içeriğinin) benzersiz, sabit uzunlukta bir özetini üreten kriptografik fonksiyon; değişiklik tespitinde kullanılır." },
+          { term: "Leiden algoritması", def: "Büyük bir ağ/graf içindeki yoğun bağlantılı toplulukları (cluster) tespit etmekte kullanılan bir algoritma." },
+          { term: "Community detection", def: "Bir graf içinde birbirine sıkı bağlı düğüm gruplarını (toplulukları) bulma işlemi." },
+          { term: "Semantic search", def: "Aranan kelimenin birebir eşleşmesi yerine anlamca yakın içerikleri bulan arama yöntemi." },
+          { term: "Local-first", def: "Verinin ve işlemenin bulut yerine öncelikle/tamamen kullanıcının kendi cihazında tutulduğu tasarım felsefesi." },
+          { term: "Monorepo", def: "Birden fazla proje/paketin tek bir git deposunda birlikte tutulduğu proje organizasyonu." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim; maliyet ve bağlam sınırları token sayısına göre belirlenir." }
+        ]
+      },
+      {
+        name: "Zackriya-Solutions/meetily",
+        url: "https://github.com/Zackriya-Solutions/meetily",
+        stars: "15.5k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Bir toplantıyı bulut tabanlı bir AI asistanına kaydettirip özetletmek, hassas ticari konuşmaların üçüncü parti sunuculara gitmesi demek — <b>GDPR</b> ve veri ihlali riski taşıyan bir mimari. Meetily, toplantıyı kaydedip transkribe edip özetlemeyi uçtan uca tamamen yerelde (local) çalıştıran, <b>self-hosted</b> bir masaüstü uygulaması.</p>",
+          tech: "<p><b>Tauri</b> framework'üyle (Rust backend + Next.js/TypeScript frontend) <b>Electron</b>'a göre çok daha hafif bir masaüstü paket elde ediliyor. Ses tanıma için <b>Whisper</b> (OpenAI'ın konuşma-metin modeli) ya da NVIDIA'nın 'Parakeet' modeli (4x daha hızlı iddiasıyla) arasında seçim yapılabiliyor; özetleme için <b>Ollama</b> ile yerel bir <b>LLM</b> çalıştırılıyor, isteğe bağlı olarak Claude/Groq/OpenRouter/OpenAI-uyumlu bir bulut endpoint'ine de bağlanılabiliyor. <b>GPU hızlandırma</b> otomatik algılanıyor: macOS'ta Apple Silicon Metal+CoreML, Windows/Linux'ta NVIDIA CUDA ya da AMD/Intel Vulkan. Mikrofon ve sistem sesi, <b>ducking</b> (biri konuşurken diğerini kısma) ve clipping önleme ile profesyonel biçimde mixleniyor.</p>",
+          why: "<p>15.5k yıldız ve 1.7k fork'luk organik bir topluluğun arkasında somut bir kurumsal ihtiyaç var: bulut API maliyeti olmadan (açık kaynak modeller), veri kontrolünü kaybetmeden (<b>vendor lock-in</b> yok) ve GDPR uyumlu şekilde toplantı özetleme. Hype değil gerçek bir compliance/maliyet problemine çözüm. Dikkat edilecek nokta: konuşmacı ayrımı (<b>speaker diarization</b>) özelliği ücretsiz sürümde henüz olgun değil — dokümantasyonda ücretli PRO katman için planlanan bir özellik olarak geçiyor, yani 'tam bitmiş ürün' beklememek gerek.</p>",
+          evolve: "<p>IFS gibi kurumsal ortamlarda mimari kararların veya müşteriye özel customization tartışmalarının konuşulduğu toplantıların dışarıya (bulut AI'a) çıkmaması gerektiği düşünülürse, Meetily'nin 'local Whisper + local LLM' deseni doğrudan işine yarayabilir: PL/SQL/Marble geliştirme toplantılarının notlarını otomatik tutup aranabilir hale getirmek için kullanılabilecek hazır bir şablon.</p>"
+        },
+        glossary: [
+          { term: "GDPR", def: "Avrupa Birliği'nin kişisel veri işleme konusunda şirketlere getirdiği, ağır cezai yaptırımları olan veri koruma düzenlemesi." },
+          { term: "Self-hosted", def: "Bir yazılımın bulut/üçüncü parti sunucu yerine kullanıcının kendi altyapısında kurulup çalıştırılması." },
+          { term: "Tauri", def: "Web teknolojileriyle (frontend) ve Rust (backend) ile hafif masaüstü uygulamaları yazmayı sağlayan framework." },
+          { term: "Electron", def: "Web teknolojileriyle masaüstü uygulaması yazmayı sağlayan, Tauri'ye göre daha ağır kaynak tüketen alternatif framework." },
+          { term: "Whisper", def: "OpenAI'ın geliştirdiği, konuşmayı yazıya döken (speech-to-text) açık kaynak yapay zeka modeli." },
+          { term: "Ollama", def: "Büyük dil modellerini kullanıcının kendi bilgisayarında kolayca indirip çalıştırmasını sağlayan araç." },
+          { term: "LLM (Large Language Model)", def: "Büyük miktarda metinle eğitilmiş, dil üretebilen/anlayabilen yapay zeka modeli." },
+          { term: "GPU hızlandırma (CUDA/Vulkan/Metal/CoreML)", def: "Hesaplamaların işlemci yerine ekran kartı üzerinde yapılarak ciddi ölçüde hızlandırılmasını sağlayan farklı donanım/yazılım arayüzleri." },
+          { term: "Vendor lock-in", def: "Bir ürünü/servisi kullanmaya başladıktan sonra başka bir alternatife geçmeyi zorlaştıran bağımlılık durumu." },
+          { term: "Speaker diarization (konuşmacı ayrımı)", def: "Bir ses kaydında 'kim ne zaman konuştu' bilgisini otomatik olarak ayırt etme işlemi." },
+          { term: "Ducking", def: "Bir ses kaynağı (örn. mikrofon) aktifken diğer ses kaynağının (örn. sistem sesi) otomatik olarak kısılması tekniği." }
+        ]
+      }
+    ]
+  },
+  {
     date: "4 Temmuz 2026",
     projects: [
       {
