@@ -2,6 +2,87 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "6 Temmuz 2026",
+    projects: [
+      {
+        name: "GeeeekExplorer/nano-vllm",
+        url: "https://github.com/GeeeekExplorer/nano-vllm",
+        stars: "14.4k",
+        language: "Python",
+        sections: {
+          serves: "<p>vLLM production-grade bir <b>LLM inference</b> motoru ama iç mimarisi katmanlı ve okuması zor; 'bu hız nereden geliyor' sorusuna kod okuyarak cevap bulmak zahmetli. nano-vllm aynı hız sınıfını (bazı testlerde vLLM'i bile geçiyor) yaklaşık 1200 satırlık, tek oturuşta okunabilecek bir Python kod tabanında veriyor — amaç production'a girmek değil, LLM serving'in içini gerçekten anlamak.</p>",
+          tech: "<p>PyTorch üzerine kurulu; dört klasik LLM serving optimizasyonunu sade biçimde uyguluyor: <b>prefix caching</b> (aynı başlangıç metnini tekrar tekrar işlemसे kaçınma), <b>tensor parallelism</b> (modeli birden fazla GPU'ya bölme), <b>CUDA graph</b> (GPU komut dizisini önceden 'kaydedip' tekrar tekrar oynatma) ve <code>torch.compile</code> ile <b>JIT derleme</b>. Alttaki <b>KV cache</b> mekanizması, transformer'ın her token'da aynı hesabı baştan yapmasını önleyen standart bir teknik. Kod tabanı bilinçli olarak modüler değil — her optimizasyon tek bir dosyada, adım adım izlenebilir şekilde yazılmış.</p>",
+          why: "<p>14.4k yıldız ve resmi bir release'in olmaması bile bir şey anlatıyor: bu bir 'kullan' projesi değil, bir 'oku ve öğren' projesi olarak tasarlanmış ve tam da bunun için ilgi görmüş. RTX 4070 Laptop + Qwen3-0.6B ile ölçülen 1,434 <b>token/saniye</b> (vLLM'in 1,362'sine karşı) somut, tekrarlanabilir bir <b>benchmark</b> — hype değil, 'bak gerçekten çalışıyor' iddiası. Dikkat: tek donanım/model konfigürasyonunda ölçülmüş, farklı yüklerde bu fark değişebilir; production kullanımı için tasarlanmamış.</p>",
+          evolve: "<p>Kurumsal ortamda (IFS gibi) bir dahili LLM destekli araç kurulacaksa (örn. PL/SQL kod açıklama asistanı) bulut API'sine değil kendi donanımınızda çalışan bir modele ihtiyaç duyabilirsiniz — nano-vllm'in kısa kod tabanı, 'neden yavaş/hızlı çalışıyor, KV cache ne kadar bellek yiyor' gibi soruları üretim aracını (vLLM, TGI) kara kutu gibi kullanmadan, önce küçük ölçekte anlamak için ideal bir başlangıç noktası.</p>"
+        },
+        glossary: [
+          { term: "LLM inference", def: "Eğitilmiş bir dil modelinin, verilen bir girdiye karşılık metin üretme (çalışma zamanı) işlemi." },
+          { term: "vLLM", def: "LLM'leri hızlı ve verimli şekilde sunmak (serving) için yaygın kullanılan, production odaklı açık kaynak bir motor." },
+          { term: "Prefix caching", def: "Birden fazla istekte tekrar eden aynı başlangıç metninin hesabını yeniden yapmak yerine önceden hesaplanmış sonucu yeniden kullanma tekniği." },
+          { term: "Tensor parallelism", def: "Büyük bir modelin katmanlarını/matrislerini birden fazla GPU'ya bölerek paralel çalıştırma yöntemi." },
+          { term: "CUDA graph", def: "GPU'da art arda çalışacak komut dizisini önceden kaydedip tekrar tekrar düşük ek yükle çalıştırma tekniği." },
+          { term: "JIT derleme (torch.compile)", def: "Kodun çalıştırılmadan önce değil, çalışma anında optimize edilerek derlenmesi; PyTorch'ta bunu yapan araç." },
+          { term: "KV cache", def: "Transformer modellerinde önceki token'lar için hesaplanan ara değerleri saklayıp tekrar hesaplamayı önleyen bellek yapısı." },
+          { term: "Token/saniye (throughput)", def: "Bir modelin saniyede üretebildiği token sayısı; LLM serving hızının temel ölçütü." },
+          { term: "Benchmark", def: "Bir sistemin performansını standart, tekrarlanabilir bir test senaryosuyla ölçme işlemi." }
+        ]
+      },
+      {
+        name: "supabase/supabase",
+        url: "https://github.com/supabase/supabase",
+        stars: "106k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Firebase, hızlı başlangıç için harika ama kapalı kaynak ve <b>vendor lock-in</b> riski taşıyor. Supabase aynı geliştirici deneyimini (anlık veritabanı, auth, dosya depolama, gerçek zamanlı abonelik) açık kaynak, <b>Postgres</b> temelli bileşenlerle sunuyor — istersen bulutta, istersen kendi sunucunda (<b>self-hosted</b>) çalıştırabiliyorsun.</p>",
+          tech: "<p>Mimari, tek bir monolitik sunucu yerine her biri kendi işini yapan bileşenlerin bir araya gelmesiyle kuruluyor: <b>PostgreSQL</b> çekirdek veritabanı; <b>PostgREST</b> bir Postgres şemasını otomatik olarak bir <b>REST API</b>'ye çeviriyor (elle endpoint yazmadan); <b>GoTrue</b> <b>JWT</b> tabanlı kimlik doğrulama/oturum yönetimini üstleniyor; <b>Realtime</b> (Elixir ile yazılmış) veritabanı değişikliklerini <b>WebSocket</b> üzerinden anlık yayınlıyor; <b>Storage</b> dosyaları S3 uyumlu biçimde, yetkilendirmeyi yine Postgres kurallarıyla saklıyor; <code>pg_graphql</code> aynı şemayı bir <b>GraphQL</b> uç noktası olarak da açıyor; <code>postgres-meta</code> veritabanı yönetim işlemlerini bir REST API'ye çeviriyor; hepsinin önünde <b>Kong</b> API gateway'i trafiği yönlendiriyor. Kod tabanının %70.8'i TypeScript; resmi JS/TS, Flutter, Swift, Python istemcileri, topluluk tarafından C#/Go/Java/Kotlin/Ruby/Rust istemcileri var.</p>",
+          why: "<p>106k yıldız, 13k fork ve 37 binin üzerinde commit — bu artık niş bir deney değil, gerçek prod ortamlarda kullanılan olgun bir platform. 'Postgres'i olduğu gibi bırakıp üstüne API/auth/realtime katmanları giydirme' yaklaşımı, ORM'lerin/proprietary veritabanlarının aksine standart SQL bilginin değerini koruyor. Dikkat edilecek nokta: tek bir monolitik uygulama yerine yedi-sekiz ayrı bileşenin bir arada koordine çalışması demek — self-hosted kurulumda entegrasyon/versiyon uyumu karmaşıklığı, tek parça bir sistemden daha fazla.</p>",
+          evolve: "<p>IFS'in altyapısı da bir <b>ilişkisel veritabanı</b> (Oracle) üzerine kurulu; Supabase'in PostgREST'i — bir tabloyu/view'ı hiç REST kodu yazmadan otomatik API'ye çevirme fikri — IFS'te bir custom view'ı dışarıya (örn. bir mobil uygulamaya) açmak için elle ORDS/REST servis yazmak yerine 'şemadan otomatik API türetme' yaklaşımının ne kadar zaman kazandırabileceğini gösteren iyi bir referans. Realtime bileşeninin 'tablo değişince anlık bildir' deseni de, PL/SQL'de trigger + bir mesaj kuyruğuyla kurabileceğin bir bildirim akışına ilham verebilir.</p>"
+        },
+        glossary: [
+          { term: "Firebase", def: "Google'ın sunduğu, veritabanı/auth/depolama gibi hazır backend servislerini bir araya getiren kapalı kaynak bulut platformu." },
+          { term: "Vendor lock-in", def: "Bir ürünü/servisi kullanmaya başladıktan sonra başka bir alternatife geçmeyi zorlaştıran bağımlılık durumu." },
+          { term: "PostgreSQL (Postgres)", def: "Açık kaynak, güçlü ve yaygın kullanılan ilişkisel veritabanı yönetim sistemi." },
+          { term: "Self-hosted", def: "Bir yazılımın bulut/üçüncü parti sunucu yerine kullanıcının kendi altyapısında kurulup çalıştırılması." },
+          { term: "PostgREST", def: "Bir Postgres veritabanı şemasını, elle kod yazmadan otomatik olarak bir REST API'ye çeviren araç." },
+          { term: "REST API", def: "Web üzerinden standart HTTP istekleriyle veriye erişimi sağlayan yaygın API tasarım yaklaşımı." },
+          { term: "GoTrue", def: "Supabase'in kullanıcı kayıt/giriş/oturum yönetimini üstlenen kimlik doğrulama servisi." },
+          { term: "JWT (JSON Web Token)", def: "Bir kullanıcının kimliğini kanıtlamak için sunucular arasında güvenli biçimde taşınan, imzalı bir veri paketi." },
+          { term: "WebSocket", def: "Sunucu ile istemci arasında sürekli açık kalan, anlık iki yönlü veri akışı sağlayan bağlantı türü." },
+          { term: "GraphQL", def: "İstemcinin tam olarak ihtiyaç duyduğu veriyi tek bir istekte sorgulayabildiği, REST'e alternatif bir API sorgu dili." },
+          { term: "Kong (API gateway)", def: "Bir sisteme gelen tüm dış isteklerin ilk uğradığı, yönlendirme ve trafik kontrolü yapan giriş katmanı." },
+          { term: "İlişkisel veritabanı", def: "Veriyi satır/sütunlardan oluşan tablolar ve aralarındaki ilişkiler biçiminde saklayan klasik veritabanı modeli." }
+        ]
+      },
+      {
+        name: "can1357/oh-my-pi",
+        url: "https://github.com/can1357/oh-my-pi",
+        stars: "16.2k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Çoğu terminal tabanlı <b>coding agent</b>, dosyayı düz metin olarak görüp değişikliği bir <b>diff</b> gibi uygulamaya çalışır — bu da 'string bulunamadı' hatalarına ve boşluk/girinti uyuşmazlıklarına yol açar; ayrıca <b>IDE</b>'nin bildiği (tip bilgisi, hata ayıklama, refactor) hiçbir şeyi agent bilmez. oh-my-pi, agent'ı doğrudan bir IDE gibi donatarak bu iki boşluğu birden kapatıyor.</p>",
+          tech: "<p>Çekirdek yeniliği <b>Hashline</b> (hash-anchored edits): model dosyanın tamamını yeniden yazmak yerine, her satırı bir <b>hash</b> ile 'çapalayıp' sadece o çapaya referansla değişiklik yapıyor — bir benchmark'ta bunun klasik diff yöntemine göre çıktı token sayısını %61 azalttığı belirtiliyor, üstelik boşluk uyuşmazlığı/string-bulunamadı hatalarını yapısal olarak ortadan kaldırıyor. Tek bir arayüz altında 32 yerleşik <b>tool</b> var: <code>read</code> (dosya/URL/PDF/arşiv), <code>write</code>, <code>edit</code>, <code>bash</code>, <code>eval</code> (Python/JS, tool'lara geri çağrı yapabilen), <code>lsp</code> (14 farklı operasyon — örn. rename işlemi <code>workspace/willRenameFiles</code> üzerinden çalışıp barrel/re-export dosyalarını da otomatik güncelliyor), <code>debug</code> (<b>DAP</b> ile adım adım kod izleme), <code>browser</code>, <code>web_search</code> (18 sağlayıcı) ve <code>github</code>. <b>Subagent</b>'lar tipli, şema doğrulamalı sonuçlarla izole işçilere iş dağıtabiliyor. ~55.000 satır Rust (dört crate), TypeScript (%87.3) ve Python karışımı bir kod tabanı; <b>Bun</b> runtime'ı öneriliyor; 40'tan fazla LLM sağlayıcısını (Anthropic, OpenAI, Google, xAI...) destekliyor.</p>",
+          why: "<p>16.2k yıldız, 508 release ve 12.491 commit — 'bir hafta sonu projesi' değil, gerçek kullanımla sürekli ayarlanan (tuned) olgun bir araç olduğunu gösteriyor. Terminal-first, açık kaynak (MIT) ve agresif biçimde çoklu model desteği sunması, tek bir sağlayıcıya bağımlı kapalı araçlara karşı gerçek bir alternatif konumu. Dikkat: katkı sağlamak isteyenler için 'vouch' (topluluk onayı) gerekiyor — onaylanmamış yazarların PR'ları otomatik kapatılıyor; kurulum da Rust toolchain + Bun gerektirdiği için bazı alternatiflerden daha zahmetli.</p>",
+          evolve: "<p>PL/SQL/IFS Marble dünyasında büyük bir PACKAGE BODY'yi elle düzenlerken yaşadığın 'boşluk/girinti tutmadı, agent baştan yazdı' sorunlarının tam çözümü Hashline deseni — bir satırı hash ile referanslayıp sadece onu değiştirmek. Ayrıca subagent fan-out fikri, büyük bir customization'ı (örn. 50 dosyalık bir modül) paralel alt görevlere bölüp her birini izole bir agent'a yaptırma fikrini, tek bir agent'ın tek seferde her şeyi yapmaya çalışmasından daha güvenilir hale getirebilir.</p>"
+        },
+        glossary: [
+          { term: "Coding agent", def: "Kod yazma/düzenleme görevlerini bir insan yerine otonom şekilde yürüten AI destekli yazılım aracı." },
+          { term: "Diff", def: "İki metin/dosya sürümü arasındaki farkı satır satır gösteren karşılaştırma çıktısı." },
+          { term: "IDE (Integrated Development Environment)", def: "Kod yazma, hata ayıklama ve proje yönetimini tek bir arayüzde birleştiren geliştirme ortamı." },
+          { term: "Hash-anchored edits (Hashline)", def: "Bir dosyadaki her satırı benzersiz bir özet (hash) ile işaretleyip, değişikliği o satırın tamamını yeniden yazmadan sadece o işarete referansla uygulama tekniği." },
+          { term: "Hash", def: "Bir verinin benzersiz, sabit uzunlukta özetini üreten fonksiyonun çıktısı; küçük bir değişiklik bile özeti tamamen değiştirir." },
+          { term: "Tool (agent tool)", def: "Bir AI agent'ın çağırıp belirli bir işi (dosya okuma, komut çalıştırma vb.) yaptırabildiği tanımlı fonksiyon." },
+          { term: "LSP (Language Server Protocol)", def: "Bir programlama dili için 'git tanımına', 'yeniden adlandır', 'hata bul' gibi zeki düzenleme özelliklerini standart bir protokolle sunan sistem." },
+          { term: "DAP (Debug Adapter Protocol)", def: "Farklı hata ayıklayıcıları (debugger) standart bir protokolle IDE'lere bağlamayı sağlayan arayüz." },
+          { term: "Subagent", def: "Ana agent tarafından belirli bir alt görevi yürütmek üzere devreye sokulan, kendi bağımsız bağlamına sahip başka bir agent." },
+          { term: "Fan-out", def: "Bir görevin birden fazla paralel alt göreve dağıtılması." },
+          { term: "Bun", def: "Node.js'e alternatif, hızlı çalışmayı hedefleyen bir JavaScript çalışma zamanı (runtime)." },
+          { term: "MIT lisansı", def: "Yazılımın neredeyse hiçbir kısıtlama olmadan serbestçe kullanılıp değiştirilebilmesine izin veren yaygın açık kaynak lisansı." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim; maliyet ve bağlam sınırları token sayısına göre belirlenir." }
+        ]
+      }
+    ]
+  },
+  {
     date: "5 Temmuz 2026",
     projects: [
       {
