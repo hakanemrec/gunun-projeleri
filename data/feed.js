@@ -2,6 +2,104 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "7 Temmuz 2026",
+    projects: [
+      {
+        name: "karpathy/nanoGPT",
+        url: "https://github.com/karpathy/nanoGPT",
+        stars: "60.9k",
+        language: "Python",
+        sections: {
+          serves: "<p>LLM'lerin nasıl eğitildiğini merak eden ama Hugging Face/Transformers gibi katmanlı framework'lerin soyutlamasında kaybolan biri için, Andrej Karpathy'nin nanoGPT'si GPT-2 mimarisini birkaç yüz satırlık (model.py + train.py), tek oturuşta okunabilir bir kod tabanında sunuyor — 'training/finetuning medium-sized GPTs' için en basit repo olmayı hedefliyor.</p>",
+          tech: "<p><code>model.py</code> bir <b>decoder</b>: <b>token</b> + <b>positional embedding</b>, <b>multi-head self-attention</b>, <b>LayerNorm</b>, <b>MLP</b> blokları — <b>PyTorch</b>'un <code>nn.Module</code>'leriyle sıfırdan yazılmış, hiçbir gizli 'büyü' katman yok. <code>train.py</code> tokenize edilmiş binary dosyalardan (<code>tiktoken</code> ile üretilmiş <b>BPE</b> token'ları) <b>mini-batch</b> okuyup <b>gradient descent</b> çalıştırıyor; PyTorch 2.0'ın <code>torch.compile</code>'ı ve <b>DDP</b> ile çoklu GPU/node'a ölçekleniyor. OpenAI'ın yayınladığı GPT-2 ağırlıkları Hugging Face Transformers üzerinden yüklenip <b>fine-tune</b> edilebiliyor.</p>",
+          why: "<p>60.9k yıldız, projenin artık 'deprecated' olmasına (yerine Karpathy'nin nanochat'i öneriliyor) rağmen hâlâ referans olarak korunmasının nedeni: 'basit ve hackable' vaadini gerçekten tutuyor — 8x A100 GPU ile ~4 günde GPT-2 (124M parametre) reprodüksiyonu (~2.85 loss, orijinaliyle karşılaştırılabilir) somut bir kanıt. Hype değil saf eğitim değeri; production serving için tasarlanmamış (bkz. daha önce ele alınan nano-vllm gibi tam tersini hedefleyen projeler).</p>",
+          evolve: "<p>PL/SQL'de bir prosedürün 'neden bu kadar sürdü' sorusuna <b>execution plan</b> okuyarak cevap ararsın; nanoGPT aynı mantığı LLM'lere uyguluyor — 'bu model neden bu tahmini üretti' sorusuna framework'ün soyutlamasının arkasına saklanmadan, kısa <code>model.py</code>'yi satır satır okuyarak cevap bulabilirsin. Kurumda bir 'küçük, dahili, alana özel LLM' fikri (örn. PL/SQL kod açıklama modeli) tartışılırsa, nanoGPT eğitim döngüsünün nasıl işlediğini anlamak için iyi bir ilk durak.</p>"
+        },
+        glossary: [
+          { term: "LLM (Large Language Model)", def: "Büyük miktarda metinle eğitilmiş, dil üretebilen/anlayabilen yapay zeka modeli." },
+          { term: "Hugging Face Transformers", def: "Önceden eğitilmiş dil modellerini indirip kullanmayı/fine-tune etmeyi kolaylaştıran açık kaynak Python kütüphanesi." },
+          { term: "GPT-2", def: "OpenAI'ın 2019'da yayınladığı, GPT ailesinin erken ama hâlâ referans alınan bir dil modeli." },
+          { term: "Decoder (transformer decoder)", def: "Bir transformer mimarisinde, girdiye bakarak sırayla bir sonraki token'ı üreten kısım." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim; kelime parçası ya da karakter olabilir." },
+          { term: "Positional embedding", def: "Bir token'ın cümledeki sırasını modele bildiren, öğrenilmiş sayısal vektör." },
+          { term: "Multi-head self-attention", def: "Bir modelin bir cümledeki her kelimenin diğer kelimelerle ilişkisini, birden fazla 'bakış açısından' (head) paralel olarak hesapladığı mekanizma." },
+          { term: "LayerNorm", def: "Bir sinir ağı katmanının çıktısını normalize ederek eğitimi daha kararlı hale getiren teknik." },
+          { term: "MLP (Multi-Layer Perceptron)", def: "Birbirine tam bağlı katmanlardan oluşan basit bir sinir ağı bloğu." },
+          { term: "PyTorch", def: "Derin öğrenme modelleri kurmak/eğitmek için yaygın kullanılan açık kaynak Python kütüphanesi." },
+          { term: "Mini-batch", def: "Eğitim verisinin bir kerede modele verilen küçük bir alt kümesi." },
+          { term: "Gradient descent", def: "Bir modelin hatasını azaltacak yönde parametrelerini adım adım güncelleyen temel öğrenme algoritması." },
+          { term: "BPE (Byte Pair Encoding) / tiktoken", def: "Metni sık geçen alt-kelime parçalarına bölerek token'lara çeviren yaygın bir tokenizasyon yöntemi; tiktoken bunu uygulayan bir kütüphane." },
+          { term: "torch.compile", def: "PyTorch 2.0 ile gelen, modeli çalıştırmadan önce optimize ederek hızlandıran derleme özelliği." },
+          { term: "DDP (Distributed Data Parallel)", def: "Bir modelin eğitimini birden fazla GPU/makineye bölerek paralel yürüten PyTorch tekniği." },
+          { term: "Fine-tune", def: "Önceden eğitilmiş bir modeli, belirli bir görev/veri setiyle ek eğitime tabi tutma işlemi." },
+          { term: "Execution plan", def: "Bir veritabanının bir SQL sorgusunu çalıştırırken izleyeceği adımları gösteren, performans analizinde kullanılan plan." }
+        ]
+      },
+      {
+        name: "alibaba/zvec",
+        url: "https://github.com/alibaba/zvec",
+        stars: "13.6k",
+        language: "C++",
+        sections: {
+          serves: "<p>Bir <b>RAG</b> uygulaması ya da <b>semantic search</b> özelliği kurarken genelde ayrı bir <b>vektör veritabanı</b> sunucusu (Milvus, Qdrant) kurup işletmen gerekir — bu da ekstra altyapı yükü demek. Zvec, Alibaba'nın kendi üretiminde kullandığı bu problemi tersine çeviriyor: uygulamanın kendi süreci içinde (<b>in-process/embedded</b>) çalışan, ayrı sunucu gerektirmeyen bir vektör veritabanı.</p>",
+          tech: "<p>Çekirdek <b>C++</b> ile yazılmış (<b>SWIG</b> ile Python/Node.js/Go/Rust/Dart binding'leri var). İki indeks türü destekliyor: <b>HNSW</b> (bellekte hızlı <b>yaklaşık en-yakın-komşu</b> araması için graf tabanlı klasik yapı) ve v0.5.0'la gelen <b>DiskANN</b> (indeksin büyük kısmını diskte tutup bellek kullanımını drastik biçimde düşüren yapı — milyarlarca vektörlük veri setlerinde RAM'e sığmayan durumlar için). Kalıcılık için <b>WAL</b> kullanıyor — süreç çökse ya da elektrik kesilse bile veri kaybolmuyor; <b>concurrency</b> modeli tek-yazar/çok-okuyucu. Sadece <b>dense vektör</b> değil, <b>sparse vektör</b> araması, <b>FTS</b> ve skaler filtrelerin birleştiği <b>hybrid retrieval</b> de destekleniyor.</p>",
+          why: "<p>13.6k yıldız ve Alibaba içinde production'da test edilmiş olması iddiasının arkasında somut bir mühendislik tercihi var: <b>pgvector</b> (Postgres eklentisi) ya da <b>Milvus</b> (dağıtık sunucu) gibi alternatiflere göre 'hiç sunucu kurma, uygulamana göm' konumlanması — SQLite'ın vektör dünyasındaki karşılığı gibi düşünülebilir. <b>Apache 2.0 lisansı</b> ve aktif geliştirme (Haziran 2026'da v0.5.1) olgunluk sinyali veriyor. Dikkat: disk-tabanlı indeksler bellek tasarrufu sağlar ama sorgu <b>latency</b>'si tamamen bellekte tutulan HNSW'ye göre daha yüksek olabilir — bu bir tradeoff, ücretsiz öğle yemeği yok.</p>",
+          evolve: "<p>IFS/Oracle dünyasında bir tabloya <b>B-tree</b> ya da <b>bitmap index</b> koyma kararı verirken yaptığın 'hangi erişim paterni için hangi yapı' muhakemesinin birebir aynısını Zvec'te HNSW/DiskANN seçiminde yapıyorsun. Kurumsal bir arama özelliği (örn. destek taleplerinde semantic search) için ayrı bir vektör DB sunucusu kurmak yerine, embedded bir çözümün operasyonel yükü ne kadar azalttığını görmek için iyi bir referans.</p>"
+        },
+        glossary: [
+          { term: "RAG (Retrieval-Augmented Generation)", def: "Bir dil modelinin cevap üretirken önce ilgili belgeleri bir veritabanından çekip bunları bağlam olarak kullandığı yöntem." },
+          { term: "Semantic search", def: "Aranan kelimenin birebir eşleşmesi yerine anlamca yakın içerikleri bulan arama yöntemi." },
+          { term: "Vektör veritabanı", def: "Metin/görsel gibi verilerin sayısal vektör (embedding) temsillerini saklayıp benzerlik araması yapan veritabanı türü." },
+          { term: "In-process / embedded (gömülü)", def: "Bir veritabanının ayrı bir sunucu süreci olarak değil, uygulamanın kendi süreci içinde çalışması." },
+          { term: "C++", def: "Performans kritik sistemler için yaygın kullanılan, düşük seviye kontrol sağlayan programlama dili." },
+          { term: "SWIG", def: "C/C++ kütüphanelerini başka dillerden (Python, Go vb.) çağrılabilir hale getiren bir kod üretme aracı." },
+          { term: "HNSW (Hierarchical Navigable Small World)", def: "Vektörler arasında hızlı yaklaşık en-yakın-komşu araması yapan, graf tabanlı popüler bir indeks yapısı." },
+          { term: "Yaklaşık en-yakın-komşu arama (ANN)", def: "Bir vektöre en yakın diğer vektörleri, tam kesinlik yerine hız için küçük bir hata payıyla bulma yöntemi." },
+          { term: "DiskANN", def: "İndeksin büyük kısmını bellek yerine diskte tutarak, çok büyük veri setlerinde bellek kullanımını azaltan bir arama yapısı." },
+          { term: "WAL (Write-Ahead Log)", def: "Bir veritabanının, değişikliği asıl veriye yazmadan önce sıraya kaydettiği; çökme durumunda veri bütünlüğünü koruyan log tekniği." },
+          { term: "Concurrency", def: "Birden fazla işlemin/işlemcinin aynı veriye aynı anda erişmesi durumu ve bunun yönetimi." },
+          { term: "Dense / sparse vektör", def: "Dense vektör her boyutu dolu sayısal bir temsil; sparse vektör çoğu boyutu sıfır olan, genelde anahtar kelime ağırlıklarını taşıyan bir temsil." },
+          { term: "FTS (Full-Text Search)", def: "Bir metin içinde kelime/ifade bazlı arama yapabilme özelliği." },
+          { term: "Hybrid retrieval", def: "Vektör benzerliği, tam metin arama ve filtreleri birlikte kullanarak sonuç getiren arama yaklaşımı." },
+          { term: "pgvector", def: "PostgreSQL'e vektör arama yeteneği ekleyen bir eklenti." },
+          { term: "Milvus", def: "Büyük ölçekli, dağıtık çalışan açık kaynak bir vektör veritabanı." },
+          { term: "Apache 2.0 lisansı", def: "Yazılımın ticari kullanım dahil serbestçe kullanılıp değiştirilebilmesine izin veren yaygın açık kaynak lisansı." },
+          { term: "Latency (gecikme)", def: "Bir isteğin yapılmasıyla cevabın alınması arasında geçen süre." },
+          { term: "B-tree / Bitmap index", def: "Veritabanlarında sorguları hızlandırmak için kullanılan, farklı erişim paternlerine uygun iki klasik indeks türü." }
+        ]
+      },
+      {
+        name: "Dokploy/dokploy",
+        url: "https://github.com/Dokploy/dokploy",
+        stars: "35.4k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Vercel/Netlify/Heroku gibi <b>PaaS</b>'lar rahat ama aylık faturası ve <b>vendor lock-in</b>'i var; kendi sunucunda Docker/Kubernetes'i elle yönetmek de zahmetli. Dokploy, git push sonrası otomatik deploy, veritabanı yönetimi ve monitoring'i tek bir <b>self-hosted</b> panelde birleştirip 'kendi VPS'ini kendi Heroku'na çevirme' ihtiyacını çözüyor.</p>",
+          tech: "<p>%98.9 TypeScript, pnpm ile yönetilen bir <b>monorepo</b>. Deploy motoru <b>Docker Compose</b>'u native destekliyor, çok sunuculu ölçekleme için <b>Docker Swarm</b> kullanıyor; trafiği yönlendirmek/<b>load balancing</b> yapmak için <b>Traefik</b> <b>reverse proxy</b>'sinin önüne oturuyor. Dahili veritabanı yönetimi PostgreSQL/MySQL/MariaDB/MongoDB/Redis/libsql'i tek tıkla kurup otomatik yedekleme yapabiliyor. <b>CLI</b> ve <b>API</b> üzerinden programatik kontrol mümkün; Slack/Discord/Telegram/e-posta bildirim entegrasyonları var.</p>",
+          why: "<p>35.4k yıldız, 163 release ve aktif Discord topluluğu — Coolify/CapRover gibi rakiplerine karşı gerçek bir kullanıcı tabanı olduğunu gösteriyor. Açık kaynak çekirdek + isteğe bağlı proprietary/ücretli katman (ör. barındırılan sürüm) modeli sürdürülebilir bir gelir kaynağı sağlıyor — bu tür projelerin sık düştüğü 'bakımsız kalma' riskini azaltıyor. Dikkat: Traefik + Docker Swarm + çoklu veritabanı motoru gibi bu kadar çok hareketli parçayı tek panelde yönetmek, bir şey ters gittiğinde debug etmen gereken katman sayısını da artırıyor — 'basit' bir çözüm değil, karmaşıklığı senin yerine yöneten bir çözüm.</p>",
+          evolve: "<p>IFS Cloud gibi bir sistemi kendi sunucunuzda çalıştırıyorsanız, Dokploy'un 'git push → otomatik build → otomatik deploy → <b>health check</b>' zincirinin, bir test/staging IFS ortamını her PL/SQL/Marble değişikliğinden sonra otomatik yeniden kurmak için nasıl bir <b>CI/CD</b> şablonu olabileceğini gösteren somut bir örnek. Traefik'in reverse-proxy mantığı da, birden fazla IFS ortamını (dev/test/prod) tek bir domain altında yönlendirmek isteyen bir DevOps kurulumuna doğrudan uygulanabilir.</p>"
+        },
+        glossary: [
+          { term: "PaaS (Platform as a Service)", def: "Sunucu/altyapı yönetimiyle uğraşmadan uygulama deploy etmeyi sağlayan bulut hizmeti modeli." },
+          { term: "Vendor lock-in", def: "Bir ürünü/servisi kullanmaya başladıktan sonra başka bir alternatife geçmeyi zorlaştıran bağımlılık durumu." },
+          { term: "Self-hosted", def: "Bir yazılımın bulut/üçüncü parti sunucu yerine kullanıcının kendi altyapısında kurulup çalıştırılması." },
+          { term: "Docker", def: "Uygulamaları bağımlılıklarıyla birlikte izole bir konteyner içinde paketleyip çalıştıran teknoloji." },
+          { term: "Kubernetes", def: "Çok sayıda konteyneri otomatik olarak dağıtıp ölçekleyen, yaygın kullanılan orkestrasyon sistemi." },
+          { term: "Monorepo", def: "Birden fazla proje/paketin tek bir git deposunda birlikte tutulduğu proje organizasyonu." },
+          { term: "Docker Compose", def: "Birden fazla Docker konteynerini tek bir yapılandırma dosyasıyla birlikte tanımlayıp çalıştırmayı sağlayan araç." },
+          { term: "Docker Swarm", def: "Birden fazla sunucuyu tek bir Docker küme (cluster) gibi yönetmeyi sağlayan orkestrasyon aracı." },
+          { term: "Traefik", def: "Gelen trafiği doğru servise yönlendiren, popüler bir reverse proxy/load balancer." },
+          { term: "Reverse proxy", def: "Dış isteklerin önce kendisine gelip, arkadaki uygun sunucuya yönlendirildiği ara sunucu." },
+          { term: "Load balancing", def: "Gelen isteklerin birden fazla sunucuya dengeli biçimde dağıtılması." },
+          { term: "CLI (Command Line Interface)", def: "Komut satırından, yazarak kullanılan program arayüzü." },
+          { term: "API (Application Programming Interface)", def: "İki yazılım bileşeninin birbiriyle konuşmasını sağlayan tanımlı arayüz/sözleşme." },
+          { term: "CI/CD", def: "Kod değişikliklerinin otomatik test edilip (Continuous Integration) otomatik olarak yayına alındığı (Continuous Deployment) yazılım geliştirme pratiği." },
+          { term: "Health check", def: "Bir servisin çalışır durumda olup olmadığını otomatik olarak kontrol eden mekanizma." }
+        ]
+      }
+    ]
+  },
+  {
     date: "6 Temmuz 2026",
     projects: [
       {
