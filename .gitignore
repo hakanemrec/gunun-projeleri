@@ -3,3 +3,10 @@ Thumbs.db
 .DS_Store
 desktop.ini
 *.tmp
+
+# Fable plan notları (yerel, git'e girmez)
+FABLE_PLANS.md
+
+# Bağımlılıklar / build
+node_modules/
+dist/

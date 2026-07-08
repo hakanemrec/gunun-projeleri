@@ -1,0 +1,14 @@
+{
+  "name": "gunun-projeleri-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Feed verisini Supabase'e senkronlayan scriptler",
+  "scripts": {
+    "sync": "node sync-to-supabase.mjs",
+    "migrate-legacy": "node sync-to-supabase.mjs --legacy"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "turndown": "^7.2.0"
+  }
+}

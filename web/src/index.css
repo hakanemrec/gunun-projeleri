@@ -1,0 +1,567 @@
+/* Günün Projeleri — tasarım sistemi
+   Premium & minimal: koyu zemin, ince çizgiler, amber accent. */
+
+:root[data-theme='dark'] {
+  --bg: #0a0a0b;
+  --bg-soft: #111113;
+  --surface: #151517;
+  --surface-hover: #1a1a1d;
+  --border: #232326;
+  --border-strong: #2e2e33;
+  --text: #ededef;
+  --text-soft: #a1a1aa;
+  --text-faint: #6b6b74;
+  --accent: #f5a623;
+  --accent-soft: rgba(245, 166, 35, 0.12);
+  --accent-text: #f7b955;
+  --danger: #f87171;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme='light'] {
+  --bg: #fafafa;
+  --bg-soft: #f4f4f5;
+  --surface: #ffffff;
+  --surface-hover: #f9f9f9;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --text: #18181b;
+  --text-soft: #52525b;
+  --text-faint: #a1a1aa;
+  --accent: #d97706;
+  --accent-soft: rgba(217, 119, 6, 0.1);
+  --accent-text: #b45309;
+  --danger: #dc2626;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent-text);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* ---------- Kabuk ---------- */
+
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text);
+  font-weight: 650;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.brand:hover {
+  text-decoration: none;
+}
+.brand-mark {
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.search {
+  flex: 1;
+  min-width: 160px;
+  max-width: 340px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 7px 12px;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search:focus {
+  border-color: var(--accent);
+}
+.search::placeholder {
+  color: var(--text-faint);
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 3px;
+}
+.tab {
+  padding: 5px 13px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.tab:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+.tab.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+.badge {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: 11px;
+  font-weight: 650;
+  border-radius: 99px;
+  padding: 1px 7px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+.icon-btn:hover {
+  border-color: var(--border-strong);
+}
+
+.btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 550;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn:hover {
+  background: var(--surface-hover);
+}
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1204;
+}
+.btn-primary:hover {
+  filter: brightness(1.08);
+  background: var(--accent);
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--bg-soft);
+  font-size: 13px;
+  color: var(--text-soft);
+}
+.user-chip img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.user-chip:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.foot {
+  border-top: 1px solid var(--border);
+  padding: 16px 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+.dev-note {
+  color: var(--accent-text);
+}
+
+/* ---------- Akış ---------- */
+
+.day-head {
+  font-size: 13px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin: 36px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.day-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.day-group:first-child .day-head {
+  margin-top: 0;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+.card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.card-title {
+  font-size: 16.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.card-title:hover {
+  color: var(--accent-text);
+  text-decoration: none;
+}
+
+.star-btn {
+  font-size: 18px;
+  color: var(--text-faint);
+  line-height: 1;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.15s, transform 0.1s;
+}
+.star-btn:hover {
+  color: var(--accent);
+  transform: scale(1.15);
+}
+.star-btn.on {
+  color: var(--accent);
+}
+.star-btn.big {
+  font-size: 24px;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 12.5px;
+  color: var(--text-faint);
+  margin: 6px 0 10px;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.lang-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+.stars {
+  color: var(--accent-text);
+}
+
+.card-summary {
+  margin: 0 0 10px;
+  color: var(--text-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-more {
+  font-size: 13px;
+  font-weight: 550;
+}
+
+/* ---------- Detay ---------- */
+
+.back-link {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+.back-link:hover {
+  color: var(--text-soft);
+}
+
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+}
+.detail-head h1 {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.25;
+}
+.detail-head h1 a {
+  color: var(--text);
+}
+.detail-head h1 a:hover {
+  color: var(--accent-text);
+  text-decoration: none;
+}
+.ext {
+  font-size: 15px;
+  color: var(--text-faint);
+}
+
+.detail-section {
+  margin-top: 30px;
+}
+.detail-section h3 {
+  font-size: 14px;
+  font-weight: 650;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.md p {
+  margin: 0 0 10px;
+  color: var(--text-soft);
+}
+.md p:last-child {
+  margin-bottom: 0;
+}
+.md b,
+.md strong {
+  color: var(--text);
+  font-weight: 620;
+}
+.md ul,
+.md ol {
+  margin: 0 0 10px;
+  padding-left: 22px;
+  color: var(--text-soft);
+}
+.md code {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+  font-size: 0.88em;
+}
+
+/* ---------- Not ---------- */
+
+.note-editor textarea {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+}
+.note-editor textarea:focus {
+  border-color: var(--accent);
+}
+.note-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.note-view {
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 12px 14px;
+  white-space: pre-wrap;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.note-view:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- Terimler ---------- */
+
+.term-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.term-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+.term-row b {
+  color: var(--text);
+}
+.term-def {
+  color: var(--text-soft);
+  margin-left: 6px;
+}
+
+.page-note {
+  color: var(--text-faint);
+  font-size: 13px;
+  margin: 0 0 20px;
+}
+
+.gl-row {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 2px;
+}
+.gl-row:last-child {
+  border-bottom: none;
+}
+.gl-term {
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tag-new {
+  font-size: 10.5px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-text);
+  background: var(--accent-soft);
+  border-radius: 99px;
+  padding: 1px 8px;
+}
+.gl-def {
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+.gl-meta {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 5px;
+}
+
+/* ---------- Boş durum ---------- */
+
+.empty {
+  text-align: center;
+  color: var(--text-faint);
+  padding: 80px 20px;
+  font-size: 14.5px;
+}
+.empty.error {
+  color: var(--danger);
+}
+
+/* ---------- Mobil ---------- */
+
+@media (max-width: 640px) {
+  .topbar-inner {
+    gap: 10px;
+    padding: 8px 14px;
+  }
+  .brand-name {
+    display: none;
+  }
+  .search {
+    order: 3;
+    max-width: none;
+    flex-basis: 100%;
+  }
+  .content {
+    padding: 20px 14px 48px;
+  }
+  .detail-head h1 {
+    font-size: 21px;
+  }
+}

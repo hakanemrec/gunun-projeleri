@@ -1,0 +1,29 @@
+name: Supabase feed senkronu
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/days/**"
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Bağımlılıkları kur
+        working-directory: pipeline
+        run: npm install --no-audit --no-fund
+
+      - name: Supabase'e senkronla
+        working-directory: pipeline
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node sync-to-supabase.mjs
