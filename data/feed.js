@@ -2,6 +2,101 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "8 Temmuz 2026",
+    projects: [
+      {
+        name: "ai-dynamo/dynamo",
+        url: "https://github.com/ai-dynamo/dynamo",
+        stars: "7.4k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Tek bir GPU/node için optimize edilmiş bir <b>inference</b> motoru (vLLM, SGLang, TensorRT-LLM) datacenter ölçeğinde yetersiz kalıyor: yüzlerce GPU'yu koordine etmek, isteği hangi node'a yönlendireceğine karar vermek, KV cache'i node'lar arası paylaşmak gibi problemler ayrı bir orkestrasyon katmanı gerektiriyor. NVIDIA'nın Dynamo'su tam bu boşluğu dolduruyor: mevcut inference motorlarının üstüne oturan, datacenter çapında koordinasyon sağlayan bir katman.</p>",
+          tech: "<p>Kod tabanı %52 <b>Rust</b> (performans-kritik kısımlar), %33 Python (esneklik) ve %12 Go karışımı. Mimarinin çekirdeğinde <b>disaggregated prefill/decode</b> var: bir LLM isteğinin 'prompt'u okuma' (prefill) ve 'token token üretme' (decode) fazları, farklı ölçeklenme ihtiyaçları olduğu için ayrı GPU havuzlarına bölünüyor. <b>KV-aware routing</b> her isteği, hangi worker'ın zaten ilgili <b>KV cache</b>'i tuttuğuna bakarak yönlendiriyor — bu da ilk token'a kadar geçen süreyi (<b>TTFT</b>) iddiaya göre 2 kat kısaltıyor. <b>KVBM</b> (KV Block Manager) KV cache'i GPU → CPU → SSD → uzak depolama arasında kademeli olarak taşıyarak efektif context uzunluğunu artırıyor. <b>ModelExpress</b> model ağırlıklarını <b>NVLink</b>/NIXL üzerinden akıtarak soğuk başlangıcı hızlandırıyor; <b>Planner</b> SLA hedeflerine göre otomatik ölçeklenen bir kaynak planlayıcı; <b>Grove</b> ise Kubernetes üzerinde topoloji-farkında <b>gang scheduling</b> yapan bir operator.</p>",
+          why: "<p>7.4k yıldız az görünse de arkasında NVIDIA'nın kendisi var — Apache 2.0 lisanslı, 37 release, biweekly office hour'larla aktif bir topluluk. GB200 NVL72 üzerinde DeepSeek R1 ile '7x GPU başına throughput' ve 'Planner ile %80 daha az SLA ihlali' gibi somut, donanım-spesifik benchmark'lar hype değil mühendislik iddiası. Dikkat: bu proje NVLink/GB200 gibi üst düzey NVIDIA donanımı ve gerçek çok-node bir cluster varsayıyor — tek GPU'luk bir laboratuvar/hobi kurulumu için değil, gerçek bir datacenter ölçeği problemi çözüyor.</p>",
+          evolve: "<p>Dynamo'nun 'prefill ile decode'u ayrı havuzlara böl' fikri, PL/SQL dünyasında OLTP ile OLAP yükünü aynı veritabanı örneğinde karıştırmamak için ayrı instance/read-replica kullanma mantığıyla birebir örtüşüyor — farklı erişim paternleri farklı kaynak profili ister. KVBM'nin GPU→CPU→SSD kademeli taşıma stratejisi de Oracle'da sık kullanılan tablespace/buffer cache katmanlama (sık erişilen veri bellekte, soğuk veri diskte) mantığının LLM dünyasındaki karşılığı. Kurumda tek bir vLLM instance'ı yetmeyip çoklu-node bir dahili LLM servisi kurmak gerekirse, Dynamo bu ölçeklenme sorununu nasıl çözdüğünü gösteren iyi bir referans mimari.</p>"
+        },
+        glossary: [
+          { term: "Inference (çıkarım)", def: "Eğitilmiş bir modelin, verilen bir girdiye karşılık çıktı (örn. metin) üretme işlemi." },
+          { term: "vLLM / SGLang / TensorRT-LLM", def: "LLM'leri hızlı sunmak (serving) için kullanılan, tek node/GPU odaklı popüler açık kaynak inference motorları." },
+          { term: "Disaggregated prefill/decode", def: "Bir LLM isteğinin 'girdiyi okuma' (prefill) ve 'çıktı üretme' (decode) aşamalarını, farklı kaynak ihtiyaçları olduğu için ayrı donanım havuzlarında çalıştırma tekniği." },
+          { term: "KV cache", def: "Transformer modellerinde önceki token'lar için hesaplanan ara değerleri saklayıp tekrar hesaplamayı önleyen bellek yapısı." },
+          { term: "KV-aware routing", def: "Bir isteği, ilgili KV cache verisini zaten belleğinde tutan worker'a yönlendirerek gereksiz yeniden hesaplamayı önleyen yönlendirme stratejisi." },
+          { term: "TTFT (Time To First Token)", def: "Bir isteğin gönderilmesinden modelin ilk token'ı üretmesine kadar geçen süre." },
+          { term: "KVBM (KV Block Manager)", def: "KV cache'i GPU belleğinden CPU, SSD ve uzak depolamaya kademeli olarak taşıyan bellek yönetim bileşeni." },
+          { term: "NVLink", def: "NVIDIA GPU'ları arasında çok yüksek hızlı veri aktarımı sağlayan donanım bağlantı teknolojisi." },
+          { term: "Planner (autoscaler)", def: "Bir sistemin yükünü ölçüp kaynak havuzlarının boyutunu otomatik olarak ayarlayan bileşen." },
+          { term: "SLA (Service Level Agreement)", def: "Bir servisin karşılamayı taahhüt ettiği performans/kullanılabilirlik hedefleri." },
+          { term: "Grove (Kubernetes operator)", def: "Kubernetes üzerinde özel bir kaynağı otomatik yöneten yazılım bileşeni; burada GPU'ları topolojiye duyarlı biçimde gruplayıp zamanlıyor." },
+          { term: "Gang scheduling", def: "Birbirine bağımlı birden fazla görevin (örn. dağıtık bir modelin parçaları) aynı anda birlikte başlatılmasını garanti eden zamanlama yöntemi." },
+          { term: "Apache 2.0 lisansı", def: "Yazılımın ticari kullanım dahil serbestçe kullanılıp değiştirilebilmesine izin veren yaygın açık kaynak lisansı." },
+          { term: "Datacenter ölçeği", def: "Tek bir makine yerine, bir veri merkezindeki yüzlerce/binlerce sunucuyu kapsayan büyüklük seviyesi." },
+          { term: "OLTP / OLAP", def: "OLTP kısa, sık işlem odaklı günlük veritabanı yükünü; OLAP büyük, analitik sorgu odaklı yükü tanımlayan iki farklı erişim paterni." }
+        ]
+      },
+      {
+        name: "quickwit-oss/tantivy",
+        url: "https://github.com/quickwit-oss/tantivy",
+        stars: "15.5k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Bir uygulamaya arama özelliği eklemek isteyince genelde iki seçenek var: ayrı bir Elasticsearch/Solr sunucusu kurup işletmek (ağır) ya da veritabanının yerleşik full-text arama özelliğiyle (örn. Oracle Text) idare etmek. Tantivy üçüncü bir yol sunuyor: Apache Lucene'in konumlandığı yerde ama Rust'ta yazılmış, uygulamana doğrudan gömülebilen (<b>embedded</b>) bir arama kütüphanesi — sunucu yok, sadece bir kütüphane bağımlılığı.</p>",
+          tech: "<p>%100 Rust. Mimarisi klasik Lucene deseni: doküman eklendikçe değişmez (<b>immutable</b>) <b>segment</b>'ler halinde diske yazılıyor, arka planda bir <b>merge</b> politikası küçük segmentleri periyodik olarak birleştirip optimize ediyor. İndeksleme çok-threadli ve <b>incremental</b>; her <b>token</b> için frekans ve pozisyon bilgisi saklanıyor, böylece hem <b>Boolean</b> hem <b>phrase query</b> (\"tam bu ifade\") sorguları çalışabiliyor ve sonuçlar <b>BM25</b> algoritmasıyla skorlanıyor. Depolama katmanı <b>memory-mapped</b> dosyalar üzerinden çalışıyor (disk verisi işletim sistemi tarafından sanki bellekmiş gibi adreslenir), doküman deposu LZ4/Zstd ile sıkıştırılıyor. <b>Fast fields</b> adında bir <b>columnar</b> (sütun tabanlı) depolama var — Lucene'in doc values'ına denk, sıralama/filtreleme/aggregation için satır satır değil sütun sütun okuma yapılmasını sağlıyor; tamsayı sıkıştırmasında <b>SIMD</b> kullanılıyor. 17 Latin dilde yerleşik <b>tokenization</b> var.</p>",
+          why: "<p>15.5k yıldız, MIT lisansı ve Etsy, ParadeDB, Nuclia, Element.io gibi gerçek şirketlerin production'da kullanması niş bir deney olmadığını gösteriyor. Kendi benchmark'larına göre Lucene'den ~2 kat hızlı ve 10ms altı başlangıç süresiyle CLI araçlarına bile gömülebiliyor — bu somut, ölçülebilir bir mühendislik avantajı. Dikkat: dağıtık (birden fazla makineye yayılan) arama Tantivy'nin kapsamı dışında bırakılmış bilinçli bir tasarım kararı — o ihtiyaç için aynı ekibin Tantivy üzerine kurduğu Quickwit'e yönlendiriyorlar; yani tek makine ötesine geçen ölçekte ek bir katman gerekiyor.</p>",
+          evolve: "<p>Oracle/IFS dünyasında CONTEXT index (Oracle Text) ile full-text arama kurduğunda aslında Tantivy'nin yaptığıyla kavramsal olarak aynı şeyi yapıyorsun: bir <b>ters indeks</b> (inverted index — kelimeden dokümana eşleme) inşa ediyorsun. Tantivy'nin segment+merge mimarisini okumak, Oracle Text'in $I/$K tablolarının neden periyodik SYNC/OPTIMIZE gerektirdiğini (yani neden 'yeni eklenen satır hemen aranabilir olmuyor') içeriden anlamak için iyi bir referans. Fast fields'in columnar yaklaşımı da, IFS raporlama tarafında bir sütunun neden bazen bitmap index ile bazen B-tree ile indekslendiğini düşünürken aynı 'satır mı sütun mu' muhakemesini tetikliyor.</p>"
+        },
+        glossary: [
+          { term: "Full-text arama (full-text search)", def: "Bir metin içinde kelime/ifade bazlı arama yapabilme özelliği." },
+          { term: "Embedded (gömülü) kütüphane", def: "Ayrı bir sunucu süreci yerine, doğrudan uygulamanın kendi süreci içinde çalışan yazılım bileşeni." },
+          { term: "Apache Lucene", def: "Java ile yazılmış, birçok arama motorunun (Elasticsearch dahil) temelini oluşturan klasik açık kaynak arama kütüphanesi." },
+          { term: "Elasticsearch / Solr", def: "Lucene tabanlı, ayrı bir sunucu olarak çalışan popüler dağıtık arama motorları." },
+          { term: "Segment", def: "Bir arama indeksinin, eklendiği andan sonra değişmeyen (immutable) küçük bir diskteki parçası." },
+          { term: "Merge (segment birleştirme)", def: "Küçük segmentlerin arka planda daha büyük, daha verimli segmentler halinde birleştirilmesi işlemi." },
+          { term: "Incremental indeksleme", def: "Tüm veriyi baştan yeniden işlemek yerine, sadece yeni/değişen veriyi indekse ekleme yaklaşımı." },
+          { term: "Token", def: "Aranabilir hale getirilmek üzere bir metnin bölündüğü kelime/kelime-parçası birimi." },
+          { term: "Boolean / phrase query", def: "Boolean sorgu AND/OR/NOT gibi mantıksal operatörlerle; phrase sorgu ise kelimelerin tam sırasıyla aranmasını sağlayan sorgu türleri." },
+          { term: "BM25", def: "Bir dokümanın bir arama sorgusuyla ne kadar alakalı olduğunu hesaplayan, yaygın kullanılan bir skorlama algoritması." },
+          { term: "Memory-mapped dosya", def: "Bir disk dosyasının, işletim sistemi tarafından sanki bellekteymiş gibi doğrudan adreslenmesini sağlayan teknik." },
+          { term: "LZ4 / Zstd", def: "Veriyi hızlı biçimde sıkıştırıp açan, performans odaklı iki sıkıştırma algoritması." },
+          { term: "Fast fields (columnar depolama)", def: "Verinin satır satır değil sütun sütun saklanması; sıralama/filtreleme gibi işlemleri hızlandıran depolama biçimi." },
+          { term: "SIMD", def: "Bir işlemcinin aynı anda birden fazla veri üzerinde aynı işlemi yaparak hızlandırdığı donanım özelliği." },
+          { term: "Tokenization", def: "Bir metni arama/işleme için kelime/parça birimlerine (token) bölme işlemi." },
+          { term: "Ters indeks (inverted index)", def: "Kelimeden, o kelimeyi içeren dokümanlara doğru bir eşleme tutan, arama motorlarının temel veri yapısı." },
+          { term: "MIT lisansı", def: "Yazılımın neredeyse hiçbir kısıtlama olmadan serbestçe kullanılıp değiştirilebilmesine izin veren yaygın açık kaynak lisansı." }
+        ]
+      },
+      {
+        name: "windmill-labs/windmill",
+        url: "https://github.com/windmill-labs/windmill",
+        stars: "17.1k",
+        language: "Rust",
+        sections: {
+          serves: "<p>Bir dahili araç (örn. 'şu tabloyu güncelleyen bir buton') lazım olduğunda genelde ya haftalarca süren bir frontend projesi başlatılır ya da elle çalıştırılan, kimsenin izlemediği bir script'te kalır. Windmill, Retool/Pipedream/Temporal'a self-hosted bir alternatif olarak, yazdığın bir script'i (herhangi bir dilde) otomatik olarak bir API endpoint'ine, bir arka plan işine, bir workflow adımına ya da parametrelerinden otomatik üretilen bir web formuna çeviriyor — elle frontend yazmadan.</p>",
+          tech: "<p>Backend Rust ile yazılmış <b>stateless</b> API sunucuları ve worker'lar, işleri bir <b>PostgreSQL</b> tabanlı <b>job queue</b>'dan çekiyor — yani ayrı bir mesaj kuyruğu sistemi (Kafka/RabbitMQ) yerine zaten var olan Postgres'i kuyruk olarak kullanıyor. Frontend Svelte 5 ile yazılmış; script parametreleri otomatik olarak web formuna, dönüş değerleri otomatik olarak JSON cevaba çevriliyor. Her script çalıştırması <b>nsjail</b> ile <b>sandbox</b>'lanıyor (dosya sistemi/kaynak/PID <b>namespace izolasyonu</b>) — yani güvenilmeyen kod bile izole çalışıyor. TypeScript (Bun/Deno), Python (uv ile), Go, Bash, PowerShell, PHP, Rust, C#, Java, Ansible dahil çok sayıda runtime destekleniyor; script'ler zincirlenip bir <b>flow</b> (workflow) oluşturabiliyor, tetikleyiciler schedule/webhook/HTTP route/Kafka/WebSocket/e-posta olabiliyor.</p>",
+          why: "<p>17.1k yıldız ve inanılmaz bir release temposu — 1.447 release, 13.818 commit — bu 'demo' değil, gerçek kullanımla sürekli iyileştirilen bir platform olduğunu gösteriyor. 'Airflow'a göre 13x' gibi performans iddiaları PostgreSQL kuyruğu + Rust worker mimarisinin somut bir sonucu. Dikkat: lisans <b>AGPLv3</b> (açık kaynak sürüm) + kurumsal 'Community/Enterprise' katman şeklinde ikili — kendi sunucunda ücretsiz kullanabilirsin ama yeniden dağıtım ya da yönetilen (managed) bir servis sunmak istersen ticari lisans gerekiyor; bu tür 'open core' modellerinde hangi özelliğin ücretsiz kaldığını takip etmek gerekir.</p>",
+          evolve: "<p>Windmill'in Postgres'i iş kuyruğu olarak kullanma deseni, PL/SQL'de <b>Oracle AQ (Advanced Queuing)</b> ya da bir 'iş kuyruğu' tablosu + <code>DBMS_SCHEDULER</code> ile kurabileceğin bir yapının modern, hazır bir versiyonu. Bir IFS/PL-SQL script'ini (örn. toplu bir veri düzeltme prosedürü) elle SQL*Plus'tan çalıştırmak yerine, Windmill'e sarıp otomatik üretilen bir web formu ve tetiklenebilir bir webhook haline getirmek, iç ekipler için 'kendi kendine hizmet' (self-service) bir araç haline getirmenin hızlı bir yolu olabilir — özellikle nsjail ile izole çalışması, üretim veritabanına dokunan script'ler için ek bir güven katmanı sağlıyor.</p>"
+        },
+        glossary: [
+          { term: "Self-hosted", def: "Bir yazılımın bulut/üçüncü parti sunucu yerine kullanıcının kendi altyapısında kurulup çalıştırılması." },
+          { term: "Retool / Pipedream / Temporal", def: "Windmill'e benzer; sırasıyla dahili araç/panel oluşturma, otomasyon ve iş akışı orkestrasyonu alanlarında bilinen diğer platformlar." },
+          { term: "API (Application Programming Interface)", def: "İki yazılım bileşeninin birbiriyle konuşmasını sağlayan tanımlı arayüz/sözleşme." },
+          { term: "Stateless", def: "Bir sunucunun istekler arasında herhangi bir durum/oturum bilgisi tutmaması; her istek bağımsız işlenir." },
+          { term: "PostgreSQL", def: "Açık kaynak, güçlü ve yaygın kullanılan ilişkisel veritabanı yönetim sistemi." },
+          { term: "Job queue (iş kuyruğu)", def: "Yapılacak işlerin sıraya konup worker'lar tarafından sırayla/paralel işlendiği yapı." },
+          { term: "Svelte", def: "Web arayüzleri oluşturmak için kullanılan, derleme zamanında optimize eden modern bir JavaScript framework'ü." },
+          { term: "nsjail", def: "Bir programı dosya sistemi/kaynak/süreç açısından izole bir 'kutuda' (sandbox) çalıştıran Linux tabanlı güvenlik aracı." },
+          { term: "Sandbox", def: "Bir kodun, ana sistemi etkilemeyecek şekilde izole bir ortamda çalıştırılması." },
+          { term: "Namespace izolasyonu", def: "Linux çekirdeğinin bir sürece kendi dosya sistemi/süreç/ağ görünümünü vererek diğer süreçlerden izole etme mekanizması." },
+          { term: "Flow (workflow)", def: "Birden fazla adımın/script'in belirli bir sırayla veya koşullu olarak birbirine bağlandığı iş akışı." },
+          { term: "Webhook", def: "Bir olay gerçekleştiğinde otomatik olarak belirli bir URL'ye HTTP isteği gönderme mekanizması." },
+          { term: "AGPLv3 lisansı", def: "GPL'e benzer ama bir yazılımı ağ üzerinden servis olarak sunanların da kaynak kodu paylaşmasını zorunlu kılan açık kaynak lisansı." },
+          { term: "Open core", def: "Bir yazılımın çekirdeğinin açık kaynak, ek/kurumsal özelliklerinin ise ücretli/kapalı olduğu iş modeli." },
+          { term: "Oracle AQ (Advanced Queuing)", def: "Oracle veritabanının içine gömülü, mesaj/iş kuyruğu yönetimi sağlayan yerleşik özelliği." },
+          { term: "DBMS_SCHEDULER", def: "Oracle veritabanında işleri zamanlanmış/tetiklenmiş biçimde çalıştırmak için kullanılan yerleşik PL/SQL paketi." }
+        ]
+      }
+    ]
+  },
+  {
     date: "7 Temmuz 2026",
     projects: [
       {
