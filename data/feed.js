@@ -2,6 +2,101 @@
 // Format: window.__FEED__ = [ { date, sample?, projects: [ { name, url, stars, language, sections:{serves,tech,why,evolve}, glossary:[{term,def}] } ] } ]
 window.__FEED__ = [
   {
+    date: "9 Temmuz 2026",
+    projects: [
+      {
+        name: "Graphify-Labs/graphify",
+        url: "https://github.com/Graphify-Labs/graphify",
+        stars: "80.6k",
+        language: "Python",
+        sections: {
+          serves: "<p>Büyük bir kod tabanını anlamak için genelde ya <b>grep</b> yapıp iğneyi samanlıkta ararsın ya da bir <b>RAG</b> kurup vektör benzerliğine güvenirsin — ikisi de 'bu fonksiyonu gerçekten kim çağırıyor, bu tablo hangi rapor tarafından kullanılıyor' gibi kesin ilişki sorularına net cevap vermez. Graphify, kodu (ve isteğe bağlı olarak dokümanları, PDF'leri, SQL şemalarını) taşınabilir, sorgulanabilir bir <b>knowledge graph</b>'a dönüştürüyor — 'muhtemelen benzer' değil, 'kesin olarak bağlı' ilişkiler sunuyor.</p>",
+          tech: "<p>Üç aşamalı bir <b>pipeline</b>: önce kod, <b>tree-sitter</b> ile tamamen yerelde ve LLM'siz olarak <b>AST</b> (soyut söz dizimi ağacı) seviyesinde parse ediliyor — 36'dan fazla dil destekleniyor, hiçbir veri makineden dışarı çıkmıyor. İkinci aşamada dokümanlar/PDF/görsel gibi yapısal olmayan içerik, seçtiğin bir <b>LLM</b>'e (Claude, Gemini, OpenAI, Ollama dahil yerel modeller) yönlendirilip anlamsal ilişkiler çıkarılıyor. Üçüncü aşamada <b>Leiden algoritması</b> ile graf, otomatik etiketlenmiş alt sistemlere (community detection) bölünüyor. Her kenar (<b>edge</b>) 'EXTRACTED' (koddan doğrudan çıkarılmış, kesin) ya da 'INFERRED' (LLM ile çıkarımlanmış) etiketiyle işaretleniyor — yani hangi ilişkiye ne kadar güvenebileceğini görebiliyorsun. Çıktı taşınabilir bir <code>graph.json</code>; isteğe bağlı olarak Neo4j/FalkorDB gibi <b>graph veritabanları</b>na aktarılabiliyor, bir <b>MCP server</b> ya da CLI üzerinden sorgulanabiliyor (<code>graphify query</code>, <code>graphify explain</code>).</p>",
+          why: "<p>80.6k yıldız, 157'den fazla release ve Y Combinator (S26) desteği — bu artık bir hafta sonu projesi değil, ciddi mühendislik yatırımı görmüş bir araç. İddialar hype değil ölçülebilir: LOCOMO benchmark'ında Recall@10 skoru 0.497 ile mem0'ın (0.048) ve supermemory'nin (0.149) çok üzerinde; LongMemEval-S'te %76 doğruluk, yoğun (dense) RAG ile başa baş. 'Vektör indeksi değiliz' vurgusu bilinçli bir konumlanma: benzerlik tahmini yerine deterministik graf gezinmesi sunuyorlar. Dikkat: sadece kod parse etme ücretsiz ve tamamen yerel; doküman/görsel/video gibi zengin içerik için LLM çağrısı (dolayısıyla maliyet) gerekiyor.</p>",
+          evolve: "<p>Graphify'ın SQL şemalarını da girdi olarak kabul etmesi doğrudan bir IFS/PL-SQL bağlantısı kuruyor: bir PL/SQL PACKAGE BODY'sinin hangi tabloları kullandığını, hangi view'ların hangi raporları beslediğini elle iz sürmek yerine, bu ilişkileri otomatik bir grafa çıkarıp <code>graphify path</code> ile 'A tablosundan B raporuna giden yol nedir' diye sorabilirsin. EXTRACTED/INFERRED güven etiketleme fikri de, otomatik üretilmiş bir ER diyagramına ne kadar güvenip ne kadar elle doğrulaman gerektiğine karar verirken kullanılabilecek faydalı bir zihinsel model.</p>"
+        },
+        glossary: [
+          { term: "Grep", def: "Bir metin/kod içinde belirli bir kelimeyi/örüntüyü arayan temel komut satırı aracı." },
+          { term: "RAG (Retrieval-Augmented Generation)", def: "Bir dil modelinin cevap üretirken önce ilgili belgeleri bir veritabanından çekip bağlam olarak kullandığı yöntem." },
+          { term: "Knowledge graph (bilgi çizgesi)", def: "Nesneler (fonksiyon, tablo, dosya) ve aralarındaki ilişkileri düğüm-kenar yapısıyla saklayan veri yapısı." },
+          { term: "Pipeline", def: "Bir işin birden fazla adımdan sırayla ve otomatik geçerek tamamlandığı işlem zinciri." },
+          { term: "tree-sitter", def: "Çok sayıda programlama dilini hızlı ve hatasız ayrıştırabilen (parse eden), birçok editörde kullanılan syntax analiz kütüphanesi." },
+          { term: "AST (Abstract Syntax Tree)", def: "Bir kodun söz dizimsel yapısını ağaç biçiminde temsil eden, derleyicilerin/analiz araçlarının kullandığı ara veri yapısı." },
+          { term: "LLM (Large Language Model)", def: "Büyük miktarda metinle eğitilmiş, dil üretebilen/anlayabilen yapay zeka modeli." },
+          { term: "Leiden algoritması", def: "Bir grafı, aralarında yoğun bağlantı olan alt gruplara (community) bölen bir kümeleme algoritması." },
+          { term: "Community detection", def: "Bir graf içinde birbirine sıkı bağlı düğüm gruplarını (alt sistemleri) otomatik olarak tespit etme işlemi." },
+          { term: "Node / Edge (düğüm / kenar)", def: "Bir graftaki varlıklar (node) ve aralarındaki ilişkiler (edge)." },
+          { term: "Graph veritabanı (Neo4j/FalkorDB)", def: "Veriyi tablo yerine düğüm-kenar ilişkileri olarak saklayıp sorgulayan veritabanı türü." },
+          { term: "MCP server", def: "AI asistanlarının dış araçlara standart bir protokolle bağlanmasını sağlayan sunucu bileşeni." },
+          { term: "CLI (Command Line Interface)", def: "Komut satırından, yazarak kullanılan program arayüzü." },
+          { term: "Recall@10", def: "Bir arama/öneri sisteminin ilk 10 sonuç içinde doğru cevabı ne sıklıkla bulduğunu ölçen metrik." },
+          { term: "Benchmark (LOCOMO, LongMemEval)", def: "Farklı sistemlerin performansını standart, tekrarlanabilir test senaryolarıyla karşılaştırmak için kullanılan test setleri." },
+          { term: "Y Combinator", def: "Erken aşama teknoloji girişimlerine yatırım yapan tanınmış bir hızlandırıcı (accelerator) programı." },
+          { term: "ER diyagramı (Entity-Relationship)", def: "Bir veritabanındaki tabloları ve aralarındaki ilişkileri gösteren şema diyagramı." }
+        ]
+      },
+      {
+        name: "TencentCloud/TencentDB-Agent-Memory",
+        url: "https://github.com/TencentCloud/TencentDB-Agent-Memory",
+        stars: "7.8k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Bir AI agent (coding agent, chatbot) her yeni oturumda sıfırdan başlar: proje geçmişini, kullanıcı tercihlerini, önceki kararları unutur — bu da her seferinde aynı bağlamı yeniden anlatmak anlamına gelir. Bu proje, Tencent'in kendi ürettiği, agent'lara oturumlar arası hafıza kazandıran ve bunu bulut/harici API'ye bağımlı olmadan tamamen yerelde yapabilen bir sistem.</p>",
+          tech: "<p>Mimarinin kalbinde <b>4 katmanlı progressive (kademeli) pipeline</b> var. Kısa vadeli bağlam üç katmanda sıkıştırılıyor: en altta ham <b>tool</b> çıktıları (markdown dosyaları), ortada adım-adım özetler (<b>JSONL</b>), en üstte <b>Mermaid diyagramı</b> olarak kodlanmış sıkıştırılmış durum. Uzun vadeli kişiselleştirme de dört katmanlı: L0 ham diyalog, L1 diyalogdan çıkarılan atomik gerçekler, L2 bunları gruplayan senaryo blokları, L3 kullanıcı tercihlerini özetleyen persona. Bir <code>node_id</code> referansı sayesinde agent önce üst katmandaki özete bakıyor, gerekirse alt katmana inip ham veriye kadar iz sürebiliyor ('progressive disclosure'). Depolama varsayılan olarak <b>SQLite</b> + <code>sqlite-vec</code> uzantısı (tamamen yerel <b>vektör</b> araması); isteğe bağlı olarak Tencent'in bulut vektör veritabanı (TCVDB) da bağlanabiliyor. Arama, <b>BM25</b> anahtar kelime aramasıyla vektör benzerliğini <b>RRF (Reciprocal Rank Fusion)</b> ile birleştiren hibrit bir yaklaşım kullanıyor.</p>",
+          why: "<p>MIT lisanslı, OpenClaw ve Hermes Agent gibi framework'lerle hazır entegrasyonları var. İddia edilen sayılar somut: OpenClaw ile birlikte kullanıldığında WideSearch benchmark'ında %61.38 daha az token, görev başarı oranında %33'ten %50'ye (%51.52 göreceli iyileşme), PersonaMem doğruluğunda %48'den %76'ya çıkış raporlanıyor. Dikkat: sadece 8 release ile (v0.3.6) hâlâ genç bir proje; OpenClaw/TCVDB gibi Tencent'in kendi ekosistemine göre optimize edilmiş olması, bunun dışındaki genel agent framework'leriyle ne kadar sürtünmesiz entegre olacağını belirsiz bırakıyor.</p>",
+          evolve: "<p>'Ham veriyi katman katman özetleyip sıkıştır, ama izlenebilirliği kaybetme' fikri, PL/SQL dünyasında detaylı log/audit tablolarını zamanla <b>materialized view</b> ya da özet (summary) tablolara aggregate etme — ama orijinal satırlara <code>ROWID</code>/anahtar üzerinden geri dönebilme — pratiğiyle aynı mantığı taşıyor. RRF ile BM25 ve vektör aramayı harmanlama fikri de, Oracle Text skorlarıyla yapısal <code>WHERE</code> filtrelerini birlikte kullanarak sonuçları sıralamaya benzer bir 'birden fazla sinyali birleştir' yaklaşımı.</p>"
+        },
+        glossary: [
+          { term: "AI agent", def: "Bir görevi kullanıcı adına, araçlar (tool) kullanarak otonom biçimde yürüten yapay zeka sistemi." },
+          { term: "Bağlam (context)", def: "Bir AI modelinin bir anda 'görebildiği', hesaba kattığı bilgi penceresi." },
+          { term: "Tool (agent tool)", def: "Bir AI agent'ın çağırıp belirli bir işi (dosya okuma, komut çalıştırma vb.) yaptırabildiği tanımlı fonksiyon." },
+          { term: "JSONL", def: "Her satırı ayrı bir JSON nesnesi olan, log/akış verisi için pratik bir dosya formatı." },
+          { term: "Mermaid diyagramı", def: "Düz metinden otomatik olarak akış şeması/diyagram üreten, hem insan hem makine tarafından okunabilir bir gösterim biçimi." },
+          { term: "node_id", def: "Bir veri yapısındaki (burada hafıza katmanlarındaki) belirli bir kaydı benzersiz biçimde işaret eden referans anahtarı." },
+          { term: "Progressive disclosure", def: "Kullanıcıya/agent'a önce özet bilgiyi gösterip, ihtiyaç halinde detaya adım adım inme imkânı sunan tasarım yaklaşımı." },
+          { term: "SQLite", def: "Ayrı bir sunucu gerektirmeyen, dosya tabanlı, hafif bir ilişkisel veritabanı motoru." },
+          { term: "Vektör (embedding)", def: "Bir metnin/verinin anlamını sayısal bir dizi (vektör) olarak temsil eden yapay zeka çıktısı." },
+          { term: "TCVDB", def: "Tencent Cloud'un sunduğu, bulutta çalışan vektör veritabanı servisi." },
+          { term: "BM25", def: "Bir dokümanın bir arama sorgusuyla ne kadar alakalı olduğunu hesaplayan, yaygın kullanılan bir anahtar kelime skorlama algoritması." },
+          { term: "RRF (Reciprocal Rank Fusion)", def: "Farklı arama yöntemlerinin (örn. anahtar kelime ve vektör) sonuç sıralamalarını tek bir birleşik sıralamaya harmanlayan yöntem." },
+          { term: "MIT lisansı", def: "Yazılımın neredeyse hiçbir kısıtlama olmadan serbestçe kullanılıp değiştirilebilmesine izin veren yaygın açık kaynak lisansı." },
+          { term: "Materialized view", def: "Bir sorgunun sonucunu önceden hesaplayıp fiziksel olarak saklayan, tekrar sorgulamayı hızlandıran veritabanı nesnesi." },
+          { term: "Token", def: "Bir dil modelinin metni işlerken kullandığı en küçük birim; maliyet ve bağlam sınırı token sayısına göre belirlenir." },
+          { term: "Benchmark", def: "Bir sistemin performansını standart, tekrarlanabilir bir test senaryosuyla ölçme işlemi." }
+        ]
+      },
+      {
+        name: "SigNoz/signoz",
+        url: "https://github.com/SigNoz/signoz",
+        stars: "28.5k",
+        language: "TypeScript",
+        sections: {
+          serves: "<p>Prod ortamda bir şey ters gittiğinde log'u bir araçta, metrik'i başka bir araçta, trace'i üçüncü bir araçta (örn. ELK + Prometheus + Jaeger) aramak zaman kaybettirir ve sinyalleri birbirine bağlamayı zorlaştırır. SigNoz, log/metrik/trace/alarm/dashboard'u tek bir platformda birleştirip DataDog/New Relic gibi kapalı kaynak, kullanım-bazlı fiyatlandırılan SaaS'lara <b>self-hosted</b> açık kaynak bir alternatif sunuyor.</p>",
+          tech: "<p>Veri toplama katmanı <b>OpenTelemetry</b> ile standartlaştırılmış — herhangi bir vendor'a kilitlenmeden, açık bir protokolle telemetri (log/metrik/trace) topluyor. Depolama katmanında <b>ClickHouse</b> var: satır tabanlı değil <b>kolon tabanlı (columnar)</b> bir analitik veritabanı, yüksek hacimli ve yüksek <b>cardinality</b>'li (çok sayıda benzersiz etiket kombinasyonu içeren) observability verisi için özellikle uygun. Sorgulama tarafında üç seçenek sunuluyor: görsel bir Query Builder, Prometheus'un sorgu dili <b>PromQL</b>, ya da doğrudan <b>ClickHouse SQL</b>. Backend %35.9 <b>Go</b>, frontend %54.5 TypeScript/React/Next.js ile yazılmış.</p>",
+          why: "<p>28.5k yıldız, 265 release, 6.565 commit — olgun ve aktif geliştirilen bir proje. ClickHouse'un kolon tabanlı mimarisi, 'Elastic'e göre ingestion'da %50 daha az kaynak' gibi somut, ölçülebilir bir performans iddiasının altyapısal nedeni. <b>Open core</b> model: temel platform açık kaynak, compliance/BYOC gibi kurumsal özellikler ücretli katmanda — bu da projenin sürdürülebilir bir gelir modeline sahip olduğunu, bakımsız kalma riskinin düşük olduğunu gösteriyor. Dikkat: OpenTelemetry standardına dayanması esneklik sağlasa da, entegre etmek istediğin her uygulamaya ayrı ayrı bir OTel SDK/agent kurman gerekiyor — 'tak çıkar' değil, kurulum emek istiyor.</p>",
+          evolve: "<p>ClickHouse'un kolon tabanlı depolama tercihi, PL/SQL/Oracle dünyasında bir OLTP tablosuna (satır satır, sık güncellenen) yüksek hacimli log/trace verisi yazmanın neden performans sorunu yarattığını ve neden ayrı bir analitik/kolon motoru (örn. Oracle'ın in-memory column store'u) gerektiğini somutlaştırıyor. IFS Cloud gibi bir sistemde hangi PL/SQL prosedürün ne kadar sürdüğünü, hangi tablonun en sık sorgulandığını elle log dosyası taramak yerine, kendi OpenTelemetry entegrasyonunu kurup SigNoz'a göndermek, gerçek bir gözlemlenebilirlik (observability) katmanı kurmanın somut bir yolu.</p>"
+        },
+        glossary: [
+          { term: "Observability (gözlemlenebilirlik)", def: "Bir sistemin iç durumunu, dışarıdan topladığı log/metrik/trace gibi sinyallerle anlayabilme yeteneği." },
+          { term: "Log", def: "Bir sistemde olan olayların zaman damgalı, metin biçiminde kaydı." },
+          { term: "Metrik (metric)", def: "Bir sistemin durumunu sayısal olarak özetleyen ölçüm (örn. CPU kullanımı, istek sayısı)." },
+          { term: "Trace", def: "Bir isteğin bir sistem içindeki uçtan uca yolculuğunu, hangi bileşenlerden geçtiğini gösteren kayıt." },
+          { term: "Self-hosted", def: "Bir yazılımın bulut/üçüncü parti sunucu yerine kullanıcının kendi altyapısında kurulup çalıştırılması." },
+          { term: "OpenTelemetry", def: "Log/metrik/trace toplamak için oluşturulmuş, vendor'dan bağımsız açık standart bir telemetri protokolü/kütüphane seti." },
+          { term: "Kolon tabanlı (columnar) veritabanı", def: "Veriyi satır satır değil sütun sütun saklayan; analitik/toplu sorgularda büyük hız avantajı sağlayan veritabanı mimarisi." },
+          { term: "Cardinality", def: "Bir veri kümesindeki benzersiz değerlerin sayısı; observability'de çok sayıda farklı etiket kombinasyonu 'yüksek cardinality' anlamına gelir." },
+          { term: "ClickHouse", def: "Yüksek hacimli analitik sorgular için optimize edilmiş, açık kaynak kolon tabanlı bir veritabanı." },
+          { term: "PromQL", def: "Prometheus izleme sisteminin metrik sorgulamak için kullandığı sorgu dili." },
+          { term: "Prometheus", def: "Metrik toplama ve izleme için yaygın kullanılan açık kaynak bir sistem." },
+          { term: "Go", def: "Performanslı, sade ve eşzamanlılığa (concurrency) uygun, sunucu tarafı yazılımlarda yaygın kullanılan bir programlama dili." },
+          { term: "Open core", def: "Bir yazılımın çekirdeğinin açık kaynak, ek/kurumsal özelliklerinin ise ücretli/kapalı olduğu iş modeli." },
+          { term: "BYOC (Bring Your Own Cloud)", def: "Bir servisin, sağlayıcının değil müşterinin kendi bulut hesabında/altyapısında çalıştırılabildiği dağıtım modeli." },
+          { term: "OLTP", def: "Kısa, sık işlem odaklı günlük veritabanı yükünü tanımlayan erişim paterni (örn. sipariş girişi)." }
+        ]
+      }
+    ]
+  },
+  {
     date: "8 Temmuz 2026",
     projects: [
       {
