@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useFeed } from '../context/FeedContext'
 import { useUserData } from '../context/UserDataContext'
+import { useProgress } from '../context/ProgressContext'
 import { useSearch } from '../context/SearchContext'
 
 function ThemeToggle() {
@@ -45,6 +46,7 @@ function AuthButton() {
 export function Layout() {
   const { feed } = useFeed()
   const { bookmarks } = useUserData()
+  const { dueCount } = useProgress()
   const { query, setQuery } = useSearch()
 
   return (
@@ -71,6 +73,9 @@ export function Layout() {
             </NavLink>
             <NavLink to="/sozluk" className="tab">
               Sözlük{feed && <span className="badge">{feed.terms.length}</span>}
+            </NavLink>
+            <NavLink to="/quiz" className="tab">
+              Quiz{dueCount > 0 && <span className="badge due">{dueCount}</span>}
             </NavLink>
           </nav>
           <div className="topbar-actions">

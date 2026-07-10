@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useFeed } from '../context/FeedContext'
 import { useSearch } from '../context/SearchContext'
+import { useProgress } from '../context/ProgressContext'
+import { useAuth } from '../context/AuthContext'
+import { todayISO, MAX_BOX } from '../lib/leitner'
 
 export function GlossaryPage() {
   const { feed, loading, error } = useFeed()
   const { query } = useSearch()
+  const { progress } = useProgress()
+  const { user } = useAuth()
   const q = query.trim().toLowerCase()
+  const today = todayISO()
 
   if (loading) return <div className="empty">Yükleniyor…</div>
   if (error) return <div className="empty error">{error}</div>
@@ -20,13 +26,25 @@ export function GlossaryPage() {
   return (
     <div className="glossary">
       <p className="page-note">
-        Analizlerde geçen tüm jargon burada birikir. Günlük tekrar (Leitner) sistemi Faz 2'de geliyor.
+        Analizlerde geçen tüm jargon burada birikir. <Link to="/quiz">Günlük quiz</Link> ile çalıştıkça
+        her terimin kutusu ilerler (kutu {MAX_BOX} = oturdu).
       </p>
       {terms.map((t) => (
         <div key={t.key} className="gl-row">
           <div className="gl-term">
             {t.term}
             {t.count === 1 && <span className="tag-new">yeni</span>}
+            {user && (() => {
+              const p = progress.get(t.key)
+              if (!p) return null
+              const due = p.next_review_at <= today
+              return (
+                <span className={`box-chip${p.box >= MAX_BOX ? ' done' : ''}${due ? ' due' : ''}`}>
+                  {p.box >= MAX_BOX ? '✓ oturdu' : `kutu ${p.box}`}
+                  {due && p.box < MAX_BOX && ' · vadesi geldi'}
+                </span>
+              )
+            })()}
           </div>
           <div className="gl-def">{t.def}</div>
           <div className="gl-meta">
