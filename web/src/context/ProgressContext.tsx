@@ -56,7 +56,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     let cancelled = false
     setLoading(true)
     Promise.all([
-      supabase.from('user_term_progress').select('term_key, box, next_review_at'),
+      supabase.from('user_term_progress').select('term_key, box, next_review_at, started_on'),
       supabase.from('user_streaks').select('current_streak, best_streak, last_session_date').maybeSingle(),
     ]).then(([{ data: rows }, { data: streakRow }]) => {
       if (cancelled) return
@@ -65,6 +65,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         map.set(r.term_key as string, {
           box: r.box as number,
           next_review_at: r.next_review_at as string,
+          started_on: r.started_on as string,
         })
       }
       setProgress(map)
@@ -78,12 +79,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const answer = useCallback(
     async (termKey: string, correct: boolean) => {
-      const current = progress.get(termKey)?.box
-      const box = nextBox(current, correct)
+      const existing = progress.get(termKey)
+      const box = nextBox(existing?.box, correct)
       const next_review_at = nextReviewAt(box)
+      // started_on DB'ye gönderilmez: ilk insert'te default (bugün) atanır,
+      // güncellemelerde dokunulmaz. Yerelde de aynı mantık korunur.
+      const started_on = existing?.started_on ?? todayISO()
       setProgress((prev) => {
         const map = new Map(prev)
-        map.set(termKey, { box, next_review_at })
+        map.set(termKey, { box, next_review_at, started_on })
         return map
       })
       if (user && supabase) {

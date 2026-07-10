@@ -10,6 +10,7 @@ export const NEW_PER_SESSION = 5
 export interface TermProgress {
   box: number
   next_review_at: string // YYYY-MM-DD
+  started_on: string // YYYY-MM-DD — terimin ilk çalışıldığı gün (günlük yeni sınırı için)
 }
 
 export function todayISO(): string {
@@ -51,6 +52,11 @@ export function buildDeck(
 ): DeckCard[] {
   const today = todayISO()
 
+  // Günlük yeni terim hakkı: bugün başlanmış terimler kotadan düşer (katı 5/gün sınırı)
+  let startedToday = 0
+  for (const p of progress.values()) if (p.started_on === today) startedToday++
+  const newAllowance = Math.max(0, NEW_PER_SESSION - startedToday)
+
   const due = allTerms
     .filter((t) => {
       const p = progress.get(t.key)
@@ -59,7 +65,7 @@ export function buildDeck(
     .sort((a, b) => progress.get(a.key)!.next_review_at.localeCompare(progress.get(b.key)!.next_review_at))
     .slice(0, SESSION_CAP)
 
-  const newCount = Math.min(NEW_PER_SESSION, SESSION_CAP - due.length)
+  const newCount = Math.min(newAllowance, SESSION_CAP - due.length)
   const fresh = newCount > 0 ? allTerms.filter((t) => !progress.has(t.key)).slice(0, newCount) : []
 
   const deck: DeckCard[] = [

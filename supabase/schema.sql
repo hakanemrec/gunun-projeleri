@@ -72,6 +72,7 @@ create table if not exists user_term_progress (
   term_key text not null references terms(key) on delete cascade,
   box smallint not null default 1 check (box between 1 and 5),
   next_review_at date not null default current_date,
+  started_on date not null default current_date,
   updated_at timestamptz not null default now(),
   primary key (user_id, term_key)
 );

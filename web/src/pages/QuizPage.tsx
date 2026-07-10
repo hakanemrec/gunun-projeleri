@@ -174,7 +174,9 @@ export function QuizPage() {
       <div className="quiz-summary">
         <div className="big">🌤️</div>
         <h2>Bugünlük bitti</h2>
-        <p className="page-note">Tekrarı gelen kart yok. Yarın yeni terimlerle devam.</p>
+        <p className="page-note">
+          Tekrarı gelen kart kalmadı, günlük yeni terim hakkı da doldu. Yarın devam. 🌙
+        </p>
         {streak && <p className="quiz-streak">🔥 {streak.current_streak} günlük seri</p>}
       </div>
     )
