@@ -53,9 +53,10 @@ export function Layout() {
     <div className="shell">
       <header className="topbar">
         <div className="topbar-inner">
-          <NavLink to="/" className="brand">
-            <span className="brand-mark">◆</span>
-            <span className="brand-name">Günün Projeleri</span>
+          <NavLink to="/" className="brand" title="daily — Günün Projeleri">
+            <span className="brand-word">
+              d<em>ai</em>ly
+            </span>
           </NavLink>
           <input
             className="search"
