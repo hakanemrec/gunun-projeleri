@@ -1,0 +1,112 @@
+{
+  "date": "2026-07-10",
+  "projects": [
+    {
+      "name": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "stars": "76.1k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "🎯 AI kodlama ajanları çoğu zaman kısayol alır: spesifikasyon yazmadan koda dalar, testleri atlar, güvenlik incelemesini es geçer. Bu proje, kıdemli bir yazılım mühendisinin üretim kodunda uyguladığı disiplini ajanlara otomatik olarak dayatan bir çerçeve sunuyor. **24 birbirine bağlı \"skill\" (yetenek) paketi**, işi altı fazlı bir yaşam döngüsünden geçiriyor: Define → Plan → Build → Verify → Review → Ship.",
+        "tech": "🛠️ Yaşam döngüsü fazlarına karşılık gelen **8 slash komutu** ve önceden yapılandırılmış \"persona\"lar (code reviewer, test engineer, security auditor, performance auditor) sunuyor. Google'ın mühendislik kültüründen alınan ilkeler — Hyrum Yasası, Beyoncé Kuralı, trunk-based development — doğrudan kontrol listelerine kodlanmış. Claude Code, Cursor, Codex ve Copilot dahil **70'ten fazla ajanla** entegre çalışıyor. `/build auto` komutu, insan onay noktalarını koruyarak görevler arasında otonom ilerlemeyi sağlıyor; her adım ayrı, atomik bir commit olarak kayda geçiyor.",
+        "why": "📈 AI ajanlarının \"vibe coding\" ile üretim kalitesi arasındaki güven açığına somut, uygulanabilir bir çözüm sunması ilgiyi açıklıyor. Addy Osmani'nin (Google Chrome ekibinden tanınan bir isim) itibarı da paylaşımın hızla yayılmasında etkili olmuş görünüyor — tek günde binlerce yıldız kazanması, viral bir referans/paylaşımdan geldiğine işaret ediyor.",
+        "evolve": "💡 Şu an ağırlıklı olarak Claude Code/Anthropic ekosistemine göre ayarlanmış görünüyor; farklı ajan-editör kombinasyonlarında tutarlılığın ne kadar sağlam olduğu henüz geniş çapta test edilmemiş olabilir. Ekip düzeyinde paylaşılan özel \"skill\" kütüphaneleri, dile özgü (Python, Go vb.) checklist'ler ve CI/CD'de otomatik \"kalite kapısı\" ölçümleri eklenmesi projeyi kurumsal kullanıma daha da yaklaştırabilir."
+      },
+      "glossary": [
+        { "term": "Slash komutu", "def": "Sohbet arayüzünde \"/\" ile başlayan, önceden tanımlı bir eylemi tetikleyen kısayol komut." },
+        { "term": "Persona (AI bağlamında)", "def": "Bir yapay zeka ajanına verilen, belirli bir uzmanlık rolünü (ör. güvenlik denetçisi) taklit etmesini sağlayan davranış kalıbı." },
+        { "term": "Trunk-based development", "def": "Geliştiricilerin uzun ömürlü ayrı dallar (branch) yerine, doğrudan ana koda sık ve küçük değişiklikler yaptığı geliştirme yöntemi." },
+        { "term": "Hyrum Yasası", "def": "Bir sistemin gözlemlenebilir her davranışının, resmi arayüzde belirtilmese bile er ya da geç birileri tarafından bağımlılık haline getirileceğini söyleyen prensip." },
+        { "term": "Beyoncé Kuralı", "def": "\"Eğer önemsiyorsan, otomatik bir test yaz\" fikrini özetleyen, Google mühendislik kültüründen gelen bir kural." },
+        { "term": "Atomik commit", "def": "Tek, mantıksal olarak bölünemeyen bir değişikliği içeren, geri alınması ve incelenmesi kolay commit." },
+        { "term": "CI/CD", "def": "Kod değişikliklerinin otomatik olarak test edilip (Continuous Integration) canlıya alınmasını (Continuous Deployment) sağlayan yazılım geliştirme pratiği." }
+      ]
+    },
+    {
+      "name": "wonderwhy-er/DesktopCommanderMCP",
+      "url": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+      "stars": "6.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Claude gibi bir AI asistanını, sadece sohbet eden bir yardımcıdan, bilgisayarınızın terminaline ve dosya sistemine gerçekten dokunabilen bir araca dönüştürüyor. Dosya arama, okuma, düzenleme ve komut çalıştırma gibi işleri AI'ya devretmeyi mümkün kılıyor.",
+        "tech": "🛠️ **Model Context Protocol (MCP)** standardı üzerine kurulu bir sunucu olarak çalışıyor. Terminal kontrolü, çoklu format (metin, Excel, PDF, DOCX) dosya okuma/yazma, \"arama-değiştir\" bloklarıyla cerrahi kod düzenleme ve tam eşleşme bulunamadığında devreye giren bulanık (fuzzy) eşleşme desteği sunuyor. SSH oturumları ve veritabanı bağlantıları gibi interaktif süreçleri yönetebiliyor. Güvenlik tarafında sembolik bağlantı (symlink) engelleme, komut kara listesi, denetim (audit) kaydı ve Docker izolasyon seçenekleri bulunuyor.",
+        "why": "📈 MCP ekosistemi hızla büyüyor ve \"AI ajanına bilgisayarınızı emanet edin\" fikri geliştiriciler arasında hem büyük merak hem de tartışma yaratıyor. Claude, Cursor, VS Code ve JetBrains gibi birçok istemciyle uyumlu olması, aracın tek bir platforma bağlı kalmadan geniş bir kitleye ulaşmasını sağlıyor.",
+        "evolve": "💡 Bilgisayara bu denli geniş erişim veren bir araç için, kullanıcı bazlı ayrıntılı izin (granular permission) katmanlarının ve denetim arayüzünün daha görünür/kolay erişilir olması güven inşa etmeye yardımcı olurdu. Kurumsal ortamlarda \"hangi komutlar asla çalıştırılamaz\" gibi merkezi politika yönetimi eklenmesi de benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin dış araçlara (dosya sistemi, terminal, API'ler) standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Fuzzy eşleşme", "def": "Aranan metnin birebir aynısı bulunamadığında, en yakın benzer sonucu bulmaya çalışan arama yöntemi." },
+        { "term": "Symlink (sembolik bağlantı)", "def": "Bir dosya veya klasöre işaret eden, gerçek içeriği başka bir yerde tutan kısayol benzeri dosya sistemi nesnesi." },
+        { "term": "Docker izolasyonu", "def": "Bir uygulamayı, ana sistemden bağımsız, kapalı bir \"konteyner\" içinde çalıştırarak güvenlik ve tutarlılık sağlama yöntemi." },
+        { "term": "Audit log (denetim kaydı)", "def": "Bir sistemde kimin ne zaman hangi işlemi yaptığını kayıt altına alan, sonradan incelenebilen günlük." }
+      ]
+    },
+    {
+      "name": "prisma/prisma",
+      "url": "https://github.com/prisma/prisma",
+      "stars": "47k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Node.js ve TypeScript uygulamalarında veritabanıyla konuşmayı, ham SQL yazmadan ve tip hatalarından korkmadan yapmayı sağlayan bir **ORM** aracı. PostgreSQL, MySQL, SQL Server, SQLite, MongoDB ve CockroachDB gibi farklı veritabanlarını tek bir tutarlı arayüzden yönetmeyi mümkün kılıyor.",
+        "tech": "🛠️ Üç ana parçadan oluşuyor: **Prisma Client** (otomatik üretilen, tip güvenli sorgu oluşturucu), **Prisma Migrate** (şema/migrasyon yönetimi) ve **Prisma Studio** (veriyi görsel olarak inceleyen bir arayüz). Geliştirici veri modelini bildirimsel (declarative) bir şema dosyasında tanımlıyor; buradan TypeScript tipleriyle bire bir uyumlu bir istemci otomatik üretiliyor. `prisma.config.ts` dosyası bağlantı ve CLI davranışını yönetiyor; \"driver adapter\" desteğiyle farklı veritabanı sürücüleriyle çalışabiliyor. Hem kod-öncelikli hem de mevcut bir veritabanını okuyup (introspection) şema çıkaran veritabanı-öncelikli iş akışlarını destekliyor.",
+        "why": "📈 Prisma zaten köklü, olgun bir proje; trend listesine yeniden düşmesi büyük olasılıkla yakın zamandaki bir sürüm veya duyuruyla ilgili. TypeScript ekosisteminde \"hangi ORM\" tartışması hâlâ canlı ve tip güvenliği arayan geliştirici kitlesi geniş. Çoklu veritabanı desteği, hem küçük projeler hem de kurumsal geçişler için onu cazip kılıyor.",
+        "evolve": "💡 Bazı geliştiriciler, ORM katmanının ağır sorgularda ham SQL'e kıyasla ek yük (overhead) getirdiğini eleştiriyor; sorgu motorunun daha da hafifletilmesi bu algıyı azaltabilir. MongoDB gibi doküman tabanlı veritabanlarında ilişkisel şema kısıtlarının daha esnek hale getirilmesi de farklı veri modelleme tarzlarına uyumu artırabilir."
+      },
+      "glossary": [
+        { "term": "ORM (Object-Relational Mapping)", "def": "Veritabanı tablolarını programlama dilindeki nesnelere eşleyerek, SQL yazmadan veritabanıyla çalışmayı sağlayan katman." },
+        { "term": "Tip güvenliği (type safety)", "def": "Kodun derlenme aşamasında, yanlış veri tipi kullanımlarının hataya yol açmadan önce yakalanmasını sağlayan özellik." },
+        { "term": "Migrasyon (migration)", "def": "Veritabanı şemasındaki değişiklikleri (tablo, kolon ekleme/silme gibi) düzenli ve geri alınabilir adımlarla uygulama süreci." },
+        { "term": "Introspection", "def": "Var olan bir veritabanının yapısını otomatik olarak okuyup, ondan bir şema/tip tanımı çıkarma işlemi." },
+        { "term": "Bildirimsel (declarative) şema", "def": "\"Nasıl yapılacağı\" yerine \"sonucun ne olması gerektiği\"nin tanımlandığı yapılandırma biçimi." }
+      ]
+    },
+    {
+      "name": "unclecode/crawl4ai",
+      "url": "https://github.com/unclecode/crawl4ai",
+      "stars": "72k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Web sitelerini, büyük dil modellerinin (LLM) rahatça işleyebileceği temiz **Markdown** formatına dönüştüren açık kaynaklı bir web kazıyıcı (crawler). Pahalı ticari \"veri çıkarma\" API'lerine alternatif olarak, RAG sistemleri, AI ajanları ve veri hatları için ham web içeriğini kullanılabilir hale getiriyor.",
+        "tech": "🛠️ **Playwright** üzerine kurulu; Chromium, Firefox ve WebKit'te tarayıcı otomasyonu yapabiliyor. \"Fit Markdown\" adını verdikleri özellikle, reklam ve menü gibi gürültüyü sezgisel filtrelerle temizleyip asıl içeriği koruyor; içerik alaka düzeyini belirlemek için **BM25** algoritmasını kullanıyor. Yüksek eşzamanlılık için async/await desenleriyle çalışıyor. LLM destekli veri çıkarma (OpenAI ve yerel modeller dahil), oturum/cookie kalıcılığı, konu bazlı/regex/cümle bazlı metin parçalama (chunking) stratejileri ve JWT kimlik doğrulamalı Docker + FastAPI sunucusu sunuyor. Bot-engelleme sistemlerine karşı proxy artırma gibi anti-bot önlemleri de mevcut.",
+        "why": "📈 RAG ve AI ajan uygulamaları büyüdükçe, \"web'i LLM için temiz veriye çevirme\" ihtiyacı kritik bir altyapı problemi haline geldi. Ticari alternatiflere kıyasla açık kaynak ve ücretsiz olması, maliyete duyarlı geliştiricileri ve girişimleri cezbediyor.",
+        "evolve": "💡 Agresif anti-bot korumalı sitelerde güvenilirlik hâlâ zorlayıcı bir alan; daha gelişmiş insansı davranış simülasyonu değer katabilir. Çok büyük ölçekli (milyonlarca sayfa) taramalar için dağıtık (distributed) çalışma desteğinin olgunlaşması da kurumsal kullanım için önemli olabilir."
+      },
+      "glossary": [
+        { "term": "LLM (Large Language Model)", "def": "Metin üretmek ve anlamak için devasa veri kümeleriyle eğitilmiş büyük yapay zeka modeli." },
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir yapay zeka modelinin cevap üretirken, harici bir veri kaynağından ilgili bilgiyi çekip yanıtına dahil etmesini sağlayan teknik." },
+        { "term": "Crawler / scraper", "def": "Web sitelerini otomatik olarak gezip içeriklerini toplayan yazılım." },
+        { "term": "Playwright", "def": "Web sitelerini gerçek bir tarayıcı gibi otomatik açıp içeriğiyle etkileşime giren, geliştiriciler için açık kaynak bir otomasyon aracı." },
+        { "term": "BM25", "def": "Bir metnin bir arama sorgusuyla ne kadar alakalı olduğunu puanlayan, arama motorlarında yaygın kullanılan bir sıralama algoritması." },
+        { "term": "Async/await", "def": "Bir programın, bir işlemi beklerken (ör. ağ isteği) diğer işleri durdurmadan yürütmesini sağlayan programlama deseni." },
+        { "term": "Chunking", "def": "Uzun bir metni, işlenmesi daha kolay olan küçük parçalara bölme işlemi." },
+        { "term": "JWT (JSON Web Token)", "def": "Kullanıcı kimliğini güvenli biçimde taşıyan, sunucular arası kimlik doğrulamada yaygın kullanılan bir token formatı." },
+        { "term": "Anti-bot", "def": "Web sitelerinin otomatik programlar (bot) tarafından ziyaret edilmesini tespit edip engellemeye çalışan korumalar." },
+        { "term": "FastAPI", "def": "Python dilinde hızlı ve tip güvenli web API'leri yazmak için kullanılan popüler bir çatı (framework)." }
+      ]
+    },
+    {
+      "name": "kyutai-labs/pocket-tts",
+      "url": "https://github.com/kyutai-labs/pocket-tts",
+      "stars": "7.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bulut API'sine veya güçlü bir grafik kartına (GPU) ihtiyaç duymadan, sıradan bir bilgisayarın işlemcisinde (CPU) çalışan, metni sese çeviren (**TTS**) bir yapay zeka modeli. `pip install` ile kurup tek bir fonksiyon çağrısıyla ses üretmeyi mümkün kılıyor.",
+        "tech": "🛠️ Yalnızca 100 milyon parametreli, özellikle CPU'da hızlı çalışacak şekilde küçültülmüş bir model kullanıyor. İlk ses parçasına yaklaşık 200 milisaniyede ulaşan, kesintisiz akan (**streaming**) ses üretimi yapıyor. Bir MacBook Air M4'ün yalnızca 2 çekirdeğinde gerçek zamandan yaklaşık 6 kat hızlı çalışabiliyor. Ses klonlama (voice cloning) ile İngilizce, Fransızca, Almanca, Portekizce, İtalyanca ve İspanyolca desteği sunuyor. Python kütüphanesi, komut satırı aracı veya yerel HTTP sunucusu olarak kullanılabiliyor; PyTorch 2.5 ve üzeri gerektiriyor.",
+        "why": "📈 \"Edge AI\" (cihaz üstünde çalışan yapay zeka) trendi güçleniyor: gizlilik kaygıları, API maliyetleri ve gecikme (latency) sorunları nedeniyle buluta bağımlı olmayan modellere talep artıyor. Kyutai'nin (Fransız açık kaynak AI laboratuvarı) itibarı ve modelin gerçekten CPU'da hızlı çalışması, hem meraklı geliştiricileri hem de üretim ortamı arayan ekipleri cezbediyor.",
+        "evolve": "💡 Şu an desteklenen dil sayısı sınırlı (6 dil); daha fazla dil ve aksan çeşitliliği eklenmesi erişilebilirliği artırır. Küçük model boyutu, karmaşık tonlama/vurgu (prozodi) gerektiren senaryolarda büyük bulut tabanlı TTS modellerinin gerisinde kalabilir; bu açığı kapatacak isteğe bağlı bir \"yüksek kalite\" modu faydalı olabilir."
+      },
+      "glossary": [
+        { "term": "TTS (Text-to-Speech)", "def": "Yazılı metni otomatik olarak sesli konuşmaya çeviren teknoloji." },
+        { "term": "CPU", "def": "Bilgisayarın genel işlemleri yürüten ana işlemcisi; GPU'ya göre daha yaygın ama paralel hesaplamada daha yavaştır." },
+        { "term": "GPU", "def": "Aslen grafik işleme için tasarlanmış, yapay zeka modellerinin eğitim ve çalıştırılmasında yoğun paralel hesaplama gücü sağlayan donanım." },
+        { "term": "Streaming", "def": "Verinin tamamı hazır olmadan, üretildikçe parça parça iletilmesi/oynatılması." },
+        { "term": "Voice cloning (ses klonlama)", "def": "Kısa bir ses örneğinden yola çıkarak, o kişinin sesine benzer yapay konuşma üretme yeteneği." },
+        { "term": "Edge AI", "def": "Yapay zeka modelinin, uzak bir sunucu yerine doğrudan kullanıcının kendi cihazında çalıştırılması." },
+        { "term": "Latency (gecikme)", "def": "Bir isteğin gönderilmesiyle yanıtın alınması arasında geçen süre." },
+        { "term": "Prozodi", "def": "Konuşmadaki tonlama, vurgu ve ritim gibi, anlamı ve doğallığı etkileyen ses özellikleri." },
+        { "term": "CLI (Command Line Interface)", "def": "Komutların yazılı metin olarak girildiği, grafik arayüz içermeyen kullanım biçimi." },
+        { "term": "PyTorch", "def": "Yapay zeka modelleri geliştirmek için yaygın kullanılan açık kaynak bir Python kütüphanesi." }
+      ]
+    }
+  ]
+}
