@@ -1,0 +1,82 @@
+{
+  "date": "2026-07-11",
+  "projects": [
+    {
+      "name": "TencentCloud/TencentDB-Agent-Memory",
+      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
+      "stars": "8.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI ajanları uzun süren oturumlarda iki uçtan birine savruluyor: ya konuşma geçmişini komple unutuyor ya da her şeyi ham haliyle bağlama (context) tıkıştırıp hem yavaşlıyor hem de gereksiz token harcıyor. TencentDB Agent Memory, bir ajanın gerçekten **hatırlanması gereken** şeyi seçip saklaması, geri kalanını gerektiğinde derinlemesine kazabileceği bir arşive devretmesi için 4 katmanlı bir hafıza hattı sunuyor. Amaç insan gibi çalışan bir hafıza: önce özet, gerekirse detay.",
+        "tech": "Mimari L0'dan L3'e piramit şeklinde ilerliyor:\n- **L0 (Conversation):** Ham diyalog ve işlem kayıtları\n- **L1 (Atom):** Bunlardan çıkarılan atomik gerçekler ve karar noktaları\n- **L2 (Scenario):** İlişkili örüntüleri gruplayan sahne blokları\n- **L3 (Persona):** Kullanıcı profili ve davranışsal tercihler\n\nAlt katmanlar ham veriyi veritabanında saklarken üst katmanlar okunabilir Markdown olarak tutuluyor — yani sıkıştırma geri döndürülemez bir kayıp değil, kademeli bir özetleme. Vektör arama için dış bir API'ye değil, yerel **SQLite + sqlite-vec** eklentisine güveniliyor; buna BM25 anahtar kelime aramasıyla embedding aramasının **RRF (Reciprocal Rank Fusion)** ile birleştirildiği hibrit bir arama katmanı eşlik ediyor. Görev durumları Mermaid diyagramlarıyla sembolik olarak sıkıştırılıyor. OpenClaw ve Hermes Agent gibi ajan çatıları için eklenti desteği var; her turdan önce ilgili anılar otomatik olarak bağlama enjekte ediliyor.",
+        "why": "Uzun bağlam pencerelerine rağmen ajanların hâlâ her şeyi hatırlamaya çalışıp boğulması güncel ve can sıkıcı bir problem; proje bunu somut rakamlarla çözüyor: OpenClaw WideSearch testinde token kullanımını **%61'e kadar** azaltıyor, görev başarı oranını göreli **%51** artırıyor, PersonaMem doğruluğunu %48'den %76'ya çıkarıyor. Dışa API bağımlılığı olmayan, tamamen yerel çalışabilen bir vektör veritabanı sunması gizlilik ve maliyet odaklı ekipler için çekici. AI agent + veritabanı kesişimindeki bu tür altyapı projeleri son dönemde hız kazanan bir kategori.",
+        "evolve": "Şu an tek kullanıcı/tek ajan senaryosuna odaklanıyor; çoklu ajan ve çoklu kullanıcı arasında paylaşılan hafıza yönetimi doğal bir sonraki adım. Farklı embedding modelleri arasında geçiş yapabilme, buluta senkronizasyon seçeneği ve kurumsal ERP/CRM sistemleriyle entegrasyon (örneğin bir müşteri temsilcisi ajanının geçmiş tüm görüşmeleri hatırlaması) potansiyel genişleme alanları."
+      },
+      "glossary": [
+        { "term": "Vektör veritabanı (vector database)", "def": "Metinleri/verileri sayısal 'embedding' vektörleri olarak saklayıp anlamsal benzerliğe göre arama yapmayı sağlayan veritabanı türü." },
+        { "term": "Embedding", "def": "Bir metnin anlamının sayısal bir vektöre dönüştürülmüş hali; benzer anlamlı metinler vektör uzayında birbirine yakın konumlanır." },
+        { "term": "BM25", "def": "Anahtar kelime eşleşmesine dayalı, arama motorlarında yaygın kullanılan klasik bir metin arama algoritması." },
+        { "term": "RRF (Reciprocal Rank Fusion)", "def": "Farklı arama yöntemlerinin (ör. anahtar kelime ve embedding) sonuç sıralamalarını tek bir sıralamada birleştiren yöntem." },
+        { "term": "Token", "def": "Büyük dil modellerinin metni işlerken kullandığı en küçük birim (kelime parçası); maliyet ve hız genelde token sayısına göre ölçülür." },
+        { "term": "Bağlam penceresi (context window)", "def": "Bir dil modelinin tek seferde görebildiği azami metin miktarı." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." }
+      ]
+    },
+    {
+      "name": "obra/superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "stars": "252k",
+      "language": "Shell",
+      "sections": {
+        "serves": "AI kodlama ajanlarının en büyük zaafı, düşünmeden doğrudan koda dalıp yanlış problemi hızlıca çözmesi. Superpowers, bir ajanı kodlamaya başlamadan önce durup aslında ne yapmaya çalıştığını sormaya, tasarımı insana onaylatmaya ve gerektiğinde test yazmaya zorlayan bir metodoloji ve beceri (skill) çatısı sunuyor.",
+        "tech": "Sistem, geliştirme sürecinin her aşamasında bağlama göre otomatik devreye giren, birbirine eklemlenebilen skill dosyalarından oluşuyor:\n- **Brainstorming:** Ajan netleştirici sorular sorar, alternatifleri araştırır, tasarımı insanın onayına sunar\n- **Planning:** İş, tam dosya yollarıyla 2-5 dakikalık görevlere bölünür\n- **Implementation:** Alt ajanlar (subagent) görevleri üstlenir; iki aşamalı inceleme (spesifikasyona uygunluk + kod kalitesi) yapılır\n- **Testing:** RED-GREEN-REFACTOR test-önce-yaz (TDD) döngüsü zorunlu kılınır\n- **Review & Completion:** Kod incelemesi ve birleştirme/PR kararları\n\nSkiller özel komut gerektirmeden, bağlama göre kendiliğinden tetikleniyor; Claude Code, Cursor, GitHub Copilot CLI, Codex gibi birçok ajan platformunda çalışabiliyor.",
+        "why": "Hızlı fakat gelişigüzel AI kodlamaya karşı disiplinli bir alternatif sunması, tam da AI ajanlarının güvenilirliğinin sorgulandığı bir dönemde büyük yankı buldu. Agent skill kavramı Claude Code ekosisteminde yeni yaygınlaşan bir standart haline geldi; bu da aynı gün trend listesinde birden fazla skill odaklı projenin (agent-skills, stitch-skills gibi) birlikte görünmesini açıklıyor. 252 bin yıldıza ulaşması, geliştiricilerin hızlı ama güvenilmez AI kodlamadan yavaş ama doğrulanmış yaklaşıma geçiş isteğini yansıtıyor.",
+        "evolve": "Şu an ağırlıklı olarak Claude Code ekosistemine göre şekillenmiş; farklı dillerde/çerçevelerde özelleşmiş skill setleri, ekip içinde paylaşılan ortak skill kütüphaneleri ve otomatik skill keşfi/önerisi (hangi skill'in ne zaman devreye girmesi gerektiğinin öğrenilmesi) doğal genişleme yönleri olabilir."
+      },
+      "glossary": [
+        { "term": "Agent skill", "def": "Bir AI ajanına belirli bir görev veya süreç için nasıl davranması gerektiğini öğreten, yeniden kullanılabilir talimat/dosya paketi." },
+        { "term": "TDD (Test-Driven Development)", "def": "Önce başarısız olacak bir test yazıp sonra o testi geçecek en az kodu yazma, ardından iyileştirme (refactor) yapma yöntemi." },
+        { "term": "RED-GREEN-REFACTOR", "def": "TDD döngüsünün üç adımı: test yaz ve kırmızı (başarısız) gör, kodu yazıp yeşile (başarılı) çevir, sonra kodu temizle." },
+        { "term": "Subagent", "def": "Bir ana AI ajanının belirli bir alt görevi devrettiği, bağımsız çalışan yardımcı ajan." }
+      ]
+    },
+    {
+      "name": "iOfficeAI/OfficeCLI",
+      "url": "https://github.com/iOfficeAI/OfficeCLI",
+      "stars": "14.6k",
+      "language": "C#",
+      "sections": {
+        "serves": "AI ajanlarının Word, Excel ve PowerPoint dosyalarıyla çalışması bugüne kadar ya Office kurulumu gerektiriyor ya da yüzeysel/kırılgan kütüphanelerle sınırlı kalıyordu. OfficeCLI, Office kurulu olmadan bu üç formatı komut satırından okuyup, sıfırdan oluşturup, düzenleyebilen; üstelik ajanın kendi ürettiği belgeyi görsel olarak da doğrulayabildiği bir araç sunuyor.",
+        "tech": "Tamamen C# ile yazılmış, .NET çalışma zamanı gömülü tek bir native binary olarak dağıtılıyor — Office bağımlılığı yok. OOXML formatlarını (.docx/.xlsx/.pptx) tam round-trip sadakatiyle destekliyor. Komutlar üç katmanlı bir mimariyle çalışıyor:\n- **L1:** Yüksek seviye, anlamsal görünümler (ör. metni değiştir)\n- **L2:** `/slide[1]/shape[2]` gibi yol tabanlı DOM işlemleri\n- **L3:** Ham XML/XPath ile en alt seviye erişim\n\nEn dikkat çekici parça, sıfırdan yazılmış bir **HTML/PNG render motoru**: ajan, ürettiği belgeyi kör bırakmak yerine ekran görüntüsü olarak görüp taşan metin veya çakışan şekil gibi hataları yakalayabiliyor. 350'den fazla Excel fonksiyonu otomatik hesaplanıyor, pivot tablo üretimi native destekleniyor; Claude Code, Cursor gibi araçlara kendini otomatik kuran bir MCP sunucusu da mevcut.",
+        "why": "AI ajanları için tasarlanmış ilk Office paketi iddiasıyla ilk hamle avantajına sahip. Kurulumsuz tek binary olması, deterministik JSON çıktısı vermesi ve en önemlisi ajanın kendi çıktısını görsel olarak doğrulayabilmesi — otomasyon araçlarında sık rastlanmayan, gerçek bir boşluğu dolduran özellik. Kurumsal/ofis otomasyonu tarafında AI ajan kullanımı hızla arttığı için bu proje productivity + AI kesişiminde tam zamanında geldi; bir günde 1.200'den fazla yıldız alması bu ilginin somut göstergesi.",
+        "evolve": "Şimdilik Microsoft formatlarına odaklanmış; Google Workspace ve LibreOffice (ODF) format desteği doğal bir genişleme olur. Gerçek zamanlı ortak düzenleme (collaborative editing), çoklu dil/locale desteği ve bulut depolama (OneDrive, SharePoint) entegrasyonları da eklenebilecek yetenekler arasında."
+      },
+      "glossary": [
+        { "term": "OOXML", "def": "Microsoft Office'in .docx/.xlsx/.pptx dosyalarının temelini oluşturan, XML tabanlı açık belge format standardı." },
+        { "term": "Native binary", "def": "Herhangi bir ek çalışma zamanı kurmadan doğrudan işletim sisteminde çalışabilen, derlenmiş çalıştırılabilir dosya." },
+        { "term": "DOM (Document Object Model)", "def": "Bir belgenin (HTML, XML vb.) parça parça ağaç yapısında programatik olarak erişilebilir hale getirilmiş temsili." },
+        { "term": "XPath", "def": "XML tabanlı belgeler içinde belirli öğeleri yol ifadeleriyle seçmeye yarayan sorgu dili." },
+        { "term": "Pivot tablo", "def": "Büyük veri kümelerini özetleyip gruplandırarak analiz etmeyi sağlayan Excel tablo türü." }
+      ]
+    },
+    {
+      "name": "oven-sh/bun",
+      "url": "https://github.com/oven-sh/bun",
+      "stars": "94.4k",
+      "language": "Rust",
+      "sections": {
+        "serves": "JavaScript geliştirme dünyasında ayrı ayrı bir çalışma zamanı (Node.js), paket yöneticisi (npm), test aracı (Jest) ve bundler (webpack/esbuild) kullanmak gerekiyordu. Bun bunların hepsini tek bir hızlı çalıştırılabilir dosyada birleştirip kurulum ve araç karmaşasını ortadan kaldırıyor.",
+        "tech": "Bun, JavaScript motoru olarak Node.js'in kullandığı V8 yerine **JavaScriptCore**'u (Safari'nin motoru) tercih ediyor; bu tercih başlangıç (startup) sürelerini ve bellek kullanımını ciddi şekilde azaltıyor. Projenin en dikkat çekici gelişmesi 2026 Mayıs'ında tamamlanan, yaklaşık 1 milyon satırlık **Zig'den Rust'a geçiş**: çekirdek artık ağırlıkla Rust'ta yazılı, C++ bileşenleriyle destekleniyor. Üstüne TypeScript/JSX'i doğrudan çalıştırabiliyor, `Bun.build` ile esbuild benzeri bir bundler, `bun test` ile snapshot ve mock destekli bir test koşucusu, `bunx` ile paket çalıştırıcısı sunuyor.",
+        "why": "Bun zaten performans vaadiyle tanınıyordu, ama bu dönemde asıl dikkat çeken şey milyon satırlık bir dilden dile geçişin büyük ölçüde AI destekli araçlarla gerçekleştirilmiş olması — bu da hem dev tools hem AI ile kod taşıma ilgi alanlarını aynı anda cezbediyor. Node.js'e drop-in alternatif olması ve düzenli, aktif sürüm temposu (en son v1.3.14) topluluğun güvenini korumasını sağlıyor.",
+        "evolve": "Rust geçişinin tamamlanmasıyla topluluktan performans ve kararlılık karşılaştırmaları beklenebilir; Windows desteğinin olgunlaşması, daha fazla Node.js API uyumluluğu ve WebAssembly tarafında derinleşme olası sonraki adımlar. Rust'a geçişin ardından eklenti/native modül ekosisteminin nasıl etkileneceği de izlenmeye değer."
+      },
+      "glossary": [
+        { "term": "Çalışma zamanı (runtime)", "def": "Yazılan kodun gerçekte çalıştırıldığı, JavaScript motorunu ve destek kütüphanelerini içeren ortam." },
+        { "term": "JavaScriptCore", "def": "Apple'ın Safari tarayıcısı için geliştirdiği, Bun'ın da kullandığı JavaScript motoru." },
+        { "term": "Bundler", "def": "Birden fazla kod dosyasını, bağımlılıklarıyla birlikte tarayıcıda/çalışma zamanında çalışacak tek (veya az sayıda) dosyaya paketleyen araç." },
+        { "term": "Snapshot testi", "def": "Bir bileşenin/çıktının önceden kaydedilmiş referans haliyle karşılaştırılarak beklenmedik değişiklikleri yakalayan test türü." },
+        { "term": "Drop-in replacement", "def": "Mevcut bir aracın yerine, kod değişikliği gerektirmeden doğrudan konulabilen alternatif." }
+      ]
+    }
+  ]
+}
