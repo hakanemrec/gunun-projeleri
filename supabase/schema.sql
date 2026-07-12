@@ -12,6 +12,7 @@ create table if not exists projects (
   id uuid primary key default gen_random_uuid(),
   day_date date not null references days(date) on delete cascade,
   name text not null,
+  lang text not null default 'tr',
   url text not null,
   stars text,
   language text,
@@ -20,32 +21,38 @@ create table if not exists projects (
   why_md text,
   evolve_md text,
   created_at timestamptz not null default now(),
-  unique (day_date, name)
+  unique (day_date, name, lang)
 );
 create index if not exists projects_day_idx on projects(day_date desc);
 
 -- Küresel sözlük: terim tekilleştirilmiş, tanım en güncel haliyle
 create table if not exists terms (
-  key text primary key,          -- lowercase/trim edilmiş terim
+  key text not null,             -- lowercase/trim edilmiş terim
+  lang text not null default 'tr',
   term text not null,            -- görünen yazım
   def_md text not null,
   first_seen date,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  primary key (key, lang)
 );
 
 -- Terim ↔ proje geçiş ilişkisi (sıklık ve "hangi projede geçti" için)
 create table if not exists project_terms (
   project_id uuid not null references projects(id) on delete cascade,
-  term_key text not null references terms(key) on delete cascade,
-  primary key (project_id, term_key)
+  term_key text not null,
+  lang text not null default 'tr',
+  primary key (project_id, term_key, lang),
+  foreign key (term_key, lang) references terms(key, lang) on delete cascade
 );
 create index if not exists project_terms_term_idx on project_terms(term_key);
 
 -- Haftalık sentez (Faz 3'te kullanılacak, şema hazır)
 create table if not exists weekly_syntheses (
-  week_start date primary key,
+  week_start date not null,
+  lang text not null default 'tr',
   content_md text not null,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  primary key (week_start, lang)
 );
 
 -- ============ Kullanıcı tabloları (RLS: sadece sahibi) ============
@@ -69,12 +76,14 @@ create table if not exists user_notes (
 -- box: 1..5 (1g→3g→7g→14g→30g). box 0 = "hiç çalışılmadı" anlamına gelmez; satır yoksa çalışılmamıştır.
 create table if not exists user_term_progress (
   user_id uuid not null references auth.users(id) on delete cascade,
-  term_key text not null references terms(key) on delete cascade,
+  term_key text not null,
+  lang text not null default 'tr',
   box smallint not null default 1 check (box between 1 and 5),
   next_review_at date not null default current_date,
   started_on date not null default current_date,
   updated_at timestamptz not null default now(),
-  primary key (user_id, term_key)
+  primary key (user_id, term_key, lang),
+  foreign key (term_key, lang) references terms(key, lang) on delete cascade
 );
 create index if not exists utp_due_idx on user_term_progress(user_id, next_review_at);
 

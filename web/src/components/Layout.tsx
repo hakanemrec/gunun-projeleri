@@ -78,6 +78,9 @@ export function Layout() {
             <NavLink to="/quiz" className="tab">
               Quiz{dueCount > 0 && <span className="badge due">{dueCount}</span>}
             </NavLink>
+            <NavLink to="/hafta" className="tab">
+              Hafta
+            </NavLink>
           </nav>
           <div className="topbar-actions">
             <ThemeToggle />
@@ -89,8 +92,9 @@ export function Layout() {
         <Outlet />
       </main>
       <footer className="foot">
+        <NavLink to="/hakkinda">hakkında</NavLink>
         {feed?.source === 'dev' && (
-          <span className="dev-note">yerel mod — Supabase yapılandırılmadı, veriler dev-feed.json'dan</span>
+          <span className="dev-note"> · yerel mod — Supabase yapılandırılmadı, veriler dev-feed.json'dan</span>
         )}
       </footer>
     </div>

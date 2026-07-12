@@ -13,6 +13,8 @@ import { ProjectPage } from './pages/ProjectPage'
 import { GlossaryPage } from './pages/GlossaryPage'
 import { BookmarksPage } from './pages/BookmarksPage'
 import { QuizPage } from './pages/QuizPage'
+import { WeekPage } from './pages/WeekPage'
+import { AboutPage } from './pages/AboutPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -29,6 +31,8 @@ createRoot(document.getElementById('root')!).render(
                   <Route path="sozluk" element={<GlossaryPage />} />
                   <Route path="kaydedilenler" element={<BookmarksPage />} />
                   <Route path="quiz" element={<QuizPage />} />
+                  <Route path="hafta" element={<WeekPage />} />
+                  <Route path="hakkinda" element={<AboutPage />} />
                 </Route>
               </Routes>
             </BrowserRouter>

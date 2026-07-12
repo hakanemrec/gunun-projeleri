@@ -63,9 +63,31 @@ tanımlarıyla listele. Tanım 1-2 cümle, teknik bilgisi orta seviye birinin an
 - Her sözlük girdisinde `term` ve `def` dolu olmalı
 - Geçerli JSON üret (kaçış karakterlerine dikkat)
 
+## Haftalık sentez (SADECE PAZAR günleri, günlük analize EK olarak)
+
+Bugün pazar ise, günlük analizin yanında bir de **haftalık sentez** üret:
+geçen 7 günün analizlerini (`data/days/` içindeki son 7 dosya) oku ve şunları yaz:
+
+- **Haftanın temaları**: bu hafta trend olan projelerde tekrarlayan örüntüler (2-4 tema)
+- **Yükselenler**: hangi teknoloji/yaklaşım ivme kazanıyor, neden
+- **Haftanın terimleri**: bu hafta ilk kez görülen en önemli 3-5 jargon (kısa tanımla)
+- **Haftanın projesi**: içlerinden en dikkat çekeni ve tek paragraf gerekçe
+
+Ton: bülten gibi — samimi, akıcı, okuyana "bu haftayı kaçırmamışım" hissi veren. 400-700 kelime.
+
+Çıktı: `data/weeks/YYYY-MM-DD.json` (haftanın PAZARTESİ tarihi, yani 6 gün öncesi):
+
+```json
+{
+  "week_start": "2026-07-06",
+  "lang": "tr",
+  "content_md": "## Haftanın temaları\n..."
+}
+```
+
 ## Teslim
 
-1. JSON dosyasını `data/days/` altına yaz
+1. JSON dosyasını `data/days/` altına yaz (pazar günleri `data/weeks/` dosyası da eklenir)
 2. Commit mesajı: `Günlük trending: <D Ay>` (örn. `Günlük trending: 9 Temmuz`)
 3. `main` branch'ine push'la
 4. Push sonrası GitHub Action (`sync-feed.yml`) veriyi otomatik olarak Supabase'e aktarır —

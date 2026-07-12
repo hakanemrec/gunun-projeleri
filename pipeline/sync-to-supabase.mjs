@@ -38,6 +38,20 @@ function loadDayFiles() {
   });
 }
 
+function loadWeekFiles() {
+  const dir = join(ROOT, "data", "weeks");
+  let files;
+  try { files = readdirSync(dir).filter((f) => f.endsWith(".json")); }
+  catch { return []; }
+  return files.sort().map((f) => {
+    const week = JSON.parse(readFileSync(join(dir, f), "utf8"));
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(week.week_start))
+      throw new Error(`${f}: week_start alanı YYYY-MM-DD (pazartesi) olmalı.`);
+    if (!week.content_md) throw new Error(`${f}: content_md boş.`);
+    return week;
+  });
+}
+
 // ---- Doğrulama (bozuk gün DB'ye girmesin) ----
 
 function validateDay(day) {
@@ -58,6 +72,7 @@ function validateDay(day) {
 
 async function upsertDay(day) {
   validateDay(day);
+  const lang = day.lang ?? "tr";
 
   let { error } = await db.from("days").upsert({ date: day.date });
   if (error) throw new Error(`days upsert (${day.date}): ${error.message}`);
@@ -69,6 +84,7 @@ async function upsertDay(day) {
         {
           day_date: day.date,
           name: p.name,
+          lang,
           url: p.url,
           stars: p.stars ?? null,
           language: p.language ?? null,
@@ -77,7 +93,7 @@ async function upsertDay(day) {
           why_md: p.sections?.why ?? null,
           evolve_md: p.sections?.evolve ?? null,
         },
-        { onConflict: "day_date,name" }
+        { onConflict: "day_date,name,lang" }
       )
       .select("id")
       .single();
@@ -88,24 +104,40 @@ async function upsertDay(day) {
       // Terim yoksa ekle; varsa tanımı GÜNCELLEME (ilk/mevcut tanım korunur, tutarlılık için)
       const { error: tErr } = await db
         .from("terms")
-        .upsert({ key, term: g.term, def_md: g.def, first_seen: day.date }, { onConflict: "key", ignoreDuplicates: true });
+        .upsert({ key, lang, term: g.term, def_md: g.def, first_seen: day.date }, { onConflict: "key,lang", ignoreDuplicates: true });
       if (tErr) throw new Error(`terms upsert (${key}): ${tErr.message}`);
 
       const { error: ptErr } = await db
         .from("project_terms")
-        .upsert({ project_id: proj.id, term_key: key }, { onConflict: "project_id,term_key", ignoreDuplicates: true });
+        .upsert({ project_id: proj.id, term_key: key, lang }, { onConflict: "project_id,term_key,lang", ignoreDuplicates: true });
       if (ptErr) throw new Error(`project_terms upsert: ${ptErr.message}`);
     }
   }
   console.log(`✓ ${day.date} — ${day.projects.length} proje senkronlandı`);
 }
 
+async function upsertWeek(week) {
+  const lang = week.lang ?? "tr";
+  const { error } = await db
+    .from("weekly_syntheses")
+    .upsert(
+      { week_start: week.week_start, lang, content_md: week.content_md },
+      { onConflict: "week_start,lang" }
+    );
+  if (error) throw new Error(`weekly upsert (${week.week_start}): ${error.message}`);
+  console.log(`✓ hafta ${week.week_start} senkronlandı`);
+}
+
 const legacy = process.argv.includes("--legacy");
 const days = legacy ? loadLegacyFeed(join(ROOT, "data", "feed.js")) : loadDayFiles();
-if (!days.length) {
-  console.log(legacy ? "feed.js'te göç edilecek gün yok." : "data/days/ içinde dosya yok.");
+const weeks = legacy ? [] : loadWeekFiles();
+if (!days.length && !weeks.length) {
+  console.log(legacy ? "feed.js'te göç edilecek gün yok." : "data/days ve data/weeks boş.");
   process.exit(0);
 }
-console.log(`${days.length} gün senkronlanacak (${legacy ? "legacy feed.js" : "data/days"})...`);
-for (const day of days) await upsertDay(day);
+if (days.length) {
+  console.log(`${days.length} gün senkronlanacak (${legacy ? "legacy feed.js" : "data/days"})...`);
+  for (const day of days) await upsertDay(day);
+}
+for (const week of weeks) await upsertWeek(week);
 console.log("Tamamlandı.");

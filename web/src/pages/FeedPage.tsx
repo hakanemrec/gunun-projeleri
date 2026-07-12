@@ -1,8 +1,35 @@
+import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { useFeed } from '../context/FeedContext'
 import { useSearch } from '../context/SearchContext'
 import { ProjectCard } from '../components/ProjectCard'
 import { formatDate } from '../lib/data'
 import type { Project } from '../lib/types'
+
+function Hero() {
+  const { enabled, signIn } = useAuth()
+  return (
+    <section className="hero">
+      <h1 className="hero-title">
+        Her gün 5 dakika: trend projeleri oku, <em>jargonunu öğren</em>, quiz'le kalıcılaştır.
+      </h1>
+      <p className="hero-sub">
+        d<em>ai</em>ly, GitHub Trending'i her sabah senin için okur: Türkçe derin analiz + her
+        terimin sade açıklaması + aralıklı tekrar quiz'i.
+      </p>
+      <div className="hero-actions">
+        {enabled && (
+          <button className="btn btn-primary" onClick={signIn}>
+            GitHub ile başla — ücretsiz
+          </button>
+        )}
+        <Link to="/hakkinda" className="btn">
+          Nasıl çalışır?
+        </Link>
+      </div>
+    </section>
+  )
+}
 
 export function projectMatches(p: Project, q: string): boolean {
   if (!q) return true
@@ -19,8 +46,10 @@ export function projectMatches(p: Project, q: string): boolean {
 
 export function FeedPage() {
   const { feed, loading, error } = useFeed()
+  const { user } = useAuth()
   const { query } = useSearch()
   const q = query.trim().toLowerCase()
+  const hero = !user && !q ? <Hero /> : null
 
   if (loading) return <div className="empty">Yükleniyor…</div>
   if (error) return <div className="empty error">{error}</div>
@@ -35,6 +64,7 @@ export function FeedPage() {
 
   return (
     <div className="feed">
+      {hero}
       {days.map((day) => (
         <section key={day.date} className="day-group">
           <h2 className="day-head">{formatDate(day.date)}</h2>

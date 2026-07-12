@@ -534,6 +534,113 @@ button {
   margin-top: 5px;
 }
 
+/* ---------- Hero / Hakkında / Hafta ---------- */
+
+.hero {
+  text-align: center;
+  padding: 36px 12px 44px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.hero-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin: 0 auto 14px;
+  max-width: 560px;
+}
+.hero-title em,
+.hero-sub em,
+.about-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero-sub {
+  color: var(--text-soft);
+  max-width: 520px;
+  margin: 0 auto 22px;
+  font-size: 15.5px;
+}
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.about-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 8px 0 10px;
+}
+.about-lead {
+  font-size: 16.5px;
+  color: var(--text-soft);
+  margin: 0 0 28px;
+}
+.about-steps {
+  display: grid;
+  gap: 14px;
+}
+.about-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.about-step .step-icon {
+  font-size: 22px;
+}
+.about-step h3 {
+  margin: 6px 0 6px;
+  font-size: 15.5px;
+}
+.about-step p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 14px;
+}
+.about-cta {
+  text-align: center;
+  padding: 26px 0;
+}
+.about-cta p {
+  color: var(--text-soft);
+  margin: 0 0 12px;
+}
+.about-foot {
+  font-size: 13px;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.week-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 26px;
+  margin-bottom: 18px;
+}
+.week-head {
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+.week-card .md h2,
+.week-card .md h3 {
+  font-size: 15px;
+  margin: 18px 0 6px;
+}
+
+@media (max-width: 640px) {
+  .hero-title,
+  .about-title {
+    font-size: 24px;
+  }
+}
+
 /* ---------- Quiz ---------- */
 
 .badge.due {
