@@ -1,0 +1,159 @@
+{
+  "date": "2026-07-12",
+  "projects": [
+    {
+      "name": "malisper/pgrust",
+      "url": "https://github.com/malisper/pgrust",
+      "stars": "2.2k",
+      "language": "Rust",
+      "sections": {
+        "serves": "PostgreSQL, C dilinde onlarca yıldır katman katman büyümüş dev bir codebase. pgrust bunu sıfırdan **Rust'ta yeniden yazmayı** deneyen iddialı bir proje: amaç bellek güvenliği kazanmak ama en önemlisi, var olan bir Postgres veritabanını **hiç dokunmadan** açıp çalıştırabilmek — yani disk formatı tam uyumlu, `pg_dump` almadan, veri taşımadan geçiş yapılabiliyor.",
+        "tech": "Proje, Postgres 18.3 disk formatıyla bit-bit uyumlu şekilde yazılmış ve 46.000'den fazla resmi Postgres regresyon sorgusunu geçiyor — yani sadece 'Postgres'e benzer' değil, davranışsal olarak aynı sonuçları üretiyor. Bugünkü asıl haber, henüz yayınlanmamış bir versiyonda:\n- Postgres'in klasik **process-per-connection** modelinden **thread-per-connection**'a geçilmesi (her bağlantı ayrı işlem yerine ayrı thread ile yönetiliyor)\n- Bunun sayesinde iddia edilen **%50 daha hızlı transaction** işleme ve analitik sorgularda **~300x** hız artışı\n\nBu, Postgres'in çekirdek mimarisine üç dekaddır dokunulmamış bir varsayımı sarsan cesur bir tasarım kararı.",
+        "why": "Trending listesinde bugünün en sert ivmesi bu projede: toplam 2.2k yıldızın **774'ü tek günde** geldi. Sebep, README'ye yeni eklenen 'yayınlanmamış versiyon resmi regresyon test setinin %100'ünü geçiyor' duyurusu — bu, projenin 'meraklı deney'den 'ciddiye alınası altyapı' statüsüne geçtiğinin işareti. Rust ile sistem yazılımlarını yeniden yazma dalgasının (ripgrep, uv, vb.) en büyük ve en riskli örneklerinden biri olması da veritabanı ve sistem programlama camiasında tartışma yaratıyor.",
+        "evolve": "Şu an production-ready değil ve önemli bir eksik var: PL/Python, PL/Perl, PL/Tcl gibi **prosedürel dil uzantıları** henüz desteklenmiyor — PL/SQL ağırlıklı ERP/IFS dünyasından gelenler için bu, potansiyel bir geçiş engeli. Bazı contrib modülleri de henüz Rust'a taşınmamış. Roadmap'te multithreading'in olgunlaştırılması, connection pooling ve JSON işleme optimizasyonu var; bunlar tamamlandığında Postgres uyumlu ama daha güvenli/hızlı bir alternatif olarak ciddi bir aday haline gelebilir."
+      },
+      "glossary": [
+        {
+          "term": "Disk formatı uyumluluğu",
+          "def": "Bir veritabanı motorunun, verinin diskte saklanma biçimini başka bir sistemle aynı tutarak, veri taşımadan/dönüştürmeden doğrudan aynı dosyaları okuyup çalışabilmesi."
+        },
+        {
+          "term": "Regresyon testi",
+          "def": "Yazılıma yapılan değişikliklerin eski davranışı bozmadığını doğrulamak için önceden hazırlanmış, bilinen doğru sonuçlarla karşılaştırılan test seti."
+        },
+        {
+          "term": "Process-per-connection / Thread-per-connection",
+          "def": "Bir sunucunun her istemci bağlantısını ayrı bir işlem (process) mi yoksa aynı işlem içinde ayrı bir iş parçacığı (thread) ile mi yönettiğini belirten mimari tercih; thread'ler genelde daha hafif ve hızlı başlatılır."
+        },
+        {
+          "term": "PL/SQL ve prosedürel dil uzantıları",
+          "def": "Veritabanı içinde saklı prosedür/fonksiyon yazmayı sağlayan diller (Oracle'da PL/SQL, Postgres'te PL/pgSQL, PL/Python vb.); ERP sistemleri iş mantığının büyük kısmını bu dillerle veritabanı katmanında tutar."
+        },
+        {
+          "term": "AGPL-3.0 lisansı",
+          "def": "Yazılımı değiştirip ağ üzerinden (örneğin bir servis olarak) sunan herkesi de kaynak kodunu açmaya zorlayan, GPL'in en katı türevlerinden biri olan açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "google-labs-code/stitch-skills",
+      "url": "https://github.com/google-labs-code/stitch-skills",
+      "stars": "7.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Google'ın Stitch adlı AI destekli tasarım aracı için hazır **Agent Skills** paketleri sunan bir kütüphane. Fikir basit: tasarım/kod üretim iş akışlarını her seferinde sıfırdan prompt yazarak anlatmak yerine, standart bir formatta paketlenmiş 'yetenek' (skill) dosyaları olarak sağlamak — böylece Claude Code, Cursor, Gemini CLI gibi farklı AI kodlama asistanları aynı skill'i okuyup kullanabiliyor.",
+        "tech": "Stitch'e bağlanmak için **MCP (Model Context Protocol)** server kullanılıyor — yani AI ajanı, Stitch'in tasarım yeteneklerine standart bir protokol üzerinden erişiyor. Kütüphane üç ayrı plugin paketine bölünmüş:\n- **stitch-design**: tasarım odaklı iş akışları\n- **stitch-build**: tasarımdan koda geçiş / kod üretimi\n- **stitch-utilities**: yardımcı araçlar\n\nHer skill; 'mission control' dokümanı (ne zaman/nasıl kullanılacağını anlatan rehber), çalıştırılabilir script'ler, bir bilgi tabanı ve referans örneklerden oluşan sabit bir kalıba oturtulmuş — bu da farklı skill'ler arasında tutarlılık sağlıyor.",
+        "why": "Anthropic öncülüğünde yaygınlaşan 'Agent Skills' açık standardının, Google gibi büyük bir oyuncu tarafından da (resmi olmasa da) benimsenmesi dikkat çekici; bu, AI kodlama asistanları arasında ortak bir eklenti formatının oturmaya başladığının sinyali. 18 Mayıs 2026'daki plugin release duyurusu ve agent-tabanlı geliştirme workflow'larına genel artan ilgiyle bugün +340 yıldız (toplamın ~%5'i) alarak öne çıktı.",
+        "evolve": "README açıkça 'resmi desteklenen bir Google ürünü değildir' diyor ve Google'ın açık kaynak güvenlik ödül programı kapsamı dışında bırakılmış — yani güvenlik/kalite garantisi sınırlı. 74 commit, 10 açık issue, 11 açık PR ile hâlâ erken/deneysel aşamada. Daha fazla plugin kategorisi, resmi destek hattı, ve farklı AI araçları arasında daha kapsamlı uyumluluk testi büyüme alanları olarak öne çıkıyor."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI asistanlarının harici araçlara, verilere ve servislere standart bir şekilde bağlanmasını sağlayan açık protokol; her araç için özel entegrasyon yazmak yerine ortak bir 'fiş' görevi görür."
+        },
+        {
+          "term": "Agent Skills",
+          "def": "AI kodlama asistanlarına belirli görevleri nasıl yapacağını öğreten, doküman + script + örneklerden oluşan standart formatta paketlenmiş 'yetenek' dosyaları."
+        },
+        {
+          "term": "Plugin",
+          "def": "Bir ana yazılıma sonradan eklenen, belirli bir işlevi genişleten bağımsız kod/eklenti paketi."
+        }
+      ]
+    },
+    {
+      "name": "davila7/claude-code-templates",
+      "url": "https://github.com/davila7/claude-code-templates",
+      "stars": "29.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "Claude Code kullanan geliştiricilerin, özel agent'lar, komutlar, hook'lar ve MCP entegrasyonlarını sıfırdan yazmak yerine hazır 100'den fazla şablon arasından seçip anında kurabilmesini sağlayan bir 'şablon marketi' + CLI aracı. Amaç, her projede tekrar tekrar yazılan konfigürasyon işini ortadan kaldırmak.",
+        "tech": "Ağırlıklı Python, yanında JavaScript/TypeScript ve Shell ile yazılmış. Şablonlar beş kategoride toplanıyor: agents, commands, MCP'ler, settings, hooks, skills. aitmpl.com adresinde interaktif bir **dashboard** üzerinden şablonlara göz atılıp tek tıkla kuruluyor; ayrıca analytics monitoring, conversation interface, health check ve plugin management gibi geliştirme-zamanı araçları da paket içinde geliyor. Node.js ve Rust olmak üzere iki ayrı CLI varyantı sunuluyor. Şablonların bir kısmı — örneğin K-Dense-AI'dan gelen 139 'bilimsel skill' — dış kaynaklardan derlenip lisans uyumluluğuna (MIT, Apache 2.0, CC0 1.0) dikkat edilerek bir araya getirilmiş.",
+        "why": "29k yıldıza bugün +232 eklenerek listeye girdi; bu, Claude Code ekosisteminin genel büyümesiyle doğrudan orantılı bir trend. README'de vurgulanan 'beta aşamasındaki yeni dashboard özelliği' ve kullanıcı geri bildirimi çağrısı, projenin aktif ve hızlı geliştirildiğinin sinyali — geliştirici araçları kategorisinde 'kurulumu kolaylaştıran meta-araçlar' güncel bir eğilim.",
+        "evolve": "Çok sayıda farklı kaynaktan toplanan şablonların kalite ve güvenlik denetimi (crowd-sourced içerik riski) önemli bir açık nokta; kötü niyetli veya hatalı bir hook/script'in fark edilmeden yayılması mümkün. Kurumsal/ERP odaklı şablon kategorileri (örneğin veritabanı migrasyonu, IFS entegrasyon script'leri gibi) eklenmesi, ayrıca farklı lisanslar altındaki şablonların daha görünür şekilde etiketlenmesi potansiyel geliştirme alanları."
+      },
+      "glossary": [
+        {
+          "term": "CLI (komut satırı arayüzü)",
+          "def": "Grafik arayüz yerine terminal üzerinden komutlar yazarak kullanılan yazılım türü."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir yazılımın belirli bir olayı (örneğin bir komutun çalıştırılması) yakalayıp otomatik olarak ek bir işlem tetiklemesini sağlayan mekanizma."
+        },
+        {
+          "term": "Dashboard",
+          "def": "Bir sistemin durumunu, verilerini veya seçeneklerini tek bir görsel panelde özetleyen arayüz."
+        },
+        {
+          "term": "Açık kaynak lisansları (MIT, Apache 2.0, CC0 1.0)",
+          "def": "Yazılımın kimler tarafından, hangi koşullarla kullanılıp değiştirilebileceğini belirleyen hukuki çerçeveler; her birinin izin verdiği kullanım kapsamı farklıdır."
+        }
+      ]
+    },
+    {
+      "name": "DayuanJiang/next-ai-draw-io",
+      "url": "https://github.com/DayuanJiang/next-ai-draw-io",
+      "stars": "33.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Doğal dilde yazılan bir açıklamayı ('şu mikroservis mimarisini çiz' gibi) otomatik olarak draw.io diyagramına çeviren bir web uygulaması. Elle kutu-ok çizmek yerine, var olan bir diyagramı, PDF'i veya metin dosyasını yükleyip AI'a 'bunu geliştir/kopyala' dedirtmek de mümkün.",
+        "tech": "Next.js/React üzerine kurulu; **Vercel AI SDK** sayesinde tek bir arayüzden OpenAI, Claude, Google, DeepSeek gibi birden fazla LLM sağlayıcısına bağlanabiliyor. Diyagram manipülasyonu `react-drawio` kütüphanesiyle yapılıyor. Son eklenen önemli özellik: **MCP server desteği** — bu sayede Claude Desktop gibi AI ajanları diyagram üretimini doğrudan bir araç olarak çağırabiliyor. Diyagram versiyon geçmişi, animasyonlu bağlayıcılar, bulut mimarisi diyagramlarına özel destek, masaüstü uygulamaları (Windows/macOS/Linux) ve Docker ile self-hosted kurulum seçenekleri de mevcut. 'AI Reasoning Display' özelliği, modelin diyagramı nasıl kurguladığını adım adım gösteriyor.",
+        "why": "MCP desteğinin eklenmesi, projeyi tek başına kullanılan bir web uygulamasından, daha büyük agent iş akışlarının bir parçası haline getirdi — bu genel agent-araçları trendiyle örtüşüyor. Ayrıca 'bir cümleyle mimari diyagram çiz' fikri, demo olarak çok çarpıcı ve paylaşılabilir olduğu için organik viral yayılmaya müsait; günlük +81 yıldızla bunu bugün de sürdürüyor.",
+        "evolve": "README, iyi sonuç almak için güçlü modellere (Claude Sonnet 4.5, GPT-5.1 gibi) ihtiyaç olduğunu açıkça belirtiyor — daha küçük/ucuz modellerle diyagram XML'inin doğru formatlanmaması riski var. Takım halinde ortak diyagram üzerinde çalışma, sürüm kontrolü (Git benzeri diff/merge), ve kurumsal süreç diyagramlarına (örneğin ERP iş akışı şemaları) özel şablonlar eklenmesi potansiyel geliştirme yönleri olarak öne çıkıyor."
+      },
+      "glossary": [
+        {
+          "term": "LLM sağlayıcı (provider)",
+          "def": "Bir yapay zekâ uygulamasına dil modeli hizmeti sunan şirket/servis (OpenAI, Anthropic, Google vb.); bir uygulama birden fazla sağlayıcı arasında geçiş yapabilecek şekilde tasarlanabilir."
+        },
+        {
+          "term": "draw.io / XML",
+          "def": "draw.io, kutu-ok tabanlı diyagramlar çizmek için kullanılan popüler bir araç; diyagramın kendisi arka planda XML adlı yapılandırılmış bir metin formatında saklanır."
+        },
+        {
+          "term": "Vercel AI SDK",
+          "def": "Web uygulamalarına farklı yapay zekâ modellerini kolayca entegre etmeyi sağlayan, geliştirici dostu bir yazılım kütüphanesi."
+        },
+        {
+          "term": "Self-hosted / Docker",
+          "def": "Bir uygulamayı üçüncü parti bir bulut hizmeti yerine kendi sunucunuzda çalıştırmak (self-hosted); Docker ise uygulamayı standart, taşınabilir bir 'konteyner' paketi haline getiren teknoloji."
+        }
+      ]
+    },
+    {
+      "name": "anthropics/claude-cookbooks",
+      "url": "https://github.com/anthropics/claude-cookbooks",
+      "stars": "48k",
+      "language": "Jupyter Notebook",
+      "sections": {
+        "serves": "Anthropic'in resmi 'tarif kitabı': Claude API'yi kullanarak sınıflandırma, özetleme, RAG (bilgiye dayalı yanıt üretimi), araç kullanımı gibi somut problemleri nasıl çözeceğini adım adım gösteren, doğrudan çalıştırılabilir Jupyter notebook'lardan oluşuyor. Sıfırdan deneme-yanılma yapmak yerine, kanıtlanmış bir başlangıç noktası sunuyor.",
+        "tech": "İçerik ağırlıklı olarak Jupyter Notebook formatında; kapsadığı alanlar geniş:\n- **RAG için** Pinecone vektör veritabanı ve Voyage AI embedding entegrasyonları\n- **Araç kullanımı (tool use)** için müşteri hizmetleri agent'ı, hesap makinesi entegrasyonu, hatta doğrudan **SQL sorgusu çalıştırma** örneği\n- **Multimodal** kullanım için görsel/grafik yorumlama, PDF ve form içeriği çıkarma\n- **İleri teknikler**: Haiku ve Opus modellerini birlikte kullanan alt-agent mimarileri, prompt caching, JSON mode, içerik moderasyonu, otomatik değerlendirme (eval) kurulumları",
+        "why": "Anthropic'in resmi kaynağı olması ve yeni model sürümleriyle (örneğin Sonnet 5 ailesiyle) sürekli güncellenmesi, geliştiricilerin 'production'a nasıl geçerim' sorusuna ilk başvurduğu referans haline getiriyor. 601 commit ve 207 açık PR, oldukça aktif bir topluluk katkısına işaret ediyor; bugün +219 yıldızla listeye girmesi, AI/API araçlarına olan sürekli ve kesintisiz ilginin bir yansıması.",
+        "evolve": "SQL sorgusu çalıştırma örneği ERP/veritabanı entegrasyonlarına ilham verse de, kurumsal sistemlere (örneğin bir ERP veya IFS ortamına) özel uçtan uca bir tarif yok — bu yönde örnekler eklenmesi ilgi çekebilir. Şu an neredeyse tamamen Python/Jupyter odaklı; farklı dillerde (TypeScript, Java gibi) eşdeğer örnekler ve production'a özgü pratikler (rate limiting, hata yönetimi, maliyet izleme) genişleme alanları olarak öne çıkıyor."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin, cevap üretmeden önce ilgili belgeleri bir veritabanından arayıp bulduğu bilgiyi yanıtına dahil ettiği teknik; modelin ezberlemediği güncel/özel bilgilere doğru cevap vermesini sağlar."
+        },
+        {
+          "term": "Tool use (araç kullanımı)",
+          "def": "Bir dil modelinin, kendi başına yapamadığı işleri (hesap makinesi çalıştırma, veritabanı sorgusu, API çağrısı gibi) dışarıdaki gerçek araçlara devredebilmesi."
+        },
+        {
+          "term": "Prompt caching",
+          "def": "Sık tekrar eden veya uzun prompt parçalarını modele her seferinde yeniden işletmek yerine önbelleğe alarak hem hızı artıran hem maliyeti düşüren teknik."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını sayısal bir vektöre dönüştürerek, anlamca benzer metinlerin matematiksel olarak birbirine yakın konumlanmasını sağlayan temsil biçimi."
+        },
+        {
+          "term": "Multimodal",
+          "def": "Bir yapay zekâ modelinin yalnızca metni değil, görsel, ses veya PDF gibi farklı veri türlerini de anlayıp işleyebilmesi."
+        }
+      ]
+    }
+  ]
+}
