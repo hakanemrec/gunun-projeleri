@@ -1,0 +1,137 @@
+{
+  "date": "2026-07-13",
+  "projects": [
+    {
+      "name": "Dicklesworthstone/destructive_command_guard",
+      "url": "https://github.com/Dicklesworthstone/destructive_command_guard",
+      "stars": "3.2k",
+      "language": "Rust",
+      "sections": {
+        "serves": "AI kodlama ajanları (Claude Code, Cursor, Copilot CLI, Codex vb.) artık geliştiricilerin terminaline serbestçe komut yazabiliyor — ve arada sırada felaket düzeyinde hatalar yapabiliyor: `git reset --hard`, `rm -rf ./src`, hatta `DROP TABLE users` gibi geri dönüşü olmayan komutları çalıştırabiliyor. **destructive_command_guard (dcg)**, bu komutları **çalışmadan önce** yakalayıp durduran bir güvenlik katmanı. Ajanın kendisine güvenmek yerine, ajanın çalıştırdığı her komutu bir filtreden geçiriyor.",
+        "tech": "dcg, ajan platformlarının 'hook' mekanizmalarına (Claude Code'da PreToolUse hook'u, Codex CLI'da hooks.json, Copilot CLI ve Cursor'da benzer noktalar) takılan bir Rust programı. Dört aşamalı bir boru hattı çalıştırıyor:\n- **JSON ayrıştırma**: hangi ajan hangi formatta komut gönderdiyse onu okur\n- **Normalizasyon**: `/usr/bin/git` gibi yolları `git`'e indirger, argümanları korur\n- **Hızlı eleme**: komutların %99'unu tek geçişte 'zararsız' diye işaretleyen O(n) anahtar kelime taraması\n- **Örüntü eşleştirme**: önce güvenli-liste (whitelist), sonra tehlikeli-liste (denylist) kontrolü\n\nEn ilginç kısmı **bağlam sınıflandırması**: aynı `git reset --hard` metni bir yorum satırında mı, tırnaklı bir veri içinde mi yoksa gerçekten çalıştırılan bir komutta mı geçiyor — bunu ayırt ediyor; ast-grep/tree-sitter tabanlı ayrıştırmayla heredoc'lar ve `python -c` gibi gömülü script'leri de tarıyor. SIMD hızlandırmalı regex motoru sayesinde gecikme milisaniyenin altında. Tasarım felsefesi 'fail-open': analiz başarısız olursa (timeout, parse hatası) komutu engellemek yerine geçiriyor — iş akışını kesmemeyi önceliklendiriyor.",
+        "why": "Proje bugün 3.2k yıldızda ve günde +444 ile listenin üst sıralarında — ilginç olan, bunun bir 'yeni özellik' değil, doğrudan bir **acı noktasına** cevap olması: AI ajanlarının kod tabanlarını yanlışlıkla silmesi geliştirici çevrelerinde tekrar tekrar anlatılan bir hikaye haline geldi. Claude Code, Cursor gibi araçların yaygınlaşmasıyla 'ajana ne kadar güveneyim' sorusu somut bir ürün ihtiyacına dönüştü. 50'den fazla hazır güvenlik paketi (veritabanları, Kubernetes, AWS, Docker) ile kurumsal ve bireysel kullanıcıları aynı anda hedefliyor; kurulumun tek satır `curl | bash` olması da benimsemeyi kolaylaştırıyor.",
+        "evolve": "Proje kendi sınırlarını dürüstçe belgeliyor: Codex CLI'da model bir script'i diske yazıp çalıştırarak hook'u atlayabiliyor, Windows'ta bazı `unified_exec` yolları hook tarafından yakalanmıyor, ve `dcg scan` sadece uyarı veriyor, commit'i durdurmuyor. Gelecekte eklenebilecekler:\n- Ajan tarafında değil, **sandbox/işletim sistemi seviyesinde** ek bir savunma katmanı (hook atlatmalarına karşı)\n- Ekip/organizasyon için merkezi politika yönetimi ve denetim kaydı (kim, ne zaman, hangi komutu engelledi)\n- Daha fazla platform için native entegrasyon — bugün her ajan için ayrı JSON formatı üretmek zorunda kalması, ekosistemin ne kadar dağınık olduğunu da gösteriyor"
+      },
+      "glossary": [
+        {
+          "term": "hook",
+          "def": "Bir programın belirli bir olay anında (örn. bir komut çalıştırılmadan hemen önce) devreye giren, o olayı izleyip müdahale edebilen entegrasyon noktası."
+        },
+        {
+          "term": "SIMD",
+          "def": "Bir işlemcinin tek komutla birden fazla veriyi aynı anda işlemesini sağlayan donanım hızlandırma tekniği."
+        },
+        {
+          "term": "AST (Abstract Syntax Tree)",
+          "def": "Kodun yapısını ağaç şeklinde temsil eden, metni değil kodun anlamını analiz etmeye yarayan veri yapısı."
+        },
+        {
+          "term": "whitelist / denylist",
+          "def": "Sırasıyla açıkça izin verilen ve açıkça yasaklanan öğelerin listesi."
+        },
+        {
+          "term": "fail-open",
+          "def": "Bir sistemin, karar veremediği durumlarda işlemi engellemek yerine geçirmeyi tercih ettiği güvenlik yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "HKUDS/Vibe-Trading",
+      "url": "https://github.com/HKUDS/Vibe-Trading",
+      "stars": "20.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Vibe-Trading, 'şu stratejiyi test etsem nasıl sonuç verirdi?' gibi doğal dilde sorulan finansal soruları, gerçek piyasa verisiyle çalışan **backtest'e** (geçmiş veri üzerinde simülasyon) dönüştüren bir AI ajan sistemi. Kod yazmadan, sohbet ederek strateji kurma, geçmiş performansı ölçme ve kendi işlem geçmişini analiz etme imkanı sunuyor.",
+        "tech": "Mimarinin merkezinde 'planla → veriyi yükle → çalıştır → doğrula → teslim et' döngüsünü işleten bir ajan var. Piyasa verisi katmanı 19 farklı ücretsiz kaynağı (yfinance, akshare, eastmoney vb.) otomatik yedekli şekilde zincirliyor — biri IP banlanırsa sıradaki devreye giriyor, böylece tek bir veri sağlayıcıya bağımlılık yok. 13'ten fazla LLM sağlayıcısını (Claude, GPT, DeepSeek, Gemini...) tek bir soyutlama katmanından destekliyor, her modelin kendine özgü tuhaflıklarını (örneğin 'thinking' modellerin akıl yürütmesini yakalamak) ayrı ayrı ele alıyor. Backtest motoru A-hisseleri, HK/ABD borsaları, kripto ve vadeli işlemler için ayrı ayrı çalışıyor; Monte Carlo simülasyonu ile bootstrap güven aralıkları hesaplıyor. Güvenlik tarafında dikkat çekici bir karar: backtest kum havuzu **AST ile sertleştirilmiş** — ağ erişimi, subprocess ve `eval` gibi tehlikeli işlemler koddan çıkarılmış, gerçek para/borsa bağlantısı da yapılandırma değil **yapısal** olarak ayrılmış (paper/live hesap ayrımı kod seviyesinde).",
+        "why": "Proje 20.8k yıldızda ve günde +768 ile bugünün en hızlı büyüyen deposu — 'vibe coding' trendinin finans dünyasına sıçramış hali gibi duruyor: kod yazmadan, sohbet ederek strateji üretme fikri hem bireysel yatırımcılara hem kurumsal kantitatif ekiplere hitap ediyor. 'Shadow Account' özelliği özellikle ilgi çekici: kullanıcının kendi işlem geçmişinden davranışsal örüntüler (aşırı işlem yapma, kayıp pozisyonlara bağlanma gibi) çıkarıp bunu geriye dönük test ediyor — yani sadece piyasayı değil, **kullanıcının kendi hatalarını** analiz ediyor. Bu, sıradan bir 'AI trading botu' kategorisinden çok daha kişisel ve elle tutulur bir değer önerisi.",
+        "evolve": "README açıkça 'deneysel' ve 'araştırma-öncelikli' olduğunu vurguluyor; gerçek para ile otomatik işlem yalnızca sınırlı yetki (mandate) ile açılıyor ve sistem hiçbir zaman fon tutmuyor. Gelişebilecek yönler:\n- Şu an 19 farklı ücretsiz veri kaynağına dayanması, veri kalitesini sağlayıcıların insafına bırakıyor — resmi/lisanslı veri entegrasyonu güvenilirliği artırabilir\n- Hindistan gibi bazı piyasalarda bağlantı sadece salt-okunur; canlı işlem desteği bölgesel olarak eşitsiz\n- 87 'skill' ile genişleyebilir mimari güçlü bir temel ama topluluk katkılı stratejilerin doğrulanması (hatalı ya da kötü niyetli bir skill'in zarar verme riski) ayrı bir güvenlik konusu olarak öne çıkabilir"
+      },
+      "glossary": [
+        {
+          "term": "backtest",
+          "def": "Bir yatırım stratejisinin geçmiş piyasa verisi üzerinde simüle edilerek nasıl performans göstereceğinin test edilmesi."
+        },
+        {
+          "term": "Monte Carlo simülasyonu",
+          "def": "Rastgele örneklemeleri tekrarlayarak bir sonucun olasılık dağılımını tahmin eden istatistiksel yöntem."
+        },
+        {
+          "term": "LLM (Large Language Model)",
+          "def": "Büyük miktarda metinle eğitilmiş, doğal dili anlayıp üretebilen yapay zeka modeli."
+        },
+        {
+          "term": "AST kum havuzu (sandbox)",
+          "def": "Çalıştırılan kodun zararlı işlemler (ağ, dosya, sistem çağrısı) yapamayacağı şekilde, kod yapısı analiz edilerek izole edilmiş çalışma ortamı."
+        },
+        {
+          "term": "paper trading",
+          "def": "Gerçek para kullanılmadan, simüle edilmiş hesapla yapılan işlem denemesi."
+        }
+      ]
+    },
+    {
+      "name": "PrefectHQ/prefect",
+      "url": "https://github.com/PrefectHQ/prefect",
+      "stars": "23.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "Prefect, sıradan bir Python script'ini **üretim seviyesinde, güvenilir bir veri hattına (pipeline)** dönüştürmeyi kolaylaştıran bir orkestrasyon çerçevesi. Normalde 'bu script her gece çalışsın, hata olursa tekrar denesin, biri sonucu görsün' demek için ayrı bir altyapı kurmak gerekirken, Prefect bunu birkaç dekoratör ile doğrudan Python koduna gömüyor.",
+        "tech": "Temel birimler `@flow` ve `@task` dekoratörleri: bir Python fonksiyonuna `@task` eklemek onu yeniden kullanılabilir bir iş birimine, `@flow` eklemek ise bu görevleri koordine eden bir akışa çeviriyor. 'Deployment' kavramı bu akışları zamanlanmış (cron) veya olay tetiklemeli (event-driven) şekilde production'a paketliyor. Airflow'un aksine Prefect, ayrı bir DAG tanım dosyası yazmayı zorunlu kılmıyor — akış, normal Python kontrol yapılarıyla (if/for/try) dinamik olarak dallanabiliyor, bu da koşullu ya da veriye bağımlı iş akışlarını çok daha az kodla ifade etmeyi sağlıyor. Yeniden deneme (retry), önbellekleme (caching) ve hata yönetimi framework tarafından otomatik sağlanıyor. İzleme tarafı kendi barındırılan sunucu ya da Prefect Cloud panosu üzerinden yapılıyor; arayüz TypeScript/Vue ile yazılmış.",
+        "why": "23.2k yıldız ve düzenli +66/gün ile Prefect, 'yeni çıkan parlak proje' değil, **olgunlaşmış ve kurumsal olarak kanıtlanmış** bir araç olarak trendde — Progressive Insurance ve Square (Cash App) gibi şirketlerin ayda 200 milyondan fazla veri görevini bu altyapı üzerinden yürüttüğü belirtiliyor. Veri mühendisliği ve MLOps alanlarında Airflow'un karmaşıklığından bunalan ekiplerin arayışı 'saf Python' yaklaşımını cazip kılıyor; AI/ajan tabanlı iş akışlarının artmasıyla (LLM çağrılarını zincirleme, veri toplama ajanları) bu tür orkestrasyon katmanlarına talep de artıyor.",
+        "evolve": "Prefect'in kendi anlattığı güçlü yanı basitlik olsa da, bu basitliğin bedeli bazen Airflow'un daha büyük, daha kurumsal eklenti ekosistemine kıyasla daha dar bir entegrasyon yelpazesi olabiliyor. Gelişebilecek alanlar:\n- Çok büyük ölçekli, binlerce görevli akışlarda gözlemlenebilirlik ve maliyet yönetimi (Prefect Cloud'un ücretli katmanları burada devreye giriyor)\n- LLM/ajan tabanlı iş akışlarına özel yerleşik desteğin (token maliyeti takibi, prompt versiyonlama gibi) zamanla native olarak eklenmesi beklenebilir\n- Self-hosted kurulumun ölçeklendirilmesi hâlâ DevOps bilgisi gerektiriyor; bu, küçük ekipler için bir giriş engeli olmaya devam ediyor"
+      },
+      "glossary": [
+        {
+          "term": "veri hattı (data pipeline)",
+          "def": "Verinin bir kaynaktan alınıp işlenip hedefe ulaştırıldığı, genellikle otomatikleştirilmiş adımlar dizisi."
+        },
+        {
+          "term": "DAG (Directed Acyclic Graph)",
+          "def": "Görevler arasındaki bağımlılıkları, döngüsüz ve yönlü bir grafik olarak ifade eden yapı; Airflow gibi araçların temel modeli."
+        },
+        {
+          "term": "orkestrasyon",
+          "def": "Birden fazla görev/servisin doğru sırada, doğru zamanda ve hataya dayanıklı şekilde çalışmasını koordine etme."
+        },
+        {
+          "term": "MLOps",
+          "def": "Makine öğrenmesi modellerinin eğitimden üretime kadar olan yaşam döngüsünü yönetmeye yönelik pratikler ve araçlar bütünü."
+        },
+        {
+          "term": "cron",
+          "def": "Belirli zaman aralıklarında otomatik olarak görev çalıştırmak için kullanılan klasik zamanlama sözdizimi."
+        }
+      ]
+    },
+    {
+      "name": "Nutlope/hallmark",
+      "url": "https://github.com/Nutlope/hallmark",
+      "stars": "4.5k",
+      "language": "CSS",
+      "sections": {
+        "serves": "Hallmark, AI ile üretilen arayüzlerin hepsinin birbirine benzemesi sorununa (aynı mor-mavi gradyan, aynı kart düzeni, aynı font) karşı geliştirilmiş bir 'tasarım kural seti'. Claude Code, Cursor ya da Codex gibi araçlara eklenen bir **skill** olarak, AI'ın 'varsayılan, şablon gibi görünen' tasarım kalıplarına düşmesini engellemeyi hedefliyor.",
+        "tech": "Teknik olarak Hallmark bir uygulama değil, bir **kural/talimat dosyası** (`SKILL.md`) ve referans materyalleri paketi — `npx skills add nutlope/hallmark` ile ya da dosyaları ilgili AI aracının klasörüne kopyalayarak kuruluyor. Çalışma mantığı: briefe göre uygun bir makro-yapı seçiyor, 20 farklı tasarım temasından birini uyguluyor ve **57 'slop-test' kapısı** artı bir öz-eleştiri adımından geçiyor — yani üretilen tasarımı, AI modellerinin alışılagelmiş varsayılan kalıplarına (slop) karşı otomatik olarak denetliyor. Dört farklı komut modu var: varsayılan (yeni arayüz üretme), `audit` (var olan kodu anti-pattern'lere karşı puanlama), `redesign` (metni ve markayı koruyarak yeniden yapılandırma), `study` (var olan bir tasarımdan 'tasarım DNA'sı çıkarma).",
+        "why": "4.5k yıldızda ve günde +155 ile büyüyen Hallmark, AI kodlama araçlarının (Claude Code, Cursor, Codex) günlük kullanım haline gelmesiyle ortaya çıkan çok somut bir sorunu çözüyor: geliştiriciler artık arayüz kodunu dakikalar içinde üretebiliyor ama sonuç 'yapay zeka yapmış gibi' görünüyor. Bu proje, 'prompt mühendisliği'nin bir adım ötesi olan 'skill mühendisliği' akımının bir parçası — kod üretmek yerine, kod üreten AI'ın **davranışını** kural setleriyle şekillendirme fikri. Bu yaklaşımın hızla popülerleşmesi, geliştirici topluluğunun AI çıktısının kalitesini artırmak için doğrudan modele değil, aradaki katmanlara yatırım yaptığını gösteriyor.",
+        "evolve": "Şu an 20 sabit tema ve 57 test kapısı ile çalışıyor — bu sayılar büyüdükçe (daha fazla tema, daha fazla marka kimliği), kuralların birbiriyle çelişmemesi ayrı bir bakım yükü oluşturabilir. Gelişebilecek yönler:\n- Kuralları statik bir dosya yerine, kullanıcının geçmiş projelerinden öğrenen dinamik bir 'stil hafızası'na dönüştürmek\n- Farklı AI kodlama araçları arasında (Claude Code, Cursor, Codex) davranış tutarlılığını otomatik test eden bir CI benzeri doğrulama eklemek\n- Şu an öncelikle web arayüzlerine (CSS/HTML ağırlıklı) odaklanıyor; mobil veya native uygulama tasarım dillerine genişleme potansiyeli var"
+      },
+      "glossary": [
+        {
+          "term": "skill (AI ajan bağlamında)",
+          "def": "Bir AI aracına eklenen, belirli bir görevi nasıl yapması gerektiğini tarif eden talimat/kural paketi."
+        },
+        {
+          "term": "AI slop",
+          "def": "Yapay zekanın ürettiği, özgünlükten yoksun, kalıplaşmış ve genellikle düşük kaliteli içerik/tasarım için kullanılan tabir."
+        },
+        {
+          "term": "prompt mühendisliği",
+          "def": "Bir yapay zeka modelinden istenen sonucu almak için girdi metnini (prompt) tasarlama ve iyileştirme pratiği."
+        },
+        {
+          "term": "makro-yapı (design)",
+          "def": "Bir arayüzün genel iskeletini oluşturan üst düzey düzen kararları (örn. sidebar+içerik, tam ekran hero, grid tabanlı kart düzeni)."
+        }
+      ]
+    }
+  ]
+}
