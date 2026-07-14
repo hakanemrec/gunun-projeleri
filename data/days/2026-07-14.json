@@ -1,0 +1,169 @@
+{
+  "date": "2026-07-14",
+  "projects": [
+    {
+      "name": "github/spec-kit",
+      "url": "https://github.com/github/spec-kit",
+      "stars": "120.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Spec Kit, kod yazmadan **önce** net bir spesifikasyon yazmayı zorunlu kılan \"Spec-Driven Development\" (SDD) yaklaşımını hayata geçiren bir araç seti. AI ajanlarıyla hızlıca kod üretmek kolaylaştıkça ortaya çıkan asıl sorun kodun kendisi değil, neyin inşa edilmek istendiğinin net olmaması. Spec Kit'te spesifikasyon ikincil bir doküman değil, kodun **kaynağı** haline geliyor: kod, derlenmiş bir dilin makine koduna benzer şekilde spesifikasyondan türetilen bir çıktı olarak ele alınıyor.",
+        "tech": "Python 3.11+ ile yazılmış, `uv` veya `pipx` ile kurulan bir CLI aracı. Temelinde yedi adımlı bir iş akışı var: **constitution** (proje ilkeleri), **specify** (ne yapılacağı), **clarify** (belirsizliklerin giderilmesi), **plan** (teknik mimari), **tasks** (sıralı görev listesi), **analyze** (tutarlılık denetimi) ve **implement** (uygulama). Bu adımlar `.specify/` ve `specs/` klasörlerinde şablon dosyalar halinde tutuluyor ve 30'dan fazla AI kodlama ajanına (Claude, Copilot, Gemini, Codex...) slash-komutları (`/speckit.specify`, `/speckit.plan` vb.) olarak sunuluyor. Ajan-agnostik tasarım, projeyi belirli bir üretici veya modele bağımlı kılmıyor.",
+        "why": "GitHub'ın kendi resmi projesi olması ona anında geniş bir kitle kazandırdı, ama asıl ivme şu anki agentic coding dalgasından geliyor: ajanlar büyük görevleri tek seferde doğru yapamadığında ekipler yapılandırılmış bir ara katmana ihtiyaç duyuyor. Spec Kit tam olarak bu boşluğu dolduruyor ve hem yeni (greenfield) hem de mevcut (brownfield) projelerde kullanılabiliyor. Kitle: AI destekli geliştirme yapan ve büyüyen codebase'lerde tutarlılık arayan takımlar.",
+        "evolve": "- Spesifikasyon ile üretilen kod arasında zamanla oluşan **sapmayı** (drift) otomatik tespit eden bir CI entegrasyonu değerli olurdu.\n- Kurumsal kullanım için uyumluluk (compliance) odaklı hazır \"bundle\"ların çeşitlenmesi bekleniyor.\n- Şu an Python merkezli CLI deneyiminin diğer diller/ekosistemler için daha native araçlarla desteklenmesi benimsenmeyi artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Spec-Driven Development (SDD)",
+          "def": "Kod yazmadan önce ayrıntılı bir spesifikasyon hazırlayıp kodu bu spesifikasyondan türetmeyi esas alan geliştirme yöntemi."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Net bir plan veya spesifikasyon olmadan, anlık sezgiyle ve deneme-yanılmayla kod yazma alışkanlığı."
+        },
+        {
+          "term": "Agentic coding",
+          "def": "Bir AI ajanının insan yerine kod yazma, test etme ve düzenleme adımlarını kendi başına yürüttüğü geliştirme biçimi."
+        },
+        {
+          "term": "CLI (Command Line Interface)",
+          "def": "Kullanıcının komutları yazarak çalıştırdığı, grafik arayüz yerine metin tabanlı program arayüzü."
+        },
+        {
+          "term": "Brownfield / Greenfield proje",
+          "def": "Brownfield, üzerinde zaten kod bulunan mevcut bir projeyi; greenfield ise sıfırdan başlanan yeni bir projeyi ifade eder."
+        },
+        {
+          "term": "Slash komutu",
+          "def": "AI sohbet arayüzlerinde \"/\" ile başlayan ve önceden tanımlı bir işlemi tetikleyen kısayol komut."
+        }
+      ]
+    },
+    {
+      "name": "Graphify-Labs/graphify",
+      "url": "https://github.com/Graphify-Labs/graphify",
+      "stars": "85.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "Graphify, kod deposu, dokümantasyon, PDF, görsel ve video gibi kaynakları sorgulanabilir bir **bilgi grafiğine** (knowledge graph) dönüştüren bir AI kodlama asistanı eklentisi. Amaç şu: geliştiriciler bir kod tabanını anlamak için dosya dosya grep yapmak yerine, kavramlar arasındaki ilişkileri graf üzerinde sorgulayarak dolaşabilsin.",
+        "tech": "Kodun çıkarımı tamamen yerelde, **tree-sitter** ile AST (soyut sözdizimi ağacı) ayrıştırması kullanılarak yapılıyor — bu adım LLM gerektirmiyor, deterministik ve API çağrısı yok. 36'dan fazla dil (artı Salesforce Apex ve Terraform/HCL) destekleniyor. Alt-sistemleri otomatik keşfetmek için **Leiden community detection** algoritması kullanılıyor. Dokümantasyon/PDF/medya gibi anlamsal çıkarımlar ise kullanıcının seçtiği LLM backend'ine (Claude, Gemini, OpenAI, Ollama, Azure, Bedrock, DeepSeek, Kimi) yönlendiriliyor. Çıktılar HTML görselleştirme, JSON, Neo4j/FalkorDB için Cypher, GraphML ve Markdown wiki olarak dışa aktarılabiliyor; her kenar (edge) kaynak kodda bulunduysa `EXTRACTED`, çıkarım yoluyla türetildiyse `INFERRED` olarak etiketleniyor.",
+        "why": "AI kodlama asistanlarının (Claude Code, Cursor, Copilot, Gemini CLI dahil 20'den fazla araç) en büyük darboğazı, büyük bir codebase'i context penceresine sığdırıp anlamlandırmak. Graphify bu sorunu graf tabanlı sorgulamayla çözerek hem zaman hem token tasarrufu sağlıyor; kod-only graf çıkarımının LLM kredisi harcamaması da kurumsal kullanıcılar için maliyet açısından çekici.",
+        "evolve": "- Kod değiştikçe grafiğin **canlı senkronize** olması (şu an git merge driver ile çakışmalar önleniyor ama otomatik yeniden hesaplama net değil) önemli bir geliştirme alanı.\n- Takım genelinde paylaşılan, merkezi bir graf sunucusu.\n- Veritabanı şema ilişkilerinin (tablo/foreign key/stored procedure bağları) grafiğe dahil edilmesi, PL/SQL veya ERP gibi veri-ağırlıklı sistemlerde de kullanılabilirliğini artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Knowledge graph (bilgi grafiği)",
+          "def": "Varlıklar (kod, kavram, dosya vb.) ve aralarındaki ilişkileri düğüm ve kenarlarla temsil eden veri yapısı."
+        },
+        {
+          "term": "AST (Abstract Syntax Tree)",
+          "def": "Kaynak kodun yapısını ağaç şeklinde temsil eden, derleyicilerin ve kod analiz araçlarının kullandığı ara gösterim."
+        },
+        {
+          "term": "tree-sitter",
+          "def": "Kaynak kodu hızlı ve hatasız şekilde ayrıştırıp AST üreten, birçok dili destekleyen açık kaynak bir ayrıştırıcı kütüphanesi."
+        },
+        {
+          "term": "Leiden algoritması / community detection",
+          "def": "Bir grafikteki düğümleri, aralarındaki bağlantı yoğunluğuna göre anlamlı alt gruplara (topluluklara) ayıran algoritma."
+        },
+        {
+          "term": "Cypher",
+          "def": "Neo4j gibi graf veritabanlarında ilişkileri sorgulamak için kullanılan özel sorgu dili."
+        },
+        {
+          "term": "GraphML",
+          "def": "Graf yapılarını dosya olarak saklamak ve farklı araçlar arasında taşımak için kullanılan standart bir XML tabanlı format."
+        },
+        {
+          "term": "LLM backend",
+          "def": "Bir uygulamanın metin/anlam analizini yaptırmak için bağlandığı büyük dil modeli servisi (ör. Claude, OpenAI)."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Bir yazılımın kullanım verilerini geliştiriciye otomatik olarak gönderme pratiği."
+        }
+      ]
+    },
+    {
+      "name": "moeru-ai/airi",
+      "url": "https://github.com/moeru-ai/airi",
+      "stars": "42.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Project AIRI, Neuro-sama tarzı yapay zeka \"sanal yayıncı/companion\"ları herkesin kendi sunucusunda barındırabileceği açık kaynak bir çerçeve olarak sunuyor. Sorun şu: Neuro-sama gibi gelişmiş AI yayıncılar kapalı kaynak ve sadece belirli canlı yayınlarda erişilebilir durumda. AIRI, oyun oynayabilen, sesle etkileşim kuran ve kalıcı bir kişiliğe sahip kendi \"dijital varlığını\" herkesin kendi başına inşa edip sahiplenmesini sağlıyor.",
+        "tech": "Ön yüz Vue.js + TypeScript ile yazılmış; tarayıcıda gerçek zamanlı ses ve görsel işleme için **WebGPU** ve Web Audio API kullanılıyor, **Transformers.js** ile model çıkarımı doğrudan tarayıcıda (client-side) da çalışabiliyor. Masaüstü sürümü Electron üzerinde NVIDIA CUDA ve Apple Metal donanım hızlandırmasıyla geliyor. 3D karakterler **VRM** ve **Live2D** formatlarıyla, sahne render'ı Three.js ile yapılıyor; yerel veri için DuckDB'nin WASM sürümü kullanılıyor. Oyun entegrasyonları için Minecraft'ta **Mineflayer**, Factorio'da RCON API bağlanıyor. Mimari üç \"stage\"e bölünmüş: tarayıcı (Stage Web), masaüstü (Stage Tamagotchi) ve mobil PWA (Stage Pocket).",
+        "why": "AI-vtuber / dijital companion trendi hızla büyüyor ve Neuro-sama'nın kapalı kaynak olması bıraktığı boşluğu dolduran açık kaynak alternatiflere talep var. Kitle ağırlıklı olarak içerik üreticileri, oyun toplulukları ve kendi AI asistanını/companion'ını özelleştirmek isteyen meraklılar. Tarayıcıda donanım hızlandırmalı çıkarım gibi teknik olarak iddialı özellikler de geliştirici ilgisini artırıyor.",
+        "evolve": "- Twitch/YouTube gibi canlı yayın platformlarıyla daha derin, resmi entegrasyon.\n- Uzun vadeli hafıza ve duygu durumu kalıcılığının güçlendirilmesi.\n- Mobil PWA tarafında performans/pil optimizasyonu.\n- Topluluk içinde companion \"kişilik\" ve model paylaşım pazarı."
+      },
+      "glossary": [
+        {
+          "term": "VRM",
+          "def": "3D avatarları farklı uygulamalar arasında taşınabilir kılan, özellikle sanal yayıncılıkta kullanılan bir 3D model dosya formatı."
+        },
+        {
+          "term": "Live2D",
+          "def": "2D çizimlere derinlik hissi veren hareketler kazandırarak karakteri canlandıran bir animasyon teknolojisi."
+        },
+        {
+          "term": "WebGPU",
+          "def": "Tarayıcıların ekran kartını doğrudan kullanarak yüksek performanslı grafik ve hesaplama yapmasını sağlayan yeni nesil bir web standardı."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML/CSS/JS) yazılmış uygulamaları Windows, macOS ve Linux'ta çalışan masaüstü programlarına dönüştüren bir çerçeve."
+        },
+        {
+          "term": "Transformers.js",
+          "def": "Yapay zeka modellerini sunucuya ihtiyaç duymadan doğrudan tarayıcıda çalıştırmayı sağlayan bir JavaScript kütüphanesi."
+        },
+        {
+          "term": "RCON",
+          "def": "Bir oyun sunucusunu uzaktan komutlarla yönetmek için kullanılan standart bir protokol (Remote Console)."
+        },
+        {
+          "term": "PWA (Progressive Web App)",
+          "def": "Bir web sitesinin, telefona kurulan uygulamalar gibi davranmasını sağlayan web teknolojisi."
+        }
+      ]
+    },
+    {
+      "name": "OpenCut-app/OpenCut",
+      "url": "https://github.com/OpenCut-app/OpenCut",
+      "stars": "67.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "OpenCut, CapCut gibi popüler ama kapalı kaynak video editörlerine karşı ücretsiz ve açık kaynak bir alternatif sunmayı hedefliyor. Web, masaüstü ve mobilde çalışan tek bir video düzenleme deneyimi sağlayarak içerik üreticilerin ücretli veya kapalı yazılımlara bağımlı kalmadan video düzenleyebilmesini amaçlıyor.",
+        "tech": "Kod tabanının büyük kısmı TypeScript; proje şu anda kapsamlı bir **yeniden yazım** sürecinden geçiyor ve bu yeniden yazımın merkezinde \"masaüstü, mobil ve tarayıcının tek bir kod tabanından\" çalışmasını sağlayacak bir **Rust çekirdek** var. Araç yönetimi Proto, görev orkestrasyonu Moon ile yapılan bir monorepo yapısı kullanılıyor. Yeni mimaride bir **Editor API** ile üçüncü taraf eklenti (plugin) desteği, otomasyon/toplu render için **headless mod**, ve AI ajanlarının video düzenleme yapabilmesi için bir **MCP sunucusu** entegrasyonu planlanıyor; ayrıca editör içi scripting imkanı sunuluyor.",
+        "why": "Video düzenleme pazarında CapCut/Premiere gibi araçların ücretli veya kapalı kaynak olması ve içerik üretici ekonomisinin (creator economy) büyümesi OpenCut'a doğal bir kitle sağlıyor. Ayrıca AI ajanlarının video prodüksiyonuna girmeye başlaması bağlamında planlanan MCP entegrasyonu, projeyi salt bir editör olmaktan çıkarıp \"ajanların kullanabileceği bir video düzenleme platformu\" konumuna taşıyor — bu da onu hem creator'lar hem de geliştiriciler için gündemde tutuyor.",
+        "evolve": "- Rust çekirdeğin tamamlanması performans ve platformlar arası tutarlılığı önemli ölçüde artıracak.\n- Plugin ekosisteminin olgunlaşması (üçüncü taraf efekt/eklenti pazarı).\n- MCP entegrasyonu tamamlandığında \"bir metin komutuyla video düzenle\" gibi tam otomatik AI destekli senaryoların ortaya çıkması beklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının harici araçlara ve verilere standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Headless mod",
+          "def": "Bir programın grafik arayüz açmadan, arka planda komutlarla çalıştırılabilmesi."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla projenin veya paketin tek bir git deposunda birlikte tutulduğu geliştirme yapısı."
+        },
+        {
+          "term": "Editor API",
+          "def": "Bir düzenleme yazılımının işlevlerine dışarıdan (eklentiler veya scriptler aracılığıyla) erişim sağlayan arayüz."
+        },
+        {
+          "term": "Rust",
+          "def": "Bellek güvenliği ve yüksek performans için tasarlanmış, sistem programlamada yaygın kullanılan bir programlama dili."
+        },
+        {
+          "term": "Task orchestration (görev orkestrasyonu)",
+          "def": "Bir yazılım projesindeki derleme, test gibi birbirine bağlı görevlerin sırayla ve doğru şekilde çalıştırılmasını yöneten sistem."
+        }
+      ]
+    }
+  ]
+}
