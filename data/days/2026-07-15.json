@@ -1,0 +1,187 @@
+{
+  "date": "2026-07-15",
+  "projects": [
+    {
+      "name": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "stars": "170.8k",
+      "language": "Shell",
+      "sections": {
+        "serves": "Matt Pocock'un (TypeScript eğitmeni, ~60 bin aboneli bir bültenin yazarı) derlediği bu repo, Claude Code, Cursor ve Codex gibi kodlama ajanları için yeniden kullanılabilir **skill** (yetenek) koleksiyonu. Amaç, ajanlı kodlamanın (agentic coding) hızını korurken ortaya çıkan dört klasik sorunu çözmek: gereksinimlerin yanlış anlaşılması, gereksiz gevezelik, testsiz/kırık kod ve zamanla çürüyen mimari. Bir nevi \"deneyimli bir mühendisin refleksleri\" ajana talimat seti olarak veriliyor; \"vibe coding\"in aksine disiplinli, tekrarlanabilir bir süreç öneriyor.",
+        "tech": "Skill'ler iki eksende ayrılıyor: **user-invoked** (kullanıcının `/grill-with-docs`, `/to-spec`, `/implement` gibi elle çağırdığı orkestrasyon komutları) ve **model-invoked** (`/tdd`, `/diagnosing-bugs`, `/code-review` gibi, ajanın bağlama göre kendiliğinden devreye aldığı disiplinler). Kurulum iki şekilde yapılabiliyor: `npx skills@latest add mattpocock/skills` ile dosyaları projeye kopyalayıp özelleştirmek, ya da Claude Code'un plugin sistemiyle salt-okunur, otomatik güncellenen bir paket olarak eklemek. `CONTEXT.md` deseni öne çıkıyor: proje için ortak bir jargon sözlüğü tanımlanarak ajanın uzun açıklamalar yerine kısa, paylaşılan terimlerle konuşması sağlanıyor — hem token tasarrufu hem netlik.",
+        "why": "Repo, ajanlı kodlamanın kendi yarattığı bir soruna (\"hız arttıkça mimari borç da artıyor\") somut ve kibirsiz bir cevap sunduğu için ilgi görüyor. Pocock'un var olan geniş takipçi kitlesi ilk ivmeyi sağlamış olsa da, içeriğin \"The Pragmatic Programmer\", Domain-Driven Design ve \"A Philosophy of Software Design\" gibi klasik mühendislik literatüründen beslenmesi, geçici bir prompt koleksiyonundan çok daha kalıcı bir referans hissi veriyor. Ayrıca Claude, Cursor ve Codex'in ortak benimsediği \"Agent Skills\" standardına uyumlu olması, tek bir araca bağımlı kalmak istemeyen ekiplerin ilgisini çekiyor.",
+        "evolve": "- Skill kullanımı öncesi/sonrası kod kalitesini ölçen somut bir telemetri veya karşılaştırma raporu, iddiaları veriye dökebilir.\n- Next.js, Rails gibi belirli stack'lere özel \"skill paketleri\" ile daha isabetli, bağlama duyarlı öneriler sunulabilir.\n- CI'a entegre, periyodik olarak `/improve-codebase-architecture` skill'ini otomatik tetikleyen bir mekanizma, mimari çürümeyi insan müdahalesi beklemeden yakalayabilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skill (ajan yeteneği)",
+          "def": "Bir AI kodlama ajanına, belirli bir görevi belirli bir disiplinle yapması için verilen, yeniden kullanılabilir talimat/prompt paketi."
+        },
+        {
+          "term": "Agentic coding (ajanlı kodlama)",
+          "def": "Bir AI ajanının kod yazma, test etme ve düzenleme adımlarını büyük ölçüde kendi başına yürüttüğü geliştirme biçimi."
+        },
+        {
+          "term": "Model-invoked vs. user-invoked",
+          "def": "Model-invoked yetenekler ajanın bağlama göre kendiliğinden devreye soktuğu; user-invoked yetenekler ise kullanıcının elle bir komutla çağırdığı yeteneklerdir."
+        },
+        {
+          "term": "TDD (Test-Driven Development)",
+          "def": "Önce başarısız olacak bir test yazıp sonra bu testi geçirecek kodu yazma; kod her zaman bir testle doğrulanmış olur."
+        },
+        {
+          "term": "CONTEXT.md deseni",
+          "def": "Bir projeye özel terimlerin ve kısaltmaların tanımlandığı dosya; ajanın uzun açıklamalar yerine bu ortak jargonla konuşmasını sağlar."
+        },
+        {
+          "term": "Domain-Driven Design (DDD)",
+          "def": "Yazılımın, üzerinde çalıştığı iş alanının (domain) kavramlarını ve dilini doğrudan yansıtacak şekilde tasarlanmasını savunan bir yazılım mimarisi yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "Shubhamsaboo/awesome-llm-apps",
+      "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+      "stars": "121k",
+      "language": "Python",
+      "sections": {
+        "serves": "LLM tabanlı agent ve RAG (retrieval-augmented generation) uygulamaları öğrenmek isteyen geliştiricilerin en büyük derdi, örneklerin dağınık, eksik ya da tek seferlik demo kalitesinde olması. Bu repo, klonlanıp doğrudan çalıştırılabilen 100'den fazla agent/RAG uygulamasını tek çatı altında topluyor — basit tek dosyalık seyahat planlayıcılardan, hafızalı ve araç kullanan çok-ajanlı hukuk analizi veya dolandırıcılık soruşturması sistemlerine kadar geniş bir yelpazede.",
+        "tech": "Uygulamalar karmaşıklığa göre (starter agent, advanced agent, multi-agent team) ve yeteneğe göre (sesli ajanlar, generative UI ajanları, oyun oynayan ajanlar, MCP ajanları, RAG sistemleri, hafıza sistemleri) sınıflandırılmış. Tek bir framework'e bağlı kalmak yerine LangGraph, CrewAI, Google ADK, OpenAI Agents SDK ve AG2 gibi farklı orkestrasyon yaklaşımlarını yan yana gösteriyor; model tarafında da Claude, GPT, Gemini, DeepSeek, Llama ve Qwen ile framework-agnostik bir tutum sergileniyor. Üretim kalitesine yaklaşmak için pydantic/JSON şema ile yapılandırılmış çıktı, değerlendirme (evaluation) adımları ve araç çağırma (tool calling) örüntüleri her uygulamada tekrarlanıyor.",
+        "why": "2024-2025'te sektörün prototip chatbot'lardan üretime alınabilir agent sistemlerine kaydığı bir dönemde, \"klonla ve 30 saniyede çalıştır\" vaadiyle bu geçişe giriş engelini düşürüyor. Dolandırıcılık soruşturması, finansal koçluk, ev yenileme gibi az işlenmiş kullanım senaryolarını kapsaması ve haftalık yeni şablonlarla canlı tutulması, repoyu statik bir \"awesome-list\"ten çok bir şablon pazar yerine dönüştürüyor; 121 bin yıldız da bu ilgiyi doğruluyor.",
+        "evolve": "- Framework'ler arası (LangGraph vs. CrewAI vs. ADK) somut bir performans/maliyet karşılaştırma tablosu, seçim yapan geliştiriciler için büyük değer katar.\n- Hızla değişen SDK'lar nedeniyle örneklerin bozulma riski var; otomatik CI ile \"bu örnek hâlâ çalışıyor mu\" testi eklenmesi güveni artırır.\n- Güvenlik ve maliyet açısından üretime hazır olma seviyesini gösteren bir \"olgunluk etiketi\" (demo / production-ready) faydalı olur."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin cevap üretirken önce ilgili belgeleri arayıp bulduğu bilgiyle cevabı zenginleştirdiği yöntem."
+        },
+        {
+          "term": "Multi-agent sistem (çok-ajanlı sistem)",
+          "def": "Bir görevi, her biri farklı bir uzmanlığa sahip birden fazla AI ajanının iş birliğiyle çözdüğü mimari."
+        },
+        {
+          "term": "LangGraph / CrewAI",
+          "def": "Birden fazla AI ajanının hangi sırayla, hangi kurallarla çalışacağını tanımlamaya yarayan, popüler ajan orkestrasyon kütüphaneleri."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Bir AI modelinin dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Tool calling (araç çağırma)",
+          "def": "Bir dil modelinin, kendi başına yapamadığı işler (web araması, hesaplama, veritabanı sorgusu) için harici bir fonksiyonu tetiklemesi."
+        },
+        {
+          "term": "Structured output (yapılandırılmış çıktı)",
+          "def": "Modelin serbest metin yerine, önceden tanımlı bir şemaya (ör. JSON) uyan, doğrulanabilir bir formatta cevap üretmesi."
+        }
+      ]
+    },
+    {
+      "name": "chenyme/grok2api",
+      "url": "https://github.com/chenyme/grok2api",
+      "stars": "5.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "Grok'un üç farklı hizmetinin (Build, Web, Console) her birinin kendi kimlik doğrulama ve yetenek modeli var; bu proje bu karmaşayı tek, tanıdık bir API arkasına gizliyor. Grok2API, farklı Grok hesaplarını tek bir OpenAI-uyumlu (ve Anthropic Messages-uyumlu) API gateway'i arkasında birleştirerek geliştiricilerin sağlayıcıya özgü entegrasyon detaylarıyla uğraşmadan yük dengeleme ve otomatik devreye alma (failover) ile birden fazla hesabı kullanabilmesini sağlıyor.",
+        "tech": "Go ile yazılmış sistem, her biri kendi kota ve hata yönetimine sahip üç ayrı sağlayıcı havuzu üzerine kurulu: OAuth tabanlı Build, SSO tabanlı Web ve durumsuz (stateless) Console. Bir model router, istemci izinlerine ve hesap uygunluğuna göre isteği doğru havuza yönlendiriyor. Kalıcı veri için SQLite (tek sunucu) veya PostgreSQL (çok sunuculu), dağıtık durum (limitler, kilitler, yönlendirme) için Redis kullanılıyor. Kimlik bilgileri AES-256-GCM ile şifreleniyor, istekler SSRF saldırılarına karşı sanitize ediliyor; yapılandırma ise sunucu yeniden başlatılmadan admin panelinden değiştirilebiliyor (hot-reload).",
+        "why": "Grok'un API yüzeyinin hızla genişlemesi ve kurumların tek bir sağlayıcıya bağımlı kalmak istemeyip birden fazla hesap/sağlayıcı arasında dayanıklılık (resilience) araması, bu tür \"2api\" tarzı gateway projelerinin (gpt2api, gemini2api ve benzerleri) bir ekosistem hâline gelmesini sağlıyor. \"Çoklu hesap\" vurgusu özellikle paylaşılan altyapıyı yöneten ekipler ya da kota limitlerini aşmak isteyen geliştiriciler için cazip.",
+        "evolve": "- Hesapların ban/kısıtlanma riskine karşı daha şeffaf bir sağlık ve izleme panosu, operasyonel güveni artırır.\n- Resmi OpenAI/Anthropic SDK'larına karşı otomatik uyumluluk testleri, gateway'in \"gerçekten uyumlu\" kaldığını garanti eder.\n- Maliyet ve kullanım analitiği (hangi hesap, hangi model, ne kadar harcama) eklenmesi kurumsal benimsemeyi kolaylaştırır."
+      },
+      "glossary": [
+        {
+          "term": "API gateway",
+          "def": "Farklı arka uç servislerini tek, standart bir arayüz arkasında birleştirip yönlendiren ara katman."
+        },
+        {
+          "term": "OpenAI-uyumlu API",
+          "def": "OpenAI'nin API formatını taklit ederek, o formatı destekleyen herhangi bir istemci ile doğrudan çalışabilen arayüz."
+        },
+        {
+          "term": "OAuth / SSO (Single Sign-On)",
+          "def": "Kullanıcının kimliğini bir aracı servis üzerinden doğrulayıp erişim izni veren, şifre paylaşmadan giriş yapılmasını sağlayan yöntemler."
+        },
+        {
+          "term": "Failover (otomatik devreye alma)",
+          "def": "Bir bileşen ya da hesap devre dışı kaldığında sistemin otomatik olarak yedek bir bileşene geçmesi."
+        },
+        {
+          "term": "SSRF (Server-Side Request Forgery)",
+          "def": "Bir saldırganın, sunucuyu kandırarak onun adına normalde erişemeyeceği iç ağ kaynaklarına istek attırması."
+        },
+        {
+          "term": "Redis",
+          "def": "Verileri bellekte tutarak çok hızlı okuma/yazma sağlayan, genelde önbellek ve geçici durum yönetimi için kullanılan bir veritabanı."
+        }
+      ]
+    },
+    {
+      "name": "penpot/penpot",
+      "url": "https://github.com/penpot/penpot",
+      "stars": "56.3k",
+      "language": "Clojure",
+      "sections": {
+        "serves": "Penpot, Figma'ya benzer tasarım ve prototipleme yetenekleri sunan ama tamamen açık kaynak ve kendi sunucunuzda barındırılabilir (self-hosted) bir platform. Veri egemenliği, uyumluluk (compliance) gereksinimleri ya da tedarikçiye bağımlılıktan (vendor lock-in) kaçınmak isteyen ekipler için tasarım altyapısını kendi kontrollerinde tutmalarını sağlıyor; tasarımları statik görseller yerine SVG, CSS, HTML ve JSON gibi geliştiricilerin doğrudan kullanabileceği çıktılara dönüştürerek tasarım-geliştirme arasındaki kopukluğu azaltıyor.",
+        "tech": "Backend Clojure, reaktif arayüz katmanı ise ClojureScript ile yazılmış; performans-kritik render işlemleri için Rust kullanılıyor, stil katmanında SCSS var. Bu seçim, tasarım verisinin dağınık dosyalar yerine yapılandırılmış, sorgulanabilir veri olarak ele alınmasını sağlıyor. Öne çıkan yetenekler arasında MCP sunucu entegrasyonu (tasarım ile kod arasında çift yönlü akış), CSS Grid/Flexbox tabanlı responsive layout desteği, tasarım ve geliştirme arasında tek doğruluk kaynağı sağlayan native design token'lar, gerçek zamanlı ortak çalışma ve doğrudan kullanılabilir kod üreten inceleme (inspection) modu bulunuyor.",
+        "why": "56 binin üzerindeki yıldızıyla zaten oturmuş bir proje olan Penpot'un bugün yeniden trend olması, MCP entegrasyonu ile AI-destekli tasarım-kod iş akışlarına girmesi ve \"self-host\" / veri egemenliği eğiliminin kurumsal yazılım dünyasında güçlenmesiyle örtüşüyor. Figma'nın fiyatlandırma ve veri politikalarından rahatsız olan ekipler için somut, üretime hazır bir alternatif sunması da ilgiyi tazeliyor.",
+        "evolve": "- Daha zengin bir plugin pazar yeri, Figma ekosisteminden geçişi kolaylaştırabilir.\n- Rust'ın kapsamının render dışına (ör. büyük dosyalarda işbirliği senkronizasyonu) genişletilmesi büyük ekiplerde performansı artırabilir.\n- AI destekli, tasarımdan koda ve kodan tasarıma otomatik iki yönlü senkronizasyon, MCP entegrasyonunun doğal bir sonraki adımı olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted (kendi sunucunda barındırma)",
+          "def": "Bir yazılımın, üçüncü taraf bir bulut hizmeti yerine kullanıcının kendi sunucusunda çalıştırılması."
+        },
+        {
+          "term": "Design token (tasarım jetonu)",
+          "def": "Renk, boşluk, yazı tipi gibi tasarım değerlerinin, tasarım ve kodda aynı kaynaktan yönetilmesini sağlayan adlandırılmış değişkenler."
+        },
+        {
+          "term": "ClojureScript",
+          "def": "Clojure dilinin, tarayıcıda çalışacak JavaScript'e derlenen versiyonu."
+        },
+        {
+          "term": "Vendor lock-in (tedarikçiye bağımlılık)",
+          "def": "Bir sistemin belirli bir sağlayıcıya o kadar bağımlı hâle gelmesi ki başka bir sağlayıcıya geçmek çok maliyetli olur."
+        },
+        {
+          "term": "Design-as-code (kod olarak tasarım)",
+          "def": "Tasarımların statik görseller yerine, doğrudan koda dönüştürülebilen yapılandırılmış veri olarak ele alınması."
+        }
+      ]
+    },
+    {
+      "name": "virattt/ai-hedge-fund",
+      "url": "https://github.com/virattt/ai-hedge-fund",
+      "stars": "62k",
+      "language": "Python",
+      "sections": {
+        "serves": "Proje, gerçek yatırım tavsiyesi vermeyen, tamamen eğitim amaçlı bir \"yapay zeka hedge fonu\" simülasyonu. Farklı yatırım felsefelerinin bir araya gelip ortak bir karara nasıl varabileceğini göstermek için Warren Buffett, Cathie Wood, Bill Ackman, Michael Burry gibi 14 tanınmış yatırımcının analiz tarzını taklit eden ayrı AI ajanları kullanıyor; repo, \"eğitim ve araştırma amaçlıdır, gerçek yatırım için değildir\" uyarısını açıkça vurguluyor.",
+        "tech": "Persona ajanlarının yanında değerleme (intrinsic value hesaplayan), duyarlılık (piyasa psikolojisi), temel analiz (finansal veriler) ve teknik analiz (fiyat örüntüleri) yapan uzman ajanlar; bunların çıktısını birleştiren bir risk yöneticisi ve son kararı veren bir portföy yöneticisi ajanı var. Sistem OpenAI, Groq, Anthropic, DeepSeek ve yerel modeller (Ollama) dahil birden çok LLM sağlayıcısını destekliyor; ajanlar arası koordinasyonu bir orkestrasyon katmanı yönetiyor ve tüm ajanların analizleri AAPL, MSFT, NVDA gibi somut hisseler üzerinden test edilebiliyor.",
+        "why": "Proje, üç ayrı trend konuyu — AI ajanları, algoritmik trading ve ünlü yatırımcı personaları — tek çatı altında birleştirerek karmaşık finansal analizi hem eğitici hem eğlenceli hâle getiriyor. Net ve tekrarlanan \"gerçek tavsiye değildir\" çerçevesi, riskli bir alanı (finansal tavsiye) yasal ve etik açıdan güvenli şekilde ele almasını sağlıyor; bu da 62 bin yıldıza ulaşmasında önemli bir etken.",
+        "evolve": "- Ajanların geçmiş verilerle test edildiği (backtesting) şeffaf bir performans raporu, iddiaların ötesine geçip somut veri sunabilir.\n- Persona ajanları arasında görüş ayrılığı olduğunda portföy yöneticisinin bu çelişkiyi nasıl çözdüğüne dair daha fazla şeffaflık eklenebilir.\n- Gerçek zamanlı piyasa verisi kısıtları ve gecikmeler konusunda daha net dokümantasyon, projenin eğitim amacını daha da netleştirir."
+      },
+      "glossary": [
+        {
+          "term": "Persona ajanı",
+          "def": "Belirli bir kişinin veya karakterin bakış açısını, üslubunu ya da karar verme tarzını taklit edecek şekilde yapılandırılmış AI ajanı."
+        },
+        {
+          "term": "Portföy yöneticisi ajanı",
+          "def": "Diğer analiz ajanlarının çıktılarını birleştirip nihai alım/satım kararını veren AI bileşeni."
+        },
+        {
+          "term": "Backtesting",
+          "def": "Bir stratejinin ne kadar iyi çalıştığını anlamak için geçmiş piyasa verileri üzerinde test edilmesi."
+        },
+        {
+          "term": "Duyarlılık analizi (sentiment analysis)",
+          "def": "Haber, sosyal medya gibi kaynaklardan piyasa katılımcılarının genel ruh hâlini/algısını ölçme yöntemi."
+        },
+        {
+          "term": "LLM sağlayıcı (provider)",
+          "def": "Bir dil modelini API üzerinden erişilebilir hâle getiren şirket veya servis (ör. OpenAI, Anthropic, Groq)."
+        }
+      ]
+    }
+  ]
+}
