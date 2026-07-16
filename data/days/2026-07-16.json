@@ -1,0 +1,101 @@
+{
+  "date": "2026-07-16",
+  "projects": [
+    {
+      "name": "earendil-works/pi",
+      "url": "https://github.com/earendil-works/pi",
+      "stars": "71.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Pi, farklı LLM sağlayıcılarıyla (OpenAI, Anthropic, Google vb.) çalışan, taşınabilir bir otomatik kodlama ajanı altyapısı (\"agent harness\") sunuyor. Sorun şu: her LLM sağlayıcısının kendi entegrasyon şekli, ajan çalışma zamanı ve terminal arayüzü var; geliştiriciler tek bir sağlayıcıya kilitlenmek istemiyor. Pi bunu, **pi-ai** (çoklu-sağlayıcı LLM soyutlama katmanı), **pi-agent-core** (araç çağırma ve durum yönetimi olan ajan çalışma zamanı) ve **pi-coding-agent** (interaktif CLI) olmak üzere üç paketten oluşan modüler bir monorepo ile tek çatıda topluyor.",
+        "tech": "TypeScript ağırlıklı (%93.8) modüler monorepo. Tedarik zinciri güvenliği öne çıkan bir mimari karar: bağımlılıklar tam sürüme sabitleniyor (**pinned dependencies**), commit öncesi kontrollerle ve \"iki günlük minimum yayım yaşı\" kuralıyla aynı gün çıkan zararlı paket sürümlerinin sisteme sızması engelleniyor. Terminal arayüzü **differential rendering** (yalnızca değişen kısmı yeniden çizme) tekniğiyle akıcı çalışıyor. Bilinçli bir tasarım tercihi olarak sandbox/izin sistemi projenin içine gömülü değil - dosya sistemi, ağ, süreç ve kimlik bilgisi erişimini kısıtlamak kullanıcıya bırakılmış; dokümantasyon Docker, Gondolin ve OpenShell gibi üç izolasyon deseni öneriyor.",
+        "why": "71.5k yıldıza ve 244 sürüme ulaşmış olması, ajan tabanlı kodlama araçlarına olan talebin büyüklüğünü gösteriyor. Bugün +406 yıldızla trend olmasının arkasında, geliştiricilerin tek bir LLM sağlayıcısına bağımlı kalmak istememesi ve \"şeffaf, birleştirilebilir\" araçlara yönelik talep var. Proje ayrıca ajan oturumlarının paylaşılmasını teşvik ederek gerçek dünya kullanım verisiyle kendini geliştiriyor - bu da topluluk katılımını artıran bir döngü yaratıyor.",
+        "evolve": "En büyük eksik, gömülü bir izin/sandbox sisteminin olmaması - üretim ortamında güvenlik tamamen kullanıcının harici konteynerleştirme çabasına bağlı. Yerleşik, ince ayarlanabilir bir izin katmanı (dosya/ağ/süreç bazında) eklenmesi projeyi kurumsal kullanım için çok daha cazip hale getirir. Ayrıca farklı LLM sağlayıcıları arasındaki araç çağırma formatı tutarsızlıklarını soyutlayan bir \"uyumluluk katmanı\" derinleştirilebilir."
+      },
+      "glossary": [
+        { "term": "Agent harness", "def": "Bir yapay zeka ajanının çalışması için gereken araç çağırma, durum yönetimi ve arayüz gibi bileşenleri bir araya getiren çatı/altyapı." },
+        { "term": "LLM soyutlama katmanı", "def": "Farklı yapay zeka model sağlayıcılarına (OpenAI, Anthropic vb.) tek bir ortak arayüzden erişim sağlayan yazılım katmanı." },
+        { "term": "Tool calling (araç çağırma)", "def": "Bir yapay zeka modelinin, sohbet dışında kod çalıştırma, dosya okuma gibi harici araçları çağırabilmesi yeteneği." },
+        { "term": "Monorepo", "def": "Birden fazla paket veya projenin tek bir git deposunda birlikte tutulduğu geliştirme yaklaşımı." },
+        { "term": "Pinned dependencies (sabitlenmiş bağımlılıklar)", "def": "Bir projenin kullandığı dışarıdan kütüphanelerin sürümünün tam olarak sabitlenmesi; beklenmedik güncellemelerin güvenlik riski getirmesini önler." },
+        { "term": "Sandbox", "def": "Bir programın, bilgisayarın geri kalanına zarar veremeyecek şekilde izole edilmiş, kısıtlı bir ortamda çalıştırılması." }
+      ]
+    },
+    {
+      "name": "pocketbase/pocketbase",
+      "url": "https://github.com/pocketbase/pocketbase",
+      "stars": "59.8k",
+      "language": "Go",
+      "sections": {
+        "serves": "PocketBase, ayrı bir veritabanı sunucusu ve ayrı bir API sunucusu kurmadan, **tek bir çalıştırılabilir dosyayla** eksiksiz bir backend (arka uç) ayağa kaldırmayı sağlıyor. Küçük ekiplerin veya bağımsız geliştiricilerin bir uygulamanın arka ucunu (kullanıcı yönetimi, dosya depolama, gerçek zamanlı veri, REST API) dakikalar içinde kurmasına imkan tanıyor - Firebase'in kendi sunucunuzda barındırdığınız (self-hosted), açık kaynaklı bir alternatifi gibi düşünülebilir.",
+        "tech": "Go ile yazılmış (%68.9), **SQLite**'i gömülü veritabanı olarak kullanıyor - yani ayrı bir veritabanı sunucu süreci çalıştırmaya gerek yok, veritabanı dosyası uygulamanın içinde. Gerçek zamanlı abonelikler, dosya/kullanıcı yönetimi, yönetici paneli (JS/CSS ile yazılmış admin dashboard) ve REST benzeri API hepsi tek çalıştırılabilir dosyada paketlenmiş. CGO_ENABLED=0 ile statik derleme desteği sayesinde harici C kütüphanelerine bağımlılık olmadan Linux, macOS, Windows ve FreeBSD'de çalışabiliyor. Bir JavaScript VM eklentisi sayesinde özel iş mantığı JS ile yazılabiliyor, ya da proje bir Go framework'ü olarak kendi uygulamanıza gömülüp genişletilebiliyor.",
+        "why": "Geliştirici ekosisteminde \"backend karmaşıklığından kaçış\" güçlü bir tema. Mikroservis / ayrı veritabanı-API sunucusu kurulumlarının getirdiği operasyonel yük, özellikle indie geliştiriciler ve küçük ekipler için gereksiz bulunuyor. PocketBase'in \"tek dosya\" felsefesi bu acıyı doğrudan çözüyor; 274 sürüm ve 59.8k yıldızla olgunlaşmış bir proje olarak günlük +74 yıldızla istikrarlı bir ilgi görmeye devam ediyor.",
+        "evolve": "v1.0 öncesi olması nedeniyle geriye dönük uyumluluk garanti edilmiyor - bu da production kullanımı için risk oluşturuyor. Gömülü SQLite mimarisi tek sunuculu kullanım için mükemmel ama yatay ölçeklenme (birden fazla sunucuya dağıtma) doğası gereği zor; çoklu-düğüm senkronizasyonu veya yönetilen bir bulut sürümü eklenmesi kurumsal ölçekte kullanımı açar. Şu an PR'lar spam nedeniyle geçici kapalı - topluluk katkı süreci netleştirilebilir."
+      },
+      "glossary": [
+        { "term": "Gömülü veritabanı (embedded database)", "def": "Ayrı bir sunucu süreci olarak çalışmayan, uygulamanın kendi içinde, tek bir dosya olarak çalışan veritabanı türü." },
+        { "term": "REST API", "def": "Web üzerinden veri okuma/yazma işlemlerini standart HTTP istekleriyle (GET, POST vb.) yapmayı sağlayan yaygın arayüz tasarım biçimi." },
+        { "term": "Realtime subscription (gerçek zamanlı abonelik)", "def": "Veritabanında bir değişiklik olduğunda, sayfayı yenilemeye gerek kalmadan istemciye anında bildirim gitmesini sağlayan mekanizma." },
+        { "term": "Self-hosted", "def": "Bir hizmetin, büyük bir bulut sağlayıcısı yerine kullanıcının kendi sunucusunda barındırılması." },
+        { "term": "Statik derleme", "def": "Bir programın, çalışması için gereken tüm kütüphaneleri dışarıdan yüklemek yerine kendi içine gömerek tek bir bağımsız dosya olarak derlenmesi." }
+      ]
+    },
+    {
+      "name": "HKUDS/DeepTutor",
+      "url": "https://github.com/HKUDS/DeepTutor",
+      "stars": "26.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "DeepTutor, öğrenmeyi parçalı araçlar arasında geçiş yapmak zorunda bırakmadan tek bir çatıda toplayan bir \"ajan-yerel\" (agent-native) öğrenme çalışma alanı. Sohbetle problem çözme, quiz üretme, derinlemesine araştırma, görselleştirme ve ustalık pratiğini aynı sistemde birleştiriyor. Yani ayrı bir quiz uygulaması, ayrı bir not tutma aracı, ayrı bir araştırma asistanı kullanmak yerine hepsi tek bir ajan motoru üzerinde çalışıyor.",
+        "tech": "Python/FastAPI backend, Next.js 16 + React 19 + TypeScript frontend. Tüm özellikler (sohbet, quiz, araştırma) **\"tek bir ajansal motor\"** üzerinde çalışıyor - yani her modül ayrı bir alt sistem değil, ortak bir orkestrasyon döngüsünün farklı görünümleri. Bilgi tabanı tarafında LlamaIndex, GraphRAG, LightRAG, PageIndex gibi birden fazla RAG motorunu destekliyor. Dikkat çekici bir tasarım: **üç katmanlı hafıza** (L1 ham kayıtlar, L2 özetler, L3 sentez) - her üst katman bir alt katmana referans veriyor, böylece kullanıcı profili şeffaf ve izlenebilir kalıyor (opak vektör gömme yerine).",
+        "why": "2026'da yapay zekanın \"ajan-yerel\" biçimde, sürekli insan müdahalesi olmadan çalışma eğilimi güçlenmiş durumda; DeepTutor bu eğilimi eğitim alanına taşıyor. 111 günde 20k yıldıza ulaşmış olması hızlı bir benimsenmeyi gösteriyor. Claude Code, Codex gibi harici ajanları \"ara-oturum\" devreye sokabilmesi ve yerel LLM'leri (Ollama, LM Studio) destekleyebilmesi hem bireysel öğrenciler hem eğitim kurumları için esneklik sağlıyor - bu genişlik ilgiyi büyütüyor.",
+        "evolve": "Kod çalıştırma (sandbox) bir güven sınırı olarak kabul ediliyor ve varsayılan olarak kapalı tutuluyor - bu, güvenlik ile işlevsellik arasında bir denge kaygısını gösteriyor; daha ince taneli, denetlenebilir bir sandbox politikası faydalı olur. Çoklu kullanıcı desteği mevcut ama harici kimlik doğrulama gerektiriyor; okul/kurum ölçeğinde kullanım için yerleşik bir SSO/LMS entegrasyonu (ör. Google Classroom, Moodle) eklenmesi benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        { "term": "Agent-native (ajan-yerel)", "def": "Bir sistemin, insan komutlarını tek tek beklemek yerine, otonom bir yapay zeka ajanının sürekli çalışması üzerine tasarlanmış olması." },
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir yapay zeka modelinin cevap üretirken önce ilgili belgeleri araması, sonra bu belgelere dayanarak yanıt vermesi yöntemi." },
+        { "term": "GraphRAG", "def": "Belgeler arasındaki ilişkileri bir bilgi grafiği olarak modelleyip bu grafik üzerinden arama yapan gelişmiş bir RAG türü." },
+        { "term": "Orkestrasyon", "def": "Birden fazla aracın veya adımın, belirli bir sıra ve mantıkla otomatik olarak koordine edilmesi." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." }
+      ]
+    },
+    {
+      "name": "Tencent/WeKnora",
+      "url": "https://github.com/Tencent/WeKnora",
+      "stars": "18.4k",
+      "language": "Go",
+      "sections": {
+        "serves": "WeKnora, dağınık ve yapılandırılmamış kurumsal dokümanları (PDF, Word, Excel, e-posta vb.) sorgulanabilir bir bilgi varlığına dönüştürüyor. Şirket içi dokümantasyon üzerine hızlı soru-cevap servisleri kurmak, otonom ajanların çok kaynaklı bilgi üzerinde akıl yürütmesini sağlamak ve ham belgelerden kendiliğinden güncellenen bir \"wiki\" üretmek gibi ihtiyaçları tek platformda karşılıyor.",
+        "tech": "Go tabanlı backend (%61.4), Vue + TypeScript arayüz. Depolama tarafında **PostgreSQL + pgvector** (HNSW hızlandırmalı, 1024 boyutlu gömme vektörleri) kullanılıyor; ayrıca Elasticsearch, Milvus, Weaviate, Qdrant gibi birden fazla vektör veritabanıyla değiştirilebilir bir mimari sunuyor. Sistem üç modda çalışıyor: basit sorular için RAG tabanlı soru-cevap, çok adımlı akıl yürütme için **ReAct ajanı** (arama + araç çağırma + web araması orkestre eden), ve ham belgeleri birbirine bağlı bir markdown bilgi tabanına damıtan \"Wiki Modu\". Kurumsal tarafta 4 katmanlı **RBAC**, AES-256-GCM şifreleme ve gRPC TLS iletişimi öne çıkıyor.",
+        "why": "Kurumların \"agentic AI\" benimsemesi, üretime hazır bilgi çerçevelerine olan talebi artırıyor; WeKnora'nın v0.6+ olgunluğu ve RAG+ajan+wiki+RBAC'ı tek pakette sunması, dağınık açık kaynak alternatifleri arasında nadir bir eksiksizlik sağlıyor. Tencent'in kurumsal desteği, şirketler için \"bu proje sürdürülür\" güvencesi veriyor. CLI, Chrome eklentisi ve minimal Docker kurulumu gibi geliştirici dostu detaylar benimsemeyi kolaylaştırıyor.",
+        "evolve": "Docker/Kubernetes altyapısı zorunlu tutulduğu için sunucusuz veya çok hafif tek-kullanıcı senaryolarında ağır kalabilir - küçük ekipler için daha hafif bir \"tek dosya\" kurulum modu eklenmesi erişilebilirliği artırır. Bilgi grafiği (Neo4j) özelliği opsiyonel ve karmaşıklık ekliyor; varsayılan kurulumu basitleştirip gelişmiş özellikleri katmanlı hale getirmek yeni kullanıcıların önündeki bariyeri azaltır. Ayrıca hangi vektör veritabanının hangi senaryoda daha iyi performans verdiğine dair yerleşik bir rehber olmaması kurulumu zorlaştırıyor."
+      },
+      "glossary": [
+        { "term": "RBAC (Role-Based Access Control)", "def": "Kullanıcılara doğrudan yetki vermek yerine roller (yönetici, katkıda bulunan, izleyici vb.) atayarak erişimi yöneten güvenlik modeli." },
+        { "term": "ReAct ajanı", "def": "Bir yapay zeka ajanının, düşünme ve harekete geçme adımlarını sırayla tekrarlayarak çok adımlı problemleri çözdüğü bir akıl yürütme yöntemi." },
+        { "term": "pgvector", "def": "PostgreSQL veritabanına, yapay zeka gömme vektörlerini saklama ve benzerlik araması yapma yeteneği ekleyen bir eklenti." },
+        { "term": "HNSW", "def": "Çok boyutlu vektörler arasında en yakın komşuyu hızlı bulmak için kullanılan bir arama/indeksleme algoritması." },
+        { "term": "Vektör veritabanı", "def": "Metin, görsel gibi verilerin sayısal 'gömme' (embedding) temsillerini saklayıp anlamsal benzerliğe göre arama yapmaya yarayan veritabanı türü." }
+      ]
+    },
+    {
+      "name": "screenpipe/screenpipe",
+      "url": "https://github.com/screenpipe/screenpipe",
+      "stars": "20.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Screenpipe, kullanıcının bilgisayarında gördüğü, duyduğu ve yaptığı her şeyi yerel olarak kaydedip aranabilir hale getiren bir \"dijital hafıza\" aracı. Amaç, \"hangi sekmedeydim\", \"o toplantıda ne konuşulmuştu\" gibi unutulan anları doğal dilde arayarak geri getirmek - Microsoft Recall veya Rewind.ai'nin yaptığına benzer ama verinin bilgisayardan çıkmadığı, yerel-öncelikli bir yaklaşımla.",
+        "tech": "Rust tabanlı çekirdek (%60.6) ve **Tauri** ile paketlenmiş masaüstü uygulaması. Sürekli kayıt yerine **\"olay tabanlı yakalama\"** kullanılıyor - yalnızca ekranda bir şey değiştiğinde, uygulama değiştiğinde veya tıklama/yazma olduğunda kayıt tetikleniyor; bu CPU kullanımını %5-10 seviyesinde, depolamayı ayda ~5-10 GB'de tutuyor. Ekran görüntüleri, OCR yerine öncelikle işletim sisteminin **erişilebilirlik ağacından** (ekran okuyucular için var olan buton/etiket/metin yapısı) yapılandırılmış metin çıkarıyor; bu yöntem mevcut değilse OCR'a geri dönüyor. Ses tarafında yerel Whisper modeliyle konuşmacı ayrımlı transkripsiyon yapılıyor. Arama SQLite FTS5 (tam metin arama) ile çalışıyor. \"Pipes\" adında markdown tabanlı bir eklenti sistemi var; MCP sunucusu olarak da çalışıp Claude/Cursor gibi araçlara bağlanabiliyor.",
+        "why": "Y Combinator'ın (S26) portföyüne girmesi ve yakın zamanda bir PII tespit modelinin alfa sürümünü yayınlaması ilgiyi tazeledi. Daha genel olarak, \"AI hafıza araçları\" ve bulut tabanlı, gizlilik kaygısı yaratan araçlara (Microsoft Recall) yerel-öncelikli alternatif arayışı güçlü bir trend - Screenpipe bu talebi doğrudan karşılıyor.",
+        "evolve": "Linux desteğinin kaynak koddan derleme gerektirmesi, kurulumu teknik olmayan kullanıcılar için zorlaştırıyor - hazır paketlerin sağlanması erişilebilirliği artırır. Masaüstü uygulamasının abonelik modeli \"source-available\" bir projede sürtünme yaratabilir; ücretsiz katmanın sınırlarının netleştirilmesi topluluk güvenini artırır. Ayrıca sürekli ekran/ses kaydının güvenlik riski (yanlışlıkla parola/hassas bilgi yakalama) hala açık bir sorun - PII tespit modelinin varsayılan olarak etkinleştirilmesi ve daha agresif otomatik redaksiyon eklenmesi güven açısından önemli bir adım olur."
+      },
+      "glossary": [
+        { "term": "Olay tabanlı yakalama (event-driven capture)", "def": "Sürekli kayıt yerine, yalnızca bir değişiklik (tıklama, uygulama geçişi vb.) olduğunda veri toplayan yöntem; kaynak kullanımını azaltır." },
+        { "term": "Erişilebilirlik ağacı (accessibility tree)", "def": "İşletim sisteminin, ekran okuyucular gibi araçlar için ekrandaki buton/etiket/metin yapısını tuttuğu dahili veri modeli." },
+        { "term": "OCR (Optical Character Recognition)", "def": "Bir görüntü içindeki yazıyı analiz ederek düzenlenebilir metne çevirme teknolojisi." },
+        { "term": "Tauri", "def": "Web teknolojileriyle yazılmış arayüzleri küçük ve hızlı masaüstü uygulamalarına dönüştüren bir geliştirme çerçevesi." },
+        { "term": "PII (Personally Identifiable Information)", "def": "Bir kişiyi doğrudan veya dolaylı olarak tanımlayabilecek kişisel bilgi (isim, e-posta, kimlik numarası vb.)." }
+      ]
+    }
+  ]
+}
