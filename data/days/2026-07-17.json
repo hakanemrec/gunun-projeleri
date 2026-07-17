@@ -1,0 +1,95 @@
+{
+  "date": "2026-07-17",
+  "projects": [
+    {
+      "name": "xai-org/grok-build",
+      "url": "https://github.com/xai-org/grok-build",
+      "stars": "13.4k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Terminal üzerinden çalışan yapay zeka kodlama ajanlarını çalıştırmak için tam ekran, fare destekli bir arayüz (TUI) ve bu ajanı ayakta tutan \"harness\" (çatı/altyapı) sunuyor. Kısacası geliştiricinin terminalde bir kodlama ajanıyla -model seçimi, görev takibi, araç çağırma gibi işlerle- etkileşimini tek bir uygulamada topluyor.",
+        "tech": "Rust ile yazılmış olması hız, tek dosyalık (binary) dağıtım ve düşük bellek ayak izi sağlıyor; CLI/TUI türü araçlarda sık tercih edilen bir seçim. \"Fullscreen, mouse interactive, extensible\" tanımı, klasik satır satır sohbet ekranı yerine gerçek bir terminal uygulaması inşa edildiğini ve \"extensible\" ifadesiyle bir eklenti/araç sistemine açık olduğunu gösteriyor.",
+        "why": "Üç günde 13 binin üzerinde yıldız ve 2.400'ün üzerinde fork - yıldız/fork oranı özellikle yüksek, bu da projenin sadece kullanılmakla kalmayıp üzerine inşa etmek/çatallamak için de tercih edildiğine işaret ediyor. xAI çatısı altından çıkması ve \"kodlama ajanı\" kategorisinin 2026'da en çok ilgi gören AI alt-alanlarından biri olması ivmeyi açıklıyor.",
+        "evolve": "Şu anki proje sayfasında konu etiketi (topic) ve ayrıntılı dokümantasyon paylaşılmamış görünüyor; farklı model sağlayıcılarına destek, eklenti/araç ekosisteminin belgelenmesi ve TUI'siz (headless) kullanım modu gibi eklemeler benimsenmeyi hızlandırabilir."
+      },
+      "glossary": [
+        { "term": "TUI (Terminal User Interface)", "def": "Fare ve grafik pencereler yerine, terminal içinde metin tabanlı ama düzenli/etkileşimli olarak çalışan arayüz türü." },
+        { "term": "Harness (ajan çatısı)", "def": "Bir yapay zeka ajanının çalışması için gereken araç çağırma, oturum/durum yönetimi ve arayüz gibi bileşenleri bir araya getiren altyapı katmanı." },
+        { "term": "Fork (çatallama)", "def": "Bir projenin kodunun kopyalanıp kendi bağımsız kopyası üzerinde geliştirilmesi; yüksek fork sayısı projenin başlangıç noktası olarak da kullanıldığını gösterebilir." },
+        { "term": "Apache-2.0 lisansı", "def": "Kodun ticari kullanım dahil serbestçe kullanılmasına izin veren, ayrıca patent ve marka konusunda ek koruma sağlayan açık kaynak yazılım lisansı." }
+      ]
+    },
+    {
+      "name": "vshulcz/deja-vu",
+      "url": "https://github.com/vshulcz/deja-vu",
+      "stars": "313",
+      "language": "Go",
+      "sections": {
+        "serves": "Claude Code, Codex ve opencode gibi kodlama ajanlarının zaten diskte biriktirdiği oturum (session) günlüklerini bir \"hafıza katmanına\" dönüştürüyor: geçmiş konuşmalarda arama yapma, ilgili bağlamı otomatik getirme, hassas bilgileri temizleme ve istatistik/paylaşım gibi işlevleri tek, bağımsız bir çalıştırılabilir dosya üzerinden sunuyor.",
+        "tech": "Go ile yazılması tek dosyalık (zero-dep) bir binary dağıtımını mümkün kılıyor; araç hem doğrudan komut satırından hem de MCP sunucusu olarak çalışıp Claude Code gibi istemcilere \"hatırlama\" (recall) aracı olarak bağlanabiliyor. \"Secret redaction\" özelliği, oturum günlüklerinin API anahtarı gibi hassas veriler barındırma riskini doğrudan hedef alıyor.",
+        "why": "AI kodlama ajanlarının çoğalmasıyla her araç kendi oturum geçmişini ayrı tutuyor; deja-vu bunları birleştiren \"ajan-bağımsız hafıza\" fikrini erken ve odaklı biçimde hayata geçiriyor. MCP ekosisteminin hızla büyümesi ve \"agent memory\" (ajan hafızası) kategorisinin 2026'nın en çok konuşulan geliştirici-araçları alt başlıklarından biri olması, sınırlı yıldız sayısına rağmen bu projeyi öne çıkarıyor.",
+        "evolve": "Şu an desteklenen araç seti (Claude Code, Codex, opencode) ile sınırlı; kapsamı başka ajanlara genişletmek, ekip içinde hafıza paylaşımını derinleştirmek ve redaction (temizleme) kurallarını özelleştirilebilir hale getirmek olgunlaşma yönleri olarak öne çıkıyor."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka ajanlarının harici araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Zero-dep binary", "def": "Çalışması için başka hiçbir kütüphane veya çalışma zamanı kurulumu gerektirmeyen, tek dosyalık çalıştırılabilir program." },
+        { "term": "Secret redaction", "def": "Günlük veya metin içinde geçen API anahtarı, şifre gibi hassas bilgilerin otomatik tespit edilip gizlenmesi işlemi." },
+        { "term": "Auto-context (otomatik bağlam)", "def": "Bir yapay zeka ajanının, kullanıcıdan istemeden geçmiş konuşma veya oturumlardan ilgili bilgiyi bulup mevcut göreve otomatik dahil etmesi." },
+        { "term": "Session log (oturum günlüğü)", "def": "Bir ajanla yapılan etkileşimin -komutlar, yanıtlar, araç çağrıları- sırayla diske kaydedildiği dosya." }
+      ]
+    },
+    {
+      "name": "littledivy/mimic",
+      "url": "https://github.com/littledivy/mimic",
+      "stars": "1.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "Kaynak kodu olmayan ya da değiştirilmesi zor olan herhangi bir masaüstü/CLI uygulamasının \"araya girilerek\" (intercept) yakalanıp, işlevlerinin sanki bir Python kütüphanesiymiş gibi çağrılmasını sağlıyor. Böylece var olan programları yeniden yazmadan otomasyon, test veya entegrasyon amacıyla Python koduna bağlamak mümkün oluyor.",
+        "tech": "Bu tür bir araya girme genelde işlem (process) düzeyinde fonksiyon/sistem çağrısı yakalama ya da süreçler arası iletişim (IPC) köprüsü gibi düşük seviye tekniklere dayanır; Python tarafında ince bir istemci katmanı bu köprüyü geliştiriciye tanıdık bir API olarak sunuyor. Bu tür araçlar platforma özgü alt sistemlere dokunduğu için hem güçlü hem de kırılgan olabiliyor.",
+        "why": "\"Herhangi bir programı kütüphaneye çevir\" fikri, tekrarlayan ama sınırlı bir ihtiyacı -mevcut yazılımları otomasyona bağlamak- çok genel bir çözümle karşıladığı için geliştirici çevrelerinde hızla yankı buldu; iki günde binin üzerinde yıldız, konseptin merakla karşılandığını gösteriyor.",
+        "evolve": "Hangi tür arayüzlerin -GUI, CLI, arka plan servisi- güvenilir biçimde yakalanabildiği ve desteklenen işletim sistemi kapsamı proje sayfasında henüz netleşmiş görünmüyor; güvenlik/izin modeli ve hata toleransı konusunda dokümantasyon derinleşmesi benimsenmeyi kolaylaştırabilir."
+      },
+      "glossary": [
+        { "term": "Intercept (araya girme)", "def": "Bir programın çalışması sırasında fonksiyon çağrılarını veya iletişimini yakalayıp gözlemleme ya da değiştirme tekniği." },
+        { "term": "Hook (kanca)", "def": "Bir programın normal akışına dışarıdan müdahale edip belirli anlarda kendi kodunu çalıştırmayı sağlayan teknik." },
+        { "term": "IPC (süreçler arası iletişim)", "def": "Bilgisayarda ayrı ayrı çalışan iki programın birbirine veri gönderip almasını sağlayan mekanizma." },
+        { "term": "Syscall (sistem çağrısı)", "def": "Bir programın, dosya okuma veya ağ erişimi gibi işlemler için doğrudan işletim sistemi çekirdeğinden hizmet istemesi." }
+      ]
+    },
+    {
+      "name": "oil-oil/beautify-github-readme",
+      "url": "https://github.com/oil-oil/beautify-github-readme",
+      "stars": "707",
+      "language": "Python",
+      "sections": {
+        "serves": "GitHub profil ve proje README dosyalarını, temaya uygun SVG başlıklar ve düzenli Markdown ile daha okunabilir \"ana sayfalara\" dönüştürmeyi hedefliyor. Amaç, elle SVG rozet/başlık tasarlamak yerine bu süreci otomatikleştirmek.",
+        "tech": "Konu etiketlerinde geçen \"agent-skill\" ve \"codex-skill\" ifadeleri, projenin klasik bir komut satırı aracından çok, bir kodlama ajanına -Codex gibi- bu işi nasıl yapacağını öğreten yapılandırılmış bir talimat/şablon paketi (agent skill) olarak tasarlandığını gösteriyor; Python tarafı büyük olasılıkla SVG üretimi ve Markdown düzenleme mantığını taşıyor.",
+        "why": "2026'da \"agent skill\" formatı -ajanlara yeniden kullanılabilir, paylaşılabilir yetenek paketleri tanımlama- hızla yaygınlaşan bir trend; bu proje, herkesin uğraştığı ama sıkıcı bulduğu \"iyi görünen bir README\" problemini bu yeni formatla çözerek hem pratik hem de trend-uyumlu bir niş yakalamış.",
+        "evolve": "Hangi ajan çalışma zamanlarıyla uyumlu olduğu -yalnızca Codex mi, başka ajanlar da mı- proje sayfasında henüz net değil; skill formatının farklı araçlar arasında taşınabilirliği ve üretilen SVG'lerin erişilebilirlik desteği geliştirilebilecek yönler arasında."
+      },
+      "glossary": [
+        { "term": "Agent skill (ajan yeteneği)", "def": "Bir yapay zeka kodlama ajanına belirli bir görevi nasıl yapacağını öğreten, yeniden kullanılabilir talimat/şablon paketi." },
+        { "term": "SVG (Scalable Vector Graphics)", "def": "Boyut değiştirildiğinde kalitesi bozulmayan, matematiksel çizim komutlarına dayalı vektörel görsel dosya formatı." },
+        { "term": "Markdown", "def": "Başlık, liste, kalın yazı gibi biçimlendirmelerin basit sembollerle yazıldığı, README dosyalarında yaygın kullanılan hafif biçimlendirme dili." }
+      ]
+    },
+    {
+      "name": "QuantumByteOSS/quantumbyte",
+      "url": "https://github.com/QuantumByteOSS/quantumbyte",
+      "stars": "317",
+      "language": "Python",
+      "sections": {
+        "serves": "Kullanıcının doğal dille ifade ettiği bir \"niyeti\" (intent), çalışan bir uygulamaya dönüştürmeyi hedefleyen açık kaynak bir uygulama üretme motoru. Kod yazmayı bilmeyen ya da hızlı prototip isteyen kullanıcılar için otomatik bir uygulama üretici olarak konumlanıyor.",
+        "tech": "\"nextjs\" etiketi, üretilen uygulamaların Next.js tabanlı web uygulamaları olduğuna işaret ediyor; Python tarafı büyük olasılıkla LLM orkestrasyonu -planlama, kod üretimi, ajan adımları- için kullanılıyor. \"agents\" ve \"code-generation\" etiketlerinin bir arada bulunması, tek seferlik bir kod üretimi yerine çok adımlı, ajan tabanlı bir üretim akışı olduğunu düşündürüyor.",
+        "why": "\"Metinden çalışan uygulamaya\" kategorisi 2026'da hem girişimcilerin hem de geliştiricilerin ilgisini çeken, hızla büyüyen bir alan; QuantumByte bu popüler kategoriye açık kaynaklı ve kendi sunucunda barındırılabilir bir alternatif sunarak dikkat çekiyor.",
+        "evolve": "Üretilen uygulamaların üretim (production) kalitesine ne kadar yaklaştığı, desteklenen framework çeşitliliğinin Next.js ötesine genişleyip genişlemeyeceği ve üretilen kodun düzenlenebilirliği bu kategorideki projelerin genel olgunlaşma eksenleri arasında yer alıyor."
+      },
+      "glossary": [
+        { "term": "LLM (Büyük Dil Modeli)", "def": "Metin üretme, anlama ve kod yazma gibi görevlerde kullanılan, büyük miktarda veriyle eğitilmiş yapay zeka modeli türü." },
+        { "term": "Code generation (kod üretimi)", "def": "Yazılımın, insan yazmadan bir yapay zeka modeli tarafından otomatik olarak kod satırları üretmesi." },
+        { "term": "Next.js", "def": "React tabanlı, sunucu taraflı render ve sayfa yönlendirme gibi özellikleri hazır sunan popüler bir web uygulama çatısı (framework)." },
+        { "term": "Self-hostable (kendi sunucunda barındırılabilir)", "def": "Bir yazılımın, üreticinin bulut hizmetine bağımlı kalmadan kullanıcının kendi sunucusunda çalıştırılabilmesi özelliği." }
+      ]
+    }
+  ]
+}
