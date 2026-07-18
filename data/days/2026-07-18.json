@@ -1,0 +1,191 @@
+{
+  "date": "2026-07-18",
+  "projects": [
+    {
+      "name": "github/copilot-sdk",
+      "url": "https://github.com/github/copilot-sdk",
+      "stars": "9.8k",
+      "language": "Java",
+      "sections": {
+        "serves": "🎯 GitHub Copilot CLI'nin arkasındaki ajan (agent) motorunu doğrudan kendi uygulamanıza gömme imkanı sunuyor. Normalde bir AI ajanı kurmak isteyen geliştirici; planlama, araç çağırma, dosya düzenleme gibi mantığı sıfırdan yazmak zorunda kalır. Bu SDK ile o kısmı Copilot'a bırakıp, sadece kendi özel ajanlarınızı ve araçlarınızı tanımlıyorsunuz — geri kalanı \"üretimde kanıtlanmış\" bir motor hallediyor.",
+        "tech": "🛠️ Node.js/TypeScript, Python, Go, .NET, Java ve Rust için ayrı SDK'lar mevcut; hepsi arka planda Copilot CLI sunucusuyla **JSON-RPC** üzerinden konuşuyor. Node, Python ve .NET için CLI otomatik olarak pakete gömülüyor; Go, Java ve Rust'ta ise manuel kurulum gerekiyor. **MCP (Model Context Protocol)** desteğiyle harici araçlar ve veri kaynakları standart bir arayüzle bağlanabiliyor. Kimlik doğrulama için GitHub OAuth, ortam değişkenleri veya **BYOK** (kendi API anahtarını getir) seçenekleri var — BYOK sayesinde OpenAI, Azure, Anthropic gibi farklı model sağlayıcıları da kullanılabiliyor.",
+        "why": "📈 Copilot CLI zaten geniş bir kullanıcı kitlesine sahipti; SDK'nın yayınlanması bu motoru kapalı kutu olmaktan çıkarıp üçüncü parti uygulamalara açıyor. Sıfırdan orkestrasyon katmanı yazan rakip yaklaşımların aksine, burada üretimde test edilmiş hazır bir motor sunuluyor — bu da hızlı entegrasyon arayan ekiplerin ilgisini çekiyor. Altı farklı dilde SDK sunulması, backend (Go/Java), veri bilimi (Python) ve web (TypeScript) ekiplerinin aynı motoru kullanabilmesini sağlıyor; bu da benimsemeyi hızlandıran önemli bir etken.",
+        "evolve": "💡 CLI paketlemenin tüm dillerde otomatik olmaması (Go/Java/Rust'ta manuel kurulum gerekmesi) şu an bir sürtünme noktası; bunun giderilmesi benimsemeyi hızlandırabilir. BYOK ile farklı LLM sağlayıcıları desteklense de, Copilot'un kendi planlama mantığının başka modellerle ne kadar tutarlı çalıştığı belirsiz — bu konuda bağımsız benchmark'lar güven artırır. Kurumsal kullanım için detaylı denetim (audit) kaydı ve ince taneli izin yönetimi gibi güvenlik özellikleri zamanla önem kazanabilir."
+      },
+      "glossary": [
+        {
+          "term": "SDK",
+          "def": "Bir platform ya da servisi kendi uygulamanıza entegre etmenizi kolaylaştıran hazır kod kütüphaneleri ve araçlar paketi."
+        },
+        {
+          "term": "JSON-RPC",
+          "def": "İki program arasında JSON formatında istek/yanıt alışverişi yapmayı sağlayan basit bir iletişim protokolü."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka asistanlarının harici araçlara ve veri kaynaklarına standart bir yöntemle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "BYOK",
+          "def": "\"Bring Your Own Key\" — bir servisi kullanırken kendi API anahtarınızı (ör. kendi OpenAI hesabınızı) sağlayabilmeniz."
+        },
+        {
+          "term": "Orkestrasyon",
+          "def": "Bir AI ajanının hangi adımda hangi aracı çağıracağını, planı nasıl güncelleyeceğini yöneten kontrol katmanı."
+        }
+      ]
+    },
+    {
+      "name": "RyanCodrai/turbovec",
+      "url": "https://github.com/RyanCodrai/turbovec",
+      "stars": "13.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 **RAG** (retrieval-augmented generation) sistemlerinde büyük embedding koleksiyonlarını bellekte tutmanın maliyetini ve gecikmesini düşürüyor. Belgelerin sayısı arttıkça vektör veritabanları hızla onlarca GB RAM tüketebiliyor; proje bunun somut çözümünü sunuyor: \"10 milyon dokümanlık bir koleksiyon float32 ile 31 GB RAM tutarken, turbovec bunu 4 GB'a sığdırıyor — ve FAISS'ten daha hızlı arama yapıyor.\"",
+        "tech": "🛠️ Rust çekirdeği ile Python bağlamalarını (Maturin aracılığıyla) birleştiriyor. Google Research'ün **TurboQuant** algoritmasını uyguluyor: vektörler önce normalize edilip rastgele döndürülüyor (bu, koordinatların öngörülebilir bir **Beta dağılımına** oturmasını sağlıyor), ardından koordinat bazlı kalibrasyon ve Lloyd-Max skaler **kuantizasyon** ile sıkıştırılıp bit-packing yapılıyor. Arama sırasında sorgu vektörü aynı döndürme uzayına taşınıp, veriyi hiç açmadan (decompress etmeden) önceden hesaplanmış bir **codebook** ile karşılaştırılarak skorlanıyor. ARM için elle yazılmış NEON, x86 için AVX-512BW/AVX2 **SIMD** çekirdekleri hız sağlıyor. Eğitim aşaması ya da parametre ayarı gerektirmeden \"online\" veri ekleme destekleniyor; LangChain, LlamaIndex, Haystack ve Agno gibi çerçevelerle hazır entegrasyonlar mevcut.",
+        "why": "📈 RAG sistemleri büyüdükçe vektör depolamanın bellek maliyeti gerçek bir üretim sorunu haline geldi; proje bunu \"8 kat daha az bellek, FAISS'ten hızlı arama\" gibi somut rakamlarla çözüyor. Hem Rust hem Python arayüzü sunması, performans odaklı altyapı mühendislerini de uygulama geliştiricilerini de kapsıyor. Harici bir servise ihtiyaç duymadan tamamen yerel çalışması, veri gizliliğine önem veren ekipler için de ayrı bir çekim noktası.",
+        "evolve": "💡 Proje henüz genç (152 commit); dağıtık/çok düğümlü ölçekleme ve disk üzerinde kalıcılık gibi üretim ihtiyaçları için yol haritasının netleşmesi bekleniyor. Kuantizasyonun getirdiği isabet (recall) kaybının farklı veri dağılımlarında (ör. çok kümeli/anizotropik embedding uzayları) ne kadar tutarlı kaldığı bağımsız benchmark'larla doğrulanmayı bekliyor. GPU desteğinin eklenmesi, büyük ölçekli üretim sistemlerinde benimsenmeyi artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "RAG (retrieval-augmented generation)",
+          "def": "Bir yapay zeka modelinin cevap üretirken önce ilgili belgeleri arayıp bulduğu bilgiyle cevabını zenginleştirdiği yöntem."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metin ya da verinin anlamını sayısal bir vektöre (sayı dizisine) dönüştürülmüş hali; benzer anlamlı veriler birbirine yakın vektörler üretir."
+        },
+        {
+          "term": "FAISS",
+          "def": "Meta'nın geliştirdiği, büyük vektör koleksiyonlarında hızlı benzerlik araması yapmaya yarayan popüler bir kütüphane."
+        },
+        {
+          "term": "SIMD",
+          "def": "\"Single Instruction, Multiple Data\" — işlemcinin tek bir komutla birden fazla veriyi aynı anda işleyerek hız kazandırdığı donanım özelliği."
+        },
+        {
+          "term": "Kuantizasyon (quantization)",
+          "def": "Sayısal verileri daha az bit ile, biraz hassasiyet kaybederek daha küçük boyutta saklama tekniği."
+        },
+        {
+          "term": "Codebook",
+          "def": "Sıkıştırılmış verinin karşılık geldiği önceden hesaplanmış referans değerler tablosu."
+        },
+        {
+          "term": "Beta dağılımı",
+          "def": "Değerlerin belirli bir aralıkta (genelde 0-1) nasıl dağıldığını tanımlayan bir istatistiksel olasılık dağılımı."
+        }
+      ]
+    },
+    {
+      "name": "tirth8205/code-review-graph",
+      "url": "https://github.com/tirth8205/code-review-graph",
+      "stars": "19.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Büyük kod tabanlarında AI destekli kod incelemesinin gereksiz yere onlarca dosya okuyup **token** israf etmesini önlüyor. Kod tabanının kalıcı bir yapısal haritasını çıkararak bir değişikliğin \"etki alanını\" (**blast radius**) hesaplıyor ve AI asistanına sadece gerçekten ilgili dosyaları gösteriyor — yani modele bütün depoyu değil, önemli olan kısmı okutuyor.",
+        "tech": "🛠️ **Tree-sitter** ile 30'dan fazla dil (Jupyter defterleri dahil) diller-arası olarak ayrıştırılıyor; sonuçlar SQLite tabanlı yerel bir graf veritabanında saklanıyor. Fonksiyonlar/sınıflar/import'lar düğüm (node), çağrılar/kalıtım/bağımlılıklar ise kenar (edge) olarak modelleniyor. **Leiden algoritması** ile topluluk tespiti yapılarak mimari modüller otomatik keşfediliyor. Opsiyonel olarak sentence-transformers, Gemini ya da OpenAI uyumlu uç noktalarla vektör gömme desteği ekleniyor. Claude, Cursor, Copilot gibi araçlarla entegrasyon için 30 **MCP** aracı sunuyor; CI/CD içinde risk skorlu PR incelemeleri için bir GitHub Action da mevcut. Artımlı güncellemeler 2.900+ dosyalık projelerde 2 saniyenin altında tamamlanıyor.",
+        "why": "📈 AI destekli kodlamanın yaygınlaşmasıyla birlikte bağlam penceresi (**context window**) sınırı ve API maliyeti gerçek bir kısıt haline geldi; proje 6 depoda yaptığı ölçümlerde soru başına ortalama 82 kat token azaltımı (38x-528x aralığında) gösteriyor — bu somut, ölçülebilir bir fayda. Tamamen yerel çalışması (harici bağımlılık yok) ve 14'ten fazla AI kodlama platformunu desteklemesi, kurumların AI maliyetlerini kontrol altına almak isterken bu araca yönelmesini açıklıyor.",
+        "evolve": "💡 0.71 ortalama **F1 skoru** iyi bir başlangıç ama mükemmel değil; graf tarafından yakalanamayan (yanlış negatif) etkilenen dosyaların hangi senaryolarda ortaya çıktığının daha şeffaf dokümante edilmesi güven artırır. Python/JavaScript gibi dinamik dillerde çalışma zamanına bağlı çağrıların (ör. reflection, dinamik import) statik analizle tam yakalanması zor — bu kör noktaların netleştirilmesi faydalı olur. Tek depo sınırının ötesine geçip servisler-arası (mikroservis) bağımlılık takibi eklenmesi, kurumsal kullanım alanını genişletebilir."
+      },
+      "glossary": [
+        {
+          "term": "Tree-sitter",
+          "def": "Kaynak kodunu hızlıca ayrıştırıp bir söz dizimi ağacına (syntax tree) dönüştüren, birçok programlama dilini destekleyen bir kütüphane."
+        },
+        {
+          "term": "MCP",
+          "def": "Yapay zeka asistanlarının harici araçlara standart bir yöntemle bağlanmasını sağlayan açık protokol (Model Context Protocol)."
+        },
+        {
+          "term": "Blast radius (etki alanı)",
+          "def": "Bir kod değişikliğinin, bağımlılıklar aracılığıyla hangi diğer dosya ve fonksiyonları etkileyebileceğinin haritası."
+        },
+        {
+          "term": "Leiden algoritması",
+          "def": "Bir ağdaki (graf) düğümleri, aralarındaki bağlantı yoğunluğuna göre anlamlı gruplara/topluluklara ayıran bir kümeleme yöntemi."
+        },
+        {
+          "term": "F1 skoru",
+          "def": "Bir tahmin sisteminin doğruluğunu, hem yanlış pozitifleri hem yanlış negatifleri dengeli biçimde ölçen tek bir sayı."
+        },
+        {
+          "term": "Token",
+          "def": "Bir dil modelinin metni işlerken kullandığı en küçük parça birimi; kelimenin bir kısmı veya tamamı olabilir."
+        },
+        {
+          "term": "Context window (bağlam penceresi)",
+          "def": "Bir dil modelinin tek seferde \"görebildiği\", işleyebildiği maksimum metin miktarı."
+        }
+      ]
+    },
+    {
+      "name": "docusealco/docuseal",
+      "url": "https://github.com/docusealco/docuseal",
+      "stars": "17.9k",
+      "language": "Ruby",
+      "sections": {
+        "serves": "🎯 DocuSign gibi ücretli dijital imza platformlarına açık kaynaklı, kendi sunucunuzda barındırabileceğiniz bir alternatif sunuyor. PDF üzerinde doldurulabilir formlar oluşturup, birden fazla kişinin sırayla imzalamasını gerektiren belge akışlarını uçtan uca yönetmeyi sağlıyor.",
+        "tech": "🛠️ Backend Ruby on Rails, arayüz Vue.js + Tailwind CSS/SCSS ile yazılmış; Docker/Docker Compose ile kendi altyapınızda kolayca çalıştırılabiliyor. **WYSIWYG** form editörü imza, tarih, onay kutusu gibi 12 farklı alan tipini destekliyor. Depolama için yerel disk ya da AWS S3/Google Storage/Azure kullanılabiliyor. SMTP e-posta bildirimleri ve **webhook**'larla otomasyon kurulabiliyor; **API-first** tasarım sayesinde platform üçüncü parti sistemlere kolayca gömülebiliyor.",
+        "why": "📈 Bulut imza hizmetlerinin abonelik maliyetleri ve veri egemenliği (verinizi kendi sunucunuzda tutma) kaygıları, özellikle KOBİ'ler ve ajanslar arasında **self-hosted** alternatiflere talebi artırıyor. 7 arayüz dili ve 14 imzalama dili desteği projeyi global bir kitleye açıyor; aktif topluluğu ve API-first yaklaşımı, geliştiricilerin platformu kendi ürünlerine gömmesini kolaylaştırıyor.",
+        "evolve": "💡 Lisans **AGPLv3** + Ek Şartlar (Section 7(b)) içeriyor — bu, ticari SaaS türevlerinin kaynak kodunu paylaşma yükümlülüğünü artırıyor; bu kısıtlamaların netleştirilmesi bazı şirketlerin benimseme kararını kolaylaştırır. Nitelikli elektronik imza (**eIDAS** uyumluluğu gibi) veya blok zinciri tabanlı zaman damgası gibi gelişmiş hukuki doğrulama özellikleri eklenirse, özellikle Avrupa pazarında daha güçlü konumlanabilir. Çoklu kiracı (multi-tenant) SaaS dağıtımı için hazır şablonlar sunulması, kendi ürününü kurmak isteyen girişimlere yardımcı olur."
+      },
+      "glossary": [
+        {
+          "term": "WYSIWYG",
+          "def": "\"What You See Is What You Get\" — düzenlerken gördüğünüz görünümün, son çıktıyla birebir aynı olduğu editör türü."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay gerçekleştiğinde (ör. belge imzalandığında) sisteminizin otomatik olarak başka bir servise bildirim göndermesini sağlayan mekanizma."
+        },
+        {
+          "term": "API-first",
+          "def": "Bir ürünün önce programatik arayüzü (API) düşünülerek tasarlandığı, arayüzün (UI) bu API üzerine inşa edildiği geliştirme yaklaşımı."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımı üçüncü parti bulut hizmeti yerine kendi sunucunuzda çalıştırmanız."
+        },
+        {
+          "term": "AGPLv3",
+          "def": "Açık kaynak bir lisans türü; yazılımı ağ üzerinden servis olarak sunan şirketlerin de değişikliklerini kaynak koduyla paylaşmasını zorunlu kılar."
+        },
+        {
+          "term": "eIDAS",
+          "def": "Avrupa Birliği'nin elektronik imza ve kimlik doğrulamayı hukuken geçerli kılan düzenlemesi."
+        }
+      ]
+    },
+    {
+      "name": "PostHog/posthog",
+      "url": "https://github.com/PostHog/posthog",
+      "stars": "36.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Ürün ekiplerinin kullanıcı davranışını, hataları ve performansı tek bir yerden izleyip, bu verileri hem insanların hem de yapay zeka ajanlarının kullanabileceği şekilde sunan uçtan uca bir ürün analitiği platformu. Amaç, bir hatayı ya da fırsatı fark edip düzeltmeyi manuel takipten çıkarıp otomatikleştirmek.",
+        "tech": "🛠️ Python (%56), TypeScript (%34) ve Rust (%7) ağırlıklı bir kod tabanı; olay yakalama, **session replay** (oturum tekrarı), **feature flag**'ler (özellik bayrakları), A/B testleri, hata takibi, log alma ve anket gibi modülleri tek platformda birleştiriyor. Stripe, HubSpot gibi servislerle **data warehouse** entegrasyonları ve 25'ten fazla veri hattı konektörü var. MIT lisanslı ana kod tabanının yanında `/ee` klasöründe tescilli kod bulunuyor; tamamen açık kaynak isteyenler için posthog-foss varyantı mevcut. Docker ile kendi sunucunuzda ya da ABD/AB bölgelerinde barındırılan bulut sürümüyle kullanılabiliyor.",
+        "why": "📈 Proje kendini \"self-driving products\" (kendi kendini yöneten ürünler) olarak konumlandırıyor — üründeki hataları ve fırsatları AI ajanlarının otomatik tespit edip düzeltme önerisi sunduğu bir gelecek vaat ediyor. Bu, \"AI ajanları\" ile \"ürün analitiği\"ni birleştiren güncel bir anlatı; Slack, web, masaüstü ve MCP üzerinden erişilebilir olması ajan tabanlı iş akışlarına doğrudan bağlanabildiğini gösteriyor. Zaten büyük bir açık kaynak topluluğuna sahip olması (51 binden fazla commit, binlerce PR) mevcut ivmeyi güçlendiriyor.",
+        "evolve": "💡 \"AI ajanlarının otomatik düzeltme göndermesi\" iddiasının ne kadar üretime hazır, ne kadar deneysel olduğunun netleşmesi kullanıcı beklentilerini daha gerçekçi kılar. MIT lisanslı çekirdek ile `/ee` altındaki tescilli kod arasındaki sınırın (hangi özelliklerin ücretsiz kalacağının) net dokümante edilmesi self-hosted kullanıcılar için önemli bir şeffaflık konusu. Platformun kapsamı çok geniş (analitik + deneyler + hata takibi + loglar); bu genişlik bazı ekiplerde \"her şeyi yapan ama hiçbirinde en iyi olmayan\" algısı yaratabilir — modüler, parça parça benimseme yollarının daha görünür kılınması faydalı olur."
+      },
+      "glossary": [
+        {
+          "term": "Session replay (oturum tekrarı)",
+          "def": "Bir kullanıcının web sitesinde yaptığı tıklama ve gezinmeleri videomsu şekilde tekrar izleyebilme özelliği."
+        },
+        {
+          "term": "Feature flag (özellik bayrağı)",
+          "def": "Bir özelliği kod yayınlamadan, ayarlardan açıp kapatarak belirli kullanıcı gruplarına gösterme yöntemi."
+        },
+        {
+          "term": "Data warehouse (veri ambarı)",
+          "def": "Farklı kaynaklardan gelen verilerin analiz amacıyla tek bir merkezi sistemde toplandığı depo."
+        },
+        {
+          "term": "Open-core",
+          "def": "Bir yazılımın çekirdeğinin açık kaynak, bazı ileri düzey özelliklerinin ise ücretli/kapalı olduğu iş modeli."
+        }
+      ]
+    }
+  ]
+}
