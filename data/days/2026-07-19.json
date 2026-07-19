@@ -1,0 +1,199 @@
+{
+  "date": "2026-07-19",
+  "projects": [
+    {
+      "name": "MoonshotAI/kimi-cli",
+      "url": "https://github.com/MoonshotAI/kimi-cli",
+      "stars": "9.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Kimi CLI**, terminalin içinde yaşayan bir yapay zeka ajanı: kod okuyup değiştirebiliyor, shell komutları çalıştırabiliyor, web'den içerik çekebiliyor ve bir görevi tamamlarken kendi planını yürütürken uyarlayabiliyor.\n\nÇözdüğü problem aslında gündelik bir sürtünme: geliştiriciler bir yandan terminalde komut çalıştırıp bir yandan ayrı bir sekmede AI sohbetine soru soruyor, aradaki context'i elle taşıyor. Kimi CLI bu iki dünyayı birleştirip AI'ı doğrudan terminale taşıyor — `Ctrl-X` kısayoluyla anlık \"ham shell\" moduna geçilip klasik komut satırı da kullanılabiliyor.",
+        "tech": "Proje **Python (%78.5)** ve **TypeScript (%20.4)** karışımı bir mimariye oturuyor; CSS, Makefile, Shell ve Nix konfigürasyonları da tamamlayıcı parçalar.\n\n- **MCP (Model Context Protocol)** desteğiyle harici araç sunucularına bağlanıp yeteneklerini genişletebiliyor.\n- **ACP (Agent Client Protocol)** sayesinde Zed ve JetBrains gibi ACP uyumlu editörlerle doğrudan konuşabiliyor — yani ajan tek bir arayüze kilitli değil.\n- Ayrı bir **VS Code eklentisi** ve **Zsh plugin**'i ile hem IDE hem de kabuk (shell) içine gömülü kullanım sağlanıyor.\n- Proje şu anda **Kimi Code CLI** adlı haleflisine evriliyor; mevcut kurulumlar ve dokümantasyon hâlâ destekleniyor ama yol haritası bu yeni isme doğru kayıyor.",
+        "why": "Moonshot AI, Kimi K2 gibi güçlü açık ağırlıklı modelleriyle tanınan bir yapay zeka şirketi; Kimi CLI bu modelleri \"kullanılabilir bir ürün\" hâline getirme çabasının parçası. Terminal-native kodlama ajanları şu anda kızışan bir alan — Claude Code, OpenAI'nin Codex CLI'ı ve Google'ın Gemini CLI'ı ile doğrudan rekabet ediyor.\n\nBugünkü ivmenin arkasında hem bu genel \"terminal ajanı\" trendine binmek hem de projenin **Kimi Code CLI**'a geçiş duyurusunun getirdiği merak var; ~9.6k yıldız ve 1.2k fork, geliştirici otomasyonu alanında ciddi bir ilgi gördüğünü gösteriyor.",
+        "evolve": "- **Model esnekliği**: Şu an ağırlıklı olarak Kimi modelleriyle en iyi performansı veriyor; farklı sağlayıcılara (yerel modeller dahil) daha kolay geçiş imkânı ilgi alanını genişletebilir.\n- **MCP ekosistemi**: Daha fazla hazır MCP sunucusuyla \"kutudan çıkışta\" entegrasyon, kurulum sürtünmesini azaltır.\n- **Geçiş netliği**: Kimi Code CLI'a geçişin nasıl ve ne zaman zorunlu olacağı netleşmeden, mevcut kullanıcılar için belirsizlik riski var; net bir göç rehberi güven artırır."
+      },
+      "glossary": [
+        {
+          "term": "CLI (Command Line Interface)",
+          "def": "Kullanıcının komutları yazarak bilgisayarla konuştuğu, grafik arayüz yerine metin tabanlı terminal aracı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka ajanlarının harici araçlara (dosya sistemi, veritabanı, API'ler) standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "ACP (Agent Client Protocol)",
+          "def": "Bir AI ajanının farklı editörler/istemcilerle (Zed, JetBrains gibi) ortak bir arayüz üzerinden konuşabilmesini sağlayan protokol."
+        },
+        {
+          "term": "Zsh",
+          "def": "Linux/macOS'ta yaygın kullanılan, ek özelleştirme ve eklenti desteğiyle bilinen bir kabuk (shell) programı."
+        },
+        {
+          "term": "Terminal ajanı",
+          "def": "Komut satırında çalışan, kullanıcı adına kod yazma, komut çalıştırma gibi görevleri otonom şekilde yürüten yapay zeka programı."
+        }
+      ]
+    },
+    {
+      "name": "KnockOutEZ/wigolo",
+      "url": "https://github.com/KnockOutEZ/wigolo",
+      "stars": "1.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Wigolo**, AI kodlama ajanları için tasarlanmış, tamamen yerelde (local-first) çalışan bir web arama ve araştırma aracı. API anahtarı ya da bulut servisi gerektirmiyor.\n\nÇözdüğü problem: bugün bir AI ajanına \"web'de araştır\" yeteneği kazandırmak genelde ücretli, sorgu başına faturalanan bir arama API'sine bağımlı olmak anlamına geliyor. Wigolo bu bağımlılığı ortadan kaldırıp arama, sayfa getirme, veri çıkarma gibi işlemleri makinenin kendi üzerinde, ücretsiz ve gizlilik dostu şekilde yapıyor.",
+        "tech": "Kod tabanının **%94.8'i TypeScript**; Node.js çalışma zamanı üzerine kurulu, karmaşık sitelerde gerektiğinde headless tarayıcı motoruna geçiş yapabiliyor.\n\n- On-device (cihaz üzerinde) ML modelleriyle **embedding** ve **reranking** yaparak arama sonuçlarını sıralıyor — bulut tabanlı bir arama servisine ihtiyaç duymadan.\n- **MCP (Model Context Protocol)** entegrasyonu sayesinde Claude Code, Cursor gibi popüler kodlama ajanlarına doğrudan takılabiliyor; ayrıca REST API ve Python/TypeScript SDK'ları mevcut.\n- Site tarama (crawling) `robots.txt` kurallarına ve hız sınırlarına saygı gösteriyor; sonuçlar \"byte-offset\" ile kaynağa sabitlenmiş alıntılar olarak dönüyor — yani ajan hangi bilginin sayfanın tam olarak neresinden geldiğini izleyebiliyor.",
+        "why": "AI ajanlarının web'de \"gerçek zamanlı\" bilgiye erişmesi artık standart bir beklenti hâline geldi, ama bu genelde sorgu başına ücretlendirilen servislerle (Google/Bing/Exa API'leri gibi) çözülüyor — agresif kullanan geliştiriciler için maliyet hızla katlanabiliyor.\n\nWigolo'nun \"yerelde çalışır, ücretsizdir, verinizi dışarı göndermez\" vaadi, hem maliyet hem gizlilik kaygısı olan geliştiriciler için doğrudan bir cevap. Claude Code ve Cursor gibi araçlarla hazır entegrasyonu, kurulum sürtünmesini düşürüp benimsemeyi hızlandırıyor; 1.4k yıldız kısa sürede bu ihtiyacın gerçek olduğunu gösteriyor.",
+        "evolve": "- **Ölçeklenebilirlik**: Yerel çalışma modeli tek makinede güçlü olsa da, ekip/CI ortamlarında paylaşılan bir önbellek/indeks katmanı eklenmesi kurumsal kullanımı kolaylaştırabilir.\n- **Kaynak çeşitliliği**: Şu an web odaklı; dahili dokümantasyon, wiki veya PDF gibi kurumsal kaynaklara genişleme ile \"araştırma\" kapsamı büyütülebilir.\n- **Şeffaflık araçları**: Skor kırılımı ve kaynak-alıntı eşleşmesi güçlü bir başlangıç; bunun üzerine \"neden bu sonuç seçildi\" açıklamaları eklenmesi güveni artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının harici araçlara standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Headless tarayıcı",
+          "def": "Görsel arayüzü olmadan arka planda çalışan, JavaScript ağırlıklı web sayfalarını render edebilen tarayıcı motoru."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını sayılardan oluşan bir vektöre dönüştürme işlemi; benzer anlamlı metinler birbirine yakın vektörler üretir."
+        },
+        {
+          "term": "Reranking",
+          "def": "İlk aramada bulunan sonuçları, daha isabetli bir sıralama elde etmek için ikinci bir modelle yeniden sıralama işlemi."
+        },
+        {
+          "term": "robots.txt",
+          "def": "Bir web sitesinin, otomatik botların hangi sayfaları tarayabileceğini/taramaması gerektiğini belirttiği standart dosya."
+        },
+        {
+          "term": "SDK (Software Development Kit)",
+          "def": "Bir servisi kendi kodunuzdan kullanmanızı kolaylaştıran, hazır fonksiyon ve araçlardan oluşan geliştirici kiti."
+        }
+      ]
+    },
+    {
+      "name": "lyogavin/airllm",
+      "url": "https://github.com/lyogavin/airllm",
+      "stars": "23.4k",
+      "language": "Jupyter Notebook",
+      "sections": {
+        "serves": "**AirLLM**, devasa büyük dil modellerini (LLM) tüketici sınıfı, düşük VRAM'li GPU'larda çalıştırmayı mümkün kılan açık kaynaklı bir Python kütüphanesi. Örneğin Llama 70B'yi tek bir 4GB'lık GPU'da, hatta DeepSeek-V3'ün 671 milyar parametreli devini ~12GB'lık bir GPU'da çalıştırabiliyor.\n\nÇözdüğü problem net: en yetenekli açık modeller genelde yüzlerce GB VRAM gerektiren kurumsal donanımlarda çalışıyor; AirLLM bu modelleri sıradan bir oyuncu ekran kartıyla erişilebilir kılıyor.",
+        "tech": "Kütüphane **Python** üzerine kurulu, örnekler ağırlıklı olarak **Jupyter Notebook** formatında paylaşılıyor. **PyTorch** ve **Hugging Face Transformers** üzerine inşa edilmiş, `AutoModel` benzeri tek bir arayüzle Llama, Qwen, DeepSeek, Mistral, Phi, Gemma gibi birçok modeli destekliyor.\n\n- Mimarinin kalbinde **katman bazlı ayrıştırma (layer-wise decomposition)** var: model, disk üzerinde ayrı katmanlara bölünüyor ve GPU belleğine her seferinde yalnızca tek bir katman yükleniyor — geri kalanı diskte bekliyor.\n- İsteğe bağlı **4-bit/8-bit quantization** (bitsandbytes ile) ek olarak ~3 kata kadar hızlanma sağlıyor.\n- Apple Silicon için **MLX** desteğiyle macOS'ta da çalışabiliyor; hem PyTorch hem `safetensors` model formatlarını destekliyor.\n- Bu yaklaşım, hesaplama verimliliğinden feragat edip disk G/Ç'sini (I/O) öne çıkararak bellek tasarrufunu maksimize ediyor — yani model daha yavaş ama çok daha az bellekle çalışıyor.",
+        "why": "DeepSeek gibi devasa parametre sayısına sahip açık modellerin art arda çıkması, \"bu modeli evdeki tek GPU'mda nasıl denerim?\" sorusunu gündelik bir soruna dönüştürdü. AirLLM tam bu boşluğa oturuyor: kurumsal altyapısı olmayan araştırmacı ve meraklı geliştiricilere devasa modelleri erişilebilir kılıyor.\n\n23.4k yıldız ve aktif katkıcı topluluğu, projenin bu gerçek ihtiyacı sürekli yeni model sürümlerine hızlıca adapte olarak karşıladığını gösteriyor — yeni bir açık model çıktığında AirLLM'in kısa sürede destek eklemesi, ilgiyi tazeliyor.",
+        "evolve": "- **Hız**: Disk G/Ç'sine dayalı yaklaşım bellek tasarrufu sağlarken ciddi yavaşlığa yol açıyor; NVMe önbellekleme veya akıllı katman ön-yükleme gibi tekniklerle bu fark azaltılabilir.\n- **Dağıtık kullanım**: Tek makine/tek GPU odaklı tasarım; birden fazla düşük donanımlı makineye yayılan bir mod, daha büyük modelleri daha makul hızlarda çalıştırabilir.\n- **KV cache optimizasyonu**: Uzun bağlamlı (long-context) kullanımlarda bellek/hız dengesini iyileştirecek ek önbellekleme stratejileri değerli olur."
+      },
+      "glossary": [
+        {
+          "term": "VRAM",
+          "def": "Ekran kartının (GPU) üzerindeki, model ağırlıklarını ve hesaplamaları tuttuğu özel bellek."
+        },
+        {
+          "term": "Quantization (niceleme)",
+          "def": "Bir modelin sayısal ağırlıklarını daha az bit ile ifade ederek boyutunu ve bellek ihtiyacını azaltma tekniği."
+        },
+        {
+          "term": "PyTorch",
+          "def": "Yapay zeka modelleri geliştirmek için yaygın kullanılan açık kaynaklı bir derin öğrenme kütüphanesi."
+        },
+        {
+          "term": "Hugging Face Transformers",
+          "def": "Önceden eğitilmiş dil modellerini kolayca indirip kullanmayı sağlayan popüler bir yazılım kütüphanesi."
+        },
+        {
+          "term": "safetensors",
+          "def": "Model ağırlıklarını güvenli ve hızlı şekilde diskte saklamak için kullanılan bir dosya formatı."
+        },
+        {
+          "term": "Katman bazlı ayrıştırma",
+          "def": "Bir yapay zeka modelini, bellekte tek seferde tamamının değil parça parça (katman katman) tutulacak şekilde bölme yöntemi."
+        },
+        {
+          "term": "MLX",
+          "def": "Apple'ın kendi işlemcilerinde (Apple Silicon) makine öğrenmesi modellerini hızlı çalıştırmak için geliştirdiği çatı (framework)."
+        }
+      ]
+    },
+    {
+      "name": "apache/ossie",
+      "url": "https://github.com/apache/ossie",
+      "stars": "1.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Apache Ossie**, analitik, iş zekası (BI) ve yapay zeka platformları arasında \"semantik metadata\" alışverişini standartlaştırmayı hedefleyen açık bir girişim. Basitçe: bir şirketteki \"aylık gelir\" ya da \"aktif kullanıcı\" gibi bir metriğin, kullanılan her araçta (dbt, Salesforce, BI panosu, AI asistanı) aynı şekilde tanımlanmasını sağlayan, satıcıdan bağımsız bir şema sunuyor.\n\nÇözdüğü problem tanıdık bir kurumsal baş ağrısı: aynı KPI'ın farklı araçlarda farklı şekilde tanımlanması, ekiplerin bu tanımları elle uzlaştırmaya çalışırken ciddi zaman kaybetmesi — ve giderek daha fazla kullanılan AI sistemlerinin, tutarsız iş mantığı üzerinden güvenilmez sonuçlar üretmesi.",
+        "tech": "Proje **Python (%74.6)** ve **Java (%24.7)** ile yazılmış; biri spesifikasyonun kendisini, diğeri araç entegrasyonlarını taşıyor.\n\n- **JSON/YAML tabanlı bir spesifikasyon** ile semantik modeller tutarlı biçimde temsil ediliyor.\n- **Referans dönüştürücüler** (converters), Ossie formatı ile dbt, GoodData, Polaris ve Salesforce gibi araçlar arasında çeviri yapıyor.\n- Semantik modellerin şemaya uygunluğunu denetleyen bir **doğrulama (validation) aracı** bulunuyor.\n- Örnek olarak, klasik bir veri ambarı/karar destek benchmark'ı olan **TPC-DS** modelinin eksiksiz bir Ossie implementasyonu sunuluyor — bu da projenin kurumsal veri ambarı/BI dünyasıyla ne kadar iç içe tasarlandığını gösteriyor.",
+        "why": "Metin-to-SQL ve AI destekli BI araçlarının yaygınlaşmasıyla birlikte, \"yapay zeka hangi tanıma göre hesaplıyor?\" sorusu kritikleşti — tutarsız metrik tanımları, AI'ın güvenle yanlış cevap üretmesinin (hallucination) gizli nedenlerinden biri. Ossie tam bu noktada, satıcıdan bağımsız ve iş birliğine dayalı bir standart öneriyor.\n\nApache Software Foundation'ın (yani vakıf düzeyinde tarafsız bir kurumun) çatısı altında olması, kurumsal veri mühendisliği camiasında güven inşa ediyor; dbt/GoodData/Salesforce gibi yerleşik araçlarla hazır köprüler sunması ise gerçek dünyadaki entegrasyon sürtünmesini doğrudan azaltıyor. PL/SQL/ERP dünyasındaki okuyucular için özellikle ilginç: TPC-DS örneği ve BI konektörleri, klasik kurumsal veri ambarı/raporlama senaryolarıyla doğrudan örtüşüyor.",
+        "evolve": "- **Konektör genişliği**: SAP, Oracle veya IFS gibi büyük ERP/BI ekosistemlerine yönelik resmi konektörler eklenmesi, kurumsal benimsemeyi hızlandırabilir.\n- **Sürümleme ve yönetişim (governance)**: Semantik modellerin zaman içindeki değişiminin izlenmesi, kurumsal ortamlarda kritik bir eksik olabilir.\n- **Doğrudan LLM entegrasyonu**: Şemanın, metin-to-SQL motorları veya AI ajanları tarafından doğrudan \"araç\" olarak tüketilebileceği hazır bir arayüz (ör. MCP sunucusu), projeyi AI-BI köprüsünün merkezine taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "Semantik katman (semantic layer)",
+          "def": "Ham veritabanı tablolarıyla iş kullanıcıları arasında, iş terimlerini (gelir, müşteri, KPI gibi) tutarlı biçimde tanımlayan ara katman."
+        },
+        {
+          "term": "KPI (Key Performance Indicator)",
+          "def": "Bir işin performansını ölçmek için izlenen, önceden tanımlanmış bir gösterge (ör. aylık gelir, müşteri kayıp oranı)."
+        },
+        {
+          "term": "dbt (data build tool)",
+          "def": "Veri ambarındaki ham veriyi SQL ile dönüştürüp analiz için hazır hâle getiren popüler bir açık kaynak araç."
+        },
+        {
+          "term": "TPC-DS",
+          "def": "Veri ambarı ve karar destek sistemlerinin performansını ölçmek için kullanılan, sektörde yerleşik bir standart test/benchmark şeması."
+        },
+        {
+          "term": "Metin-to-SQL",
+          "def": "Kullanıcının doğal dilde sorduğu bir soruyu, otomatik olarak veritabanı sorgusuna (SQL) çeviren yapay zeka tekniği."
+        },
+        {
+          "term": "Apache Software Foundation",
+          "def": "Açık kaynak yazılım projelerini tarafsız bir yönetişim modeliyle barındıran, kâr amacı gütmeyen bir vakıf."
+        },
+        {
+          "term": "Vendor-neutral (satıcıdan bağımsız)",
+          "def": "Belirli bir şirketin ürününe bağımlı olmayan, herkesin eşit şartlarda kullanabileceği standart/spesifikasyon."
+        }
+      ]
+    },
+    {
+      "name": "ibelick/ui-skills",
+      "url": "https://github.com/ibelick/ui-skills",
+      "stars": "5.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**UI Skills**, \"tasarım mühendisleri\" (design engineers) için hazırlanmış, kategorilere ayrılmış bir arayüz/tasarım bilgi kütüphanesi. `npx ui-skills` komutuyla CLI üzerinden ya da ui-skills.com üzerinden erişilebiliyor.\n\nÇözdüğü problem: AI kodlama ajanları hızla arayüz kodu üretebiliyor, ama çoğu zaman ortaya çıkan sonuç jenerik ve özensiz (\"AI slop\") görünüyor. UI Skills, iyi arayüz tasarımının birikmiş kurallarını (bileşen kalıpları, erişilebilirlik pratikleri vb.) paketleyip hem insan geliştiricilerin hem de AI ajanlarının doğrudan çağırabileceği \"beceri\" (skill) hâline getiriyor.",
+        "tech": "Kod tabanı **TypeScript (%62.3)** ve **Astro framework** (%33.1) ağırlıklı; geri kalanı JavaScript, CSS ve shell script.\n\n- CLI, `npx ui-skills categories` ve `npx ui-skills start` gibi komutlarla becerileri kategoriye göre listeleyip tek tek getirebiliyor.\n- Depo; skills, kaynak kod, script'ler, statik varlıklar ve otomasyon iş akışları için ayrı ayrı düzenlenmiş.\n- **Wrangler** konfigürasyonunun varlığı, projenin **Cloudflare Workers** üzerinde barındırıldığını gösteriyor; kod biçimlendirmesi için Prettier kullanılıyor.\n- MIT lisansıyla dağıtılması, geniş kullanım ve türevlerin oluşmasını kolaylaştırıyor.",
+        "why": "\"Agent Skills\" kalıbı — yani bir AI ajanının belirli bir alanda daha iyi iş çıkarması için ona paketlenmiş, yeniden kullanılabilir bilgi/talimat setleri vermek — son dönemde hızla yaygınlaşan bir yaklaşım (Anthropic'in Claude Skills'i ve benzer projeler bu akımın parçası). UI Skills bu kalıbı doğrudan \"arayüz/tasarım mühendisliği\" alanına uyguluyor.\n\nFront-end geliştiricilerin AI ajanlarından çıkan arayüzlerin \"gerçek bir tasarımcı elinden çıkmış gibi\" görünmesini istemesi, projeye organik bir talep yaratıyor; basit CLI arayüzü ve MIT lisansı da benimsemeyi kolaylaştırıyor — 5.2k yıldız ve 222 fork bunun bir yansıması.",
+        "evolve": "- **Kapsam genişletme**: Şu an arayüz/tasarım odaklı; benzer \"beceri paketleri\" backend mimarisi, veritabanı şeması tasarımı gibi alanlara da uygulanabilir.\n- **Sürümleme ve topluluk katkısı**: Becerilerin zamanla nasıl güncellendiğini izleyen bir sürümleme/katkı süreci, kaliteyi ve güveni artırabilir.\n- **Araç-spesifik entegrasyon**: Claude Skills, Cursor kuralları gibi farklı ajan ekosistemlerinin kendi \"beceri\" formatına doğrudan dışa aktarım desteği, benimsemeyi daha da kolaylaştırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Design engineer (tasarım mühendisi)",
+          "def": "Hem görsel tasarım hem de bunu koda dökme becerisine sahip, tasarım ile mühendisliğin kesişiminde çalışan geliştirici."
+        },
+        {
+          "term": "Astro",
+          "def": "Özellikle içerik ağırlıklı web siteleri için performansa odaklanan bir web framework'ü."
+        },
+        {
+          "term": "npx",
+          "def": "Node.js ile gelen, bir paketi kurmadan doğrudan çalıştırmayı sağlayan komut satırı aracı."
+        },
+        {
+          "term": "Cloudflare Workers",
+          "def": "Kodun kullanıcıya coğrafi olarak en yakın sunucuda, sunucusuz (serverless) şekilde çalıştırılmasını sağlayan Cloudflare platformu."
+        },
+        {
+          "term": "Agent Skill (ajan becerisi)",
+          "def": "Bir yapay zeka ajanına belirli bir görevi daha iyi yapması için verilen, paketlenmiş talimat/bilgi seti."
+        },
+        {
+          "term": "AI slop",
+          "def": "Yapay zeka tarafından üretilen, özensiz veya jenerik görünen düşük kaliteli çıktılar için kullanılan gündelik tabir."
+        }
+      ]
+    }
+  ]
+}
