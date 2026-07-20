@@ -1,0 +1,90 @@
+{
+  "date": "2026-07-20",
+  "projects": [
+    {
+      "name": "Canner/WrenAI",
+      "url": "https://github.com/Canner/WrenAI",
+      "stars": "16.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**WrenAI**, doğal dilde sorulan iş sorularını (\"geçen ay hangi bölgede satış düştü?\") **güvenilir, denetlenebilir SQL sorgularına ve dashboard'lara** çeviren açık kaynaklı bir GenBI (üretken iş zekası) motoru.\n\nÇözdüğü problem klasik bir kurumsal sürtünme: iş kullanıcıları veriye ulaşmak için ya SQL bilen birini bekliyor ya da genel amaçlı bir AI sohbet botuna soruyor — ki bu ikincisi genelde şemayı yanlış yorumlayıp \"kendinden emin ama yanlış\" sonuçlar (hallucination) üretiyor. WrenAI, sorguyu üretmeden önce şirketin iş mantığını (metrik tanımları, ilişkiler, erişim kuralları) modelleyerek bu riski azaltıyor.",
+        "tech": "Kod tabanının **%59'u Python**, geri kalanının büyük kısmı (%37) **Rust** — mimarinin çekirdeği Rust'ta yazılmış, Python ise entegrasyon ve agent katmanında kullanılıyor.\n\n- Sorgu motoru **Apache DataFusion** üzerine kurulu; Rust'ta yazılan bu semantik motor, Python bağlayıcıları (bindings) ve **WebAssembly** desteğiyle farklı ortamlara gömülebiliyor.\n- **MDL (Modeling Definition Language)** adında özel bir dille şirketin veri modeli (tablolar, ilişkiler, iş terimleri) tanımlanıyor; AI bu modeli \"harita\" olarak kullanıp SQL üretiyor.\n- Üretilen sorgular çalıştırılmadan önce **dry-plan doğrulaması** ile denetleniyor; hatalı ya da izinsiz sorgular baştan elenip yapılandırılmış hata mesajı dönüyor.\n- **Satır/sütun bazlı erişim kontrolü** ile hangi kullanıcının hangi veriyi görebileceği merkezi olarak yönetiliyor; **LanceDB** tabanlı hibrit hafıza katmanı geçmiş sorguları/bağlamı hatırlıyor.\n- **LangChain/LangGraph** entegrasyonlarıyla kendi agent'larınıza \"araç\" olarak takılabiliyor; üretilen dashboard'lar doğrudan Vercel/Cloudflare Pages'e deploy edilebiliyor.\n- 22'den fazla veri kaynağını destekliyor: BigQuery, Snowflake, PostgreSQL, DuckDB, ClickHouse, Redshift, Databricks ve daha fazlası.",
+        "why": "\"Text-to-SQL\" fikri yeni değil, ama kurumsal dünyada asıl sorun modelin SQL yazabilmesi değil, **hangi tabloyu, hangi tanımla, hangi yetkiyle** sorguladığı. WrenAI bu \"governance\" (yönetişim) katmanını öne çıkararak, AI copilot'ların işletmelerde gerçekten güvenle kullanılabilmesi için gereken eksik parçayı dolduruyor.\n\n16.3k yıldız ve 1.9k fork, kurumsal veri ekiplerinin bu yaklaşıma ciddi ilgi gösterdiğini kanıtlıyor. Apache 2.0 lisansı kurumsal benimsemeyi kolaylaştırıyor; ayrıca proje yakın zamanda \"Wren Engine\"i aynı depo altına (`core/` klasörüne) taşıyıp eski GenBI uygulamasını \"Wren GenBI Classic\" adıyla `legacy/v1` dalına ayırarak mimarisini sadeleştirdi — bu da aktif ve kararlı bir geliştirme temposunu gösteriyor. PL/SQL/ERP dünyasından okuyucular için özellikle anlamlı: aynı \"metrik tanımı tek yerden, her araca tutarlı\" ihtiyacı, kurumsal raporlama sistemlerinde de sık karşılaşılan bir problem.",
+        "evolve": "- **Oracle/SAP HANA gibi ERP-yakın veritabanlarına** resmi konektör eklenmesi, kurumsal ERP kullanıcıları için benimsemeyi hızlandırabilir.\n- **Mevcut kurumsal kimlik/izin sistemleriyle (LDAP, SSO) daha derin entegrasyon**, satır/sütun erişim kontrolünü şirket genelinde tek noktadan yönetilebilir hale getirebilir.\n- **Çok dilli doğal dil desteği**: Şu an ağırlıklı İngilizce sorulara odaklanan sistemin, Türkçe dahil farklı dillerde de aynı doğrulukla çalışması küresel kurumsal kullanımı genişletir."
+      },
+      "glossary": [
+        { "term": "GenBI (Generative Business Intelligence)", "def": "Doğal dil sorularından otomatik olarak SQL sorgusu ve rapor/dashboard üreten yapay zeka destekli iş zekası yaklaşımı." },
+        { "term": "MDL (Modeling Definition Language)", "def": "Bir şirketin veri modelini, tablo ilişkilerini ve iş terimlerini tanımlamak için kullanılan özel bir yapılandırma dili." },
+        { "term": "Apache DataFusion", "def": "Rust ile yazılmış, büyük veri sorgularını hızlı işlemek için kullanılan açık kaynaklı bir sorgu motoru kütüphanesi." },
+        { "term": "Dry-plan doğrulaması", "def": "Bir sorguyu gerçekten çalıştırmadan önce, doğru ve izinli olup olmadığını kontrol eden ön denetim adımı." },
+        { "term": "LanceDB", "def": "Yapay zeka uygulamalarında vektör tabanlı arama ve hafıza için kullanılan hafif bir veritabanı." },
+        { "term": "LangChain / LangGraph", "def": "AI ajanlarının adım adım karar verme akışlarını ve araç kullanımını kodlamayı kolaylaştıran popüler geliştirici kütüphaneleri." },
+        { "term": "Satır/sütun bazlı erişim kontrolü", "def": "Bir veritabanında kullanıcıların yalnızca belirli satırları veya sütunları görebilmesini sağlayan güvenlik mekanizması." },
+        { "term": "WebAssembly", "def": "Kodun tarayıcıda veya farklı platformlarda neredeyse yerel hızda çalışmasını sağlayan taşınabilir bir bayt kodu formatı." }
+      ]
+    },
+    {
+      "name": "github/copilot-sdk",
+      "url": "https://github.com/github/copilot-sdk",
+      "stars": "10k",
+      "language": "Java",
+      "sections": {
+        "serves": "**Copilot SDK**, GitHub'ın kendi ajan motoru olan **Copilot CLI**'ın arkasındaki güçle, geliştiricilerin kendi uygulamalarına doğrudan \"agentic\" (kendi başına planlayıp araç kullanan) iş akışları gömmesini sağlayan çok platformlu bir yazılım geliştirme kiti.\n\nÇözdüğü problem şu: bir şirket kendi ürününe AI ajan yeteneği eklemek istediğinde genelde sıfırdan bir orkestrasyon katmanı (planlama, araç çağırma, hata yönetimi) yazmak zorunda kalıyor. Copilot SDK, Copilot CLI'ı çalıştıran aynı motoru API olarak sunarak bu mühendislik yükünü ortadan kaldırıyor.",
+        "tech": "Depo altı farklı dilde SDK barındırıyor: **Java (%28)**, **Rust (%24.7)**, **TypeScript (%15.9)**, **C# (%11.3)**, **Go (%10.3)** ve **Python (%9.6)** — yani hangi dilde geliştirme yapıyorsanız aynı ajan motoruna erişebiliyorsunuz.\n\n- SDK'lar, arka planda çalışan **Copilot CLI sunucusuyla JSON-RPC** protokolü üzerinden konuşuyor; bu sunucu otomatik olarak başlatılıp yönetilebiliyor ya da harici bir sunucuya bağlanılabiliyor.\n- Node.js, Python ve .NET için **Copilot CLI otomatik olarak paketleniyor** — ayrı bir kurulum adımı gerekmiyor.\n- Kimlik doğrulama için **GitHub OAuth**, ortam değişkenleri veya **BYOK (Bring Your Own Key — kendi API anahtarınızı kullanma)** dahil birden fazla yöntem destekleniyor.\n- Geliştiriciler kendi araçlarını (tool) tanımlayıp ajana ekleyebiliyor; dosya düzenleme, planlama ve araç çağırma gibi işlemler programatik olarak kontrol edilebiliyor.",
+        "why": "\"Agent-as-a-service\" eğilimi hızlanıyor: büyük oyuncular (OpenAI, Anthropic, Google) kendi ajan motorlarını API olarak sunarken, GitHub da Copilot'un arkasındaki motoru geliştiricilere açıyor. Bu, ajan mühendisliğinin giderek \"kendi altyapını kur\" yerine \"hazır, üretimde test edilmiş bir motoru entegre et\" evresine geçtiğinin işareti.\n\n10 bin yıldız ve 1.400 fork ile proje kısa sürede geniş ilgi topladı — GitHub markasının güvenilirliği ve altı farklı dile aynı anda destek vermesi, özellikle Java/C#/Go gibi kurumsal diller kullanan ekiplerin ekstra \"köprü kod\" yazmadan agentic özellik eklemesini kolaylaştırıyor. Not: BYOK dışındaki kullanımlar için Copilot aboneliği gerekiyor, faturalama Copilot CLI'daki prompt kullanımına benzer şekilde işliyor.",
+        "evolve": "- **Kendi barındırılan (self-hosted) model desteği**: Şu an ağırlıklı olarak Copilot backend'ine bağımlı; BYOK dışında tamamen yerel/açık modellerle çalışabilme esnekliği ilgiyi genişletebilir.\n- **Kurumsal SSO ve merkezi faturalama kontrolleri**: Büyük organizasyonlarda çok sayıda uygulamanın SDK'yı kullanması durumunda, merkezi kullanım/maliyet izleme paneli değerli olur.\n- **Dile özel örnek galerisi**: Altı dilin her biri için daha zengin, gerçek dünya senaryolarına dayalı örnek uygulamalar, geçiş sürtünmesini azaltabilir."
+      },
+      "glossary": [
+        { "term": "SDK (Software Development Kit)", "def": "Bir servisi kendi uygulamanızdan kullanmanızı kolaylaştıran, hazır fonksiyon ve araçlardan oluşan geliştirici kiti." },
+        { "term": "Agentic iş akışı", "def": "Bir yapay zeka sisteminin, insan müdahalesi olmadan adımları kendi planlayıp araçları kullanarak bir görevi tamamlaması." },
+        { "term": "JSON-RPC", "def": "Programların JSON formatındaki mesajlarla birbirine uzaktan komut çağrısı (fonksiyon çalıştırma) yapmasını sağlayan basit bir protokol." },
+        { "term": "BYOK (Bring Your Own Key)", "def": "Bir servisi kullanırken, sağlayıcının kendi altyapısı yerine kullanıcının kendi API anahtarını/hesabını kullanabilmesi." },
+        { "term": "OAuth", "def": "Kullanıcıların şifrelerini paylaşmadan, güvenli şekilde bir uygulamaya hesaplarına erişim izni vermesini sağlayan yetkilendirme standardı." },
+        { "term": "Orkestrasyon", "def": "Bir AI ajanının hangi adımı ne zaman atacağını, hangi aracı ne zaman çağıracağını yöneten kontrol katmanı." }
+      ]
+    },
+    {
+      "name": "trycua/cua",
+      "url": "https://github.com/trycua/cua",
+      "stars": "20.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Cua**, \"computer-use\" ajanlarını — yani ekranı görüp fare/klavye ile gerçek bir bilgisayarı kullanabilen yapay zeka ajanlarını — büyük ölçekte çalıştırmak için açık kaynaklı sürücüler, çoklu işletim sistemi (OS) filo yönetimi ve değerlendirme (benchmark) altyapısı sunuyor.\n\nÇözdüğü problem: bir ajana \"ekranı gör, tıkla, yaz\" yeteneği vermek kolay demo aşamasında kalıyor; gerçek kullanımda hem farklı işletim sistemlerinde tutarlı çalışması hem de kullanıcının kendi fare/odak (focus) kontrolünü çalmadan arka planda işlem yapabilmesi gerekiyor. Cua bu altyapı boşluğunu dolduruyor.",
+        "tech": "Kod tabanı Python (%18.3), Rust (%17.1) ve dökümantasyon/statik sitelerden gelen HTML ağırlıklı bir karışım; dört ana bileşenden oluşuyor.\n\n- **Cua Drivers**: macOS, Windows ve Linux'ta arka planda çalışan, ajanların \"kullanıcının fare imlecini veya pencere odağını çalmadan\" tıklayıp yazabilmesini sağlayan otomasyon sürücüleri.\n- **Cua SDK**: Linux container'ları, sanal makineler (VM), macOS, Windows ve Android arasında **birleşik bir Python API'siyle** ekranı görüp görev tamamlayan ajanlar yazmayı sağlıyor.\n- **Cua-Bench**: **OSWorld, ScreenSpot, Windows Arena** gibi yerleşik benchmark'ları destekleyen, model eğitimi/değerlendirmesi için ajan hareket kayıtlarını (trajectory) dışa aktarabilen bir değerlendirme çerçevesi.\n- **Lume**: Apple Silicon'da **Virtualization Framework** kullanarak neredeyse yerel hızda macOS/Linux sanal makine yönetimi sağlıyor.\n- 15 Temmuz 2026'da yayınlanan `@trycua/fleet v0.0.3` ile filo (fleet) yönetimi tarafında aktif geliştirme sürüyor.",
+        "why": "\"Computer-use\" ajanlar (Anthropic'in Claude computer use'u, OpenAI'nin Operator'ı gibi) modellerin artık sadece metin değil gerçek arayüzleri kullanabildiği bir dönemi işaret ediyor; ama modelin kendisi kadar, onu **güvenli ve ölçeklenebilir şekilde çalıştıracak altyapı** da kritik hale geliyor. Cua tam bu katmana odaklanarak model-tarafsız (model-agnostic) bir altyapı sunuyor.\n\n20.3k yıldız, projenin bu \"altyapı\" ihtiyacının gerçek olduğunu gösteriyor. \"Kullanıcının imlecini/odağını çalmadan\" çalışma vurgusu özellikle önemli — bir geliştirici çalışırken arka planda bir ajanın fareyi ele geçirmesi ciddi bir üretkenlik sorunu, Cua bunu doğrudan çözerek dev tools/productivity kesişiminde konumlanıyor.",
+        "evolve": "- **Daha geniş mobil işletim sistemi desteği**: Şu an Android var; iOS desteği eklenmesi mobil otomasyon senaryolarını genişletir.\n- **Daha güçlü sandbox/güvenlik katmanı**: Bir ajana tam ekran kontrolü vermek risk taşıyor; işlem bazlı izin/onay mekanizmaları güveni artırabilir.\n- **Benchmark çeşitliliği**: Mevcut üç benchmark güçlü bir başlangıç; kurumsal iş akışlarına (form doldurma, ERP ekranları gibi) özel değerlendirme setleri eklenmesi gerçek dünya performansını daha iyi yansıtabilir."
+      },
+      "glossary": [
+        { "term": "Computer-use ajan", "def": "Ekran görüntüsünü yorumlayıp fare ve klavyeyi kullanarak, tıpkı bir insan gibi bilgisayar üzerinde görev tamamlayabilen yapay zeka ajanı." },
+        { "term": "Filo (fleet) yönetimi", "def": "Birden fazla makine/sanal makineyi tek bir merkezi sistemden eş zamanlı yönetme yaklaşımı." },
+        { "term": "VM (Virtual Machine / Sanal Makine)", "def": "Fiziksel bir bilgisayarın içinde, ayrı bir işletim sistemi çalıştıran yazılım tabanlı bilgisayar simülasyonu." },
+        { "term": "Virtualization Framework", "def": "Apple'ın, Mac'ler üzerinde verimli sanal makine çalıştırmayı sağlayan yerleşik sistem çerçevesi." },
+        { "term": "Trajectory (hareket kaydı)", "def": "Bir ajanın bir görevi tamamlarken attığı adımların sırayla kaydedilmiş hali; model eğitimi ve analiz için kullanılır." },
+        { "term": "Benchmark", "def": "Farklı sistemlerin/modellerin performansını standart görevler üzerinden karşılaştırmak için kullanılan ölçüm testi seti." },
+        { "term": "Sandbox", "def": "Bir programın, asıl sisteme zarar veremeyecek şekilde izole bir ortamda çalıştırılması." }
+      ]
+    },
+    {
+      "name": "jamiepine/voicebox",
+      "url": "https://github.com/jamiepine/voicebox",
+      "stars": "43.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Voicebox**, tamamen kullanıcının kendi bilgisayarında çalışan, açık kaynaklı bir AI ses stüdyosu: ses klonlama, çoklu dilde metinden sese (TTS) üretim ve global kısayolla dikte (konuşarak yazma) özelliklerini tek uygulamada topluyor.\n\nÇözdüğü problem: ElevenLabs veya Whisper Flow gibi popüler ses AI araçları bulut tabanlı ve ücretli — sesiniz ve metniniz üçüncü parti sunuculara gidiyor. Voicebox aynı kaliteyi (veya yakınını) tamamen yerelde, gizlilik kaygısı olmadan ve tekrarlayan abonelik maliyeti çıkarmadan sunuyor.",
+        "tech": "Kod tabanı **TypeScript (%54.2)** ve **Python (%34.5)** ikilisi üzerine kurulu; masaüstü kabuğu **Tauri (Rust tabanlı)**, arayüz **React**, arka uç **FastAPI (Python)**, çıkarım (inference) katmanı ise **PyTorch/MLX**.\n\n- **7 farklı TTS motoru** bir arada sunuluyor: Qwen3-TTS, LuxTTS, Chatterbox varyantları ve Kokoro; transkripsiyon için **OpenAI Whisper** kullanılıyor.\n- Ses klonlama, kısa bir ses örneğinden yeni bir \"ses kimliği\" oluşturabiliyor; üretilen seste duygu ifadesi (emotional expression) etiketleri eklenebiliyor.\n- **Global kısayol tuşuyla dikte**: herhangi bir uygulamada konuşarak yazı yazdırma özelliği var.\n- Reverb, gecikme (delay), pitch kaydırma, sıkıştırma gibi **ses son-işleme (post-processing) efektleri** dahili olarak sunuluyor; sınırsız uzunlukta üretim otomatik parçalama (auto-chunking) ile destekleniyor.\n- **REST API** ve **MCP (Model Context Protocol) sunucusu** ile diğer AI ajanlarına ses girdi/çıktı yeteneği kazandırılabiliyor.\n- macOS (Metal/MLX), Windows (CUDA/DirectML), Linux (CUDA/ROCm) ve Docker üzerinde çalışıyor; en son sürüm v0.5.0 (25 Nisan 2026).",
+        "why": "Yerelde-çalışan (local-first) AI araçları trendi — daha önce bu bültende gördüğümüz AirLLM ve Wigolo gibi projelerle aynı damardan besleniyor — burada ses/dikte alanına uygulanmış durumda. Bulut ses AI servislerinin hem maliyeti hem de \"sesiniz nereye gidiyor\" sorusu, geliştiricilerde ve içerik üreticilerinde artan bir tedirginlik yaratıyor.\n\n43.6k yıldız ve 5.3k fork, bu ihtiyacın ne kadar yaygın olduğunu gösteriyor — kısa sürede geniş bir kullanıcı kitlesine ulaşmış görünüyor. **MCP sunucusu desteği** özellikle dikkat çekici: bu, Voicebox'ı yalnızca bir masaüstü uygulaması değil, Claude Code gibi AI ajanlarının \"ses\" yeteneği kazanmasını sağlayan bir bileşen haline getiriyor — dev tools/agent ekosistemiyle doğrudan kesişiyor.",
+        "evolve": "- **Gerçek zamanlı düşük gecikmeli akış modu**: Şu an ağırlıklı olarak dosya/parça bazlı üretim var; canlı görüşme/arama senaryoları için streaming desteği önemli bir sonraki adım olabilir.\n- **Mobil uygulama**: Masaüstü (Tauri) odaklı mimarinin telefon tarafına taşınması, dikte ve ses klonlamayı günlük kullanıma daha çok yayabilir.\n- **Kod yazmadan ince ayar (fine-tuning) arayüzü**: Kullanıcıların kendi ses stillerini harici araca ihtiyaç duymadan uygulama içinden eğitip özelleştirebilmesi, teknik olmayan kullanıcılar için erişimi artırır."
+      },
+      "glossary": [
+        { "term": "TTS (Text-to-Speech)", "def": "Yazılı bir metni yapay olarak üretilmiş, doğal duyulan konuşma sesine dönüştüren teknoloji." },
+        { "term": "Ses klonlama", "def": "Kısa bir ses kaydından, o kişinin sesine benzer yeni konuşmalar üretebilme yeteneği." },
+        { "term": "Tauri", "def": "Web teknolojileriyle (React, Vue vb.) yazılmış arayüzleri, Rust tabanlı hafif bir çekirdekle masaüstü uygulamasına dönüştüren çerçeve." },
+        { "term": "MLX", "def": "Apple'ın kendi işlemcilerinde (Apple Silicon) makine öğrenmesi modellerini hızlı çalıştırmak için geliştirdiği çatı (framework)." },
+        { "term": "ROCm", "def": "AMD ekran kartlarında yapay zeka hesaplamalarını hızlandırmak için kullanılan yazılım platformu." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka ajanlarının harici araçlara (bu örnekte ses üretimine) standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "Dikte", "def": "Konuşarak, sesi doğrudan yazılı metne dönüştürerek yazı yazma yöntemi." },
+        { "term": "Auto-chunking (otomatik parçalama)", "def": "Uzun bir metni, işlenebilir küçük parçalara otomatik olarak bölüp ardından birleştirme tekniği." }
+      ]
+    }
+  ]
+}
