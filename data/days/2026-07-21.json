@@ -1,0 +1,175 @@
+{
+  "date": "2026-07-21",
+  "projects": [
+    {
+      "name": "PrefectHQ/fastmcp",
+      "url": "https://github.com/PrefectHQ/fastmcp",
+      "stars": "26.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 LLM'lerin dış araçlarla ve verilerle konuşabilmesi için ortak bir dil olan **Model Context Protocol (MCP)**'yi elle uygulamak baya can sıkıcı bir iş: protokol el sıkışması, şema üretimi, kimlik doğrulama, taşıma katmanı (transport) derken asıl iş mantığına gelene kadar epey kod yazman gerekiyor. FastMCP tam da burada devreye giriyor — bir Python fonksiyonunun üstüne `@mcp.tool` gibi bir dekoratör koyduğunda, o fonksiyon otomatik olarak şema doğrulamalı, dokümante edilmiş bir MCP aracına dönüşüyor. Yani \"bir LLM ajanına yeni bir yetenek kazandırmak\" işini, sıradan bir Python fonksiyonu yazmak kadar sıradan hale getiriyor.",
+        "tech": "🛠️ Proje üç ana parça üzerine kurulu: **Sunucular** (Python fonksiyonlarını MCP aracına/kaynağına/prompt'una çeviren taraf), **İstemciler** (herhangi bir MCP sunucusuna bağlanıp yaşam döngüsünü yöneten taraf) ve **Uygulamalar** (araçlar için sohbet içinde render edilen arayüzler). Tamamen dekoratör tabanlı bir Python kütüphanesi olması, öğrenme eğrisini düşük tutuyor — Flask'a benzer bir \"fonksiyonu işaretle, framework gerisini halletsin\" felsefesi var. Kimlik doğrulama, taşıma protokolü seçimi (stdio, HTTP, SSE) ve otomatik dokümantasyon gibi altyapısal detaylar kütüphane tarafından soyutlanıyor. Öyle ki proje, resmi MCP Python SDK'sına 1.0 sürümüyle dahil edilmiş durumda — yani artık ekosistemin referans implementasyonlarından biri.",
+        "why": "📈 MCP, 2024'ten beri LLM ajanlarının araç kullanımı için fiili standart haline geldi ve bu ekosistem büyüdükçe FastMCP de onunla birlikte büyüdü — repo, tüm dillerdeki MCP sunucularının **%70'inin** kendisiyle yazıldığını, günlük bir milyon indirmeye ulaştığını iddia ediyor. Prefect gibi kurumsal bir arkasında duran, üretim ortamlarında güvenle kullanılabilecek bir çözüm olması; ayrıca MCP protokolünün kendisinin son dönemde ajan araç çağırma standardı olarak iyice yerleşmesi, projeyi trendlerin tepesine taşıyan sebep.",
+        "evolve": "💡 Şu an güçlü olduğu yer sunucu tarafı; istemci ve \"Apps\" (araçların sohbet içinde render edilen arayüzleri) kısmı görece daha yeni ve olgunlaşmaya devam ediyor. Çoklu dil desteği (şu an ağırlıklı Python) genişlerse, farklı backend ekiplerinin de aynı standarda kolayca katılması mümkün olur. Ayrıca büyüyen sunucu sayısıyla birlikte güvenlik/izin yönetimi (bir ajanın hangi araçlara hangi kapsamda erişebileceği) tarafında daha ince taneli kontrol mekanizmaları beklenen bir sonraki adım gibi duruyor."
+      },
+      "glossary": [
+        {
+          "term": "Model Context Protocol (MCP)",
+          "def": "LLM'lerin dış araçlara, verilere ve servislere standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Dekoratör (decorator)",
+          "def": "Python'da bir fonksiyonun davranışını değiştirmeden ona ek özellik (ör. şema doğrulama) kazandıran sözdizimi kalıbı."
+        },
+        {
+          "term": "Şema doğrulama (schema validation)",
+          "def": "Bir fonksiyona gelen verinin beklenen tip ve formatta olup olmadığını otomatik kontrol etme."
+        },
+        {
+          "term": "Taşıma protokolü (transport)",
+          "def": "İki sistemin birbirine veri gönderirken kullandığı alt katman iletişim yöntemi (ör. HTTP, stdio, SSE)."
+        },
+        {
+          "term": "SDK (Software Development Kit)",
+          "def": "Bir platform veya protokol için uygulama geliştirmeyi kolaylaştıran hazır kod ve araç seti."
+        }
+      ]
+    },
+    {
+      "name": "topoteretes/cognee",
+      "url": "https://github.com/topoteretes/cognee",
+      "stars": "28.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bugünün LLM ajanlarının en büyük eksiği hafıza: bir konuşma bitince ya da oturum kapanınca, o ana kadar öğrendiği her şeyi unutuyor. Cognee, ajanlara **kalıcı, aranabilir bir hafıza katmanı** kazandırarak bu sorunu çözmeyi hedefliyor — geçmiş etkileşimlerden öğrenen, aynı hatayı tekrar etmeyen ve zamanla kullanıcıyı \"tanıyan\" sistemler kurmayı mümkün kılıyor. `remember`, `recall`, `forget`, `improve` gibi dört temel işlemle hafıza yönetimi, neredeyse insan hafızasının çalışma mantığına benzetilmiş.",
+        "tech": "🛠️ Cognee'nin kalbinde **bilgi grafiği (knowledge graph)** ve **vektör arama**nın hibrit kullanımı var: ham veriyi (belge, konuşma, yapılandırılmış veri) alıp otomatik olarak bir grafiğe dönüştürüyor, sonra hem embedding tabanlı benzerlik aramasını hem de grafik üzerindeki ilişkisel çıkarımı birleştirerek sorgulara cevap veriyor. Varsayılan olarak **PostgreSQL + pgvector** kullanıyor ama isteğe göre Neo4j/Neptune (grafik), Redis (oturum önbelleği), Qdrant/ChromaDB/Weaviate (vektör) gibi farklı veritabanlarına takılabiliyor — yani \"tek bir veritabanına kilitlenme\" yerine modüler bir depolama katmanı tercih edilmiş. Python ağırlıklı (%85) bir çekirdeğin üstüne TypeScript/JS SDK'ları ve Rust bağlayıcıları eklenmiş; Docker, Railway, Fly.io, Modal gibi platformlara tek komutla dağıtılabiliyor.",
+        "why": "📈 Ajan hafızası, 2026'da AI mühendisliğinin en sıcak alt alanlarından biri haline geldi çünkü tek seferlik \"prompt + context window\" yaklaşımı, uzun vadeli, kişiselleşmiş asistanlar kurmak isteyenler için yetersiz kalıyor. Cognee'nin BEAM benchmark'ında 100K token seviyesinde önceki en iyi sonuçları geçmesi ve akademik olarak hakemli bir yayına konu olması, projeye hem geliştirici hem araştırmacı kitlesinden ilgi çekiyor. Claude Code için marketplace eklentisi üzerinden doğrudan kodlama oturumlarına hafıza eklemek de günlük kullanıcı kitlesini büyütüyor.",
+        "evolve": "💡 Hibrit mimarinin getirdiği esneklik aynı zamanda bir karmaşıklık maliyeti de getiriyor — birden fazla veritabanını (grafik + vektör + önbellek) doğru senkronize tutmak, özellikle kendi altyapınızı yönetiyorsanız operasyonel yük demek. Basit kullanım senaryoları için \"tek dosyalık\" ya da tamamen yönetilen (managed) bir mod öne çıkarılırsa giriş bariyeri düşer. Ayrıca `forget` işleminin ne kadar güvenilir ve denetlenebilir olduğu (ör. KVKK/GDPR tarzı veri silme taleplerini karşılayabilme) kurumsal benimseme için kritik bir sonraki adım olacaktır."
+      },
+      "glossary": [
+        {
+          "term": "Bilgi grafiği (knowledge graph)",
+          "def": "Varlıklar (kişi, kavram, olay) ve aralarındaki ilişkileri düğüm-kenar yapısıyla modelleyen veri gösterimi."
+        },
+        {
+          "term": "Vektör arama (vector search)",
+          "def": "Metinleri sayısal vektörlere dönüştürüp anlamsal benzerliğe göre en yakın sonuçları bulma yöntemi."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL veritabanına vektör arama yeteneği ekleyen bir eklenti."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin veya verinin anlamını yakalayan, sayılardan oluşan yoğun bir vektör temsili."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Bir sistemin performansını standart görevler üzerinden ölçüp karşılaştırmaya yarayan test seti."
+        }
+      ]
+    },
+    {
+      "name": "diegosouzapw/OmniRoute",
+      "url": "https://github.com/diegosouzapw/OmniRoute",
+      "stars": "22.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI destekli kodlama araçları (Claude Code, Cursor, Copilot vb.) kullanan geliştiricilerin ortak derdi: birden fazla sağlayıcının API anahtarını yönetmek, rate limit'lere takılmak, pahalı abonelikler arasında geçiş yapmak. OmniRoute, 268'den fazla LLM sağlayıcısını **tek bir yerel uç noktanın (localhost) arkasında** birleştiren bir ağ geçidi (gateway) — istekleriniz bu geçide gidiyor, o da hangi sağlayıcının o an müsait, ucuz ve hızlı olduğuna bakıp yönlendiriyor. Kısacası \"hangi API anahtarı kaldı, hangisi limitine takıldı\" derdini ortadan kaldırmayı hedefliyor.",
+        "tech": "🛠️ Node.js 22 üzerinde tamamen TypeScript ile yazılmış; Next.js 16 + React 19 ile bir yönetim paneli sunuyor. Öne çıkan iki teknik parça var: **18 farklı yönlendirme stratejisi** (maliyet-optimizasyonlu, ağırlıklı, öncelik tabanlı gibi) ile isteklerin hangi sağlayıcıya gideceğine karar veren bir motor; ve **token sıkıştırma hattı** — RTK, LLMLingua-2 gibi 11 farklı sıkıştırma motorunu art arda uygulayarak (kod, URL ve JSON yapılarını bozmadan) ortalama %89'a varan token tasarrufu sağlıyor. Depolama tarafında SQLite (better-sqlite3) kullanılıyor; MCP ve A2A (agent-to-agent, JSON-RPC 2.0 tabanlı) protokolleriyle de konuşabiliyor, yani başka ajanlar OmniRoute'u kendisi de bir araç gibi çağırabiliyor.",
+        "why": "📈 2026'da AI destekli geliştirme o kadar yaygınlaştı ki, bir geliştiricinin tek bir sağlayıcının kotasına bağımlı kalması gerçek bir üretkenlik riski haline geldi. OmniRoute'un dört katmanlı otomatik yedekleme (fallback) sistemiyle \"kodlamayı hiç durdurmama\" vaadi, ayrıca ücretsiz kota havuzlarını birleştirip aylık ~1.4 milyar token'lık bedava kapasite sunması, maliyet ve süreklilik arasında sıkışan bireysel geliştiricilerden takım liderlerine kadar geniş bir kitleye hitap ediyor. 500'den fazla katkıda bulunanla hızla büyüyen bir topluluk da momentumu besliyor.",
+        "evolve": "💡 Bu kadar çok sağlayıcıyı ve stratejiyi tek bir araçta toplamak güçlü ama aynı zamanda yapılandırma karmaşıklığı riski taşıyor — 80'den fazla CLI komutu, yeni kullanıcılar için öğrenme eğrisini yükseltebilir. Basit senaryolar için \"tek tık\" varsayılan profiller (ör. sadece maliyet odaklı ya da sadece hız odaklı) öne çıkarılırsa erişilebilirlik artar. Ayrıca token sıkıştırmanın model çıktısının kalitesini ne ölçüde etkilediğine dair şeffaf, bağımsız karşılaştırmalar (özellikle kod üretiminde) güven inşası açısından değerli olur."
+      },
+      "glossary": [
+        {
+          "term": "API ağ geçidi (gateway)",
+          "def": "Birden çok servise giden istekleri tek bir noktadan yöneten, yönlendiren ara katman."
+        },
+        {
+          "term": "Rate limit",
+          "def": "Bir servisin belirli sürede kabul ettiği istek sayısına konan üst sınır."
+        },
+        {
+          "term": "Token sıkıştırma",
+          "def": "LLM'e gönderilen metni anlamını koruyarak daha az token ile ifade etme tekniği."
+        },
+        {
+          "term": "Fallback (yedekleme)",
+          "def": "Birincil seçenek başarısız olduğunda otomatik olarak devreye giren alternatif çözüm."
+        },
+        {
+          "term": "A2A protokolü (agent-to-agent)",
+          "def": "Farklı yapay zekâ ajanlarının birbirleriyle doğrudan konuşup görev devretmesini sağlayan iletişim standardı."
+        }
+      ]
+    },
+    {
+      "name": "1jehuang/jcode",
+      "url": "https://github.com/1jehuang/jcode",
+      "stars": "9.8k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Uzun süren, çok oturumlu geliştirme akışlarında mevcut AI kodlama ajanları genelde ağır kalıyor: her oturumda hafıza sıfırdan başlıyor, kaynak tüketimi yüksek oluyor. jcode, tam da bu senaryo için tasarlanmış performans odaklı bir **ajan çalıştırma ortamı (agent harness)** — oturumlar arasında bağlamı koruyan bir semantik hafıza, birden fazla ajanın aynı depoda birlikte çalışabildiği bir \"sürü (swarm)\" koordinasyonu ve minimum kaynak tüketimiyle çalışan bir motor sunuyor.",
+        "tech": "🛠️ Ağırlıklı olarak Rust (%93) ile yazılmış olması, projenin en çarpıcı yanı olan performans rakamlarının kaynağı: embedding'ler kapalıyken ~27.8 MB RAM kullanımı (rakip araçlar 140-386 MB bandında) ve 14ms'lik ilk-kare süresi (rakipler 383-3437ms). Hafıza sistemi, geçmiş etkileşimleri semantik vektör embedding'leriyle indeksleyip bağlamla ilgili anıları otomatik getiriyor — böylece ajanın açıkça \"şunu hatırla\" komutuna ihtiyacı kalmıyor. Kendi geliştirdiği mermaid diyagram render motoru, terminal kütüphanesi (handterm) ve semantik dosya analizi yapan bir grep aracı gibi bileşenleri kendi içinde barındırıyor; Claude, OpenAI, Gemini, Copilot dahil 20'den fazla sağlayıcıyla ve yerel modellerle (Ollama, LM Studio) konuşabiliyor.",
+        "why": "📈 AI destekli kodlamanın \"tek seferlik komut çalıştır\" evresinden \"saatlerce süren, çoklu ajanlı, paralel çalışan ekipler\" evresine geçişi, kaynak verimliliğini kritik bir farklılaştırıcı haline getirdi. jcode'un öne çıkardığı sert performans karşılaştırmaları (rakiplere göre 5-10 kat daha az bellek, çok daha hızlı başlangıç) hem düşük kaynaklı ortamlarda (ör. konteynerler, uzak sunucular) çalıştırmak isteyenleri hem de aynı anda 10+ oturum açan güç kullanıcılarını cezbediyor. Ajanın kendi kaynak kodunu değiştirip yeniden derleyebilmesi gibi \"kendi kendini geliştirme\" yeteneği de dikkat çekici bir vitrin özelliği.",
+        "evolve": "💡 Rust temelli olması performans için büyük avantaj ama topluluk katkısı tarafında bariyer de yaratabilir — Python/TypeScript ekosistemine alışkın geliştiriciler için katkı eğrisi daha dik. Sürü koordinasyonu (birden fazla ajanın aynı depoda çakışmadan çalışması) hâlâ genç bir özellik; büyük ekiplerde gerçek dünya çakışma senaryolarının ne kadar sağlam yönetildiği zamanla netleşecek. Ajanın kendi kodunu değiştirebilmesi güçlü bir özellik olduğu kadar güvenlik açısından da dikkatli sınırlar (sandboxing, geri alma mekanizmaları) gerektiriyor."
+      },
+      "glossary": [
+        {
+          "term": "Agent harness",
+          "def": "Bir yapay zekâ ajanının çalıştığı, araçlara ve belleğe eriştiği çevre/çatı yazılımı."
+        },
+        {
+          "term": "Semantik hafıza",
+          "def": "Bilgiyi kelime eşleşmesi yerine anlam benzerliğine göre saklayıp geri getiren hafıza türü."
+        },
+        {
+          "term": "Swarm (sürü) koordinasyonu",
+          "def": "Birden fazla ajanın aynı görev üzerinde eşzamanlı ve uyumlu şekilde çalışmasını sağlayan yöntem."
+        },
+        {
+          "term": "Time-to-first-frame",
+          "def": "Bir uygulamanın başlatılıp ilk kullanılabilir ekranı/çıktıyı gösterene kadar geçen süre."
+        },
+        {
+          "term": "Sandboxing",
+          "def": "Bir programı, sistemin geri kalanına zarar veremeyecek şekilde izole bir ortamda çalıştırma."
+        }
+      ]
+    },
+    {
+      "name": "oblien/openship",
+      "url": "https://github.com/oblien/openship",
+      "stars": "5.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Bir uygulamayı yayına almak (deploy) için genelde YAML dosyaları, pipeline tanımları ve sunucu yapılandırmasıyla boğuşmak gerekir. Openship, \"sıfır yapılandırma dosyası, sıfır pipeline, sıfır YAML\" vaadiyle bu süreci sadeleştiren, **kendi sunucunuzda barındırabileceğiniz (self-hosted)** açık kaynak bir dağıtım platformu. Node, Python, Go, Rust, PHP, Ruby, Java, .NET ve Docker projelerini otomatik algılayıp push-to-deploy mantığıyla yayına alıyor.",
+        "tech": "🛠️ Ağırlıklı TypeScript (%89) ile yazılmış; masaüstü uygulaması, web paneli ve CLI olmak üzere üç farklı arayüz sunuyor. Docker konteynerleri üzerinden portatif bir yürütme modeli kullanıyor ve Docker Compose ile doğrudan entegre çalışabiliyor. Alan adı yönetimi, SSL sertifikaları, CDN ve hatta yedekleme gibi altyapı parçalarını otomatikleştiriyor. Veritabanı tarafında **PL/pgSQL** (PostgreSQL'in prosedürel SQL lehçesi) kullanılması, klasik kurumsal veritabanı dünyasından gelenler için tanıdık bir dokunuş — Oracle PL/SQL'e mimari olarak yakın bir yaklaşım.",
+        "why": "📈 Vercel, Render, Railway gibi yönetilen (managed) platformların maliyetleri ve vendor lock-in riski, özellikle veri egemenliğine önem veren ya da kendi altyapısını kontrol etmek isteyen ekipler için bir itici güç oluşturuyor. Openship, bu ekiplere \"kendi sunucunda Heroku deneyimi\" sunarak, DevOps tarafında derin uzmanlığı olmayan solo geliştiricilerden küçük ekiplere kadar geniş bir kitleye hitap ediyor. Apache 2.0 lisansıyla tamamen açık kaynak olması da kurumsal güven açısından artı puan.",
+        "evolve": "💡 Proje henüz erken-üretim aşamasında (v0.1.11) ve \"her şeyi otomatik yönet\" vaadinin, karmaşık kurumsal ağ topolojileri veya çok bölgeli (multi-region) dağıtım senaryolarında ne kadar dayanıklı olduğu henüz kanıtlanmış değil. Yerleşik CI/CD'nin, mevcut GitHub Actions gibi araçlarla ne kadar sorunsuz birlikte çalışabildiği (tam ikame mi, tamamlayıcı mı) netleşirse benimseme kolaylaşır. Güvenlik denetimleri ve büyük ölçekte performans referansları (benchmark) eklenmesi, kurumsal kullanıcıları ikna etmek için önemli bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımı üçüncü taraf bir bulut hizmeti yerine kendi sunucunuzda çalıştırma."
+        },
+        {
+          "term": "Push-to-deploy",
+          "def": "Kod deposuna yapılan bir push işleminin otomatik olarak yayına alma sürecini tetiklemesi."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik test edilip (Continuous Integration) yayına alındığı (Continuous Deployment) süreç bütünü."
+        },
+        {
+          "term": "PL/pgSQL",
+          "def": "PostgreSQL veritabanında saklı yordamlar ve tetikleyiciler yazmak için kullanılan prosedürel SQL dili; Oracle'ın PL/SQL'ine benzer."
+        },
+        {
+          "term": "Vendor lock-in",
+          "def": "Bir hizmete o kadar bağımlı hale gelmek ki başka bir sağlayıcıya geçişin maliyetli veya zor olması."
+        }
+      ]
+    }
+  ]
+}
