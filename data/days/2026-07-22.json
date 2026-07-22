@@ -1,0 +1,171 @@
+{
+  "date": "2026-07-22",
+  "projects": [
+    {
+      "name": "bojieli/ai-agent-book",
+      "url": "https://github.com/bojieli/ai-agent-book",
+      "stars": "15.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bu repo, Li Bojie tarafından yazılan *\"Derinlemesine AI Agent: Tasarım İlkeleri ve Mühendislik Pratiği\"* adlı kapsamlı kitabın tüm metnini, PDF/EPUB derlemelerini ve **88 pratik projeyi** açık kaynak olarak sunuyor. Kitabın merkezinde basit ama güçlü bir formül var: **Agent = LLM + Context + Tools**. Amaç, agent kavramını soyut bir moda terimi olmaktan çıkarıp, üretim ortamında gerçekten çalışan sistemler inşa etmek isteyenlere adım adım bir mühendislik rehberi sunmak.",
+        "tech": "İçerik %94 oranında Python koduyla desteklenen 10 bölümden oluşuyor: context engineering, bellek (memory) sistemleri, **MCP** üzerinden araç entegrasyonu, kodlama agent'ları, değerlendirme (evaluation) yöntemleri, model post-training, agent'ların kendi kendine evrimi, multimodal etkileşim ve çoklu-agent iş birliği. Her bölüm, okuyucunun kopyalayıp çalıştırabileceği bağımsız kod örnekleriyle destekleniyor; 20 harici bağımlı repo tek komutla klonlanabiliyor.",
+        "why": "LLM'lerin ham yeteneği ile bunu gerçek dünyada güvenilir bir agent'a dönüştürmek arasındaki boşluk, 2026'da hâlâ en çok tartışılan mühendislik problemi. Bu kitap hem teorik çerçeve hem de 88 çalıştırılabilir örnek sunduğu için, hem yeni başlayan hem de üretimde agent koşturan geliştiricilere hitap ediyor. Apache 2.0 lisansı ve 5 dile (Basit/Geleneksel Çince, İngilizce, Tamilce, Vietnamca) yapılan gönüllü çeviriler, kitleyi hızla büyütmüş görünüyor.",
+        "evolve": "İngilizce ve diğer çevirilerin kitabın güncel sürümüyle senkron kalması en büyük bakım yükü olacaktır. Video anlatım veya etkileşimli not defterleri (Jupyter tabanlı) eklenmesi, kitabı daha erişilebilir kılabilir. Ayrıca topluluk katkılı yeni deneylerin bir \"kalite kapısı\"ndan geçirilmesi, 88 projenin uzun vadede bozulmadan kalmasını sağlar."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Bir LLM'in dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Context engineering",
+          "def": "Bir agent'a doğru anda doğru bilgiyi, doğru formatta sunma pratiği; modelin bağlam penceresini verimli kullanma sanatı."
+        },
+        {
+          "term": "Post-training",
+          "def": "Bir dil modelinin temel eğitiminden sonra, belirli davranışları güçlendirmek için yapılan ek eğitim aşamaları (ör. ince ayar, pekiştirmeli öğrenme)."
+        },
+        {
+          "term": "Multimodal",
+          "def": "Metin dışında görüntü, ses gibi farklı veri türlerini aynı anda işleyebilen sistemler."
+        },
+        {
+          "term": "Multi-agent",
+          "def": "Birden fazla yapay zekâ agent'ının birlikte, görev paylaşarak çalıştığı sistem mimarisi."
+        }
+      ]
+    },
+    {
+      "name": "1jehuang/jcode",
+      "url": "https://github.com/1jehuang/jcode",
+      "stars": "10.5k",
+      "language": "Rust",
+      "sections": {
+        "serves": "jcode, yapay zekâ destekli yazılım geliştirmeyi çok oturumlu (multi-session) iş akışlarına ve akıllı bir bellek sistemine taşıyan bir \"coding agent harness\". Amaç, tek seferlik sohbet tabanlı kodlama asistanlarının ötesine geçip; oturumlar arası hafızası olan, birden fazla agent'ı aynı repo üzerinde eş güdümle çalıştırabilen bir altyapı sunmak.",
+        "tech": "Kod tabanının %93'ü Rust ile yazılmış. Öne çıkan teknik kararlar: konuşma turlarını vektöre çevirip **cosine similarity** ile alakalı anıları geri çağıran bir **semantic memory** sistemi; aynı repo içinde çoklu agent'ların koordine çalışmasını sağlayan **swarm mode**; Firefox Agent Bridge ile tarayıcı otomasyonu; Claude, OpenAI, GitHub Copilot, Gemini, Azure dahil 20'den fazla LLM sağlayıcı desteği; ve agent'ların kendi kaynak kodunu değiştirip otomatik yeniden yükleyebildiği bir \"self-development\" modu.",
+        "why": "README'de vurgulanan performans rakamları (tek oturum için 27.8MB RAM, 14ms açılış süresi) rakiplerine göre agresif verimlilik iddiaları taşıyor. Bu, özellikle çok sayıda paralel agent oturumu çalıştırmak isteyen ve kaynak tüketimine duyarlı profesyonel ekiplerin ilgisini çekiyor; MIT lisansı ve aktif 5.800+ commit'lik geliştirme temposu güveni artırıyor.",
+        "evolve": "Semantic memory sisteminin yanlış hatırlama (\"hallucinated recall\") riskini nasıl sınırladığı netleşmeli. Kendi kaynak kodunu değiştirebilen bir agent modu, güvenlik ve sandbox izolasyonu açısından daha sıkı denetim gerektirir. Daha geniş sağlayıcı test matrisi ve topluluk odaklı bir eklenti (plugin) ekosistemi, projeyi büyütebilir."
+      },
+      "glossary": [
+        {
+          "term": "Coding agent harness",
+          "def": "Bir yapay zekâ kodlama agent'ını çalıştırmak, yönetmek ve araçlarla donatmak için kullanılan altyapı/iskelet yazılım."
+        },
+        {
+          "term": "Semantic memory",
+          "def": "Bilgiyi anlamına göre (kelime eşleşmesi değil) saklayıp geri çağıran bellek sistemi."
+        },
+        {
+          "term": "Cosine similarity",
+          "def": "İki vektörün yönü arasındaki benzerliği ölçen matematiksel yöntem; anlamca yakın metinleri bulmak için kullanılır."
+        },
+        {
+          "term": "Swarm mode",
+          "def": "Birden fazla agent'ın aynı görevde eş zamanlı ve koordineli çalıştığı çalışma biçimi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Bir LLM'in dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan protokol."
+        }
+      ]
+    },
+    {
+      "name": "diegosouzapw/OmniRoute",
+      "url": "https://github.com/diegosouzapw/OmniRoute",
+      "stars": "23.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "OmniRoute, 278'den fazla LLM sağlayıcısına (Claude, GPT, Gemini, DeepSeek ve daha fazlası) tek bir yerel uç nokta üzerinden erişim sağlayan ücretsiz, açık kaynak bir **AI gateway**. Geliştiricilerin onlarca API paneli, anahtarı ve aboneliği yönetme derdini ortadan kaldırıp, tüm kodlama araçlarını (Claude Code, Cursor, Cline vb.) tek bir adrese yönlendirmesine imkân tanıyor.",
+        "tech": "Node.js 22+, TypeScript, Next.js 16 ve React 19 üzerine kurulu; yerel durum yönetimi için SQLite kullanıyor. **MCP** ve **A2A (Agent-to-Agent)** protokollerini destekliyor. 18 farklı yönlendirme (routing) stratejisi mevcut — maliyet-optimizasyonlu, öncelik tabanlı ve \"fusion\" (birden fazla modelin oyunu birleştirip sentezlediği panel oylaması) gibi. Token tasarrufu için 11 motorlu bir sıkıştırma (**token compression**) hattı kullanıyor ve araç-ağırlıklı oturumlarda ortalama %89 tasarruf iddia ediyor. Sağlayıcı kesintilerine karşı **circuit breaker**, üstel geri çekilme (exponential backoff) ve kota kilitleri içeren 3 katmanlı kendi kendini iyileştirme sistemi var.",
+        "why": "Sürpriz faturalar, ölü API anahtarları, kota tükenmesi ve hız sınırlarına takılma gibi somut sorunları çözmesi, maliyete duyarlı geliştiricileri ve girişimleri doğrudan hedefliyor. Ayda yaklaşık 1,5 milyar ücretsiz token ve 40'tan fazla kalıcı ücretsiz sağlayıcı vaadi, 500'den fazla katkıcı ve 43 dile çevrilmiş dokümantasyonla birleşince hızlı bir topluluk büyümesi yaratmış.",
+        "evolve": "Yönlendirme kararlarının şeffaflığı ve denetlenebilirliği (hangi isteğin neden hangi sağlayıcıya gittiği) kurumsal kullanım için kritik olacaktır. Ekipler arası kota paylaşım algoritmasının büyük ölçekli organizasyonlarda testi, ve sıkıştırma motorlarının çıktı kalitesine etkisinin bağımsız ölçümü, projenin olgunlaşması için önemli adımlar."
+      },
+      "glossary": [
+        {
+          "term": "AI gateway",
+          "def": "Farklı yapay zekâ sağlayıcılarına tek bir merkezi noktadan erişim sağlayan ara katman yazılımı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Bir LLM'in dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "A2A (Agent-to-Agent)",
+          "def": "Farklı yapay zekâ agent'larının birbiriyle doğrudan iletişim kurmasını sağlayan protokol."
+        },
+        {
+          "term": "Token compression",
+          "def": "Modele gönderilen metni, anlamı büyük ölçüde koruyarak daha az token'a sıkıştırma tekniği; maliyeti düşürür."
+        },
+        {
+          "term": "Circuit breaker",
+          "def": "Bir servis sürekli hata verdiğinde istekleri geçici olarak kesip sisteme zaman tanıyan koruma mekanizması."
+        }
+      ]
+    },
+    {
+      "name": "AlexsJones/llmfit",
+      "url": "https://github.com/AlexsJones/llmfit",
+      "stars": "30.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "llmfit, \"bu modeli bilgisayarımda çalıştırabilir miyim?\" sorusuna saniyeler içinde cevap veren bir terminal aracı. Kullanıcının donanımını (RAM, CPU, GPU/VRAM) tarayıp, 268'den fazla sağlayıcıdaki hangi modellerin o makinede gerçekçi biçimde çalışacağını puanlayarak listeliyor.",
+        "tech": "Kod tabanı ağırlıklı olarak Rust (%81), Python (%10) ve JavaScript (%6) ile yazılmış; llmfit-core, llmfit-desktop, llmfit-python, llmfit-tui ve llmfit-web olmak üzere modüler paketlere ayrılmış. Her modeli dört boyutta puanlıyor: bellek uyumu, hız tahmini, kalite ve bağlam penceresi (**context window**) büyüklüğü. Hız tahminleri, topluluktan toplanan ölçümlerle kalibre edilen bir bellek-bant genişliği (memory-bandwidth) modeline dayanıyor. Ollama, llama.cpp, MLX, Docker Model Runner ve LM Studio gibi yerel çalışma zamanlarıyla entegre çalışıyor; çoklu-GPU kurulumlarını ve **Mixture-of-Experts (MoE)** mimarilerini de destekliyor.",
+        "why": "Yerel LLM çalıştırma trendinin büyümesiyle birlikte, hangi modelin hangi donanımda gerçekten çalışacağı belirsizliği ciddi bir sürtünme noktasıydı. llmfit bunu somut, ölçülebilir bir puanlama sistemine çeviriyor. Topluluk destekli benchmark verisi, kullanıcıların kendi ölçümlerini paylaşıp aynı donanıma sahip başkalarına yardımcı olmasını sağlıyor — bu geri besleme döngüsü 30k+ yıldıza ve 124 sürüme ulaşmasının önemli sebeplerinden.",
+        "evolve": "Daha fazla donanım/model kombinasyonu için ölçüm verisi biriktikçe tahminlerin doğruluğu artacaktır. Mobil cihaz desteği ve bulut-yerel hibrit senaryolar için öneri motoru (örneğin \"bu model senin donanımında yavaş çalışır, şu bulut sağlayıcısını dene\") mantıklı bir sonraki adım olabilir."
+      },
+      "glossary": [
+        {
+          "term": "VRAM",
+          "def": "Ekran kartı üzerindeki, model ağırlıklarının yüklendiği özel bellek."
+        },
+        {
+          "term": "Context window",
+          "def": "Bir modelin tek seferde işleyebildiği maksimum metin (token) miktarı."
+        },
+        {
+          "term": "Mixture-of-Experts (MoE)",
+          "def": "Bir modelin, her girdi için yalnızca uzman alt ağların bir kısmını aktif ederek çalıştığı mimari; verimlilik sağlar."
+        },
+        {
+          "term": "TUI (Terminal User Interface)",
+          "def": "Terminal içinde çalışan, menü ve etkileşimli öğeler barındıran metin tabanlı arayüz."
+        },
+        {
+          "term": "Memory bandwidth",
+          "def": "Bir donanımın bellekten veri okuma/yazma hızı; büyük modellerin çıkarım hızını doğrudan etkiler."
+        }
+      ]
+    },
+    {
+      "name": "schollz/croc",
+      "url": "https://github.com/schollz/croc",
+      "stars": "37k",
+      "language": "Go",
+      "sections": {
+        "serves": "croc, iki bilgisayar arasında sunucu kurulumu, port yönlendirmesi veya bulut hesabı gerektirmeden güvenli dosya (ve klasör) transferi yapmayı sağlayan bir komut satırı aracı. Tek yapmanız gereken, karşı tarafla ortak bir kod ifadesi paylaşmak.",
+        "tech": "Go dilinde yazılmış (%92); güvenliği **PAKE (Password-Authenticated Key Agreement)** tabanlı uçtan uca şifreleme ile sağlıyor ve eliptik eğri kriptografisi kullanıyor. Aktarımlar bir relay sunucu üzerinden yönlendiriliyor, böylece iki taraf doğrudan bağlantı kurmak zorunda kalmıyor. IPv6'yı önceliklendirip gerektiğinde IPv4'e düşüyor; Tor dahil proxy desteği, yarıda kalan transferleri devam ettirme ve mobil aktarım için QR kod üretimi gibi pratik özellikler sunuyor.",
+        "why": "\"Kurulumsuz + güvenli + basit\" üçlüsünü eksiksiz sunan az sayıda CLI aracından biri olması, croc'u sürekli gündemde tutuyor. 37k yıldız ve 196'dan fazla sürümle uzun süredir olgun bir proje olsa da, güvenli dosya paylaşımına duyulan sürekli ihtiyaç ve düzenli bakım/duyurular projeyi zaman zaman yeniden trend listesine taşıyor.",
+        "evolve": "Teknik kullanıcı olmayanlar için basit bir grafik arayüz (GUI) veya mobil uygulama, kitleyi genişletebilir. Kurumsal kullanım için kendi relay sunucusunu barındıran ekiplere yönelik yönetim/izleme araçları da mantıklı bir sonraki adım olur."
+      },
+      "glossary": [
+        {
+          "term": "PAKE (Password-Authenticated Key Agreement)",
+          "def": "İki tarafın, paylaştıkları basit bir parola üzerinden güvenli bir şifreleme anahtarı türetmesini sağlayan protokol ailesi."
+        },
+        {
+          "term": "Eliptik eğri kriptografisi",
+          "def": "Küçük anahtar boyutlarıyla güçlü güvenlik sağlayan, matematiksel eğrilere dayanan bir şifreleme yöntemi."
+        },
+        {
+          "term": "Relay sunucu",
+          "def": "İki tarafın doğrudan bağlanamadığı durumlarda veriyi aralarında ileten aracı sunucu."
+        },
+        {
+          "term": "IPv6",
+          "def": "İnternet adreslerinin yeni, çok daha geniş kapasiteli sürümü; eski IPv4'ün yerini almayı hedefler."
+        }
+      ]
+    }
+  ]
+}
