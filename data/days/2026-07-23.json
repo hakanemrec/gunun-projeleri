@@ -1,0 +1,211 @@
+{
+  "date": "2026-07-23",
+  "projects": [
+    {
+      "name": "koala73/worldmonitor",
+      "url": "https://github.com/koala73/worldmonitor",
+      "stars": "69.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "World Monitor, dünyanın dört bir yanındaki jeopolitik, finansal, iklimsel ve askeri olayları tek bir ekranda toplayan gerçek zamanlı bir \"küresel istihbarat\" panosu. Fikir basit: onlarca farklı haber kaynağını, uydu verisini, uçuş takibini ve piyasa akışını tek tek takip etmek yerine, bu sinyalleri yapay zekanın süzüp anlamlandırdığı tek bir haritada göstermek. Kriz habercisi olaylar (asker hareketleri, doğal afetler, siber saldırılar) daha patlak vermeden önce fark edilsin diye tasarlanmış.",
+        "tech": "65'in üzerinde dış veri sağlayıcıdan (jeopolitik, finans, enerji, iklim, havacılık, siber, askeri, altyapı) beslenen 500'den fazla kaynağı tek çatı altında topluyor. Kendi geliştirdikleri **\"Country Instability Index (CII) v8\"** adlı puanlama algoritması, 31 ülke için farklı sinyalleri birleştirip bir \"istikrarsızlık skoru\" üretiyor — ve bu skor sunucu tarafında hesaplanıyor, yani istemci taraflı manipülasyona kapalı.\n\nHarita tarafında iki farklı render motoru var: 3B küre görünümü için Three.js tabanlı globe.gl, düz harita görünümü için ise deck.gl + MapLibre GL — toplamda 56 farklı katman tipini destekliyor. Yapay zeka tarafında ise hem bulut modellerine (Groq, OpenRouter) hem yerel modellere (Ollama) bağlanabiliyor, tarayıcı içinde de Transformers.js ile bazı doğal dil işleme görevlerini çalıştırabiliyor — yani internet olmadan da kısmen çalışabiliyor.\n\nMasaüstü uygulaması Rust tabanlı Tauri 2 ile paketlenmiş, sunucu tarafı Vercel'in edge fonksiyonlarında ve Railway altyapısında koşuyor; veri sözleşmeleri ise Protocol Buffers ile standartlaştırılmış.",
+        "why": "Bir günde 4 binin üzerinde yıldız kazanıp bugünün bir numarası olmasının birkaç sebebi var: AGPL lisansıyla açık kaynak yayınlanan ilk \"üretim kalitesinde\" OSINT panosu olması, MCP sunucusu ve REST API'leri sayesinde Claude gibi yapay zeka ajanlarının veriye doğrudan erişebilmesi, ve Ollama desteğiyle \"kendi sunucumda, kimseye veri sızdırmadan çalıştırabilirim\" diyen gizlilik odaklı kullanıcılara hitap etmesi. Jeopolitik gerilimlerin arttığı bir dönemde \"dünyada ne oluyor\" sorusuna tek ekrandan cevap vermesi de ilgiyi artırdı.",
+        "evolve": "CII v8 skorlama algoritması şu an kapalı kutu — nasıl hesaplandığı tam açıklanmadığı için sonuçların ne kadar güvenilir olduğunu bağımsız doğrulamak zor. 35 farklı kaynak grubuna bağımlı olması, kaynaklardan biri bayatlayınca ya da erişilemez olunca panonun bütünlüğünü etkileyebilir. Yol haritasında, çapraz sinyal korelasyonunun ötesine geçip gelecekteki krizleri öngörmeye çalışan bir \"tahminsel tırmanma modellemesi\" var — bu gerçekleşirse basit bir izleme aracından öteye, bir erken uyarı sistemine dönüşebilir."
+      },
+      "glossary": [
+        {
+          "term": "OSINT",
+          "def": "Açık kaynaklardan (haber, sosyal medya, kamuya açık veri) toplanan bilgilerle yapılan istihbarat çalışması."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara ve verilere standart bir şekilde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Edge Functions",
+          "def": "Kullanıcıya coğrafi olarak en yakın sunucuda çalışan, gecikmeyi azaltan küçük sunucu fonksiyonları."
+        },
+        {
+          "term": "Protocol Buffers",
+          "def": "Google'ın geliştirdiği, verinin sistemler arasında kompakt ve hızlı şekilde taşınmasını sağlayan veri formatı."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle yazılmış arayüzleri, Rust çekirdeğiyle hafif masaüstü uygulamalarına dönüştüren çerçeve."
+        },
+        {
+          "term": "WebGL",
+          "def": "Tarayıcı içinde donanım hızlandırmalı 3B/2B grafik çizmeyi sağlayan teknoloji."
+        },
+        {
+          "term": "Three.js / globe.gl / deck.gl",
+          "def": "Tarayıcıda 3B ve harita tabanlı görselleştirmeler oluşturmak için kullanılan JavaScript kütüphaneleri."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılımı sunucu üzerinden kullanıma sunan herkesin kaynak kodu paylaşmasını zorunlu kılan, \"copyleft\" özellikli açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "ayghri/i-have-adhd",
+      "url": "https://github.com/ayghri/i-have-adhd",
+      "stars": "8.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "Kodlama asistanlarının (Claude Code, Cursor, Codex gibi) verdiği cevaplar genelde uzun paragraflarla başlayıp asıl cevabı en sona saklıyor. Bu proje tam da bunu düzeltmek için var: asistana \"önce ne yapılacağını söyle, gerekçeyi sonra ver\" diyen bir davranış kalıbı (skill) yüklüyor. Adını da DEHB'den (dikkat eksikliği ve hiperaktivite bozukluğu) alıyor — çünkü format kuralları, DEHB'li kullanıcılar için önerilen \"bilgiyi kısa, aksiyona dönük ve öncelik sıralı ver\" prensiplerinden esinlenmiş.",
+        "tech": "Teknik olarak bir kod kütüphanesi değil, bir **\"skill\"** — yani ajana talimat veren yapılandırılmış bir prompt dosyası (SKILL.md). İçinde \"cevaba önce sonraki adımla başla,\" \"listeleri 5 maddeyle sınırla,\" \"net zaman tahmini ver\" gibi 10 kadar biçimlendirme kuralı var. Bu yaklaşımın püf noktası, modelin kendisini değiştirmeden, sadece talimatları değiştirerek davranışı yönlendirmesi — yani prompt mühendisliği. Bu sayede Claude Code, Cursor ve Codex gibi farklı ajanlara aynı mantıkla taşınabiliyor; her biri için kurulum şekli (plugin marketplace, `.cursor/skills/` klasörü vb.) farklı ama temel dosya aynı.",
+        "why": "Proje küçük ve basit olmasına rağmen (94 kadar commit) hızlı yıldız topluyor çünkü herkesin yaşadığı ama az kişinin adını koyduğu bir sorunu çözüyor: \"asistan neden bu kadar çok konuşuyor, bana direkt söylesene.\" Ajan tabanlı kodlamanın (agentic coding) yaygınlaşmasıyla insanlar günün büyük kısmını bu asistanlarla geçiriyor, dolayısıyla küçük bir iletişim iyileştirmesi bile büyük bir birikimli zaman tasarrufuna dönüşüyor. Ayrıca nörofarklı kullanıcılara özel tasarlanmış olması, genel \"kısa cevap ver\" isteklerinden daha spesifik ve ikna edici bir konumlandırma sağlıyor.",
+        "evolve": "Kuralların otomatik mi yoksa elle mi (`/i-have-adhd` yazarak) tetikleneceği ajandan ajana değişiyor, yani güvenilirlik tutarsız olabilir. Kişiselleştirme için repoyu fork'layıp marketplace'e yeniden kaydetmek gerekiyor — bu da \"ince ayar\" yapmak isteyen kullanıcılar için sürtünme yaratıyor. Japonca ve basitleştirilmiş Çince gibi çevirilerin eklenmiş olması, projenin uluslararasılaşmaya (i18n) doğru gittiğini gösteriyor; ileride belki de kullanıcının kendi format tercihlerini (ör. madde sayısı, ton) yapılandırabildiği bir ayar sistemi gelebilir."
+      },
+      "glossary": [
+        {
+          "term": "Skill (ajan becerisi)",
+          "def": "Bir yapay zeka ajanına belirli bir görevi nasıl yapacağını öğreten, yapılandırılmış talimat dosyası."
+        },
+        {
+          "term": "Prompt mühendisliği",
+          "def": "Modelin kendisini değiştirmeden, ona verilen talimatları tasarlayarak istenen davranışı elde etme yöntemi."
+        },
+        {
+          "term": "Agentic coding (ajan tabanlı kodlama)",
+          "def": "Bir yapay zeka ajanının kod yazma, çalıştırma ve düzeltme adımlarını kendi başına yürütmesi."
+        },
+        {
+          "term": "Nörofarklılık (neurodivergent)",
+          "def": "Beynin bilgiyi işleme biçiminin (DEHB, otizm gibi) tipik kabul edilenden farklı olması."
+        },
+        {
+          "term": "i18n (internationalization)",
+          "def": "Bir yazılımın farklı dillere ve bölgelere uyarlanabilir hale getirilmesi süreci."
+        }
+      ]
+    },
+    {
+      "name": "oblien/openship",
+      "url": "https://github.com/oblien/openship",
+      "stars": "7.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bugün bir uygulamayı yayına almak istediğinizde CI/CD için bir araç, veritabanı için başka bir servis, e-posta için ayrı bir sağlayıcı, sertifikalar için ayrı bir yapılandırma derken onlarca ayrı hesaba dağılmış bir altyapı yönetmeniz gerekiyor. Openship bunların hepsini tek bir kendi-barındırdığınız (self-hosted) platformda topluyor: kod push'ladığınızda otomatik dağıtım, veritabanı yönetimi, alan adı ve SSL, CDN, yedekleme ve e-posta sunucusu hepsi aynı yerden yönetiliyor.",
+        "tech": "TypeScript ağırlıklı bir monorepo (pnpm + turbo ile yönetilen), çalışma zamanı olarak Bun kullanıyor. Mimari üç katmana ayrılmış: geliştiricinin kendi makinesinde ya da bir sunucuda çalışan \"kontrol düzlemi\" (masaüstü uygulaması, CLI, API), standart Docker konteynerleri olarak çalışan \"uygulama düzlemi\" ve REST API ile MCP protokolü üzerinden dışarıdan yönetilebilen bir \"yönetim katmanı.\" Tasarım felsefesi **\"kodunu push'la, konteyner olarak yayınla\"** — yani altyapı karmaşıklığını soyutlarken taşınabilirliği koruyor. Docker standardı sayesinde uygulamalar herhangi bir bulut sağlayıcıya ya da kendi sunucunuza kilitlenmeden taşınabiliyor.",
+        "why": "Vercel/Netlify gibi yönetilen platformlar frontend ve serverless işler için optimize ama sizi kendi altyapılarına kilitliyor; Openship bunun tam tersini yapıyor — herhangi bir VPS'e, bare-metal sunucuya ya da bulut sağlayıcıya dağıtım yapabiliyor, veri hep sizin kontrolünüzde kalıyor. Coolify gibi diğer açık kaynak self-hosted alternatiflere göre daha \"hazır paket\" bir yaklaşımı var: mail sunucusu (DKIM/SPF/DMARC dahil), otomatik yedekleme ve tek tıkla geri yükleme gibi özellikleri ayrı entegrasyon gerektirmeden dahili sunuyor. \"Sıfır yapılandırma dosyası, sıfır pipeline, sıfır YAML\" vaadi, DevOps yorgunluğu yaşayan geliştiricilere cazip geliyor.",
+        "evolve": "README \"dokümantasyon hâlâ geliştiriliyor\" diyor ve çok node'lu kümeler, yük dengeleme arayüzü, özel ağ ve görsel CI/CD pipeline'ları gibi özellikler yol haritasında henüz gelmemiş durumda. Veritabanları ya da durum tutan (stateful) servisler için yatay ölçeklendirmenin nasıl işlediği, sırların (secrets) nasıl şifrelenip saklandığı gibi güvenlik detayları da şu an ayrı dokümantasyona bırakılmış — bunlar netleşmeden kurumsal ortamlarda güven kazanması zaman alabilir."
+      },
+      "glossary": [
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak test edilip yayına alınmasını sağlayan sürekli entegrasyon/sürekli dağıtım süreci."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üçüncü parti bir bulut sağlayıcı yerine kendi sunucunuzda barındırılması."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla projenin/paketin tek bir git deposunda birlikte tutulması."
+        },
+        {
+          "term": "Bun",
+          "def": "Node.js'e alternatif, hız odaklı bir JavaScript çalışma zamanı (runtime)."
+        },
+        {
+          "term": "Docker konteyneri",
+          "def": "Bir uygulamayı, çalışması için gereken her şeyle birlikte paketleyip her ortamda aynı şekilde çalıştırmayı sağlayan izole birim."
+        },
+        {
+          "term": "MCP protokolü",
+          "def": "Yapay zeka ajanlarının dış servislere standart bir arayüzle bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "VPS / bare-metal",
+          "def": "VPS kiralık sanal sunucu, bare-metal ise doğrudan fiziksel sunucu üzerinde çalışmak anlamına gelir."
+        },
+        {
+          "term": "DKIM/SPF/DMARC",
+          "def": "Gönderilen e-postaların sahte olmadığını kanıtlayan e-posta güvenliği standartları."
+        },
+        {
+          "term": "Stateful servis",
+          "def": "Önceki isteklerden gelen veriyi/durumu hafızasında tutan servis (veritabanı gibi); yatay ölçeklendirmesi daha zordur."
+        }
+      ]
+    },
+    {
+      "name": "dottxt-ai/outlines",
+      "url": "https://github.com/dottxt-ai/outlines",
+      "stars": "15.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "Büyük dil modellerinden (LLM) düzgün biçimlendirilmiş, öngörülebilir çıktı almak zor bir problemdir — model bazen geçersiz JSON üretir, bazen istenen formatı yarıda bırakır. Yaygın çözüm, çıktıyı ürettikten sonra regex veya ayrıştırıcılarla düzeltmeye çalışmaktır, ama bu kırılgan bir yöntemdir. Outlines, sorunu üretimden sonra değil üretim sırasında çözer: modelin bir sonraki kelimeyi seçerken zaten istenen şemaya (JSON, regex, Pydantic modeli, sabit seçenekler) uymasını garanti eder.",
+        "tech": "Bunu **\"kısıtlı üretim\" (constrained decoding)** denilen bir teknikle yapar: her adımda modelin olası kelime dağılımından, hedef şemaya uymayan kelimeler eleniyor, yalnızca kurallara uygun olanlar seçilebiliyor. Bağlamsız gramerler (context-free grammar), regex kalıpları, JSON şemaları ve Python tip anotasyonları (Enum, Pydantic, Literal) bu kısıtların kaynağı olabiliyor. Outlines bunu tek bir arayüz altında birleştirip Hugging Face transformers, llama.cpp gibi yerel motorlara, vLLM ve Ollama gibi sunucu tabanlı motorlara, hatta OpenAI ve Gemini gibi kapalı API'lere aynı kodla bağlanabiliyor: `model(prompt, output_type)`.",
+        "why": "Yapay zekayı üretim ortamına (production) taşıyan şirketler için \"modelin çıktısı her zaman ayrıştırılabilir olsun\" artık bir lüks değil, otomasyon hatlarının çalışması için zorunluluk haline geldi. \"Aynı kod OpenAI, Ollama ve vLLM'de aynen çalışır\" vaadi, model sağlayıcı değiştirmeyi kolaylaştırdığı için ilgi görüyor. NVIDIA, Cohere, Hugging Face gibi büyük oyuncuların kullanıcı listesinde olması da güven inşa ediyor; açık kaynak çıkarım sunucularının (özellikle vLLM) olgunlaşması, bu kısıtlamaların yerel altyapıda da verimli çalışmasını mümkün kılıyor.",
+        "evolve": "Her token'da kısıt kontrolü yapmanın getirdiği ek işlem yükü (gecikme/verim dengesi) README'de detaylandırılmıyor — bu, yüksek trafikli sistemlerde ne kadar maliyetli olduğu sorusunu açık bırakıyor. Modelin çok sıkı kısıtlanması, bazı görevlerde yaratıcılığını ya da doğal akışını kısabilir. Ekip, XML ve FHIR gibi özel şemalar için destek ve kurumsal \".txt API\" gibi ücretli hizmetler üzerinde çalıştığını belirtiyor — bu da projenin açık kaynak çekirdek + ticari katman modeline evrildiğine işaret ediyor."
+      },
+      "glossary": [
+        {
+          "term": "LLM (büyük dil modeli)",
+          "def": "Devasa metin verisiyle eğitilmiş, doğal dilde metin üreten yapay zeka modeli."
+        },
+        {
+          "term": "Constrained decoding (kısıtlı üretim)",
+          "def": "Modelin bir sonraki kelimeyi seçerken, önceden belirlenmiş kurallara uymayan seçenekleri devre dışı bırakan üretim yöntemi."
+        },
+        {
+          "term": "Context-free grammar (bağlamsız gramer)",
+          "def": "Bir dilin hangi kelime dizilerinin geçerli sayılacağını tanımlayan biçimsel kural seti."
+        },
+        {
+          "term": "Pydantic",
+          "def": "Python'da veri tiplerini tanımlayıp doğrulamak için kullanılan popüler bir kütüphane."
+        },
+        {
+          "term": "vLLM",
+          "def": "Büyük dil modellerini yüksek verimle sunucu üzerinden çalıştırmak için tasarlanmış açık kaynak çıkarım motoru."
+        },
+        {
+          "term": "Ollama",
+          "def": "Büyük dil modellerini kendi bilgisayarınızda kolayca çalıştırmanızı sağlayan araç."
+        },
+        {
+          "term": "Production (üretim ortamı)",
+          "def": "Bir yazılımın gerçek kullanıcılara sunulduğu, test değil canlı ortam."
+        }
+      ]
+    },
+    {
+      "name": "likec4/likec4",
+      "url": "https://github.com/likec4/likec4",
+      "stars": "4.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Yazılım mimarisi diyagramları genelde bir kere çizilip PowerPoint'te ya da wiki'de unutulur; kod değiştikçe diyagram güncel kalmaz. LikeC4, mimariyi bir programlama dili gibi kodla tanımlamanızı sağlıyor: sistemleri, servisleri ve aralarındaki ilişkileri metin dosyalarında yazıyorsunuz, diyagramlar bu koddan otomatik ve her zaman güncel şekilde üretiliyor.",
+        "tech": "Kendi geliştirdikleri bir **DSL** (alana özel dil) kullanıyorlar — bu dil, yazılım mimarisi belgelemede yaygın kullanılan C4 modelinden ve Structurizr DSL'den ilham almış, dil altyapısı olarak da Langium çerçevesi üzerine inşa edilmiş. Proje neredeyse tamamen TypeScript ile yazılmış; VS Code eklentisi ile IDE içinde canlı önizleme, CLI ile yerel geliştirme (`npx likec4 start`) sağlanıyor. Monorepo, pnpm ve Turborepo ile yönetiliyor.",
+        "why": "Mermaid ve PlantUML genel amaçlı diyagram araçları iken, LikeC4 doğrudan C4 modelinin (Context, Container, Component, Code) felsefesini temel alıp üstüne esneklik ekliyor: kendi element tiplerinizi, notasyonunuzu ve iç içe seviyelerinizi tanımlayabiliyorsunuz. VS Code marketplace'teki geniş kurulum sayısı ve StackBlitz üzerinden tek tıkla deneme imkanı, \"önce dene sonra karar ver\" sürtünmesini azaltarak organik büyümeyi hızlandırıyor.",
+        "evolve": "143 açık issue ve 24 açık pull request, projenin hâlâ hızlı geliştiği ama bazı özelliklerin olgunlaşmayı beklediği anlamına geliyor. Şu an odak diyagram üretimi ve IDE entegrasyonunda; gerçek zamanlı çoklu kullanıcı düzenleme (collaborative editing) ya da ek dışa aktarma formatları gibi işbirliği özellikleri henüz sınırlı — bunlar eklenirse araç, Figma benzeri bir \"canlı mimari tahtası\"na dönüşebilir."
+      },
+      "glossary": [
+        {
+          "term": "DSL (Domain-Specific Language / alana özel dil)",
+          "def": "Belirli bir problem alanına özel tasarlanmış, genel amaçlı olmayan programlama dili."
+        },
+        {
+          "term": "C4 modeli",
+          "def": "Yazılım mimarisini dört seviyede (Context, Container, Component, Code) belgelemek için kullanılan popüler bir görselleştirme yöntemi."
+        },
+        {
+          "term": "Langium",
+          "def": "Alana özel diller (DSL) geliştirmek için kullanılan bir dil altyapısı çerçevesi."
+        },
+        {
+          "term": "IDE",
+          "def": "Kod yazma, çalıştırma ve hata ayıklamayı tek bir arayüzde birleştiren geliştirme ortamı (ör. VS Code)."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla ilişkili paketin tek bir git deposunda tutulması."
+        }
+      ]
+    }
+  ]
+}
