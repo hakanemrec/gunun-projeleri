@@ -1,0 +1,177 @@
+{
+  "date": "2026-07-24",
+  "projects": [
+    {
+      "name": "block/buzz",
+      "url": "https://github.com/block/buzz",
+      "stars": "7.5k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Buzz**, insanların ve yapay zeka ajanlarının aynı çalışma alanında (workspace) yan yana çalıştığı, kendi sunucunuzda barındırabildiğiniz bir iletişim platformu. Bugün bir ekip; sohbet için Slack, kod incelemesi için GitHub, CI/CD takibi için ayrı bir panel, olay müdahalesi için başka bir araç kullanıyor — Buzz bunların hepsini tek, kayıt altına alınmış (event-sourced) bir akışta birleştiriyor. Fark şu: yapay zeka ajanları bu ortamda misafir değil, insanlarla **aynı kimlik ve yetkilerle** kanal üyesi oluyor.",
+        "tech": "Sistemin omurgası **Nostr** — merkezi bir sunucuya bağımlı olmayan, imzalı olaylar üzerine kurulu açık protokol. Buzz bunu bir sohbet uygulamasının ötesine taşıyıp Rust ile yazılmış çok sayıda mikroservise dağıtıyor: WebSocket ve REST uç noktalarını sunan **Axum** tabanlı röle (relay) katmanı, tam metin arama ve olay kalıcılığı için **PostgreSQL**, yayın/abone trafiği için **Redis**, medya dosyaları için **Blossom** protokolüyle konuşan S3/MinIO uyumlu depolama. Git entegrasyonu da Nostr üzerinden imzalanmış commit ve patch'lerle çalışıyor. İstemci tarafında masaüstü ve web için React, mobil için Flutter kullanılmış.\n\nTasarımın çekirdek fikri: yetkilendirme rol bayraklarıyla değil, **kriptografik kimlikle** belirleniyor — herkes (insan, ajan, otomasyon) aynı Nostr anahtar çifti mantığıyla kimlik doğruluyor.",
+        "why": "Bir günde 2.100'ün üzerinde yıldız kazanmasının arkasında, yapay zeka ajanlarının ekip içi araçlara giderek daha fazla gömülmesiyle ortaya çıkan **denetlenebilirlik** ihtiyacı var. Şirketler ajanlara kod tabanına, sohbete ve dağıtım süreçlerine erişim veriyor ama bunun kim tarafından, ne zaman yapıldığının izini sürmek istiyor — Buzz'ın her olayı kriptografik olarak imzalayıp kaydetmesi tam da bunu sağlıyor. Ayrıca kendi sunucunuzda barındırma vurgusu, üçüncü taraf SaaS araçlarına veri göndermek istemeyen, güvenlik bilincine sahip geliştirici ekiplerine hitap ediyor.",
+        "evolve": "Nostr protokolünün ana kullanım alanı sosyal medyaydı; onu kurumsal iş akışlarına uyarlamak, ölçeklenme ve moderasyon açısından henüz test edilmemiş bir alan. Şu an tek bir röleye bağlı çalışmak basitliği sağlıyor ama çok-röleli (multi-relay) federasyon desteği olgunlaştıkça, iki farklı şirketin ortak bir kanalda çalışması gibi ekipler-arası iş birliği senaryoları daha ilgi çekici hale gelebilir. ACP desteğinin genişlemesi, Buzz'ı sadece Claude değil, farklı ajan çerçeveleriyle de konuşabilen bir orta katman haline getirebilir."
+      },
+      "glossary": [
+        {
+          "term": "Nostr",
+          "def": "Merkeziyetsiz, imzalı olaylar (event) üzerine kurulu açık bir sosyal protokol; sunucudan bağımsız kimlik ve mesajlaşma sağlar."
+        },
+        {
+          "term": "Event-sourced (olay güdümlü) mimari",
+          "def": "Sistemin durumunun tek bir 'son hâl' yerine, sırayla kaydedilen olayların toplamından türetildiği tasarım yaklaşımı."
+        },
+        {
+          "term": "Relay (röle)",
+          "def": "Nostr ağında istemcilerin birbirine mesaj/olay ilettiği sunucu; merkezi olmak zorunda değildir, birden fazla röle paralel çalışabilir."
+        },
+        {
+          "term": "Axum",
+          "def": "Rust dilinde yazılmış, hızlı web sunucuları ve API'ler kurmak için kullanılan bir çatı (framework)."
+        },
+        {
+          "term": "WebSocket",
+          "def": "İstemci ile sunucu arasında sürekli açık kalan, iki yönlü, gerçek zamanlı veri akışı sağlayan bağlantı türü."
+        },
+        {
+          "term": "PostgreSQL / Redis",
+          "def": "PostgreSQL kalıcı veri saklamak için kullanılan ilişkisel veritabanıdır; Redis ise bellek içinde çalışan, hızlı yayın/abone ve önbellekleme işleri için kullanılan veri deposudur."
+        },
+        {
+          "term": "S3/MinIO",
+          "def": "Amazon S3 uyumlu arayüzle çalışan, dosya ve medya gibi büyük ikili verileri saklamaya yarayan nesne depolama sistemleri."
+        },
+        {
+          "term": "Blossom protokolü",
+          "def": "Nostr ekosisteminde medya dosyalarının (resim, video) nasıl yüklenip paylaşılacağını tanımlayan açık protokol."
+        },
+        {
+          "term": "ACP (Agent Communication Protocol)",
+          "def": "Yapay zeka ajanlarının farklı araçlar ve platformlarla standart bir şekilde konuşmasını sağlayan iletişim protokolü."
+        },
+        {
+          "term": "Self-hosted (kendi sunucunda barındırma)",
+          "def": "Bir yazılımı üçüncü taraf bir bulut şirketi yerine kendi sunucularında çalıştırma modeli."
+        }
+      ]
+    },
+    {
+      "name": "citrolabs/ego-lite",
+      "url": "https://github.com/citrolabs/ego-lite",
+      "stars": "1.9k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**ego-lite**, hem sizin hem de yapay zeka ajanlarınızın **aynı anda** kullanabileceği bir tarayıcı. Bugünün ajan-tabanlı otomasyon araçlarının çoğu tarayıcıyı komple ele geçiriyor — siz farklı bir işle uğraşırken ajan sayfayı değiştirirse birbirinizin işine karışıyorsunuz. ego-lite bu çakışmayı, ajanların çalıştığı izole **'Space'** adlı alt-ortamlar yaratarak çözüyor: siz normal gezinmenize devam ederken ajan kendi izole sekmesinde görevini tamamlıyor.",
+        "tech": "Çoğu tarayıcı otomasyon aracı ajana adım adım komut listesi ('şuraya tıkla', 'şunu yaz') gönderir — her adım bir gidiş-dönüş (round-trip) demektir ve token tüketimini şişirir. ego-lite bunun yerine **kod-tabanlı** bir yaklaşım seçmiş: ajan, snapshot, fill, click, wait, navigate gibi tarayıcı fonksiyonlarını doğrudan çağıran bir JavaScript betiği yazıyor ve bu betik tek seferde çalışıyor. Ekip bunu Vercel'in agent-browser'ına karşı **2,5 kata varan hız artışı** olarak ölçmüş. Ayrıca sayfa anlık görüntüsü (snapshot) alma mantığı, iç içe geçmiş **iframe**'leri doğru okuyabilmek için tarayıcı çekirdeği seviyesinde (kernel-level) optimize edilmiş. Veriler yerelde tutuluyor ve ilk açılışta mevcut Chrome oturumunuzu (giriş bilgileriniz dahil) devralabiliyor.",
+        "why": "Ajan tabanlı tarayıcı otomasyonu 2026'da hızla büyüyen bir kategori ve ego-lite, rakiplerinin çoğunun tek bir ajan CLI'sine (örneğin sadece Claude Code) kilitlenmesine karşı **Claude Code, Codex, Cursor** gibi birden fazla aracı desteklemesiyle öne çıkıyor. Performans iddiası (2,5x hız) ve 'tarayıcınızı ajanınızla paylaşmak zorunda değilsiniz' vaadi, günlük iş akışında ajan kullanan geliştiricilerin ilgisini çekti; MIT lisanslı açık kod tabanı da güven inşa etti.",
+        "evolve": "Tarayıcının kendisi (motor) hâlâ kapalı kaynak ve şu an sadece macOS'ta indirilebiliyor — Windows/Linux desteği yol haritasında ama takvimi belirsiz. Açık kaynak olan kısım esasen ajan-tarayıcı iletişim katmanı; asıl kernel-level optimizasyonların içi görünmüyor, bu da bağımsız güvenlik denetimini zorlaştırıyor. Çok-ajan (multi-agent) senaryosunda birden fazla Space'in aynı anda çalışıp sonuçlarını birleştirmesi olgunlaşırsa, paralel görev yürütme için gerçek bir sıçrama olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Space (ego-lite)",
+          "def": "ego-lite tarayıcısında, yapay zeka ajanının kullanıcının normal gezinmesinden izole şekilde çalıştığı alt-ortam."
+        },
+        {
+          "term": "Snapshot (anlık görüntü)",
+          "def": "Bir web sayfasının o anki içerik ve yapısının, ajan tarafından okunabilecek şekilde çıkarılmış hâli."
+        },
+        {
+          "term": "iframe",
+          "def": "Bir web sayfasının içine gömülü, kendi içeriğini bağımsız şekilde yükleyen başka bir sayfa penceresi."
+        },
+        {
+          "term": "Kernel-level (çekirdek seviyesi) optimizasyon",
+          "def": "Bir yazılımın en temel, düşük seviyeli katmanında yapılan, üst katmanlardan çok daha hızlı çalışan performans iyileştirmesi."
+        },
+        {
+          "term": "Token",
+          "def": "Büyük dil modellerinin metni işlerken kullandığı, kelime veya kelime parçası büyüklüğündeki temel birim; kullanım maliyeti genellikle token sayısına göre hesaplanır."
+        },
+        {
+          "term": "Round-trip (gidiş-dönüş)",
+          "def": "Bir isteğin gönderilip cevabının geri alınmasına kadar geçen tek bir iletişim turu; her tur ek gecikme ve maliyet demektir."
+        },
+        {
+          "term": "MIT lisansı",
+          "def": "Yazılımı hemen hemen hiçbir kısıtlama olmadan kullanma, değiştirme ve dağıtma izni veren, az koşullu açık kaynak lisansı."
+        },
+        {
+          "term": "Multi-agent (çok-ajan)",
+          "def": "Birden fazla yapay zeka ajanının aynı görev veya sistem üzerinde eşzamanlı ya da iş birliği içinde çalıştığı kurulum."
+        }
+      ]
+    },
+    {
+      "name": "alibaba/open-code-review",
+      "url": "https://github.com/alibaba/open-code-review",
+      "stars": "11.8k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Open Code Review**, Git değişikliklerini (diff) ve ilgili dosyaları analiz edip satır satır, somut kod inceleme yorumları üreten bir komut satırı aracı. Alibaba'nın kendi içinde 'on binlerce geliştiriciye' hizmet eden sisteminin açık kaynak hâli. Amaç, insan gözden kaçırabilecek hata, güvenlik açığı ve kod kalitesi sorunlarını her pull request'te otomatik olarak yakalamak.",
+        "tech": "Projenin öne çıkan tasarım kararı, saf bir 'LLM'e diff'i ver, yorumu al' yaklaşımını **reddetmesi**. Bunun yerine hibrit bir mimari kullanıyor: **deterministik katman** hangi dosyaların inceleneceğini, ilgili dosyaların nasıl gruplanacağını (bundling) ve kuralların nasıl eşleştirileceğini kesin algoritmalarla belirliyor; **ajan katmanı** ise bu sınırlar içinde senaryoya özel prompt'lar ve araç setleriyle karar veriyor. Büyük değişiklik setlerinde 'böl ve fethet' (divide-and-conquer) stratejisiyle ilgili dosyaları izole inceleme birimlerine ayırıyor — bu da hem konum kayması (positioning) hatalarını hem eksik kapsama sorununu azaltıyor. Go ile yazılmış, OpenAI ve Anthropic modelleriyle çalışabiliyor, Claude Code/Codex/Cursor'a entegre olabiliyor ve gözlemlenebilirlik için OpenTelemetry destekliyor.",
+        "why": "11,8 bin yıldıza ulaşmasının temel sebebi, genel amaçlı 'yapay zeka ile kod incele' araçlarının yaşadığı iki kronik soruna somut bir cevap sunması: **konum kayması** (yorumun yanlış satıra denk gelmesi) ve **eksik kapsama** (büyük diff'lerde bazı dosyaların atlanması). Alibaba'nın bunu kendi ölçeğinde test etmiş olması güvenilirlik algısını güçlendiriyor. Ayrıca token verimliliği iddiası, kod incelemeyi CI/CD'ye gömüp her pull request'te çalıştırmak isteyen ama maliyetten çekinen ekipler için çekici.",
+        "evolve": "Deterministik + ajan hibrit mimarisi güçlü ama kural setinin (rule matching) ne kadar dile/çerçeveye özel olduğu belirsiz; PL/SQL gibi daha az yaygın diller için kural kapsamının olgunluğu topluluk katkısına bağlı kalabilir. Şu an odak nokta tekil pull request incelemesi — mimari düzeyde, birden fazla PR'ın birbiriyle çelişip çelişmediğini gören bir 'proje geneli tutarlılık' katmanı eklenirse, sadece hata bulan değil mimari sürüklenmeyi (drift) de yakalayan bir araca dönüşebilir."
+      },
+      "glossary": [
+        {
+          "term": "Diff",
+          "def": "İki kod/dosya sürümü arasındaki satır bazlı farkları gösteren karşılaştırma çıktısı."
+        },
+        {
+          "term": "Deterministik katman",
+          "def": "Aynı girdi için her zaman aynı, öngörülebilir sonucu üreten; yapay zekanın olasılıksal kararlarının aksine kural tabanlı çalışan işlem katmanı."
+        },
+        {
+          "term": "Divide-and-conquer (böl ve fethet)",
+          "def": "Büyük bir problemi daha küçük, bağımsız parçalara bölüp her birini ayrı ayrı çözme stratejisi."
+        },
+        {
+          "term": "Bundling (gruplama)",
+          "def": "Birbiriyle ilişkili dosyaların, daha anlamlı ve doğru bir inceleme yapılabilmesi için tek bir birim hâlinde ele alınması."
+        },
+        {
+          "term": "Konum kayması (positioning)",
+          "def": "Otomatik üretilen bir kod inceleme yorumunun, ait olduğu satırdan farklı bir satıra iliştirilmesi hatası."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Yazılım sistemlerinin performansını ve davranışını izlemek (metrik, log, iz) için kullanılan açık standart."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik test edildiği (Continuous Integration) ve otomatik olarak yayına alındığı (Continuous Deployment) yazılım geliştirme pratiği."
+        },
+        {
+          "term": "Pull Request (PR)",
+          "def": "Bir geliştiricinin yaptığı kod değişikliğini, ana koda eklenmeden önce incelenmek üzere sunduğu istek."
+        },
+        {
+          "term": "Mimari sürüklenme (drift)",
+          "def": "Bir yazılımın zamanla, planlanan mimariden sapıp tutarsız hale gelmesi."
+        }
+      ]
+    },
+    {
+      "name": "Automattic/harper",
+      "url": "https://github.com/Automattic/harper",
+      "stars": "12.5k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Harper**, tamamen çevrimdışı çalışan, gizlilik odaklı bir İngilizce dilbilgisi denetleyicisi. Kurucusunun kendi ifadesiyle motivasyon net: 'Grammarly çok pahalı ve çok müdahaleciydi, LanguageTool ise gigabaytlarca RAM'iniz varsa harika.' Harper bu ikisinin arasında, metninizi hiçbir sunucuya göndermeden, milisaniyeler içinde kontrol eden hafif bir alternatif sunuyor.",
+        "tech": "Çekirdek Rust ile yazılmış; bu da hem hızı hem düşük bellek kullanımını mümkün kılıyor. Aynı Rust çekirdeği **WebAssembly**'e derlenerek tarayıcıda da çalışabiliyor — yani sunucu tarafı hiç devreye girmiyor. Dağıtım yelpazesi geniş: komut satırı aracı, editörler için **LSP** (Language Server Protocol) sunucusu, tarayıcı eklentisi, masaüstü uygulaması ve Obsidian eklentisi. Bu sayede VS Code, Neovim, Helix, Emacs ve Zed gibi çok farklı editör ekosistemlerine tek bir çekirdek koddan hizmet veriyor. Ekip, yavaş çalışma süresini doğrudan bir hata (bug) olarak ele alıyor — performans bir özellik değil, bir gereklilik olarak konumlanmış.",
+        "why": "12,5 bin yıldız ve 466 fork, gizlilik ve maliyet konusunda Grammarly'den bıkmış yazarların ve LSP entegrasyonunu (kodun içindeki yorumlarda, commit mesajlarında dilbilgisi kontrolü) önemseyen geliştiricilerin ilgisini gösteriyor. Bulut tabanlı rakiplerin aksine metnin hiç cihaz dışına çıkmaması, özellikle kurumsal ve gizli belgelerle çalışan kullanıcılar için belirleyici bir tercih sebebi. Çok sayıda editöre aynı anda destek vermesi de organik, editör-toplulukları üzerinden yayılan bir benimsenme sağlamış olabilir.",
+        "evolve": "Şu an sadece İngilizce destekleniyor; mimari çok dilliliğe açık olsa da yeni bir dil eklemek büyük bir dilbilgisi kural seti ve test yükü demek — bu yüzden ikinci dilin ne zaman geleceği belirsiz. Yerel/çevrimdışı çalışma modeli, bağlamsal ve anlamsal hataları (örneğin ton, üslup tutarlılığı) büyük dil modellerinin yakaladığı derinlikte yakalamakta doğası gereği sınırlı kalabilir; ekip ileride isteğe bağlı, yerel bir dil modeli entegrasyonu sunarsa hem gizliliği koruyup hem daha derin öneriler verebilir."
+      },
+      "glossary": [
+        {
+          "term": "WebAssembly (Wasm)",
+          "def": "Farklı programlama dillerinde yazılmış kodun, tarayıcıda neredeyse yerel hızda çalışmasını sağlayan ikili format."
+        },
+        {
+          "term": "LSP (Language Server Protocol)",
+          "def": "Kod tamamlama, hata denetimi gibi editör özelliklerinin, her editör için ayrı yazılmak yerine tek bir standart üzerinden sağlanmasını mümkün kılan protokol."
+        }
+      ]
+    }
+  ]
+}
