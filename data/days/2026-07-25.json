@@ -1,0 +1,83 @@
+{
+  "date": "2026-07-25",
+  "projects": [
+    {
+      "name": "OtterMind/Chat2DB",
+      "url": "https://github.com/OtterMind/Chat2DB",
+      "stars": "26.4k",
+      "language": "Java",
+      "sections": {
+        "serves": "🎯 Chat2DB, veritabanıyla konuşarak çalışmayı mümkün kılan bir SQL istemcisi. Klasik bir DBA aracı gibi tablo tarama, sorgu yazma ve sonuç görselleştirme sunuyor, ama üstüne bir AI asistanı ekleyerek \"geçen ay en çok sipariş veren 10 müşteriyi getir\" gibi doğal dil isteklerini SQL'e çeviriyor. MySQL, PostgreSQL, Oracle, SQL Server, MongoDB, Redis dahil **30'dan fazla veritabanı motorunu** tek arayüzden yönetebiliyorsunuz. Amaç, DataGrip veya Navicat gibi ücretli araçlara açık kaynak, AI destekli bir alternatif sunmak.",
+        "tech": "🛠️ Mimari klasik bir istemci-sunucu modeli: **backend Java/Spring Boot**, **frontend React tabanlı** bir web arayüzü, ikisi de Docker ile ya da masaüstü uygulaması olarak dağıtılabiliyor. AI tarafında ilginç bir tercih yapılmış: Chat2DB kendi modelini sunmuyor, \"bring your own model\" yaklaşımıyla kullanıcının kendi API anahtarını (OpenAI, Claude, yerel modeller vb.) bağlamasına izin veriyor — bu hem maliyeti kullanıcıya bırakıyor hem de kurumsal ortamlarda veri gizliliği kaygısını azaltıyor. Saklanan veritabanı kimlik bilgileri **AES-256-GCM** ile şifreleniyor ve araç yerleşik kullanıcı hesabı sistemi olmadan \"local-first\" çalışıyor; yani hassas bağlantı bilgileri üçüncü bir sunucuya gitmiyor.",
+        "why": "📈 Oracle/PL-SQL veya ERP dünyasından gelenler için tanıdık bir ihtiyacı hedefliyor: çok sayıda farklı veritabanı motoruyla uğraşan ekiplerin tek bir arayüzde, AI yardımıyla daha hızlı sorgu yazması. \"AI-destekli DBA aracı\" kategorisi son aylarda ivme kazanıyor çünkü doğal dilden SQL üretme artık yeterince olgunlaştı ve şirketler bu iş akışını üretim ortamında güvenle kullanmaya başladı. MCP (Model Context Protocol) desteği eklenmesi de projeyi ajan tabanlı geliştirme araçlarıyla entegre olmaya hazırlıyor, bu da ilgiyi tazeliyor.",
+        "evolve": "💡 Şu an \"bring your own model\" yaklaşımı esneklik sağlasa da, kurumsal kullanıcılar için yerleşik, önceden test edilmiş bir model seçeneği (örneğin belirli SQL dialektlerine özel fine-tune edilmiş küçük bir model) eksik. Ayrıca çoklu kullanıcı/rol yönetimi (RBAC) olmaması takım kullanımını sınırlıyor — şu an her kullanıcı kendi kurulumunu yönetiyor gibi görünüyor. Sorgu geçmişinin AI tarafından otomatik olarak performans önerilerine (index eksikliği, execution plan analizi gibi) dönüştürülmesi, aracı basit bir SQL üretici olmaktan çıkarıp gerçek bir \"AI DBA\"ya yaklaştırabilir."
+      },
+      "glossary": [
+        { "term": "SQL istemcisi (SQL client)", "def": "Veritabanına bağlanıp sorgu yazma, çalıştırma ve sonuçları görüntüleme imkanı sunan masaüstü veya web uygulaması." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka asistanlarının harici araçlara ve verilere standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "Bring your own model", "def": "Uygulamanın kendi yapay zeka modelini sunmak yerine, kullanıcının kendi API anahtarıyla istediği modeli bağlamasına izin veren yaklaşım." },
+        { "term": "AES-256-GCM", "def": "Verileri hem şifreleyen hem de bütünlüğünü doğrulayan, günümüzde yaygın kullanılan güçlü bir şifreleme standardı." },
+        { "term": "Local-first", "def": "Verilerin ve hassas bilgilerin öncelikle kullanıcının kendi cihazında/ortamında tutulduğu, üçüncü taraf sunuculara bağımlılığın azaltıldığı tasarım yaklaşımı." }
+      ]
+    },
+    {
+      "name": "ComposioHQ/awesome-claude-skills",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "stars": "70.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bu repo, Claude'un yeni \"Skills\" (Beceriler) sistemi için 1000'den fazla hazır, kullanıma uygun paket biriktiren bir katalog. Bir \"skill\", Claude'a belirli bir işi nasıl yapacağını öğreten talimat ve script paketi — PDF işlemekten PostgreSQL sorgulamaya, marka kimliğine uygun içerik üretmekten Figma'da tasarım yapmaya kadar geniş bir yelpazede. Amaç, herkesin sıfırdan skill yazmak yerine, ihtiyacına uygun olanı bulup doğrudan kullanmasını sağlamak.",
+        "tech": "🛠️ Her skill klasörü, YAML ön bilgisi (frontmatter) içeren bir `SKILL.md` dosyası ve gerektiğinde destekleyici script/kaynaklardan oluşuyor — yani skill'ler kod değil, yapılandırılmış talimat setleri. Composio'nun **MCP Gateway**'i üzerinden 1000'den fazla SaaS uygulamasına (Zapier, n8n, Figma, Git gibi) bağlanan \"app automation\" skill'leri de var; bu, Claude'un sadece metin üretmekle kalmayıp gerçek sistemlerde işlem yapabilmesini sağlıyor. Skill içerikleri Python, TypeScript/React ve Tailwind CSS örnekleriyle destekleniyor.",
+        "why": "📈 Anthropic'in Claude Skills'i açık bir standart olarak duyurmasının ardından ekosistem hızla büyüdü; bu repo o büyümenin merkezinde bir \"awesome list\" olarak konumlanıyor. AI ajanlarını özelleştirme ve gerçek dünya görevlerine bağlama konusundaki artan ilgi, hem bireysel geliştiricileri hem kurumsal ekipleri çekiyor — özellikle \"connect-apps\" gibi eklentilerle Claude'un yüzlerce servise gerçek eylemler yapabilmesi, metinden eyleme geçişin somut bir örneği.",
+        "evolve": "💡 Bu kadar büyük bir koleksiyonda en büyük risk kalite kontrolü: hangi skill'in güncel, güvenli ve iyi test edilmiş olduğunu ayırt etmek zorlaşabilir. Skill'ler için standart bir değerlendirme/puanlama sistemi (topluluk oyları, otomatik test sonuçları) eksikliği fark ediliyor. Ayrıca skill'ler arası çakışma veya bağımlılık yönetimi (bir skill'in başka bir skill'i varsayması) net değil; bu konuda bir \"skill paket yöneticisi\" fikri projeyi bir sonraki seviyeye taşıyabilir."
+      },
+      "glossary": [
+        { "term": "Claude Skills", "def": "Claude'a belirli bir görevi nasıl yürüteceğini öğreten, yeniden kullanılabilir talimat ve script paketleri." },
+        { "term": "SKILL.md", "def": "Bir skill'in ne yaptığını, nasıl tetikleneceğini ve hangi kaynakları kullandığını tanımlayan yapılandırılmış metin dosyası." },
+        { "term": "MCP Gateway", "def": "Yapay zeka ajanlarını çok sayıda harici uygulama ve servise standart bir arayüz üzerinden bağlayan ara katman." },
+        { "term": "Awesome list", "def": "Belirli bir konudaki kaliteli kaynakların, araçların veya projelerin küratörlüğünü yapan, topluluk tarafından derlenen liste türü." },
+        { "term": "App automation", "def": "Yazılım araçlarının, insan müdahalesi olmadan başka uygulamalarda otomatik işlem yapabilmesi." }
+      ]
+    },
+    {
+      "name": "yorukot/superfile",
+      "url": "https://github.com/yorukot/superfile",
+      "stars": "19.7k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 Superfile, terminalde çalışan ama modern bir masaüstü dosya yöneticisi kadar göz alıcı ve kullanışlı olmayı hedefleyen bir dosya yönetim aracı. `cd` ve `ls` komutlarıyla uğraşmak yerine, klasörler arası gezinmeyi, dosya kopyalama/taşımayı ve önizlemeyi görsel, klavye odaklı bir arayüzde sunuyor — terminali hiç bırakmadan.",
+        "tech": "🛠️ **Go** ile yazılmış ve terminal arayüzü için Go ekosisteminin popüler kütüphanesi **Bubble Tea**'yi kullanıyor; bu tercih hem hızlı çalışmasını hem de tek bir binary olarak dağıtılabilmesini sağlıyor (kurulum bağımlılığı yok). Vim/nvim tarzı klavye kısayolları destekleniyor, bu da terminal ağırlıklı geliştiricilerin öğrenme eğrisini kısaltıyor. Eklenti (plugin) sistemi ve tema desteğiyle araç kişiselleştirilebilir; otomatik güncelleme kontrolü de yerleşik.",
+        "why": "📈 Terminalden çıkmadan çalışmayı seven geliştiriciler arasında \"modern CLI araçları\" trendi devam ediyor (örneğin `bat`, `eza`, `zoxide` gibi klasik Unix araçlarının yeniden yazılmış halleri). Superfile bu akımın dosya yöneticisi karşılığı: hem estetik hem işlevsel, aktif geliştirme (2000'in üzerinde commit) ve duyarlı bakım topluluk güvenini artırıyor.",
+        "evolve": "💡 Uzak sunuculara SSH/SFTP üzerinden doğrudan bağlanıp dosya yönetme desteği şu an sınırlı görünüyor — bu eklenirse uzaktan çalışan DevOps ekipleri için çok daha güçlü bir araç olur. Ayrıca büyük dizinlerde (yüz binlerce dosya) performans testleri ve arşiv dosyalarını (zip, tar) doğrudan tarayıp içine girebilme gibi özellikler, aracı `mc` (Midnight Commander) gibi köklü rakiplerine karşı daha da güçlendirebilir."
+      },
+      "glossary": [
+        { "term": "TUI (Terminal User Interface)", "def": "Komut satırında çalışan ama fare ve renkli, etkileşimli öğeler içeren grafiksel benzeri arayüz türü." },
+        { "term": "Bubble Tea", "def": "Go programlama dilinde terminal arayüzleri geliştirmek için kullanılan popüler bir kütüphane." },
+        { "term": "Vim/nvim kısayolları", "def": "Vim metin editöründen gelen, klavye ile hızlı gezinmeyi sağlayan tuş kombinasyonları standardı." },
+        { "term": "Binary (ikili dosya)", "def": "Derlenmiş, doğrudan çalıştırılabilen program dosyası; ek kurulum veya bağımlılık gerektirmez." },
+        { "term": "SFTP", "def": "Dosyaların şifreli bir bağlantı üzerinden uzak bir sunucuya güvenli şekilde aktarılmasını sağlayan protokol." }
+      ]
+    },
+    {
+      "name": "shiyu-coder/Kronos",
+      "url": "https://github.com/shiyu-coder/Kronos",
+      "stars": "33.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Kronos, finansal piyasalar için özel olarak tasarlanmış açık kaynaklı bir \"temel model\" (foundation model). Hisse senedi, kripto para gibi 45'ten fazla küresel borsadan gelen mum grafiği (K-line/candlestick) verilerini analiz ederek gelecekteki fiyat hareketlerini tahmin etmeyi amaçlıyor — yani metin veya görsel yerine finansal zaman serilerini \"anlayan\" bir yapay zeka.",
+        "tech": "🛠️ Model, büyük dil modellerinden ödünç alınan bir mimariyi finansal veriye uyarlıyor: önce özel bir **tokenizer**, ham fiyat/hacim verisini (OHLCV) ayrık, hiyerarşik \"token\"lara dönüştürüyor, ardından **decoder-only transformer** mimarisi bu token dizileri üzerinde otomatik regresif (autoregressive) şekilde eğitiliyor — tıpkı bir dil modelinin bir sonraki kelimeyi tahmin etmesi gibi, model bir sonraki fiyat hareketini tahmin ediyor. 4.1 milyondan 499.2 milyon parametreye kadar dört farklı boyutta (mini/small/base/large) sunuluyor, bu da hem düşük kaynaklı hem yüksek performans gerektiren kullanım senaryolarına uyum sağlıyor.",
+        "why": "📈 Proje yakın zamanda **AAAI 2026** konferansına kabul edildi ve akademik makalesi arXiv'de yayımlandı; fine-tuning script'lerinin (Çin A-share piyasası örnekleriyle) yayınlanması da ilgiyi tazeledi. \"Foundation model\" yaklaşımının zaman serisi tahminine, özellikle finans gibi yüksek riskli/yüksek getirili bir alana uygulanması, hem akademik camianın hem kantitatif yatırım (quant trading) topluluğunun dikkatini çekiyor.",
+        "evolve": "💡 Finansal tahmin modellerinde en büyük risk **overfitting** ve geçmiş veriye aşırı uyum sağlayıp gerçek piyasa koşullarında başarısız olmak; proje bu konuda ne kadar şeffaf backtesting sonucu sunduğunu netleştirebilir. Ayrıca gerçek zamanlı, düşük gecikmeli (low-latency) tahmin altyapısı ve risk yönetimi katmanlarıyla entegrasyon (örneğin pozisyon boyutu önerisi) eklenirse, akademik bir modelden gerçek trading sistemlerinde kullanılabilir bir araca dönüşebilir."
+      },
+      "glossary": [
+        { "term": "Foundation model (temel model)", "def": "Geniş bir veri kümesiyle önceden eğitilmiş, farklı görevlere uyarlanabilen genel amaçlı yapay zeka modeli." },
+        { "term": "K-line / Candlestick (mum grafiği)", "def": "Bir varlığın belirli bir zaman diliminde açılış, kapanış, en yüksek ve en düşük fiyatlarını gösteren finansal grafik türü." },
+        { "term": "Tokenizer", "def": "Ham veriyi (metin, sayı, fiyat vb.) modelin işleyebileceği küçük, ayrık birimlere (token) bölen bileşen." },
+        { "term": "Decoder-only transformer", "def": "Büyük dil modellerinde yaygın kullanılan, bir diziyi sırayla okuyup bir sonraki öğeyi tahmin eden yapay sinir ağı mimarisi." },
+        { "term": "Autoregressive (otomatik regresif)", "def": "Bir modelin kendi ürettiği önceki çıktıları kullanarak bir sonraki çıktıyı tahmin ettiği yöntem." },
+        { "term": "Backtesting", "def": "Bir yatırım stratejisinin veya modelin, geçmiş piyasa verileri üzerinde test edilerek performansının ölçülmesi." },
+        { "term": "Overfitting (aşırı uyum)", "def": "Bir modelin eğitim verisini ezberleyip yeni, görmediği verilerde başarısız olması durumu." }
+      ]
+    }
+  ]
+}
