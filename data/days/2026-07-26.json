@@ -1,0 +1,141 @@
+{
+  "date": "2026-07-26",
+  "projects": [
+    {
+      "name": "affaan-m/ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "stars": "233.4k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "🎯 ECC kendini bir \"agent harness işletim sistemi\" olarak tanımlıyor: Claude Code, Cursor, OpenCode, Codex, GitHub Copilot, Zed, Gemini CLI gibi farklı **kodlama ajanı ortamlarının** hepsine aynı anda kurulan, hepsinde aynı davranışı garanti etmeye çalışan bir eklenti katmanı. Çözdüğü problem net: bugün bir ekip birden fazla AI kodlama aracı kullanıyorsa, her biri için ayrı kurallar, ayrı komutlar ve ayrı hafıza sistemi yazmak zorunda kalıyor — biri diğerinin öğrendiğinden habersiz. ECC, **67 alt-ajan**, **261'in üzerinde \"skill\" (yeniden kullanılabilir iş akışı)** ve production ortamında 10 aydan uzun süredir gerçek ürün geliştirilerek test edilmiş kuralları tek bir kurulumla tüm araçlara dağıtıyor.",
+        "tech": "🛠️ Mimari altı katmana ayrılıyor: **agents** (kod inceleme, güvenlik denetimi gibi görevlere özel alt-ajanlar), **skills** (asıl iş akışı yüzeyi — TDD, deployment, güvenlik taraması gibi), **rules** (dile özel ya da genel, her zaman uygulanan kurallar), **hooks** (SessionStart, PostToolUse gibi olaylarda tetiklenen otomasyonlar), eski komutlarla geriye dönük uyum ve **MCP sunucu tanımları** (GitHub, Supabase, Vercel gibi). En ilginç mühendislik kararı, farklı araçların birbirinden çok farklı kanca (hook) sistemlerini **DRY bir adaptör deseniyle** birleştirmesi: Cursor'ın 20 farklı kanca olayı, `adapter.js` üzerinden Claude Code'un mevcut `scripts/hooks/` koduna yönlendiriliyor, kod tekrar edilmiyor. **AgentShield** adlı güvenlik modülü 1282 testle, %98 kapsama ve 102 statik kuralla çalışıyor; isteğe bağlı olarak Opus 4.6 tabanlı bir \"red-team/denetçi\" akıl yürütme hattı da devreye giriyor. Oturum verisi SQLite'ta tutuluyor, öğrenilen davranış kalıpları (\"instinct\") güven skoruna göre (varsayılan eşik 0.7) filtrelenip yeni oturum başında en fazla 8000 karakter olarak enjekte ediliyor.",
+        "why": "📈 GitHub'da 230'un üzerinde katkıcı ve 32,5 binin üzerinde fork ile ECC, kodlama ajanı pazarının parçalanmasından (Claude Code mi, Cursor mu, Copilot mu?) doğan gerçek bir sıkıntıya cevap veriyor: \"tek yerde yaz, her yerde çalıştır.\" Haziran 2026'da v2.0.0'ın \"stable\" ilan edilmesi ve CodeRabbit, Greptile, Atlas Cloud, Moonshot AI/Kimi gibi isimlerin sponsorluğu, projenin amatör bir konfig deposu değil, ticari olarak sürdürülebilir bir altyapı olarak algılanmasını sağlıyor. Ayrıca ajan tabanlı geliştirmenin güvenlik tarafında endişelerin arttığı bir dönemde, AgentShield'ın \"red-team\" pipeline'ı gibi somut güvenlik iddiaları güven inşa ediyor.",
+        "evolve": "💡 67 ajan, 261+ skill ve onlarca ortam değişkeniyle (`ECC_HOOK_PROFILE`, `ECC_SESSION_RETENTION_DAYS` vb.) proje ciddi bir karmaşıklık taşıyor; yeni bir kullanıcı için \"nereden başlamalıyım\" sorusuna cevap veren, minimal bir \"başlangıç paketi\" preset'i eksik görünüyor. Her araç kendi eklenti API'sini bağımsız evrimleştirdiği için, adaptör deseninin (özellikle Cursor/Copilot tarafında) üst kaynak değiştikçe kırılma riski var — bu \"cross-harness parity\" iddiasının uzun vadede en kırılgan noktası. Takımlar için, \"instinct\" sisteminin gerçekten üretkenliği artırıp artırmadığını gösteren bir ölçüm/analitik panosu eklenmesi, iddiaları somut veriye bağlayabilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent harness (ajan kabuğu)",
+          "def": "Bir yapay zeka ajanını çalıştıran, ona araç erişimi ve bağlam sağlayan CLI veya IDE ortamı (ör. Claude Code, Cursor)."
+        },
+        {
+          "term": "Hook (kanca)",
+          "def": "Belirli bir olay gerçekleştiğinde (dosya düzenleme, oturum başlangıcı gibi) otomatik olarak tetiklenen küçük komut veya script."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka asistanlarının harici araçlara ve verilere standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Red-team (kırmızı takım)",
+          "def": "Bir sistemi kötü niyetli bir saldırgan gibi düşünüp zayıflıklarını bulmaya çalışan güvenlik test yaklaşımı."
+        },
+        {
+          "term": "Adaptör deseni (adapter pattern)",
+          "def": "Farklı arayüzlere sahip iki sistemi, aralarına bir 'çevirici' katman koyarak birbiriyle uyumlu hale getiren yazılım tasarım yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "andrewyng/aisuite",
+      "url": "https://github.com/andrewyng/aisuite",
+      "stars": "15.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 aisuite, OpenAI, Anthropic, Google, Mistral, Hugging Face, AWS, Cohere, Ollama ve OpenRouter gibi onlarca farklı yapay zeka sağlayıcısını **tek bir Python arayüzü** arkasında birleştiren hafif bir kütüphane. Çözdüğü problem basit ama gerçek: her sağlayıcının kendi SDK'sı, kendi hata formatı ve kendi kimlik doğrulama şeması var; bir uygulamayı bir modelden diğerine taşımak genelde kod tabanının önemli bir kısmını yeniden yazmak anlamına geliyor. aisuite ile bu geçiş, model kimliğindeki bir metni (`openai:gpt-4o` yerine `anthropic:claude-opus`) değiştirmek kadar basit hale geliyor.",
+        "tech": "🛠️ Kütüphane katmanlı bir yapıda: en altta sağlayıcıdan bağımsız bir **Chat Completions API**, üstünde araç (tool) çağırma ve durum (state) yönetimi sunan bir **Agents API**, en üstte de bunları kullanan ayrı bir masaüstü uygulaması olan **OpenWorker**. Model kimlikleri `sağlayıcı:model-adı` biçiminde yazılıyor ve tüm yanıtlar OpenAI'nin şema formatına normalize ediliyor, böylece hangi sağlayıcı kullanılırsa kullanılsın kod tarafında aynı veri yapısıyla çalışılıyor. Python fonksiyonları otomatik olarak araç şemasına çevrilip `max_turns` parametresiyle çok adımlı araç çağırma akışları destekleniyor; ayrıca **MCP** sunucularına bağlanarak dosya, git ve shell işlemleri için hazır, izole (sandboxed) araç kitleri sunuluyor.",
+        "why": "📈 Andrew Ng'in DeepLearning.AI çevresindeki büyük takipçi kitlesi projeye doğal bir dağıtım kanalı sağlıyor, ama asıl ilgi kurumların artık tek bir modele değil **çoklu-model stratejisine** yönelmesinden geliyor: maliyet optimizasyonu, tedarikçi bağımlılığından kaçınma ve dayanıklılık (bir sağlayıcı çöktüğünde diğerine geçebilme) artık üretim ortamında standart beklenti. OpenWorker gibi üstüne inşa edilmiş gerçek bir masaüstü uygulamasının varlığı da, bunun teorik bir soyutlama değil, gerçekten üretimde kullanılan bir katman olduğunu gösteriyor.",
+        "evolve": "💡 Hafif bir soyutlama katmanı olmanın bedeli, her sağlayıcı kendi araç çağırma formatını veya yapılandırılmış çıktı (structured output) özelliğini güncellediğinde **eş zamanlı kalma yükü** taşımak. README'de sağlayıcılar arası hata/kota mesajlarının nasıl tek bir formata normalize edildiğine dair güçlü bir anlatı yok; bu, üretimde hata yönetimi yazan ekipler için hâlâ manuel iş demek. Sağlayıcılar arası **token/maliyet takibi** yapan yerleşik bir panel eklenmesi, çoklu-model stratejisinin asıl hedefi olan maliyet karşılaştırmasını somutlaştırabilir; ayrıca Agents API'nin çok-ajanlı orkestrasyon derinliği, LangGraph veya CrewAI gibi özel ajan çerçeveleriyle rekabet etmek için henüz erken görünüyor."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Metin üretebilen, devasa miktarda veriyle eğitilmiş yapay zeka modeli (ör. GPT, Claude, Gemini)."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka asistanlarının harici araçlara ve verilere standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Tool calling (araç çağırma)",
+          "def": "Bir yapay zeka modelinin, kendisine tanımlanan bir fonksiyonu (ör. hava durumu sorgulama) otomatik olarak çağırıp sonucu kullanabilmesi."
+        },
+        {
+          "term": "Vendor lock-in (tedarikçiye bağımlılık)",
+          "def": "Bir sistemin tek bir sağlayıcının teknolojisine o kadar bağlı hale gelmesi ki başka bir sağlayıcıya geçmek maliyetli veya zor olur."
+        },
+        {
+          "term": "Sandbox (izole ortam)",
+          "def": "Bir kodun ya da aracın, ana sisteme zarar veremeyecek şekilde kısıtlanmış, güvenli bir ortamda çalıştırılması."
+        }
+      ]
+    },
+    {
+      "name": "CoreBunch/Instatic",
+      "url": "https://github.com/CoreBunch/Instatic",
+      "stars": "5.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Instatic, Webflow, Framer ve WordPress'e kendi sunucunuzda barındırabileceğiniz açık kaynak bir alternatif: görsel bir kanvas editörü, içerik yönetim motoru ve yayınlama sistemini **tek bir Bun sunucusunda** birleştirip, arkasında herhangi bir framework olmadan temiz, anlamlı (semantic) statik HTML sayfalar üretiyor. Çözdüğü problem, modern bir site kurmak için CMS, framework, barındırma, form servisi ve analitik gibi ayrı ayrı hesaplara, panellere ve faturalara dağılmış bir altyapıyı tek bir sisteme indirmek.",
+        "tech": "🛠️ Uçtan uca **Bun** çalışma zamanı üzerine kurulu: sunucu tarafında `Bun.serve` ile özel yönlendirme, yönetim arayüzünde **React 19 + Vite + Zustand + CodeMirror**. Veritabanı olarak SQLite (varsayılan) veya Postgres, ortak bir `DbClient` arayüzü üzerinden değiştirilebiliyor; sınır noktalarında doğrulama **TypeBox** şemalarıyla yapılıyor. İçerik modeli, sayfa/yazı/özel koleksiyon ayrımı yapmadan hepsini aynı `data_tables`/`data_rows` yapısında tutan **evrensel bir veri modeline** dayanıyor. Yayınlama anında sayfalar diske statik olarak \"pişiriliyor\" (bake), dinamik rotalar için sürümlenmiş bellek-içi önbellek ve ziyaretçi başına yalnızca 1.1 kB'lık minimal bir çalışma zamanı kullanılıyor. Eklentiler, dosya sistemi veya ağ erişimi olmadan **QuickJS-WASM** sanal makinelerinde izole çalışıyor. Yapay zeka tarafında Claude, OpenAI ve yerel Ollama modellerini destekleyen sağlayıcıdan bağımsız sürücüler var; ajan, ekrana kod ya da görsel değil doğrudan düzenlenebilir kanvas node'ları üreterek site inşa ediyor (35 araç) ve içerik düzenliyor (15 araç).",
+        "why": "📈 Dağınık no-code SaaS yığınlarından (ayrı faturalar, ayrı panolar) yorulan geliştiriciler için Instatic'in \"MIT, kendi sunucunda, senin\" konumlandırması cazip geliyor. Framework'e sarılmış bileşenler yerine gerçek, anlamlı HTML/CSS üretmesi, çıktı kalitesine ve gelecekte kilitlenmeme özgürlüğüne değer veren geliştiricilerin ilgisini çekiyor. Kurucu ekibin Motion.page ve Core Framework gibi binlerce profesyonel tarafından kullanılan araçlardaki geçmişi de güven veriyor; \"0.0.x sürüm, bilerek\" şeklindeki dürüst ön-1.0 konumlandırma da abartılı vaatler yerine şeffaflık sunuyor.",
+        "evolve": "💡 Hâlâ 0.0.x sürümünde olması, API'lerin değişebileceği ve büyük kırılmaların olabileceği anlamına geliyor — üretim sitesi kuranlar için risk. Webflow'un olgun şablon/uygulama mağazasına kıyasla eklenti ekosistemi henüz ince; 35 araçlı \"agentic\" kanvas düzenleme özelliğinin karmaşık, çok sayfalı gerçek sitelerde ne kadar sağlam olduğu henüz kanıtlanmamış. Kendi Bun sunucunuzu barındırmak istemeyen, daha az teknik kullanıcılar için yönetilen (managed) bir barındırma katmanı ve takım/çoklu-site işbirliği özellikleri, projeyi daha geniş bir kitleye açabilir."
+      },
+      "glossary": [
+        {
+          "term": "Headless CMS",
+          "def": "İçeriği yönetip API üzerinden sunan, ama sayfanın görünümünü (frontend) belirlemeyen içerik yönetim sistemi türü."
+        },
+        {
+          "term": "Statik site (static site)",
+          "def": "Her ziyaret için sunucuda yeniden hesaplanmayan, önceden üretilmiş sabit HTML dosyalarından oluşan web sitesi."
+        },
+        {
+          "term": "WASM (WebAssembly)",
+          "def": "Farklı dillerde yazılmış kodun tarayıcıda veya izole ortamlarda güvenli ve hızlı çalışmasını sağlayan taşınabilir bir bayt kodu formatı."
+        },
+        {
+          "term": "RBAC (Role-Based Access Control)",
+          "def": "Kullanıcılara doğrudan izin vermek yerine 'rol' atayarak erişim yetkilerini yöneten güvenlik modeli."
+        },
+        {
+          "term": "TOTP (zaman tabanlı tek kullanımlık şifre)",
+          "def": "Telefon uygulaması gibi bir cihazın belirli aralıklarla ürettiği, kısa süre geçerli iki adımlı doğrulama kodu."
+        }
+      ]
+    },
+    {
+      "name": "anthropics/claude-cookbooks",
+      "url": "https://github.com/anthropics/claude-cookbooks",
+      "stars": "50k",
+      "language": "Jupyter Notebook",
+      "sections": {
+        "serves": "🎯 Claude Cookbooks, Anthropic'in resmi olarak yayınladığı, Claude API ile gerçek dünya uygulamaları geliştirmek için kopyala-yapıştır düzeyinde hazır kod örnekleri ve Jupyter defterleri koleksiyonu. Çözdüğü problem, bir API'nin dokümantasyonunu okumakla o API'yi gerçek bir üründe (RAG sistemi, müşteri hizmetleri ajanı, görsel analiz aracı) kullanmak arasındaki mesafeyi kapatmak — her defter, belirli bir kullanım senaryosunu baştan sona çalışan kodla gösteriyor.",
+        "tech": "🛠️ İçerik dört ana eksende organize: **temel yetenekler** (sınıflandırma, RAG — Retrieval Augmented Generation, özetleme), **araç kullanımı ve entegrasyon** (müşteri hizmetleri ajanları, hesap makinesi entegrasyonu, SQL sorgu üretimi), **çoklu-mod (multimodal) özellikler** (görsel analiz, grafik/tablo yorumlama, form çıkarımı, Stable Diffusion ile görsel üretimi, Opus'un yanına destek ajanı olarak Haiku koşturma deseni) ve **üçüncü parti entegrasyonlar** (Pinecone vektör veritabanı, Wikipedia arama, Voyage AI gömme/embedding modelleri). İleri teknikler bölümünde PDF ayrıştırma, **prompt caching** ile maliyet/gecikme optimizasyonu, zorunlu JSON çıktı modu ve otomatik prompt değerlendirme gibi konular da işleniyor. Tüm örnekler Python ve resmi Claude SDK'sı üzerine kurulu.",
+        "why": "📈 Repo, Claude'un yetenekleri genişledikçe (extended thinking, Claude Agent SDK gibi son eklenen konular) sürekli güncellenen **canlı bir referans** olduğu için ilgi görmeye devam ediyor — statik bir tutorial değil, yaşayan bir doküman. 219 açık pull request ve 76 açık issue, topluluğun aktif katkı verdiğini gösteriyor. Ajan tabanlı yapay zeka benimsemesinin genel yükselişiyle birlikte, yeni başlayan geliştiricilerin \"nereden başlamalıyım\" sorusuna Anthropic'in kendisinden gelen kanonik bir cevap sunması, projeyi sürekli trend listelerinde tutuyor.",
+        "evolve": "💡 Defter sayısı arttıkça asıl zorluk **keşfedilebilirlik**: hangi senaryoya hangi defterin uygun olduğunu bulmak giderek zorlaşıyor, kategorilere ayrılmış aranabilir bir doküman sitesi veya \"hangi cookbook'a ihtiyacım var\" sihirbazı işi kolaylaştırabilir. API değiştikçe bazı defterlerin sessizce bozulma riski var; defterleri otomatik test eden bir CI hattı, örneklerin her zaman çalışır durumda kalmasını garantileyebilir. Ayrıca çok adımlı, gerçek dünya ajan iş akışlarına dair daha fazla örnek ve her tarif için yaklaşık maliyet/gecikme kıyaslaması eklenmesi, üretim kararı verecek ekiplere daha somut veri sunabilir."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval Augmented Generation)",
+          "def": "Bir yapay zeka modelinin, cevap üretmeden önce harici bir bilgi kaynağından ilgili verileri çekip yanıtına dahil etmesi."
+        },
+        {
+          "term": "Prompt caching",
+          "def": "Sık kullanılan istem (prompt) bölümlerinin önbelleğe alınarak sonraki isteklerde yeniden işlenmesinin önlenmesi, böylece maliyet ve gecikmenin azaltılması."
+        },
+        {
+          "term": "Extended thinking (genişletilmiş düşünme)",
+          "def": "Modelin karmaşık sorularda cevap vermeden önce daha uzun, görünür bir akıl yürütme süreci çalıştırabilmesi."
+        },
+        {
+          "term": "Vektör veritabanı (vector database)",
+          "def": "Metinlerin sayısal 'anlam' temsillerini (embedding) saklayıp anlam benzerliğine göre hızlı arama yapmayı sağlayan veritabanı türü."
+        },
+        {
+          "term": "Sub-agent (alt-ajan)",
+          "def": "Ana bir yapay zeka ajanının belirli bir alt görevi devrettiği, kendi başına çalışan ikincil ajan."
+        }
+      ]
+    }
+  ]
+}
