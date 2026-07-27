@@ -1,0 +1,193 @@
+{
+  "date": "2026-07-27",
+  "projects": [
+    {
+      "name": "andrewyng/aisuite",
+      "url": "https://github.com/andrewyng/aisuite",
+      "stars": "15.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**aisuite**, farklı büyük dil modeli (LLM) sağlayıcılarını — OpenAI, Anthropic, Google, Mistral, AWS, Cohere, Ollama, OpenRouter ve daha fazlasını — **tek bir standart arayüzden** çağırmayı sağlayan açık kaynaklı bir Python kütüphanesi.\n\nBugün bir AI uygulaması yazan geliştiricinin en büyük baş ağrısı şu: her sağlayıcının kendi SDK'sı, kendi istek formatı, kendi hata mesajları var. Bir modelden diğerine geçmek genellikle kod tabanının büyük bir kısmını yeniden yazmak anlamına gelir. aisuite bu sorunu `model=\"openai:gpt-4o\"` gibi bir string'i `model=\"anthropic:claude-sonnet-5\"` ile değiştirmek kadar basite indiriyor — geri kalan kod aynı kalıyor.",
+        "tech": "Proje üç katmanlı bir mimari kullanıyor:\n\n- **Agents API** — araç (tool) kullanımı, araç setleri ve MCP entegrasyonunun olduğu üst katman\n- **Chat Completions API** — OpenAI'ın istek/cevap formatını temel alan, sağlayıcıdan bağımsız orta katman\n- **Sağlayıcı adaptörleri** — her sağlayıcı için `<provider>_provider.py` dosyasında tanımlı, ortak bir arayüzü uygulayan alt katman\n\nBu **adaptör deseni**, yeni bir sağlayıcı eklemeyi çekirdek kodu değiştirmeden, sadece yeni bir dosya ekleyerek yapılabilir hale getiriyor. Araç çağırma (tool calling) tarafında ise geliştirici sade bir Python fonksiyonu yazıyor; kütüphane bunun şemasını otomatik çıkarıyor, modelin çağrısını yürütüyor ve sonucu tekrar modele besliyor — bu döngüyü elle yazmak zorunda kalmıyorsunuz. Ayrıca **Model Context Protocol (MCP)** desteği sayesinde herhangi bir MCP sunucusunun araçları, ek bir bağlantı kodu yazmadan kullanılabiliyor. Kurumsal kullanım için durum kalıcılığı (bellek-içi, dosya veya PostgreSQL) ve araç izin politikaları gibi üretim seviyesi özellikler de mevcut.",
+        "why": "Proje, ünlü AI eğitimcisi **Andrew Ng**'in ekibinden geliyor olması nedeniyle zaten geniş bir kitleye hızlıca ulaşıyor; ama asıl ivmenin sebebi zamanlama. 2026'da şirketler artık tek bir LLM sağlayıcısına kilitlenmek istemiyor — fiyat, gecikme (latency) ve yetenek farklarına göre modeller arasında geçiş yapabilmek stratejik bir gereksinim haline geldi. Ajan tabanlı uygulamaların (agentic apps) yaygınlaşmasıyla birlikte MCP desteği gibi özellikler de tam zamanında geldi. README'de ayrıca **OpenWorker** adlı masaüstü AI iş arkadaşı uygulamasının artık ayrı bir depoya taşındığı belirtiliyor; bu da çekirdek soyutlamaların olgunlaştığının ve üzerine gerçek ürünler inşa edilebildiğinin bir işareti.",
+        "evolve": "- **Maliyet ve kullanım izleme**: Sağlayıcılar arası token/maliyet karşılaştırmasını gösteren yerleşik bir panel, geçiş kararlarını kolaylaştırırdı.\n- **Otomatik yük devri (failover)**: Bir sağlayıcı kesintiye uğradığında isteği otomatik olarak başka bir sağlayıcıya yönlendirme, üretim ortamları için değerli olurdu.\n- **Daha zengin gözlemlenebilirlik**: Dağıtık izleme (tracing) araçlarıyla (OpenTelemetry gibi) yerleşik entegrasyon, ajan zincirlerinde hata ayıklamayı kolaylaştırabilir.\n- Şu an her sağlayıcının kendine özgü gelişmiş özellikleri (ör. bazı modellere özel fonksiyonlar) ortak arayüzde kaybolabiliyor; bunun için isteğe bağlı bir \"escape hatch\" mekanizması faydalı olurdu."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "İnsan dilini anlayıp üretebilen, devasa miktarda metinle eğitilmiş yapay zeka modeli türü (GPT, Claude gibi)."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir yazılım platformuyla (ör. bir AI sağlayıcısıyla) konuşmak için hazır fonksiyonlar sunan geliştirici araç kutusu."
+        },
+        {
+          "term": "API",
+          "def": "İki yazılımın birbiriyle konuşmasını sağlayan, tanımlı kurallara sahip arayüz."
+        },
+        {
+          "term": "Adaptör deseni",
+          "def": "Farklı sistemleri ortak bir arayüz arkasına gizleyerek birbirinin yerine kullanılabilir hale getiren yazılım tasarım yaklaşımı."
+        },
+        {
+          "term": "Tool calling (araç çağırma)",
+          "def": "Bir yapay zeka modelinin, cevap üretirken harici bir fonksiyonu veya servisi çağırıp sonucunu kullanabilmesi."
+        },
+        {
+          "term": "Model Context Protocol (MCP)",
+          "def": "Yapay zeka modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Streaming (akış)",
+          "def": "Modelin cevabını tek seferde değil, kelime kelime/parça parça anlık olarak iletmesi."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Açık kaynaklı, güçlü ve yaygın kullanılan bir ilişkisel veritabanı yönetim sistemi."
+        },
+        {
+          "term": "Gecikme (latency)",
+          "def": "Bir isteğin gönderilmesiyle cevabın alınması arasında geçen süre."
+        }
+      ]
+    },
+    {
+      "name": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "stars": "50.9k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**Impeccable**, yapay zeka kodlama ajanlarının (Claude Code, Cursor, GitHub Copilot vb.) ürettiği arayüzlerin birbirine bu kadar çok benzemesi sorununa çözüm arıyor. README'nin kendi ifadesiyle: aynı SaaS şablonlarıyla eğitilen her model, aynı Inter fontunu, aynı mor-mavi gradyanları, aynı iç içe geçmiş kartları üretiyor — sonuç olarak \"bunu bir yapay zeka yazdı\" izlenimi veren, birbirinin kopyası arayüzler ortaya çıkıyor. Impeccable, ajanlara somut tasarım kuralları ve marka bağlamı vererek bu tekdüzeliği kırmayı hedefliyor.",
+        "tech": "Proje, tek bir `/impeccable` komutu altında toplanan **23 alt komuttan** oluşan bir \"skill\" (beceri) sistemi olarak çalışıyor — `audit`, `polish`, `critique`, `distill`, `animate` gibi. Bunun altında, hiçbir LLM çağrısı ya da API anahtarı gerektirmeyen, saf **örüntü eşleştirmeye (pattern matching)** dayalı **60 belirleyici (deterministic) denetleyici kural** bulunuyor; bu kurallar CLI olarak ya da tarayıcı kancaları (hooks) şeklinde çalıştırılabiliyor.\n\nMimarinin can alıcı noktası **\"harness-agnostic\"** (hangi AI aracını kullandığınızdan bağımsız) olması: proje, Claude Code'un `.claude/`, Cursor'ın `.cursor/`, Copilot'un `.github/` gibi klasör yapılarına aynı beceri paketini derleyip yerleştiriyor, böylece hangi ajanı kullanırsanız kullanın aynı tasarım disiplini uygulanıyor. `/impeccable init` komutu; hedef kitle, marka konumlandırması, ton, kaçınılacak referanslar, renk paleti ve tipografiyi tek seferde toplayıp `PRODUCT.md` ve `DESIGN.md` dosyalarına yazıyor — sonraki tüm komutlar bu bağlamı miras alıyor.",
+        "why": "İvmenin arkasındaki en büyük etken, 2026'da Claude Code, Cursor ve benzeri ajan tabanlı kodlama araçlarının yaygınlaşması ve bununla birlikte gelen \"her AI arayüzü aynı görünüyor\" şikayetinin artması. Impeccable, bu sorunu ilk fark eden ve standartlaştırılmış bir çözüm sunan projelerden biri olduğu için hızlıca benimsendi. Kurucusunun (Paul Bakaus, eski Google Chrome ekibinden) tanınırlığı da yayılmayı hızlandırdı. Hedef kitle geniş: hem bireysel geliştiriciler hem de tasarım tutarlılığı arayan ekipler.",
+        "evolve": "- **Görsel regresyon testleri**: Tasarım kurallarının ihlal edilip edilmediğini otomatik ekran görüntüsü karşılaştırmasıyla CI'da yakalayan bir katman eklenebilir.\n- **Paylaşılan tasarım sistemleri pazarı**: Ekiplerin kendi `DESIGN.md` şablonlarını topluluğa açıp paylaşabileceği bir kütüphane, projeyi bir araçtan bir ekosisteme dönüştürebilir.\n- Şu an 60 kural sabit ve elle tanımlı; zamanla topluluğun kendi özel kurallarını yazabileceği bir eklenti (plugin) arayüzü faydalı olurdu.\n- Desteklenen araç sayısı arttıkça (8'den fazla harness), her birinin klasör yapısını güncel tutmak bakım yükü oluşturabilir; bunun için topluluk katkılı adaptörler gerekebilir."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "İnsan dilini anlayıp üretebilen, devasa miktarda metinle eğitilmiş yapay zeka modeli türü."
+        },
+        {
+          "term": "Harness (ajan aracı)",
+          "def": "Bir yapay zeka modelini kod yazma gibi görevlerde kullanılabilir hale getiren çevresel yazılım (Claude Code, Cursor gibi)."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırından çalıştırılan, grafik arayüzü olmayan program türü."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak test edilip yayına alınmasını sağlayan geliştirme süreci."
+        },
+        {
+          "term": "Pattern matching (örüntü eşleştirme)",
+          "def": "Bir metin veya kod içinde önceden tanımlı kalıpları arayıp bulan teknik."
+        },
+        {
+          "term": "Deterministic (belirleyici) kural",
+          "def": "Aynı girdi için her zaman aynı sonucu üreten, rastgelelik içermeyen kural; burada yapay zeka tahmini yerine sabit mantık kullanıldığı anlamına gelir."
+        },
+        {
+          "term": "API anahtarı",
+          "def": "Bir servise erişim için kullanılan, kimliği doğrulayan gizli kod."
+        },
+        {
+          "term": "Apache 2.0 lisansı",
+          "def": "Yazılımın ticari kullanım dahil serbestçe kullanılmasına, değiştirilmesine ve dağıtılmasına izin veren açık kaynak lisans türü."
+        }
+      ]
+    },
+    {
+      "name": "CoreBunch/Instatic",
+      "url": "https://github.com/CoreBunch/Instatic",
+      "stars": "5.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Instatic**, modern bir web sitesi kurmak için normalde ayrı ayrı bir araya getirmeniz gereken parçaları — headless CMS, ön yüz çatısı (framework), barındırma (hosting), form servisi, analitik — **tek, kendi kendine barındırılan (self-hosted) bir pakette** birleştiren açık kaynaklı bir görsel içerik yönetim sistemi. Webflow ya da Framer gibi kapalı, aboneliğe bağlı araçlara karşı; verinizin ve sitenizin tamamen kendinize ait olduğu bir alternatif sunuyor.",
+        "tech": "Yığın (stack) baştan sona modern ve tek dil üzerine kurulu: sunucu ve araçlar için **Bun** çalışma zamanı, tamamı **TypeScript**, yönetim panelinde **React 19 + Vite + Zustand**, veritabanı olarak varsayılan **SQLite** ya da isteğe bağlı PostgreSQL — ikisi de ortak bir arayüz üzerinden kullanılıyor. Veri doğrulaması için **TypeBox** şemaları tek gerçek kaynak (source of truth) olarak kullanılıyor.\n\nEn dikkat çekici mimari kararlardan biri: sayfalar, yazılar, bileşenler ve özel koleksiyonların hepsi aynı temel veri yapısını (data_tables/data_rows) paylaşıyor — yani \"özel durum\" yok, tek bir model her şeyi kapsıyor. Eklentiler ise **QuickJS-WASM** üzerinde, izin tabanlı sanal alanlarda (sandbox) çalışıyor; varsayılan olarak dosya sistemine erişimleri yok. Çıktı tarafında felsefe net: minimum çalışma zamanı JavaScript'i (~1.1 kB) ile **statik HTML/CSS** üretmek — \"önyükleme yapılacak bir çatı, hydration adımı ya da her istekte veritabanına gidiş yok\" diyor README. Üç katmanlı önbellekleme (statik dosya → bellek-içi sürüm → ziyaretçi başına tembel yükleme) performansı karmaşık ayar gerektirmeden sağlıyor.",
+        "why": "İvmenin iki kaynağı var. Birincisi, WordPress ekosisteminden gelen ve kendi sitesinin sahibi olmak isteyen, ama modern bir geliştirici deneyimi arayan kitlenin ilgisi — kurucular zaten bu ekosistemden geliyor. İkincisi ise gerçek bir farklılaştırıcı özellik: Instatic'in içine gömülü bir **AI ajanı**, sayfayı ekran görüntüsü ya da kod dökümü üzerinden değil, doğrudan düzenlenebilir tuval (canvas) düğümleri üzerinden değiştirebiliyor — kullanıcı ne istediğini yazıyor, ajan gerçek, sonradan elle de düzenlenebilir bir sonuç üretiyor. Claude, OpenAI, OpenRouter ve Ollama gibi birden fazla sağlayıcıyı, kullanıcının kendi API anahtarlarıyla destekleyerek tek bir sağlayıcıya bağımlılığı da önlüyor.",
+        "evolve": "- Proje henüz **v0.0.x** sürümünde ve API'lerin 1.0 öncesi değişebileceği açıkça belirtiliyor — üretim ortamlarında kullanmadan önce bu istikrarsızlık göz önünde bulundurulmalı.\n- README'de gizliliğe duyarlı analitik (privacy-respecting analytics) yol haritada; bu eklenirse Google Analytics'e bağımlı kalmadan tam bir \"sahiplik\" vaadi tamamlanmış olur.\n- **Eklenti ekosistemi** henüz küçük; WASM sandbox mimarisi güvenlik açısından iyi bir temel olsa da, topluluk katkısını artıracak bir eklenti pazarı/rehberi eksik.\n- AI ajanının canvas üzerinde düzenleme yapması ilginç bir yaklaşım, ancak karmaşık, çok bileşenli sayfalarda tutarlılığın nasıl korunduğu (ör. geri alma/versiyon geçmişi) net değil."
+      },
+      "glossary": [
+        {
+          "term": "Headless CMS",
+          "def": "İçeriği yönetmeyi sağlayan ama görünümü (ön yüzü) dayatmayan, sadece veriyi API üzerinden sunan içerik yönetim sistemi türü."
+        },
+        {
+          "term": "Self-hosted (kendi kendine barındırılan)",
+          "def": "Bir yazılımın üçüncü taraf bir bulut şirketi yerine kendi sunucunuzda çalıştırılması."
+        },
+        {
+          "term": "Bun",
+          "def": "Node.js'e alternatif, hız odaklı tasarlanmış modern bir JavaScript çalışma zamanı (runtime)."
+        },
+        {
+          "term": "WebAssembly (WASM)",
+          "def": "Web tarayıcılarında ve sunucularda neredeyse makine hızında, güvenli bir şekilde kod çalıştırmayı sağlayan taşınabilir ikili format."
+        },
+        {
+          "term": "Sandbox (sanal alan)",
+          "def": "Bir programın sistemin geri kalanına zarar veremeyecek şekilde izole edilmiş ortamda çalıştırılması."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, dosya tabanlı hafif bir veritabanı motoru."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Açık kaynaklı, güçlü ve yaygın kullanılan bir ilişkisel veritabanı yönetim sistemi."
+        },
+        {
+          "term": "Hydration",
+          "def": "Sunucuda oluşturulan statik bir HTML sayfasının, tarayıcıda tekrar JavaScript ile 'canlandırılıp' etkileşimli hale getirilmesi süreci."
+        },
+        {
+          "term": "Statik site",
+          "def": "Her ziyarette sunucuda yeniden oluşturulmayan, önceden hazırlanmış sabit HTML dosyalarından oluşan web sitesi."
+        },
+        {
+          "term": "Canvas (tuval)",
+          "def": "Bir arayüzde nesnelerin serbestçe yerleştirilip düzenlenebildiği görsel çalışma alanı."
+        }
+      ]
+    },
+    {
+      "name": "pingdotgg/t3code",
+      "url": "https://github.com/pingdotgg/t3code",
+      "stars": "15.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**T3 Code**, birden fazla AI kodlama ajanını — Codex, Claude, Cursor, OpenCode gibi — ayrı ayrı uygulamalar arasında geçiş yapmadan, **tek bir web arayüzünden** yönetme ihtiyacına çözüm sunuyor. README'nin kendi tabiriyle \"kodlama ajanları için minimal bir web GUI'si\": farklı sağlayıcıların farklı arayüzlerini ezberlemek yerine, geliştirici tek bir yerden hepsini takip edip yönlendirebiliyor.",
+        "tech": "Proje **pnpm workspaces** ile kurulmuş bir monorepo yapısında; birden fazla uygulama ve paketi tek depoda barındırıyor. Geliştirme tarafında **Vite** tabanlı bir derleme zinciri ve uçtan uca **TypeScript** kullanılıyor. Depoda `.claude/`, `.cursor/`, `.codex/` gibi sağlayıcıya özel yapılandırma klasörleri ve bir `.mcp.json` dosyası bulunması, projenin **Model Context Protocol (MCP)** üzerinden farklı ajan sağlayıcılarıyla ortak bir dil konuştuğunu gösteriyor. Kurulum tarafında da esneklik var: `npx t3@latest` ile hızlı deneme, ya da Homebrew, Winget, AUR gibi paket yöneticileriyle masaüstü uygulaması olarak kurulum.",
+        "why": "Projenin arkasındaki isim, popüler **T3 Stack**'in yaratıcısı **Theo (pingdotgg)** — bu, topluluğun hızlı ilgisini açıklayan önemli bir faktör. Ama asıl talep gerçek: 2026'da geliştiriciler artık tek bir AI kodlama aracına bağlı kalmıyor, günün görevine göre Codex, Claude Code, Cursor arasında geçiş yapıyor ve her biri için ayrı pencere/uygulama açmak yorucu hale geldi. T3 Code bu dağınıklığı tek bir GUI'de topluyor. README'nin \"çok ama çok erken aşamadayız, hatalar bekleyin\" şeklindeki dürüst uyarısına rağmen 15 binin üzerinde yıldız ve 2000'i aşkın commit, projenin ciddi bir topluluk ivmesi yakaladığını gösteriyor.",
+        "evolve": "- Proje şu an dışarıdan katkıya kapalı (\"contributions remain restricted\"); topluluğun ilgisini kalıcı hale getirmek için bu kapının aşamalı olarak açılması önemli olacak.\n- Şu an desteklenen ajanlar sabit bir liste; üçüncü taraf sağlayıcıların kendi entegrasyonunu ekleyebileceği bir eklenti API'si, ekosistemi büyütebilir.\n- Erken aşama olması nedeniyle kararlılık ve güvenlik (özellikle birden fazla ajanın yerel makinede shell/dosya erişimi olması) konusunda netlik ve denetim mekanizmaları öncelik kazanmalı.\n- Takım/organizasyon düzeyinde ajan kullanım geçmişinin ve maliyetinin tek panelden izlenebilmesi, kurumsal benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "GUI",
+          "def": "Kullanıcının komut satırı yerine görsel pencereler, düğmeler ve menülerle etkileşime girdiği arayüz türü."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla projenin veya paketin tek bir git deposunda birlikte tutulması yaklaşımı."
+        },
+        {
+          "term": "pnpm workspaces",
+          "def": "pnpm paket yöneticisinin, tek bir depo içinde birden fazla JavaScript paketini birlikte yönetmesini sağlayan özelliği."
+        },
+        {
+          "term": "Vite",
+          "def": "Modern web projelerini hızlı bir şekilde derleyip geliştirme sunucusunda çalıştıran popüler bir derleme aracı."
+        },
+        {
+          "term": "Model Context Protocol (MCP)",
+          "def": "Yapay zeka modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Commit",
+          "def": "Bir kod deposuna yapılan, kayıt altına alınmış tek bir değişiklik birimi."
+        }
+      ]
+    }
+  ]
+}
