@@ -1,0 +1,271 @@
+{
+  "date": "2026-07-28",
+  "projects": [
+    {
+      "name": "apache/cassandra",
+      "url": "https://github.com/apache/cassandra",
+      "stars": "10k",
+      "language": "Java",
+      "sections": {
+        "serves": "**Apache Cassandra**, tek bir sunucunun asla kaldıramayacağı hacimde veriyi, hiçbir tekil arıza noktası (single point of failure) olmadan, onlarca-yüzlerce makineye otomatik olarak dağıtan bir **NoSQL veritabanı**.\n\nKlasik ilişkisel veritabanları (Oracle, PostgreSQL vb.) genellikle tek bir güçlü sunucuda çalışır ve büyüdükçe dikey olarak (daha büyük donanımla) ölçeklenir; belirli bir noktadan sonra bu yaklaşım hem pahalılaşır hem de fiziksel bir tavana çarpar. Cassandra ise tam tersi bir felsefeyle tasarlanmış: veriyi baştan itibaren birden çok düğüme (node) bölerek (partitioning) saklar, her parçayı birden fazla kopya (replika) olarak farklı sunuculara/veri merkezlerine yazar ve bir düğüm çökse bile sistem kesintisiz çalışmaya devam eder. Netflix, Apple, Discord gibi devasa ölçekte yazma trafiği olan şirketlerin tercih ettiği bir altyapı bileşeni.",
+        "tech": "Cassandra, **Amazon Dynamo**'nun dağıtık mimarisiyle **Google Bigtable**'ın veri modelini birleştiren bir tasarıma sahip:\n\n- **Halka (ring) topolojisi ve tutarlı hashleme (consistent hashing)**: Her veri satırı, anahtarına göre hesaplanan bir değerle halka üzerindeki belirli düğümlere atanır; yeni düğüm eklendiğinde sadece komşu düğümler arasında veri yeniden dağıtılır, tüm küme yeniden düzenlenmez.\n- **Gossip protokolü**: Düğümler merkezi bir koordinatöre ihtiyaç duymadan birbirleriyle periyodik olarak \"dedikodu\" yaparak küme durumunu (hangi düğüm ayakta, hangi düğüm yeni katıldı) öğrenir — bu da tek bir kontrol düğümünün darboğaz veya arıza noktası olmasını engeller.\n- **Ayarlanabilir tutarlılık (tunable consistency)**: Her okuma/yazma isteğinde, geliştirici hız ile doğruluk arasında (ör. \"1 kopyadan onay yeter\" ile \"tüm kopyalar onaylasın\") seçim yapabilir; bu, CAP teoreminin pratikte esnekleştirilmiş hali.\n- **LSM-tree tabanlı depolama (SSTable)**: Yazma işlemleri önce belleğe (memtable) alınır, sonra diske değişmez (immutable) SSTable dosyaları olarak yazılır — bu da Cassandra'yı yazma-ağırlıklı (write-heavy) iş yükleri için son derece hızlı yapar.\n- **CQL (Cassandra Query Language)**: SQL'e görsel olarak benzeyen ama ilişkisel olmayan, join içermeyen bir sorgu dili; `cqlsh` adlı Python tabanlı bir istemci ile kullanılıyor.\n\nJava ile yazılmış olması, JVM'in olgun garbage-collection ve performans araç ekosisteminden faydalanmayı sağlıyor; proje aktif olarak Java'nın yeni sürümlerine (ör. sanal thread'ler) uyum sağlamaya çalışıyor.",
+        "why": "Cassandra, 2008'de Facebook'ta doğmuş, on beş yılı aşkın süredir üretimde kanıtlanmış \"sıkıcı ama güvenilir\" bir altyapı projesi; bu tarz projeler genelde gündelik trend listelerinde görünmez. Bugünkü ivmenin arkasında muhtemelen **Cassandra 5.x hattındaki vektör arama (vector search) desteği** var: proje, RAG (retrieval-augmented generation) ve yapay zeka uygulamaları için embedding tabanlı benzerlik araması eklerken, aynı zamanda dağıtık, yüksek yazma hacmi garantisini koruyor — bu da onu Pinecone, Milvus gibi saf vektör veritabanlarına karşı \"zaten güvendiğiniz, ölçeklenen bir veritabanına vektör araması ekleme\" alternatifi haline getiriyor. 449 açık pull request ve binlerce commit'lik aktif geliştirme, projenin hâlâ canlı ve kurumsal ilgi gördüğünü gösteriyor. Hedef kitle: büyük ölçekli backend/platform mühendisleri, veri altyapısı ekipleri ve artık AI-destekli arama özellikleri eklemek isteyen kurumsal yazılım ekipleri — bu son nokta, ERP ve kurumsal sistemler dünyasında da giderek daha çok karşılaşılan bir talep.",
+        "evolve": "- **Operasyonel karmaşıklığın azaltılması**: Cassandra kümesi kurup işletmek hâlâ uzmanlık gerektiren, göreceli olarak ağır bir iş; yönetilen bulut sunumlarının ve Kubernetes operatörlerinin daha da olgunlaşması benimsemeyi kolaylaştırabilir.\n- **Vektör aramanın derinleştirilmesi**: Şu anki vektör desteği başlangıç seviyesinde; gelişmiş indeksleme (HNSW gibi) algoritmalarının performans/ölçek açısından pgvector ve özel vektör veritabanlarıyla daha rekabetçi hale getirilmesi büyük fark yaratabilir.\n- **Migrasyon araçları**: İlişkisel veritabanlarından (Oracle, PostgreSQL) Cassandra'ya geçişi kolaylaştıran otomatik şema dönüştürme ve veri taşıma araçları, kurumsal benimsemeyi hızlandırabilir.\n- **Gözlemlenebilirlik**: Modern dağıtık izleme (OpenTelemetry) standartlarıyla daha sıkı yerleşik entegrasyon, büyük kümelerde sorun teşhisini kolaylaştırırdı."
+      },
+      "glossary": [
+        {
+          "term": "NoSQL",
+          "def": "Geleneksel ilişkisel tablo yapısını kullanmayan, genellikle dağıtık ve büyük ölçekli veri için tasarlanmış veritabanı türlerinin genel adı."
+        },
+        {
+          "term": "Partitioning (bölümleme)",
+          "def": "Bir veri kümesini birden çok sunucuya dağıtmak için parçalara ayırma yöntemi."
+        },
+        {
+          "term": "Replika / replikasyon",
+          "def": "Aynı verinin, arıza durumunda kaybolmaması için birden fazla sunucuda kopyasının tutulması."
+        },
+        {
+          "term": "Tutarlı hashleme (consistent hashing)",
+          "def": "Düğüm eklenip çıkarıldığında verinin sadece küçük bir kısmının yeniden dağıtılmasını sağlayan hesaplama tekniği."
+        },
+        {
+          "term": "Gossip protokolü",
+          "def": "Düğümlerin birbirleriyle merkezi bir yönetici olmadan, rastgele eşleşerek bilgi yaydığı iletişim yöntemi."
+        },
+        {
+          "term": "CAP teoremi",
+          "def": "Dağıtık bir sistemin tutarlılık, erişilebilirlik ve ağ bölünmesine dayanıklılığın üçünü aynı anda tam olarak sağlayamayacağını söyleyen ilke."
+        },
+        {
+          "term": "LSM-tree",
+          "def": "Yazma işlemlerini önce belleğe, sonra sıralı şekilde diske aktararak yazma performansını artıran bir veri yapısı."
+        },
+        {
+          "term": "SSTable",
+          "def": "Diske yazıldıktan sonra değiştirilmeyen, sıralı anahtar-değer verisi içeren dosya formatı."
+        },
+        {
+          "term": "CQL (Cassandra Query Language)",
+          "def": "SQL'e benzeyen ama join içermeyen, Cassandra'ya özgü sorgu dili."
+        },
+        {
+          "term": "Vektör arama (vector search)",
+          "def": "Verileri sayısal embedding'lere dönüştürüp anlamsal benzerliğe göre arama yapma yöntemi, çoğunlukla yapay zeka uygulamalarında kullanılır."
+        },
+        {
+          "term": "RAG (retrieval-augmented generation)",
+          "def": "Bir dil modelinin cevap üretirken harici bir veri kaynağından ilgili bilgiyi çekip bağlama eklediği teknik."
+        }
+      ]
+    },
+    {
+      "name": "opengeos/GeoLibre",
+      "url": "https://github.com/opengeos/GeoLibre",
+      "stars": "2.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**GeoLibre**, coğrafi (mekansal) veriyle çalışmak isteyen birinin önündeki en büyük engeli kaldırmayı hedefliyor: pahalı, kurulumu zahmetli, genelde tek bir işletim sistemine bağımlı GIS yazılımları (ArcGIS gibi) olmadan, tarayıcıda, masaüstünde, mobilde ya da Jupyter not defterinde profesyonel seviyede harita görselleştirme ve mekansal analiz yapabilmek. Proje ayrıca veriyi bulutta bir sunucuya yüklemek yerine **yerelde ve gizli** tutmayı öne çıkarıyor — bu da hassas coğrafi veriyle (arazi, altyapı, savunma, bilimsel gözlem) çalışan kullanıcılar için önemli bir tercih sebebi. İlginç bir ek özellik olarak sadece Dünya değil, Ay, Mars, Merkür, Venüs, Plüton ve Jüpiter/Satürn uydularının haritalarını da gösterebiliyor; bu da onu planetary science (gezegen bilimi) camiasında da kullanışlı kılıyor.",
+        "tech": "GeoLibre'nin mimarisindeki temel fikir **\"tek kod tabanı, çok platform\"**:\n\n- **Arayüz**: React + TypeScript üzerine, açık kaynaklı bir Mapbox GL alternatifi olan **MapLibre GL JS** ve yüksek performanslı büyük veri görselleştirme kütüphanesi **deck.gl** kullanılıyor. Bu ikili, milyonlarca noktayı/çokgeni akıcı şekilde çizebiliyor.\n- **Masaüstü/mobil paketleme**: Electron yerine **Tauri v2** tercih edilmiş — Tauri, işletim sisteminin kendi web motorunu kullandığı için uygulama boyutunu ve bellek tüketimini önemli ölçüde düşürüyor, bu da GeoLibre'yi hem masaüstünde hem Android'de hafif tutuyor.\n- **Veri işleme**: **DuckDB-WASM Spatial** sayesinde SQL tabanlı mekansal sorgular (ör. \"bu çokgenin içindeki tüm noktaları getir\") herhangi bir sunucuya veya PostGIS kurulumuna ihtiyaç duymadan doğrudan tarayıcıda, WebAssembly üzerinden çalıştırılıyor. **Turf.js** ise daha basit geometri işlemlerini (mesafe, alan, kesişim hesaplama gibi) üstleniyor.\n- **Çıktı hedefleri**: Aynı kaynak kod; web, Windows/macOS/Linux masaüstü uygulaması, Android uygulaması ve Jupyter widget'ı olarak derlenebiliyor — bu, geliştirme ve bakım yükünü tek bir yerde toplarken kullanıcıya platform özgürlüğü veriyor.\n\nBu seçimlerin ortak paydası: sunucu bağımlılığını mümkün olduğunca ortadan kaldırıp hesaplamayı istemci tarafına (WASM ile tarayıcıya, Tauri ile yerel uygulamaya) taşımak.",
+        "why": "GeoLibre'nin ivmesi birkaç eğilimin kesişiminden besleniyor: **yerel-öncelikli (local-first) yazılım** hareketinin güçlenmesi, WebAssembly'nin tarayıcıda \"gerçek\" veri analitiği yapmayı artık pratik hale getirmesi ve açık kaynaklı, ücretsiz GIS araçlarına olan sürekli talep (özellikle akademik ve devlet dışı kuruluşlarda lisans maliyeti önemli bir engel). Hedef kitlesi geniş: coğrafi veri bilimcileri, uzaktan algılama (remote sensing) araştırmacıları, harita meraklıları, gezegen bilimciler ve sunucu altyapısı kurmak istemeyen geliştiriciler. Projenin `opengeos` organizasyonu altında olması da (bilinen açık kaynak coğrafi veri araçları geliştiren bir topluluk) güven ve görünürlük sağlıyor.",
+        "evolve": "- **Bulut-ölçekli veri desteği**: Şu an istemci tarafı mimarisi çok büyük (terabayt seviyesi) uydu görüntüsü/raster veri setlerinde sınırlı kalabilir; bulut-yerel raster standartlarıyla (COG, STAC) daha derin entegrasyon ve akıllı parça-yükleme (tiling) faydalı olurdu.\n- **Gerçek zamanlı iş birliği**: Birden fazla kullanıcının aynı harita/analiz üzerinde eş zamanlı çalışabilmesi (Figma benzeri), kurumsal/akademik takım kullanımını artırabilir.\n- **Doğal dilden mekansal sorguya**: DuckDB SQL katmanının üzerine, kullanıcının sade Türkçe/İngilizce bir cümleyle sorgu yazabileceği bir yapay zeka katmanı eklenmesi, GIS uzmanı olmayan kullanıcılar için erişilebilirliği ciddi ölçüde artırabilir.\n- **Eklenti pazarı**: README'de bahsedilen eklenti mimarisinin bir topluluk paylaşım platformuna dönüşmesi, projeyi bir araçtan bir ekosisteme taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "GIS (Coğrafi Bilgi Sistemi)",
+          "def": "Konumsal (coğrafi) verilerin toplanması, saklanması, analiz edilmesi ve görselleştirilmesi için kullanılan yazılım sistemleri."
+        },
+        {
+          "term": "WebAssembly (WASM)",
+          "def": "Tarayıcıda, neredeyse yerel uygulama hızında kod çalıştırmayı sağlayan düşük seviyeli bir çalıştırma formatı."
+        },
+        {
+          "term": "MapLibre GL JS",
+          "def": "Etkileşimli, vektör tabanlı haritalar çizmek için kullanılan açık kaynaklı bir JavaScript kütüphanesi."
+        },
+        {
+          "term": "deck.gl",
+          "def": "Büyük veri kümelerini haritalar üzerinde GPU hızlandırmalı olarak görselleştiren bir JavaScript kütüphanesi."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle yazılmış arayüzleri, Electron'a göre çok daha küçük ve hafif masaüstü/mobil uygulamalara dönüştüren bir çerçeve (framework)."
+        },
+        {
+          "term": "DuckDB",
+          "def": "Sunucu gerektirmeyen, doğrudan uygulama içinde çalışan hızlı bir analitik SQL veritabanı motoru."
+        },
+        {
+          "term": "Turf.js",
+          "def": "Coğrafi geometriler üzerinde (mesafe, alan, kesişim gibi) hesaplama yapan bir JavaScript kütüphanesi."
+        },
+        {
+          "term": "PostGIS",
+          "def": "PostgreSQL veritabanına mekansal (coğrafi) veri işleme yetenekleri ekleyen bir uzantı."
+        },
+        {
+          "term": "COG / STAC",
+          "def": "Bulut ortamında büyük uydu görüntüsü verilerinin verimli şekilde saklanıp aranmasını sağlayan açık standartlar."
+        },
+        {
+          "term": "Uzaktan algılama (remote sensing)",
+          "def": "Uydu veya hava araçlarıyla dünya yüzeyi hakkında uzaktan veri toplama bilimi."
+        }
+      ]
+    },
+    {
+      "name": "bradautomates/claude-video",
+      "url": "https://github.com/bradautomates/claude-video",
+      "stars": "11.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "Claude ve benzeri büyük dil modelleri metni, sesi ve tek tek görselleri anlayabiliyor ama bir videoyu \"izleyip\" içeriğini kavrayamıyor — video, model için doğrudan tüketilebilir bir format değil. **claude-video**, bu boşluğu dolduran bir araç: YouTube, TikTok, Instagram, X, Loom ve yüzlerce başka platformdan (ya da yerel dosyadan) herhangi bir videoyu alıp, Claude'un anlayabileceği bir forma — zaman damgalı kareler (frame) ve zaman damgalı transkript — dönüştürüyor. Sonuç olarak kullanıcı Claude'a \"bu videoda hangi dakikada şu ürün gösteriliyor?\" ya da \"bu 40 dakikalık eğitim videosunu özetle\" gibi sorular sorabiliyor, model de videoyu gerçekten izlemiş gibi cevap verebiliyor.",
+        "tech": "Araç dört aşamalı bir işlem hattı (pipeline) üzerine kurulu:\n\n- **İndirme**: **yt-dlp** ile video URL'sinden meta veri ve içerik çekiliyor (yüzlerce platform destekleniyor) ya da doğrudan yerel dosya kullanılabiliyor.\n- **Kare çıkarma**: **ffmpeg**, videodan üç farklı stratejiyle kare çıkarabiliyor: anahtar kare (keyframe) tespiti (en ekonomik/\"efficient\" mod), sahne değişimi (scene-change) tespiti (\"balanced\" ve \"token-burner\" modları) ve tekdüze zamansal örnekleme + yinelenenleri eleme. Bu, kullanıcının maliyet ile detay seviyesi arasında bilinçli bir seçim yapmasını sağlıyor.\n- **Transkripsiyon**: Öncelik videonun kendi altyazılarına (yt-dlp ile çekilen) veriliyor; altyazı yoksa **Whisper** modeli devreye giriyor — hız/maliyet için Groq'un `whisper-large-v3` modeli tercih ediliyor, alternatif olarak OpenAI'ın `whisper-1` modeli de kullanılabiliyor.\n- **Teslim**: Karşılığında ortaya çıkan kareler 512px genişliğinde JPEG olarak, zaman damgalı transkriptle eşleştirilmiş şekilde Claude'a çok-modlu (multimodal) girdi olarak sunuluyor.\n\nPerformans ölçümleri, sadece transkript modunun ~4.5 saniyede ve sıfır görsel token maliyetiyle sonuç verdiğini, buna karşın en ayrıntılı \"token-burner\" modunun 49 dakikalık bir video için ~22.8 bin görsel token tükettiğini gösteriyor — yani araç, kullanıcıya detay/maliyet dengesini açıkça göstererek seçim yaptırıyor. Python ana script'leri, Bash kurulum otomasyonunu yönetiyor; ffmpeg ve yt-dlp ilk çalıştırmada otomatik kuruluyor.",
+        "why": "İvmenin arkasında, yapay zeka ajanlarının artık sadece metinle değil gerçek dünya içerikleriyle (video, ses, ekran kaydı) çalışması beklentisinin hızla büyümesi var. Toplantı kayıtlarını arayan ekipler, uzun eğitim videolarını izlemek yerine sorgulamak isteyen araştırmacılar, sosyal medya içerik trendlerini takip eden pazarlamacılar — hepsi bu tür bir araca ihtiyaç duyuyor. Projenin Claude Code / Claude ekosistemine (kod yürütme yeteneği açık bir agent/skill olarak) entegre şekilde tasarlanmış olması, büyüyen \"Agent Skills\" (paketlenmiş, kurulabilir yapay zeka yetenekleri) trendine tam oturuyor — bu format, geliştirici olmayan kullanıcıların bile Claude'a yeni yetenekler eklemesini kolaylaştırıyor.",
+        "evolve": "- **Canlı/akış video desteği**: Şu an kayıtlı videolarla sınırlı; canlı yayın veya gerçek zamanlı ekran paylaşımı analizi eklenmesi kullanım alanını genişletebilir.\n- **Yapısal bilgi çıkarımı**: Karelerden OCR ile slayt metni, grafik verisi gibi yapısal bilgi otomatik çıkarılabilse, sadece görsel/transkript değil aranabilir yapısal veri de üretilebilir.\n- **Konuşmacı ayrıştırma (speaker diarization)**: Çok konuşmacılı toplantı kayıtlarında \"kim ne dedi\" ayrımı yapılması, kurumsal toplantı analizi için değerli olurdu.\n- **Model bağımsızlığı**: Şu an Claude'a odaklı; çıktısının GPT-4o, Gemini gibi diğer çok-modlu modellerle de kolayca kullanılabilir hale getirilmesi, kullanıcı tabanını genişletebilir."
+      },
+      "glossary": [
+        {
+          "term": "Çok-modlu (multimodal)",
+          "def": "Bir yapay zeka modelinin metin dışında görsel, ses gibi farklı veri türlerini de anlayabilmesi."
+        },
+        {
+          "term": "yt-dlp",
+          "def": "YouTube ve yüzlerce başka platformdan video/ses indirmeye yarayan açık kaynaklı bir komut satırı aracı."
+        },
+        {
+          "term": "ffmpeg",
+          "def": "Video ve ses dosyalarını işlemek, dönüştürmek, kareye ayırmak için kullanılan yaygın açık kaynaklı araç."
+        },
+        {
+          "term": "Whisper",
+          "def": "OpenAI tarafından geliştirilen, konuşmayı yazıya döken (transkript) yapay zeka modeli."
+        },
+        {
+          "term": "Anahtar kare (keyframe)",
+          "def": "Bir videoda sahnenin tamamını temsil eden, sıkıştırma açısından önemli referans kare."
+        },
+        {
+          "term": "Token",
+          "def": "Bir yapay zeka modelinin metni/görseli işlerken kullandığı, maliyet ve hız hesaplamasının temel birimi olan küçük veri parçası."
+        },
+        {
+          "term": "Agent Skill",
+          "def": "Bir yapay zeka ajanına kurulup eklenen, belirli bir görevi yerine getirmesini sağlayan paketlenmiş yetenek modülü."
+        },
+        {
+          "term": "OCR",
+          "def": "Görsel içindeki yazıyı otomatik olarak makine tarafından okunabilir metne çeviren teknoloji."
+        }
+      ]
+    },
+    {
+      "name": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "stars": "54.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "Google gibi klasik arama motorları esasen **editoryal** içeriği (haber siteleri, SEO'lu bloglar) sıralar; ancak insanların gerçekten neyle ilgilendiğini — Reddit'te hangi konu upvote alıyor, X'te ne konuşuluyor, Polymarket'te hangi olaya bahis yapılıyor — çoğu zaman göstermez. **last30days-skill**, bir konu, kişi, şirket ya da ürün verildiğinde son 30 gün içindeki **gerçek kullanıcı etkileşimi** sinyallerini (beğeni, upvote, izlenme, bahis oranı) onlarca platformdan paralel olarak toplayıp, kaynak göstererek tek bir sentezlenmiş özet (\"brief\") haline getiriyor. Yani soru sorduğunuzda \"Google'da ne yazıyor\" değil, \"gerçek insanlar şu an neye tepki veriyor\" sorusuna cevap arıyor.",
+        "tech": "Sistemin kalbinde Python 3.12+ ile yazılmış bir orkestrasyon motoru var; bu motor aşağıdaki adımları izliyor:\n\n- **Çözümleme**: Girilen konuya karşılık gelen ilgili hesapları, toplulukları ve anahtar kelimeleri otomatik olarak tespit ediyor.\n- **Paralel toplama**: Reddit (RSS/scraping ile yorumlar dahil), X/Twitter (Xquik kütüphanesi, tarayıcı çerezleri veya XAI API üzerinden), YouTube (yt-dlp ile transkript), TikTok/Instagram/Threads/Pinterest (ScrapeCreators API üzerinden), Hacker News (herkese açık JSON API), Polymarket (bahis oranları), GitHub (yıldız/PR trendleri), arXiv, Techmeme, Digg, LinkedIn, Bluesky, StockTwits, Xiaohongshu ve Perplexity gibi bir düzineden fazla kaynaktan eş zamanlı veri çekiyor.\n- **Puanlama ve tekilleştirme**: Sonuçları gerçek etkileşim metriklerine göre puanlıyor, farklı platformlarda anlatılan aynı hikayeyi tekilleştiriyor.\n- **Sentez**: Bulguları kaynak göstererek tek bir bağlam-temelli (grounded) özet metnine dönüştürüyor.\n\nVeriler yerelde SQLite ile (izleme listesi/trend geçmişi için) saklanıyor; X araması için Node.js tabanlı bir istemci (Bird) projeye gömülü. En dikkat çekici tasarım kararı ise dağıtım biçimi: proje bir web uygulaması değil, **kurulabilir bir \"Agent Skill\"** olarak paketlenmiş ve Claude Code, Grok (xAI Build CLI), Codex, Cursor, GitHub Copilot, Gemini CLI, claude.ai web arayüzü, Claude Desktop (MCP paketi) dahil 50'den fazla farklı yapay zeka aracı/ortamına kurulabiliyor — yani tek bir çekirdek mantık, birçok farklı AI platformunun \"eklentisi\" olarak çalışıyor. Ayrıca OpenSSF Scorecard ve build attestation gibi tedarik zinciri güvenliği önlemleri, geniş ağ/API erişimine sahip bu tür bir aracın kurumsal ortamlarda güvenle kullanılabilmesi için özellikle önemli.",
+        "why": "Bugün GitHub trending listesinin zirvesinde yer alması (54.3k yıldız, sadece bu hafta onlarca binlik artış), 2026'da hızla büyüyen **\"Agent Skills\" ekosisteminin** en somut örneklerinden biri olmasından kaynaklanıyor: yapay zeka araçlarına yeni yetenek eklemek artık kod yazmayı değil, hazır bir beceri paketini kurmayı gerektiriyor — bu da geliştirici olmayan kullanıcıların bile güçlü otomasyonlardan faydalanmasını sağlıyor. Projenin tek bir platforma değil Claude'dan Grok'a, Cursor'dan Gemini CLI'a kadar hemen her büyük AI aracına kurulabilmesi, dağıtım gücünü katlıyor. Hedef kitlesi: pazar araştırmacıları, yatırımcılar/analistler (due diligence), gazeteciler, ürün yöneticileri ve güncel kültürel bağlamı takip etmek isteyen herkes — özetle \"şu an gündemde ne var\" sorusunu her gün soran herkes.",
+        "evolve": "- **Zaman serisi/takip panosu**: Şu an her sorgu tek seferlik bir özet üretiyor; konuların zaman içindeki değişimini gösteren kalıcı bir trend panosu, tekrarlayan kullanım için çok daha değerli olurdu.\n- **Kazıma (scraping) dayanıklılığı**: Birçok kaynak resmi API yerine web kazımaya dayandığından, platformların anti-bot önlemleri değiştikçe kırılma riski var; daha sağlam hata toleransı ve alternatif kaynak yönlendirmesi faydalı olurdu.\n- **Duygu analizi katmanı**: Ham etkileşim sayısının ötesinde, konuşmanın pozitif mi negatif mi olduğunu gösteren bir duygu analizi katmanı eklenebilir.\n- **Kurumsal veri yönetişimi**: Büyük şirketlerde kullanım arttıkça, veri saklama politikaları ve erişim denetimi gibi kurumsal gereksinimlere daha resmi destek gerekecek."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skill",
+          "def": "Bir yapay zeka ajanına/asistanına kurularak ona yeni bir yetenek kazandıran, paketlenmiş ve kolayca kurulabilen yazılım modülü."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin harici araç ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Web scraping (kazıma)",
+          "def": "Bir web sitesindeki veriyi otomatik programlarla okuyup toplama yöntemi, genelde resmi bir API olmadığında kullanılır."
+        },
+        {
+          "term": "API",
+          "def": "İki yazılımın birbiriyle konuşmasını sağlayan, tanımlı kurallara sahip arayüz."
+        },
+        {
+          "term": "RSS",
+          "def": "Web sitelerindeki yeni içeriklerin otomatik olarak takip edilmesini sağlayan standart bir veri besleme formatı."
+        },
+        {
+          "term": "Tekilleştirme (deduplication)",
+          "def": "Aynı bilginin farklı kaynaklarda tekrar tekrar görünmesini engelleyip tek bir kayda indirgeme işlemi."
+        },
+        {
+          "term": "OpenSSF Scorecard",
+          "def": "Açık kaynak projelerin güvenlik pratiklerini otomatik olarak puanlayan bir denetim aracı."
+        },
+        {
+          "term": "Build attestation",
+          "def": "Bir yazılımın hangi kaynak koddan, hangi süreçle üretildiğini kanıtlayan doğrulanabilir kayıt."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, dosya tabanlı hafif bir veritabanı motoru."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırından çalıştırılan, grafik arayüzü olmayan program türü."
+        },
+        {
+          "term": "Due diligence",
+          "def": "Bir yatırım veya iş kararı öncesi yapılan detaylı araştırma ve durum tespiti süreci."
+        }
+      ]
+    },
+    {
+      "name": "jenkinsci/jenkins",
+      "url": "https://github.com/jenkinsci/jenkins",
+      "stars": "25.9k",
+      "language": "Java",
+      "sections": {
+        "serves": "**Jenkins**, yazılım geliştirmenin tekrar eden, hataya açık ve zaman alan işlerini — kodu derleme, testleri çalıştırma, statik analiz yapma ve üretime dağıtma — otomatik hale getiren, açık kaynağın en köklü **CI/CD (sürekli entegrasyon/sürekli teslimat)** sunucusu. Bir geliştirici kod gönderdiğinde (commit/push), Jenkins bunu otomatik olarak yakalar, tanımlı adımları (derleme, test, güvenlik taraması, paketleme, dağıtım) sırayla çalıştırır ve sonucu raporlar — böylece \"benim makinemde çalışıyordu\" sorunları ve elle yapılan hataya açık dağıtım süreçleri büyük ölçüde ortadan kalkar. On beş yılı aşkın geçmişiyle, hâlâ birçok büyük kurumun (bankalar, ERP/kurumsal yazılım sağlayıcıları dahil) üretim dağıtım hattının omurgasını oluşturuyor.",
+        "tech": "Jenkins'in çekirdeği Java ile yazılmış ve Maven ile derleniyor; ama asıl gücü **eklenti (plugin) mimarisinden** geliyor. 2.000'den fazla resmi eklenti sayesinde Jenkins, pratikte hayal edilebilecek her sürüm kontrol sistemi, bulut sağlayıcısı, bildirim aracı, güvenlik tarayıcısı ve dağıtım hedefiyle entegre olabiliyor — çekirdek yazılım küçük/sade tutulurken, topluluk her yeni ihtiyaç için ayrı bir eklenti yazıyor. Modern web arayüzü ise JavaScript/Node.js araç zincirinden (webpack, Babel, PostCSS, Stylelint) yararlanıyor — Jenkins'in klasik, \"eski moda\" görünümlü arayüzünü kademeli olarak modernize etme çabasının bir parçası. Proje iki paralel sürüm hattı sunuyor: **haftalık (weekly)** sürümler en yeni özellikleri hızlıca getirirken, **LTS (Long-Term Support)** hattı kurumların üretimde güvenle çalıştırabileceği, sadece kritik hata düzeltmeleriyle güncellenen istikrarlı bir seçenek sunuyor — çoğu büyük şirket LTS'i tercih ediyor. \"Pipeline\" adı verilen, kod olarak yazılan (Groovy tabanlı Jenkinsfile) dağıtım tanımları, tüm CI/CD sürecinin versiyon kontrolüne alınabilmesini sağlıyor.",
+        "why": "Jenkins gibi on yılı aşkın süredir var olan, \"sıkıcı ama vazgeçilmez\" bir altyapı projesinin günün trend listesine girmesi genelde belirli bir sürüm duyurusu, güvenlik yaması veya topluluğun yeniden odaklandığı bir modernizasyon çabasıyla açıklanır — 25.9k yıldıza sahip, yıllardır olgunlaşmış bir projede günde 180 yeni yıldız görmek dikkat çekici bir sıçrama. Bunun arkasında muhtemelen yapay zeka destekli kod inceleme/test üretimi araçlarının CI/CD hatlarına entegre edilmesi trendiyle Jenkins'in bu akıma nasıl uyum sağlayacağına dair artan ilgi var. Hedef kitle geniş: platform/DevOps mühendisleri, özellikle **on-prem (kurum içi) altyapıyı elden bırakmak istemeyen büyük kurumsal şirketler** — burada ERP ve IFS Applications gibi kurumsal sistemleri işleten şirketlerin sıkça Jenkins'i sürüm/dağıtım otomasyonu için kullandığını belirtmek gerekir; bulut-yerel CI araçlarına (GitHub Actions, GitLab CI) geçemeyen, uyumluluk/güvenlik gereksinimleri ağır kurumlar için Jenkins hâlâ birinci tercih.",
+        "evolve": "- **Bulut-yerel mimari**: Jenkins X gibi ayrı girişimler Kubernetes-öncelikli bir yaklaşım denese de ana proje hâlâ klasik ana-sunucu/ajan (controller-agent) modeline dayanıyor; çekirdeğin daha modern, konteyner-öncelikli bir mimariye taşınması uzun vadede rekabetçiliği artırabilir.\n- **Varsayılan güvenlik**: 2.000'i aşkın eklentiden oluşan geniş yüzey, tarihsel olarak güvenlik açıklarına daha yatkın olmuştur; kurulumda daha sıkı varsayılan güvenlik ayarları ve eklenti güvenilirlik puanlaması faydalı olurdu.\n- **Yapay zeka entegrasyonu**: Otomatik kod inceleme, test üretimi ve hata teşhisi yapan yapay zeka ajanlarının pipeline'lara birinci sınıf, resmi eklentiler olarak entegre edilmesi, GitHub Actions gibi daha yeni rakiplere karşı önemli bir fark yaratabilir.\n- **Basitleştirilmiş kurulum deneyimi**: Bulut-yerel CI araçlarının \"birkaç tıkla başla\" deneyimine kıyasla Jenkins kurulumu hâlâ daha ağır; yeni kullanıcı adaptasyonunu kolaylaştıracak sadeleştirilmiş bir başlangıç akışı faydalı olurdu."
+      },
+      "glossary": [
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak derlenip test edildiği ve üretime alındığı geliştirme sürecinin genel adı."
+        },
+        {
+          "term": "Eklenti (plugin) mimarisi",
+          "def": "Bir yazılımın çekirdeğini küçük tutup, ek özellikleri ayrı ayrı takılabilir modüller olarak sunma tasarım yaklaşımı."
+        },
+        {
+          "term": "LTS (Long-Term Support)",
+          "def": "Bir yazılımın uzun süre boyunca sadece kritik hata/güvenlik düzeltmeleriyle güncellenen, kararlılığı öncelikli sürümü."
+        },
+        {
+          "term": "Maven",
+          "def": "Java projelerini derlemek ve bağımlılıklarını yönetmek için kullanılan bir yapı (build) aracı."
+        },
+        {
+          "term": "Pipeline (Jenkinsfile)",
+          "def": "Bir yazılımın derleme-test-dağıtım adımlarını kod olarak tanımlayan, versiyon kontrolüne alınabilen dosya/yapı."
+        },
+        {
+          "term": "Statik analiz",
+          "def": "Kodu çalıştırmadan, kaynak kodu inceleyerek hata ve kod kalitesi sorunlarını tespit etme yöntemi."
+        },
+        {
+          "term": "On-prem (kurum içi)",
+          "def": "Yazılımın bulutta değil, şirketin kendi sunucularında/veri merkezinde çalıştırılması."
+        },
+        {
+          "term": "DevOps",
+          "def": "Yazılım geliştirme ile operasyon (işletme) süreçlerini birleştirip otomasyonla hızlandırmayı amaçlayan pratikler bütünü."
+        },
+        {
+          "term": "Controller-agent modeli",
+          "def": "Jenkins'te iş dağıtımını yöneten ana sunucu (controller) ile asıl işleri çalıştıran yardımcı makineler (agent) arasındaki mimari ayrım."
+        }
+      ]
+    }
+  ]
+}
