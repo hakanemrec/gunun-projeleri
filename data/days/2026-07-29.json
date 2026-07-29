@@ -1,0 +1,195 @@
+{
+  "date": "2026-07-29",
+  "projects": [
+    {
+      "name": "virgiliojr94/book-to-skill",
+      "url": "https://github.com/virgiliojr94/book-to-skill",
+      "stars": "11.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Teknik kitapları ve PDF'leri, AI ajanlarının ihtiyaç anında yükleyebileceği yeniden kullanılabilir \"skill\" paketlerine dönüştürüyor. Çözdüğü problem çok tanıdık: iyi bir teknik kitap alırsın, bir kere okursun, üç ay sonra 7. bölümde ne yazdığını hatırlamazsın. Ya da her sohbette kitabın tamamını context'e boca etmek hem pahalı hem verimsiz. Bu araç kitabı bir kez işleyip, gerektiğinde parça parça çağrılabilen bir bilgi tabanına çeviriyor.",
+        "tech": "Python tabanlı bir çıkarım motoru PDF, EPUB, DOCX, HTML ve düz metin formatlarını destekliyor. Ayrıştırma katmanında yedekli (fallback) bir zincir var: teknik/yapılandırılmış içerik için Docling, düz akademik metin için pdftotext devreye giriyor. Üç aşamalı bir boru hattı işliyor: önce format-özel ayrıştırma, sonra Claude API ile bölüm/çerçeve/kavram tespiti, son olarak da bir `SKILL.md` çekirdek dosyası artı bölüm başına ayrı, ihtiyaç anında yüklenen dosyalar üretimi. Açık \"Agent Skills\" standardına uyduğu için yalnızca Claude Code'da değil, GitHub Copilot CLI ve Amp gibi farklı ajan ortamlarında da çalışabiliyor.",
+        "why": "Mayıs 2026'da Trendshift'te \"Günün 10. Python Reposu\" seçildi. Asıl çekim gücü, ajan ekosisteminde herkesin bildiği somut bir maliyet problemine dokunması: context penceresi genişledikçe artan token maliyeti ile eksik bağlam arasındaki dengesizlik. Çıkarım maliyeti bir kere ödeniyor, sonrasında her konuşmada ham dokümanı tekrar tekrar işlemek yerine 24-51 kat daha az token harcanıyor. Claude ve benzeri ajanlarla günlük çalışan geliştiricilerin doğrudan işine yarayan bir araç olması hızlı yayılmasını açıklıyor.",
+        "evolve": "Şu an tek kaynaktan tek skill üretiyor; birden fazla kitabı birleştirip çapraz referanslı bir bilgi tabanı oluşturmak (örneğin \"dağıtık sistemler\" temalı beş kitabı tek bir skill setinde birleştirmek) doğal bir sonraki adım gibi duruyor. Ayrıca üretilen skill'lerin kitabın yeni baskılarıyla güncelliğini koruyan bir \"diff\" mekanizması, ya da topluluğun ürettiği skill'leri paylaşmak için bir pazar/registry fikri de projeye ciddi değer katabilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skills standardı",
+          "def": "AI ajanlarının belirli bir görevi yaparken yükleyebileceği, önceden hazırlanmış bilgi/talimat paketlerini tanımlayan açık bir format. Claude Code gibi farklı araçlar arasında taşınabilir olmasını sağlıyor."
+        },
+        {
+          "term": "Docling",
+          "def": "Teknik dokümanları (tablo, şema, kod bloğu içeren PDF'ler gibi) yapılandırılmış metne çeviren bir ayrıştırma kütüphanesi."
+        },
+        {
+          "term": "context window (bağlam penceresi)",
+          "def": "Bir yapay zeka modelinin bir seferde 'görebildiği' metin miktarı. Ne kadar büyük olursa modele o kadar fazla bilgi verilebilir, ama maliyeti de artar."
+        },
+        {
+          "term": "token",
+          "def": "Yapay zeka modellerinin metni işlerken kullandığı en küçük birim (kabaca bir kelime parçası). Kullanım ve maliyet genelde token sayısıyla ölçülür."
+        },
+        {
+          "term": "fallback zinciri",
+          "def": "Birincil yöntem başarısız olduğunda otomatik olarak devreye giren yedek yöntemler dizisi."
+        }
+      ]
+    },
+    {
+      "name": "microsoft/agent-governance-toolkit",
+      "url": "https://github.com/microsoft/agent-governance-toolkit",
+      "stars": "5.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "Otonom AI ajanlarının \"ne yapmasına izin var\" sorusunu, modelin iyi davranacağını ummak yerine yapısal olarak kesin biçimde cevaplıyor. Bir ajan bir araç çağrısı (tool call) yapmadan önce bu çağrının politika kurallarına uyup uymadığını denetleyen bir ara katman sağlıyor. Reddedilen bir eylem artık \"muhtemelen olmaz\" değil, sistemin izin vermediği için \"gerçekleşmesi imkansız\" hale geliyor.",
+        "tech": "Politika motoru YAML, OPA veya Cedar kurallarıyla deterministik (aynı girdi her zaman aynı sonucu verecek şekilde) değerlendirme yapıyor. Kimlik katmanı SPIFFE, DID ve mTLS ile sıfır-güven (zero-trust) kimlik doğrulaması sunuyor. Her karar, kurcalamaya karşı dayanıklı olacak şekilde Merkle doğrulamalı denetim kayıtlarına yazılıyor. Python, TypeScript, .NET, Rust ve Go için SDK'lar mevcut; Semantic Kernel, LangGraph ve CrewAI gibi popüler ajan çerçeveleriyle doğrudan entegre çalışıyor.",
+        "why": "Prompt injection saldırılarına karşı yalnızca model seviyesindeki savunmaların yetersiz kaldığını gösteren araştırmalar (GPT-4o ve Claude 3'te adaptif saldırılarla yüzde 100 başarı oranı raporlanmış) toolkit'in gerekçesini güçlendiriyor. OWASP Agentic Top 10, NIST AI RMF ve AB Yapay Zeka Yasası gibi düzenlemelerin yürütme katmanında denetim istemesiyle, prodüksiyona geçen çoklu ajan sistemlerinin ihtiyaç duyduğu \"denetlenebilirlik\" boşluğunu dolduruyor. Microsoft'un arkasında olması da kurumsal benimsemeye güven katıyor.",
+        "evolve": "Şu an politika tanımları büyük ölçüde elle yazılıyor; ajan davranış loglarından otomatik politika önerisi çıkaran bir öğrenme katmanı doğal bir eklenti olurdu. Ayrıca çoklu ajan senaryolarında ajanlar arası yetki devrini (delegation) izlemek için daha görsel, gerçek zamanlı bir denetim izi (audit trail) arayüzü de projenin olgunlaşmasına katkı sağlar."
+      },
+      "glossary": [
+        {
+          "term": "prompt injection",
+          "def": "Bir AI modelinin, kullanıcı girdisi veya işlediği içerik içine gizlenmiş talimatlarla kandırılıp asıl amacının dışına çıkarılması saldırı türü."
+        },
+        {
+          "term": "zero-trust (sıfır güven)",
+          "def": "Hiçbir isteğin, kaynağı ne olursa olsun otomatik güvenilir sayılmadığı; her erişimin ayrı ayrı doğrulandığı güvenlik yaklaşımı."
+        },
+        {
+          "term": "OPA (Open Policy Agent)",
+          "def": "Yazılım sistemlerinde erişim ve davranış kurallarını (politikaları) merkezi ve kod olarak tanımlamayı sağlayan açık kaynaklı bir motor."
+        },
+        {
+          "term": "mTLS",
+          "def": "İki tarafın da birbirinin kimliğini sertifikayla karşılıklı doğruladığı şifreli bağlantı yöntemi."
+        },
+        {
+          "term": "Merkle ağacı",
+          "def": "Büyük miktarda veriyi, herhangi bir kaydın sonradan değiştirilip değiştirilmediğini hızlıca doğrulamaya yarayan bir hiyerarşik özet (hash) yapısı."
+        },
+        {
+          "term": "OWASP Agentic Top 10",
+          "def": "OWASP topluluğunun, otonom AI ajan sistemlerinde en sık görülen on güvenlik riskini listelediği referans doküman."
+        }
+      ]
+    },
+    {
+      "name": "huggingface/speech-to-speech",
+      "url": "https://github.com/huggingface/speech-to-speech",
+      "stars": "7.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Kendi bilgisayarınızda ya da kendi sunucunuzda, tamamen açık kaynaklı modellerle çalışan bir sesli asistan (voice agent) kurmayı sağlıyor. Ticari sesli API'lere bağımlı kalmadan, verinizin dışarı çıkmadığı ve istediğiniz gibi özelleştirebildiğiniz bir alternatif sunuyor.",
+        "tech": "Dört aşamalı bir zincir kuruyor: konuşmanın ne zaman başlayıp bittiğini tespit eden VAD (Silero VAD v5), konuşmayı metne çeviren STT (Parakeet TDT, çeşitli Whisper sürümleri, Paraformer gibi seçenekler), yanıt üreten LLM (yerel Transformers, OpenAI uyumlu API veya Apple Silicon'da MLX) ve metni tekrar sese çeviren TTS (varsayılan olarak Qwen3-TTS; ayrıca Kokoro, Pocket TTS, ChatTTS, MMS seçenekleri). Her bileşen ayrı bir thread'de çalışıp kuyruklarla (queue) birbirine bağlanıyor, böylece gecikme minimize ediliyor. 15'ten fazla model desteği, CUDA/CPU ve Apple Silicon uyumluluğu, WebSocket üzerinden OpenAI Realtime protokolüyle uyumlu bir sunucu modu da mevcut.",
+        "why": "Sesli ajanlar, metin tabanlı sohbet botlarının doğal bir sonraki adımı olarak görülüyor; bu projenin Hugging Face'in güvenilirliğiyle desteklenmesi, geliştiricilerin \"kendi sesli asistanımı kurayım\" denemelerinde ilk tercih haline gelmesini sağlıyor. Reachy Mini gibi fiziksel robot projelerinde prodüksiyonda kullanılması da bunun salt bir demo değil, gerçek donanımda çalışan olgun bir sistem olduğunu gösteriyor.",
+        "evolve": "Şu anki dört aşamalı zincir mimarisi, her aşamada ayrı bir gecikme ekliyor; uçtan uca (end-to-end) konuşma-konuşma modelleriyle bu gecikmenin daha da düşürülmesi mümkün görünüyor. Kullanıcının ses tonunu/duygusunu yanıt sesine yansıtan bir prozodi aktarımı ve konuşmanın ortasında kesintiye izin veren daha doğal bir diyalog akışı (barge-in), projenin doğal gelişim yönleri arasında."
+      },
+      "glossary": [
+        {
+          "term": "VAD (Ses Aktivite Tespiti)",
+          "def": "Ses akışında insanın konuştuğu bölümleri sessizlikten ayırt eden teknoloji; genelde bir sesli asistanın ilk adımıdır."
+        },
+        {
+          "term": "STT (Speech-to-Text)",
+          "def": "Konuşulan sesi yazılı metne çeviren teknoloji."
+        },
+        {
+          "term": "TTS (Text-to-Speech)",
+          "def": "Yazılı metni sesli konuşmaya çeviren teknoloji."
+        },
+        {
+          "term": "cascade mimari (zincir mimarisi)",
+          "def": "Bir görevin, her biri ayrı bir modelin üstlendiği birbirini takip eden aşamalara bölündüğü sistem tasarımı."
+        },
+        {
+          "term": "latency (gecikme)",
+          "def": "Bir isteğin gönderilmesiyle yanıtın alınması arasında geçen süre; sesli sistemlerde düşük tutulması özellikle önemlidir."
+        },
+        {
+          "term": "MLX",
+          "def": "Apple'ın M serisi çiplerinde makine öğrenmesi modellerini verimli çalıştırmak için geliştirdiği çerçeve."
+        }
+      ]
+    },
+    {
+      "name": "hello245m/free-stockdb",
+      "url": "https://github.com/hello245m/free-stockdb",
+      "stars": "1.5k",
+      "language": "C++",
+      "sections": {
+        "serves": "Çin A-hisse piyasasında nicel (kantitatif) araştırma yapan analistlerin en büyük zaman kaybı olan veri mühendisliği sorununu çözüyor. Normalde uzak API entegrasyonu, hız sınırı (rate limit) yönetimi, veri temizleme ve gösterge hesaplama gibi işler 10-15 iş günü sürerken, bu araçla tek seferlik kurulum 30 dakikaya iniyor.",
+        "tech": "C++17 ile yazılmış özel bir zaman-serisi veritabanı motoru; günlük/haftalık/aylık mum verilerini ve 1/5/15/30 dakikalık tick verilerini Zstd sıkıştırmasıyla (CSV veya MySQL'e göre yaklaşık 3 kat daha küçük) yerelde saklıyor. Senkronizasyon SHA-256 doğrulamalı ve yarıda kesilse bile devam ettirilebilir şekilde çalışıyor; borsadan çıkma, işlem durdurma, kod değişikliği gibi durumları otomatik yönetiyor. Hesaplama katmanı Rust ile yazılmış (pandas'a göre yaklaşık 3 kat daha hızlı) ve 39 yerleşik teknik gösterge sunuyor. Python SDK, HTTP API, Excel/WPS makroları ve Claude/Cursor için MCP protokolü dahil beş farklı erişim yolu mevcut.",
+        "why": "Çin fintech topluluğunda gerçek bir acı noktasına dokunuyor: çoğu nicel araştırmacı zamanının büyük kısmını strateji geliştirmek yerine veri toplamaya harcıyor. \"Veri egemenliği\" vurgusu, yani dış API'lere bağımlı kalmadan tamamen yerelde çalışabilme, ve kurulumun basitliği topluluğun hızla ilgi göstermesini açıklıyor. MCP desteğiyle Claude gibi AI ajanlarına doğrudan bağlanabilmesi de güncel ajan-araç trendiyle örtüşüyor.",
+        "evolve": "Şu an odak tamamen Çin A-hisse piyasasında; ABD veya Avrupa borsaları gibi küresel piyasalara genişleme doğal bir talep yaratabilir. Ayrıca gerçek zamanlı veri akışı şu anki halinde sınırlıysa, WebSocket tabanlı canlı besleme ve hazır backtest motoru entegrasyonları eklenmesi projenin değerini belirgin biçimde artırır."
+      },
+      "glossary": [
+        {
+          "term": "K-line (mum grafiği)",
+          "def": "Bir varlığın belirli bir zaman diliminde açılış, kapanış, en yüksek ve en düşük fiyatlarını gösteren, finansal analizde yaygın kullanılan grafik türü."
+        },
+        {
+          "term": "Zstd sıkıştırma",
+          "def": "Veriyi hızlı biçimde ve yüksek oranda küçülten modern bir sıkıştırma algoritması."
+        },
+        {
+          "term": "tick verisi",
+          "def": "Bir finansal varlıkta gerçekleşen her tek işlemin kaydedildiği, en ince taneli fiyat verisi."
+        },
+        {
+          "term": "backtest",
+          "def": "Bir yatırım stratejisinin geçmiş piyasa verileri üzerinde simüle edilerek başarısının test edilmesi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "rate limit (hız sınırı)",
+          "def": "Bir API'nin belirli bir sürede kabul ettiği azami istek sayısı sınırı."
+        },
+        {
+          "term": "zaman-serisi veritabanı",
+          "def": "Zamana bağlı olarak sürekli üretilen verileri (fiyat, sensör ölçümü vb.) verimli saklamak ve sorgulamak için tasarlanmış veritabanı türü."
+        }
+      ]
+    },
+    {
+      "name": "pascalorg/editor",
+      "url": "https://github.com/pascalorg/editor",
+      "stars": "19k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Tarayıcı üzerinde çalışan, kurulum gerektirmeyen, 3D mimari/bina tasarımı yapıp paylaşmayı sağlayan açık kaynaklı bir editör. Kullanıcılar doğrudan web'de bina veya mekan tasarlayıp interaktif olarak inceleyebiliyor, tasarımlarını link üzerinden paylaşabiliyor.",
+        "tech": "React 19 ve Next.js 16 üzerine kurulu; 3D render için WebGPU destekli Three.js'i kullanan React Three Fiber, durum yönetimi için Zustand, şema doğrulama için Zod tercih edilmiş. Turborepo ve Bun ile yönetilen bir monorepo yapısı var; dört ana paket birbirinden ayrılmış: sahne durumu ve node şemalarını tutan çekirdek katman, 3D render motoru, düzenleme araçları/arayüz katmanı ve hazır mimari bileşenler kütüphanesi. Dikkat çeken mimari karar: sahne verisi iç içe bir ağaç yerine düz bir node sözlüğünde tutuluyor; her karede yalnızca değişmiş (\"kirli\") node'lar yeniden işleniyor, bu da büyük sahnelerde performansı koruyor.",
+        "why": "WebGPU'nun tarayıcılarda olgunlaşması ve Three.js ekosisteminin buna hızla uyum sağlamasıyla, tarayıcı içi ağır 3D uygulamalar artık gerçekçi bir seçenek haline geldi. Eklenti (plugin) sistemi ve temiz mimarisi hem son kullanıcıları hem de üzerine bileşen geliştirmek isteyen geliştiricileri çekiyor; \"kurulumsuz, paylaşılabilir 3D tasarım\" vaadi mimarlardan hobicilere, eğitimcilere kadar geniş bir kitleye hitap ediyor.",
+        "evolve": "Şu an için Figma tarzı çoklu kullanıcı gerçek zamanlı işbirliği öne çıkan bir eksik gibi görünüyor. Ayrıca IFC/BIM gibi endüstri standardı mimari dosya formatlarıyla içe/dışa aktarım desteği eklenmesi, projeyi hobi düzeyinden profesyonel mimarlık iş akışlarına taşıyabilecek doğal bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "WebGPU",
+          "def": "Tarayıcıların grafik kartının gücünü doğrudan ve verimli kullanmasını sağlayan yeni nesil bir web grafik standardı."
+        },
+        {
+          "term": "Three.js",
+          "def": "Web tarayıcısında 3 boyutlu grafik oluşturmak için yaygın kullanılan bir JavaScript kütüphanesi."
+        },
+        {
+          "term": "monorepo",
+          "def": "Birden fazla paket veya projenin tek bir git deposunda birlikte tutulduğu geliştirme yaklaşımı."
+        },
+        {
+          "term": "Zustand",
+          "def": "React uygulamalarında uygulama durumunu (state) yönetmek için kullanılan hafif bir kütüphane."
+        },
+        {
+          "term": "\"kirli\" (dirty) node",
+          "def": "Bir önceki karadan bu yana değişmiş, bu yüzden yeniden hesaplanması/çizilmesi gereken sahne öğesi."
+        },
+        {
+          "term": "flat dictionary (düz sözlük)",
+          "def": "Verilerin iç içe geçmiş bir ağaç yerine, birbirine kimlikle referans veren düz bir liste/sözlük halinde tutulduğu veri yapısı; genelde performans için tercih edilir."
+        }
+      ]
+    }
+  ]
+}
