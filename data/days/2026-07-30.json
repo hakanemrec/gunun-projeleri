@@ -1,0 +1,87 @@
+{
+  "date": "2026-07-30",
+  "projects": [
+    {
+      "name": "affaan-m/ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "stars": "236k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "Claude Code, Codex, Cursor gibi AI kodlama ajanlarını her yeni görevde sıfırdan talimatlandırmak yerine, **kurulabilir bir altyapı** haline getiriyor. Normalde her konuşmada tekrar tekrar anlatılan 'önce plan yap, sonra test yaz, sonra uygula, sonra gözden geçir' döngüsü artık tek seferlik bir kurulumla ajanın kalıcı parçası oluyor. Böylece ekipler, ajanların davranışını her seferinde yeniden müzakere etmek yerine, önceden tanımlanmış disiplinli bir iş akışına güvenebiliyor.",
+        "tech": "Sistem üç katmandan oluşuyor: 67 uzmanlaşmış agent (planlayıcı, kod inceleyici, dile özel gözden geçiriciler, güvenlik denetçisi gibi), 281 yeniden kullanılabilir skill (TDD metodolojisi, Django/Laravel/Spring Boot kalıpları, ML boru hatları) ve 94 slash-komut (`/ecc:plan`, `/code-review` gibi). Bunun altında bir hook sistemi çalışıyor: PreToolUse, PostToolUse ve Stop aşamalarında devreye giren bu kancalar, test kapsama zorunluluğu (%80+) ve git commit formatı gibi kuralları modelin 'unutmasına' izin vermeden, deterministik biçimde dayatıyor. Oturumlar arası hafıza için 'Unified Memory Vault' adında taşınabilir bir Markdown tabanlı devir mekanizması ve oturumlardan güven skorlu 'içgüdüler' çıkaran sürekli öğrenme katmanı var. Güvenlik tarafında AgentShield, CLAUDE.md, MCP ayarları ve hook tanımlarını 102 statik kurala karşı tarıyor; isteğe bağlı olarak üç ayrı Opus modelinin birbirini denetlediği kırmızı takım/mavi takım/denetçi modeliyle çalışıyor.",
+        "why": "Repo bir günde 236 bin toplam yıldıza ve 857 yeni yıldıza ulaşarak listeye zirveden girdi; bu ölçek, arkasında CodeRabbit, Greptile ve Moonshot AI gibi isimlerle kurulmuş ekosistem ortaklıklarını ve npm, GitHub App, Claude Code marketplace gibi çoklu dağıtım kanallarını işaret ediyor. Ajan tabanlı geliştirmenin 'prompt mühendisliği'nden 'kurumsal altyapı'ya evrildiği bir dönemde, tek bir bakımcının yedi farklı harness'ta haftalık sürüm çıkarabilmesi ekosistemin olgunlaştığının bir göstergesi. MIT lisanslı çekirdek ücretsiz kalırken, özel repo'lar için aylık 19 dolarlık Pro katmanı sürdürülebilir bir gelir modeli sunuyor.",
+        "evolve": "Çoklu model orkestrasyonu (`/multi-plan`, `/multi-execute`) şu an ayrı bir `ccg-workflow` çalışma zamanı gerektiriyor; bu bağımlılığın çekirdeğe entegre edilmesi kullanım kolaylığını artırabilir. Kimi Code gibi kendi barındırılan harness'lar için GPU kapasitesinin dışarıdan sağlanması gerekmesi, küçük ekipler için bir engel oluşturuyor. Kullanıcı kapsamındaki hafıza erişiminin varsayılan olarak kapalı, yalnızca `ECC_MEMORY_ALLOW_USER_SCOPE=1` ile açılabilir olması bilinçli bir güvenlik tercihi; ancak arayüzden yönetilebilir hale gelmesi benimsemeyi kolaylaştırabilir. Rust ile yazılan 'ECC 2.0' kontrol düzlemi prototipi olgunlaştıkça, sistemin performans ve güvenilirlik sınırlarını daha da genişletmesi bekleniyor."
+      },
+      "glossary": [
+        { "term": "agent harness", "def": "AI kodlama asistanlarının (Claude Code, Cursor, Codex gibi) çalıştığı, araç çağırma ve dosya düzenleme yeteneklerini yöneten çerçeve programlar." },
+        { "term": "hook", "def": "Bir ajan belirli bir eylemi (araç çağrısı, oturum başlangıcı/bitişi gibi) gerçekleştirdiğinde otomatik tetiklenen, modelin kontrolü dışında çalışan denetim/otomasyon betiği." },
+        { "term": "TDD (Test Güdümlü Geliştirme)", "def": "Önce başarısız olan bir test yazıp sonra bu testi geçirecek en az kodu üretme, ardından iyileştirme yapma prensibine dayanan yazılım geliştirme yöntemi." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "slash komut", "def": "Sohbet arayüzünde eğik çizgi ile başlayan, önceden tanımlanmış bir eylemi tetikleyen kısayol komut." },
+        { "term": "kırmızı takım / mavi takım", "def": "Güvenlik testinde bir tarafın saldırgan gibi açık aramaya, diğer tarafın bu açıkları savunmaya çalıştığı simülasyon yöntemi." },
+        { "term": "kontrol düzlemi (control plane)", "def": "Bir sistemin asıl işi yapan kısmından ayrı, o sistemi yöneten ve koordine eden altyapı katmanı." }
+      ]
+    },
+    {
+      "name": "different-ai/openwork",
+      "url": "https://github.com/different-ai/openwork",
+      "stars": "18.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bir ekip Claude Code'da bir workflow kurar, bir başkası Cursor'da farklı bir workflow yazar ve bu ikisi asla birbirinin emeğinden faydalanamaz. OpenWork, bu parçalanmayı çözüp AI iş akışlarını, becerileri ve eklentileri tek bir yerde toplayıp; Claude Code, Cursor, Codex, ChatGPT gibi farklı araçlar arasında taşınabilir hale getiriyor. Kendini açıkça Anthropic'in Claude Cowork ürününe açık kaynaklı bir alternatif olarak konumlandırıyor.",
+        "tech": "Electron tabanlı bir masaüstü uygulaması (macOS, Windows, Linux) sunsa da asıl entegrasyon noktası uzak bir MCP sunucusu: `search_capabilities` ve `execute_capability` adlı iki araçla, masaüstü uygulamasını hiç kurmadan doğrudan Claude Code, Codex veya Cursor'a tek satırlık bir komutla bağlanabiliyorsunuz. pnpm ve Turborepo ile yönetilen bir monorepo yapısında masaüstü uygulaması, MCP sunucusu ve kurumsal yönetim katmanı ayrı paketler halinde tutuluyor. 'OpenWork Den' adlı kurumsal kontrol düzlemi, model sağlayıcı erişim kısıtları, cihaz politikaları ve dahili marketplace üzerinden skill/plugin yayınlamayı yönetiyor; Anthropic'in plugin formatıyla uyumlu olduğu için mevcut Claude eklentileri doğrudan içe aktarılabiliyor.",
+        "why": "18,1 bin yıldız ve 255 açık pull request'lik yoğun katkı trafiği, projenin sadece bir demo değil aktif olarak şekillendirilen bir platform olduğunu gösteriyor. Şirketlerin AI ajanlarını tek bir sağlayıcıya kilitlenmeden benimseme isteği büyüdükçe, workflow'u araçtan bağımsız, taşınabilir bir varlık olarak ele alan bu yaklaşım kurumsal ekiplere hitap ediyor. Google Workspace ve Microsoft 365 gibi kurumsal araçlara MCP üzerinden erişim sunması, günlük ofis işlerini otomatikleştirmek isteyen ekiplerin ilgisini çekiyor.",
+        "evolve": "README'de paylaşım seçenekleri şimdilik iki uçlu görünüyor: bir workflow'u ya tamamen kendine saklıyorsun ya da paylaşıyorsun. Rol bazlı, daha ince taneli paylaşım izinleri (örneğin sadece takım liderlerinin düzenleyebilmesi) kurumsal benimsemeyi hızlandırabilir. 147 açık issue, platformun hâlâ olgunlaşma aşamasında olduğunu gösteriyor; özellikle üçüncü parti MCP sunucularının güvenlik denetimi ve marketplace'teki eklentilerin doğrulanması gibi konularda daha net süreçler eklenmesi güven inşa etmeye yardımcı olur."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "Electron", "def": "Web teknolojileriyle (HTML/CSS/JS) çapraz platform masaüstü uygulaması geliştirmeyi sağlayan bir çerçeve." },
+        { "term": "monorepo", "def": "Birden fazla paket veya projenin tek bir git deposunda birlikte tutulduğu geliştirme yaklaşımı." },
+        { "term": "vendor lock-in", "def": "Bir kullanıcının ya da şirketin belirli bir sağlayıcının ürününe o kadar bağımlı hale gelmesi ki başka bir sağlayıcıya geçişin çok maliyetli olması durumu." },
+        { "term": "kontrol düzlemi (control plane)", "def": "Bir sistemin asıl işi yapan kısmından ayrı, o sistemi yöneten ve koordine eden altyapı katmanı." },
+        { "term": "marketplace (eklenti pazarı)", "def": "Kullanıcıların üçüncü taraf eklentileri, skill'leri veya entegrasyonları keşfedip kurabildiği dahili mağaza." }
+      ]
+    },
+    {
+      "name": "grokability/snipe-it",
+      "url": "https://github.com/grokability/snipe-it",
+      "stars": "14.5k",
+      "language": "PHP",
+      "sections": {
+        "serves": "Bir şirkette 'o laptopu kim aldı, ne zaman amortismana tabi olacak, hangi yazılım lisansı hangi çalışana atanmış' sorularının cevabı genelde dağınık Excel tablolarında kayboluyor. Snipe-IT, donanım envanterini, yazılım lisanslarını ve amortisman takvimlerini tek bir merkezi sistemde toplayarak IT operasyon ekiplerine bu görünürlüğü kazandırıyor; bu aslında küçük ölçekli bir ERP varlık yönetimi modülüne çok yakın bir problem.",
+        "tech": "Laravel 12 üzerine kurulu, MySQL veritabanı kullanan klasik ama sağlam bir web uygulaması mimarisi. Composer bağımlılıkları yönetiyor, ön yüz varlıkları npm ile derleniyor, Artisan CLI ile toplu işlemler ve bakım komutları çalıştırılıyor. Docker Compose ile tek komutla ayağa kaldırılabiliyor; JSON tabanlı bir REST API üçüncü parti sistemlerle (PowerShell betikleri, .NET modülleri, Kubernetes Helm chart'ları) entegrasyona izin veriyor. QR kod üretimi ve taramasıyla fiziksel varlıkların check-in/check-out işlemleri hızlanıyor, Crowdin üzerinden çoklu dil desteği sağlanıyor.",
+        "why": "24 binden fazla commit ve 331 katkımcıyla, bu proje 2026'nın parlak yeni AI aracı değil; yıllardır sessizce büyüyen, olgunlaşmış bir altyapı parçası. IT varlık yönetimi ve lisans uyumluluğu, özellikle denetim dönemlerinde, şirketler için hâlâ çözülmemiş ama zorunlu bir problem; bu tür sıkıcı ama gerekli araçların düzenli aralıklarla yeniden gündeme gelmesi normal. AGPL-3.0 lisansı, kod üzerinde değişiklik yapıp SaaS olarak sunan şirketlerin de bu değişiklikleri paylaşmasını zorunlu kılarak topluluğun sürdürülebilirliğini koruyor; bu da kurumsal kullanıcılar için güven artırıcı bir detay.",
+        "evolve": "Şu an entegrasyonlar büyük ölçüde tek yönlü (Snipe-IT'ten dışarı veri aktarımı); SAP, IFS veya diğer ERP sistemleriyle çift yönlü, gerçek zamanlı senkronizasyon sağlayan resmi konektörler eklenmesi, aracı kurumsal IT'nin daha merkezi bir parçası haline getirebilir. Ayrıca amortisman hesaplamalarının farklı muhasebe standartlarına göre daha esnek yapılandırılabilmesi ve mobil uygulamaların (şu an üçüncü parti) resmi ürün ailesine dahil edilmesi doğal bir sonraki adım."
+      },
+      "glossary": [
+        { "term": "Laravel", "def": "PHP dilinde yazılmış, web uygulamaları geliştirmeyi hızlandıran popüler bir framework." },
+        { "term": "Artisan CLI", "def": "Laravel'in komut satırından veritabanı işlemleri, bakım ve otomasyon görevleri çalıştırmaya yarayan yerleşik aracı." },
+        { "term": "REST API", "def": "Sistemlerin HTTP üzerinden standart yöntemlerle veri alışverişi yapmasını sağlayan arayüz tasarım stili." },
+        { "term": "amortisman (depreciation)", "def": "Bir varlığın zamanla değer kaybının muhasebe kayıtlarına sistematik olarak yansıtılması." },
+        { "term": "AGPL-3.0", "def": "Bir yazılımı değiştirip sunucu üzerinden (SaaS) sunan herkesi, yaptığı değişiklikleri de açık kaynak olarak paylaşmaya zorunlu kılan açık kaynak lisansı." },
+        { "term": "check-in/check-out", "def": "Bir fiziksel varlığın (laptop, ekipman) kimde olduğunu kayıt altına almak için teslim alma/teslim etme işlemi." }
+      ]
+    },
+    {
+      "name": "MoonshotAI/FlashKDA",
+      "url": "https://github.com/MoonshotAI/FlashKDA",
+      "stars": "1k",
+      "language": "Cuda",
+      "sections": {
+        "serves": "Kimi ailesi gibi büyük dil modellerinin çekirdeğindeki attention (dikkat) mekanizması, modelin hangi kelimenin hangisine 'bakması' gerektiğini hesaplıyor; ancak Kimi'nin kullandığı özel 'Delta Attention' varyantı, standart kütüphanelerin optimize edemediği matematiksel işlemler içeriyor. FlashKDA, bu özel işlemi GPU üzerinde olabildiğince hızlı çalıştıracak, elle optimize edilmiş çekirdek kodları sağlayarak modelin hem eğitim hem çıkarım maliyetini düşürüyor.",
+        "tech": "NVIDIA'nın CUTLASS kütüphanesi üzerine inşa edilmiş, yalnızca SM90 ve üzeri GPU mimarilerinde (H100, H200, GB200) ve CUDA 12.9+ ile çalışan CUDA C++ çekirdekleri içeriyor. `flash-linear-attention` kütüphanesinin 0.5.0 sürümünden itibaren `chunk_kda` fonksiyonu üzerinden otomatik olarak devreye giriyor, yani geliştiricinin ek bir şey yapmasına gerek kalmadan arka planda kullanılıyor. Sorgu, anahtar, değer tensörlerinin yanı sıra kapı sinyalleri, beta logit'leri ve öğrenilebilir parametreleri işliyor; hem durumsuz hem de önceki adımdan gelen gizli durumu taşıyan çalışma modlarını destekliyor, değişken uzunluktaki dizileri `cu_seqlens` ile tek seferde toplu işleyebiliyor. Şu an başlık ve değer boyutları sabit olarak 128 ile sınırlı.",
+        "why": "Moonshot AI, Kimi model ailesiyle agent tabanlı kullanım senaryolarında hızla öne çıkan bir Çinli AI araştırma şirketi; bu çekirdeklerin herkese açık, MIT lisanslı olarak yayınlanması, üçüncü parti geliştiricilerin Kimi mimarisini kendi altyapılarında verimli biçimde çalıştırabilmesini sağlıyor. Büyük dil modeli çıkarım maliyetlerinin endüstri genelinde en kritik gündem maddelerinden biri olduğu bir dönemde, 'referans implementasyona göre kat kat hızlı' türünden somut performans kazanımları sunan bu tarz altyapı projeleri, doğrudan model kullanıcılarının cebine yansıyan bir fayda sağladığı için hızla ilgi topluyor.",
+        "evolve": "Şu anki 128 sabit boyut kısıtlaması, farklı model mimarilerine uyarlanmayı zorlaştırıyor; bu kısıtın gevşetilmesi kütüphanenin kullanım alanını genişletir. SM90 altı GPU'ların (örneğin yaygın olarak kullanılan A100) desteklenmemesi, bu donanımlara sahip ekipleri Triton tabanlı daha yavaş bir yedek moda mahkum ediyor; geriye dönük uyumluluk katmanı eklenmesi benimsemeyi artırabilir. Ayrıca README'de somut verim rakamlarının ayrı bir benchmark dosyasına bırakılmış olması, projeye ilk bakan geliştiriciler için performans kazanımını daha görünür kılacak bir özet tablonun ana sayfaya eklenmesini faydalı kılıyor."
+      },
+      "glossary": [
+        { "term": "CUDA çekirdeği (kernel)", "def": "NVIDIA grafik işlemcilerinde doğrudan çalışacak şekilde yazılmış, çok sayıda hesaplamayı paralel yürüten düşük seviyeli program parçası." },
+        { "term": "CUTLASS", "def": "NVIDIA'nın, GPU üzerinde yüksek performanslı matris çarpımı gibi işlemleri yazmayı kolaylaştıran şablon kütüphanesi." },
+        { "term": "attention (dikkat mekanizması)", "def": "Büyük dil modellerinin bir diziyi işlerken hangi kelimelerin/parçaların birbiriyle ne kadar ilişkili olduğunu hesapladığı temel yapı taşı." },
+        { "term": "bfloat16", "def": "Yapay zeka hesaplamalarında, tam hassasiyetli sayılara göre daha az bellek kullanan ama yeterli doğruluğu koruyan 16 bitlik bir sayı formatı." },
+        { "term": "inference (çıkarım)", "def": "Eğitilmiş bir modelin yeni bir girdi için tahmin veya yanıt üretme aşaması." },
+        { "term": "Triton", "def": "GPU çekirdekleri yazmayı CUDA'ya göre daha kolay hale getiren, Python'a yakın bir programlama dili ve derleyici." },
+        { "term": "SM90", "def": "NVIDIA'nın Hopper mimarisiyle gelen GPU hesaplama yeteneği sürümü; belirli donanım nesillerini (H100 gibi) ifade eder." }
+      ]
+    }
+  ]
+}
