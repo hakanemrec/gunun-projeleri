@@ -1,0 +1,83 @@
+{
+  "date": "2026-07-31",
+  "projects": [
+    {
+      "name": "ChromeDevTools/chrome-devtools-mcp",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "stars": "48.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Yapay zekâ destekli kodlama ajanları (Claude, Cursor, Copilot, Gemini CLI vb.) bir web uygulamasını test ederken genelde **kör** çalışır: sayfada ne olduğunu, konsolda hangi hataların çıktığını, ağ isteklerinin nasıl gittiğini göremez. `chrome-devtools-mcp`, gerçek bir Chrome tarayıcısını ajanın önüne bir **MCP sunucusu** olarak açar; ajan artık tıklama, form doldurma, ekran görüntüsü alma, performans izleme gibi işlemleri doğrudan tarayıcı üzerinde yapabilir ve sonucu görüp değerlendirebilir. Kısacası, kod yazan ajanlara insan geliştiricinin DevTools panelindeki gücü verir — 'yaz, çalıştır, gör, düzelt' döngüsünü ajanın kendi başına tamamlayabilmesini sağlar.",
+        "tech": "- **Model Context Protocol (MCP)**: Ajan (istemci) ile sunucu arasındaki iletişim standardı; herhangi bir MCP uyumlu araç (Claude, VS Code Copilot, Cursor, JetBrains AI...) bu sunucuya bağlanabilir.\n- **Node.js/TypeScript** sunucu, **Puppeteer** ve **Chrome DevTools Protocol (CDP)** ile tarayıcıyı uzaktan yönetir.\n- 9 kategoride **60'tan fazla araç** sunar: girdi otomasyonu, gezinme, emülasyon, performans izleme, ağ analizi, hata ayıklama, bellek analizi (heap snapshot), uzantı yönetimi ve üçüncü parti WebMCP araçları.\n- Deneysel **`--experimentalVision`** modu, koordinat tabanlı 'computer-use' modelleri için görsel etkileşim sağlar; **sayfa ID yönlendirmesi** ile aynı anda birden fazla ajan oturumu desteklenir.\n- Yalnızca resmi olarak **Google Chrome / Chrome for Testing** ile çalışır; diğer Chromium tabanlı tarayıcılar 'çalışabilir' ama desteklenmez.",
+        "why": "Proje doğrudan Google Chrome ekibinin çatısı altında geliştiriliyor ve Haziran 2026'da resmen 'stable' duyuruldu; Temmuz'da yayınlanan **v1.6.0** ile güncellemeler sürüyor. 2026'nın GitHub trend listelerine damgasını vuran tema net: artık tek başına modeller değil, ajanların *etrafındaki altyapı* — test, doğrulama, geri bildirim araçları — trend oluyor. Bu proje tam da o boşluğu dolduruyor: agentic coding araçlarının en büyük zaafı olan 'kör kod yazma' problemine somut bir çözüm sunuyor, bu yüzden 48 binin üzerindeki yıldızına rağmen halen günlük onlarca yeni yıldız topluyor.",
+        "evolve": "- **Tarayıcı çeşitliliği**: Şu an yalnızca Chrome ailesine kilitli; Firefox/WebKit desteği gelirse çapraz tarayıcı test senaryoları açılır.\n- **Güvenlik**: Ajanın tarayıcıdaki her şeyi (oturum çerezleri, hassas veriler dahil) görebilmesi risk; daha ince taneli izin/sanal alan (sandbox) modelleri beklenebilir.\n- **Çoklu ajan orkestrasyon**: Sayfa ID yönlendirmesi başlangıç; gerçek paralel ajan filolarının aynı tarayıcı havuzunu güvenle paylaşması için daha olgun bir oturum yönetimi gerekebilir.\n- **Mobil/Android** desteği şimdiden var ama derinleştirilebilir; kurumsal CI/CD hatlarına gömülü, headless-first bir mod da mantıklı bir sonraki adım olur."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının dış araçlara ve veriye standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "CDP (Chrome DevTools Protocol)", "def": "Chrome tarayıcısının iç işleyişine (ağ, performans, DOM) programatik erişim sağlayan protokol." },
+        { "term": "Puppeteer", "def": "Chrome/Chromium tarayıcılarını kod ile uzaktan kontrol etmeye yarayan bir Node.js kütüphanesi." },
+        { "term": "Heap snapshot", "def": "Bir uygulamanın o anki bellek kullanımının anlık görüntüsü; bellek sızıntılarını bulmak için kullanılır." },
+        { "term": "Headless tarayıcı", "def": "Ekran arayüzü olmadan arka planda çalışan tarayıcı; otomasyon ve testlerde kullanılır." },
+        { "term": "Sandbox (sanal alan)", "def": "Bir programın sistemin geri kalanından izole, kısıtlı yetkilerle çalıştığı güvenli ortam." },
+        { "term": "Computer-use modeli", "def": "Ekranı görüp fare/klavye ile etkileşime girerek görev tamamlayan yapay zekâ modeli türü." }
+      ]
+    },
+    {
+      "name": "agavra/tuicr",
+      "url": "https://github.com/agavra/tuicr",
+      "stars": "1.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Yapay zekâ ajanları artık devasa miktarda kod diff'i üretiyor ve birisinin bunları satır satır incelemesi gerekiyor. Klasik yol GitHub/GitLab'ın web arayüzüne gidip PR açmak — ama bu, terminalde çalışan bir geliştiricinin akışını böler. `tuicr`, tıpkı bir PR incelemesi gibi satır/aralık/dosya/genel seviyede yorum yazabildiğiniz, incelemeyi vim tuşlarıyla yönetebildiğiniz bir **terminal arayüzü (TUI)** sunuyor; böylece kod incelemesi hiç tarayıcıya geçmeden, aynı terminal penceresinde tamamlanabiliyor.",
+        "tech": "- **Rust** ile yazılmış, çalışma zamanı bağımlılığı olmayan **tek bir statik binary**; kurulumu tek satır kabuk komutuyla (`curl ... | sh`), Homebrew, Cargo veya Nix üzerinden yapılabiliyor.\n- **Git, Jujutsu (jj) ve Mercurial** ile doğrudan entegre; commit aralıkları, uzak PR/MR'lar veya işlenmemiş (uncommitted) değişiklikler incelenebiliyor.\n- Vim modal tuş haritası (j/k gezinme, görsel mod, lider tuşları), yan yana (side-by-side) diff görünümü, dosya ağacı paneli, 23'ten fazla renk teması.\n- İnceleme sonucu üç şekilde dışarı verilebiliyor: **GitHub/GitLab'a gerçek bir review olarak gönderme**, panoya markdown kopyalama (AI ajanlarına context olarak vermek için) veya stdout'a yazdırma.\n- Programatik erişim için bir kütüphane API'si ve etkileşimsiz kullanım için ayrı bir CLI de mevcut.",
+        "why": "Asıl patlama, `daily.dev` üzerinde yayınlanan **'Tuicr Is Probably The Best Terminal Code Reviewer I've Ever Used'** başlıklı yazının viral olmasıyla geldi — proje bir günde toplam yıldızının **yaklaşık %10'u kadar** yeni yıldız topladı, bugünkü listedeki en yüksek ivmeye sahip proje bu. Zamanlaması da isabetli: ajan destekli kodlamanın yaygınlaşmasıyla birlikte geliştiricilerin gerçek sıkıntısı artık 'kod yazmak' değil, üretilen kod dağını **hızlıca ve güvenle incelemek**. Terminalden çıkmadan çalışan, agent-friendly (markdown export) bir araç bu ihtiyaca tam oturuyor.",
+        "evolve": "- **İş birliği**: Şu an tekli-kullanıcı odaklı; ekip içi eşzamanlı inceleme veya yorum threadleri (cevaplama, çözüldü işaretleme) eklenirse GitHub PR deneyimine daha da yaklaşır.\n- **AI entegrasyonu**: 'Agent skill' desteği başlangıç adımı; incelemeyi otomatik özetleyen veya riskli hunk'ları önceliklendiren bir AI katmanı doğal bir sonraki adım.\n- **VCS kapsamı**: Git/jj/Mercurial dışında Perforce gibi kurumsal sistemlere destek, büyük şirket kullanıcılarını çekebilir.\n- 73 açık issue ve 19 açık PR, projenin hâlâ aktif ama olgunlaşma aşamasında olduğunu gösteriyor; API stabilitesi zamanla oturacaktır."
+      },
+      "glossary": [
+        { "term": "TUI (Terminal User Interface)", "def": "Grafik arayüz yerine tamamen terminal/komut satırı içinde çalışan, ama yine de etkileşimli görsel bir arayüz." },
+        { "term": "Jujutsu (jj)", "def": "Git ile uyumlu çalışabilen, daha basit bir model sunan yeni nesil bir sürüm kontrol sistemi." },
+        { "term": "Statik binary", "def": "Çalışması için harici kütüphane veya çalışma zamanı (runtime) gerektirmeyen, tek dosyalık çalıştırılabilir program." },
+        { "term": "Hunk", "def": "Bir diff içinde birbirine yakın satırlardan oluşan, tek bir değişiklik bloğu." },
+        { "term": "Vim tuş haritası", "def": "Vim metin editöründeki klavye kısayollarının başka bir uygulamaya taşınmış hâli." }
+      ]
+    },
+    {
+      "name": "microsoft/PowerToys",
+      "url": "https://github.com/microsoft/PowerToys",
+      "stars": "137k",
+      "language": "C#",
+      "sections": {
+        "serves": "Windows, kutudan çıktığı haliyle güçlü pencere yönetimi, hızlı dosya arama veya gelişmiş klavye özelleştirme gibi konularda eksik kalıyor. PowerToys, bu boşlukları dolduran **30'dan fazla bağımsız yardımcı programdan** oluşan ücretsiz, açık kaynak bir araç kutusu: pencereleri ızgaralara oturtan FancyZones, klavye kısayollarıyla her şeyi bulan PowerToys Run, dosya/klasör isimlerini toplu değiştiren PowerRename gibi modüller, günlük iş akışını gözle görülür şekilde hızlandırıyor.",
+        "tech": "- **C# / .NET** tabanlı, arayüzlerde **WinUI** kullanılıyor; proje son sürümde **.NET 10**'a geçti (kaynaktan derlemek için artık Visual Studio 2026 gerekiyor).\n- **Modüler mimari**: her yardımcı program (FancyZones, PowerToys Run, Command Palette, Advanced Paste, Color Picker...) ayrı bir bileşen olarak paketleniyor, ihtiyaca göre açılıp kapatılabiliyor.\n- **Command Palette**, kendi başına bir eklenti platformu haline geldi — üçüncü parti 'extension'lar **Extension Gallery** üzerinden keşfedilip kurulabiliyor.\n- Dağıtım: Microsoft Store, WinGet, GitHub Releases yanında Chocolatey/Scoop gibi topluluk paket yöneticileri de destekleniyor.",
+        "why": "Temmuz 2026'da art arda gelen **v0.100.0 → v0.100.1 → v0.100.2** sürümleri asıl tetikleyici: yepyeni bir **Shortcut Guide**, Command Palette için **Extension Gallery**, çoklu monitör desteğiyle gelen **Dock** özelliği ve kurulum boyutunun ~11MB küçültülmesi gibi somut, 'hemen hissedilen' iyileştirmeler geldi. Ardından hızla gelen yama sürümleri (bir Command Palette bellek sızıntısı düzeltmesi dahil) topluluğun projeyi yakından takip ettiğini gösteriyor. Zaten dev bir kullanıcı kitlesine (137 bin+ yıldız) sahip olması, her majör sürümün hızla yeni yıldızlara dönüşmesini kolaylaştırıyor.",
+        "evolve": "- **Extension Gallery'nin büyümesi**: Şu an yeni açılan bir ekosistem; üçüncü parti eklenti kalitesi ve güvenliği için bir inceleme/imzalama süreci zamanla önem kazanacak.\n- **Performans**: v0.100 serisindeki ardışık bellek sızıntısı yamaları, hızlı büyüyen modüler yapının stabilite maliyetini gösteriyor — daha sıkı otomatik test/izleme altyapısı faydalı olur.\n- **Platform genişlemesi**: Topluluk zaman zaman macOS/Linux desteği istiyor; gerçekleşmesi olası olmasa da, en azından bazı modüllerin (ör. PowerToys Run benzeri bir başlatıcı) cross-platform mantıkla yeniden yazılması tartışılabilir."
+      },
+      "glossary": [
+        { "term": "WinUI", "def": "Windows uygulamaları için Microsoft'un modern arayüz (UI) çatısı." },
+        { "term": "Command Palette", "def": "Klavyeden komut yazarak uygulama, dosya veya eylem çalıştırmayı sağlayan hızlı erişim arayüzü." },
+        { "term": "Extension Gallery", "def": "Bir uygulamaya üçüncü parti eklentilerin keşfedilip kurulduğu mağaza benzeri bölüm." },
+        { "term": "FancyZones", "def": "Ekranı özel bölgelere ayırıp pencereleri bu bölgelere hızlıca yerleştiren PowerToys modülü." },
+        { "term": "Bellek sızıntısı (memory leak)", "def": "Bir programın kullanmadığı belleği serbest bırakmayıp zamanla giderek daha fazla RAM tüketmesi hatası." }
+      ]
+    },
+    {
+      "name": "microsoft/AI-For-Beginners",
+      "url": "https://github.com/microsoft/AI-For-Beginners",
+      "stars": "54.4k",
+      "language": "Jupyter Notebook",
+      "sections": {
+        "serves": "Yapay zekâya sıfırdan başlamak isteyen ama nereden başlayacağını bilmeyenler için Microsoft'un hazırladığı, **12 haftalık, 24 derslik** yapılandırılmış bir müfredat. Klasik makine öğrenmesinden sinir ağlarına, doğal dil işlemeden bilgisayarla görüye kadar geniş bir yelpazeyi, her hafta teori + uygulamalı not defteri + küçük quiz formatında, adım adım öğretiyor. Amaç, dağınık blog yazıları ve video parçaları yerine tek, tutarlı bir öğrenme yolu sunmak.",
+        "tech": "- İçeriğin omurgası **Jupyter Notebook**'lar; her ders, çalıştırılabilir kod hücreleriyle teoriyi birleştiriyor.\n- **Microsoft Learn** modülleriyle entegre, dersler tamamlanınca ilerleme takip edilebiliyor.\n- **Co-op Translator** adlı otomatik çeviri altyapısıyla içerik onlarca dile çevrilmiş durumda (bu da Türkçe dahil geniş bir kitleye erişim sağlıyor).\n- Statik bir site olarak **GitHub Pages** üzerinden de sunuluyor, notebook'ları indirmeden tarayıcıda okumak mümkün.",
+        "why": "2026 ortasında GitHub trend listeleri neredeyse tamamen **ajan araçları ve altyapısı** ile dolu — kodlama ajanları, pentest ajanları, trading ajanları... Bu yoğun 'ajan' gündeminin ortasında, temel kavramlara sağlam bir zemin arayan geliştiriciler ve yeni başlayanlar bu köklü müfredata geri dönüyor; Analytics Vidhya gibi 'Temmuz 2026'nın trend AI repoları' listelerinde yer alması da organik keşfi artırdı. Microsoft'un `generative-ai-for-beginners` ve `ai-agents-for-beginners` gibi kardeş serileri de var — bu ailenin en oturmuş, en çok yıldızlı üyesi olması güven veriyor.",
+        "evolve": "- **Güncel ajan/LLM içeriği**: Müfredat büyük ölçüde 'klasik' AI/ML'e odaklı; büyük dil modelleri, prompt mühendisliği ve ajan mimarileri üzerine daha kapsamlı bir modül (kardeş repolara referans ötesinde) eklenmesi doğal bir sonraki adım.\n- **Etkileşimli çalışma alanı**: Notebook'ları yerel kuruluma gerek kalmadan doğrudan tarayıcıda çalıştırabilecek bir Colab/Binder entegrasyonu, giriş bariyerini daha da düşürür.\n- **Değerlendirme/sertifika**: Quizler var ama biçimsel bir tamamlama sertifikası veya rozet sistemi, kurumsal eğitim programlarında kullanımını kolaylaştırabilir."
+      },
+      "glossary": [
+        { "term": "Sinir ağı (neural network)", "def": "Beyindeki nöron bağlantılarından esinlenen, verilerden örüntü öğrenen matematiksel model." },
+        { "term": "Doğal dil işleme (NLP)", "def": "Bilgisayarların insan dilini anlaması ve üretmesiyle ilgilenen yapay zekâ alanı." },
+        { "term": "Bilgisayarla görü (computer vision)", "def": "Bilgisayarların görüntü ve videolardan anlam çıkarmasını sağlayan yapay zekâ alanı." },
+        { "term": "Jupyter Notebook", "def": "Kod, metin ve çıktının aynı belgede bir arada tutulduğu, adım adım çalıştırılabilen interaktif belge formatı." },
+        { "term": "Prompt mühendisliği", "def": "Bir yapay zekâ modelinden istenen sonucu almak için girdi (prompt) metnini özenle tasarlama pratiği." }
+      ]
+    }
+  ]
+}
