@@ -1,0 +1,86 @@
+{
+  "date": "2026-08-01",
+  "projects": [
+    {
+      "name": "moeru-ai/airi",
+      "url": "https://github.com/moeru-ai/airi",
+      "stars": "46.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Neuro-sama tarzı, canlı yayında oyun oynayan ve sohbet eden \"AI VTuber\" fenomeni popülerleşince herkes kendi dijital arkadaşını istemeye başladı — ama Character.ai gibi platformlar kapalı, buluta bağımlı ve oyun oynayamıyor. AIRI, kendi donanımınızda barındırabildiğiniz (self-hosted), gerçek zamanlı sesli sohbet edebilen, Minecraft ve Factorio gibi oyunları otonom oynayabilen, VRM/Live2D karakter modelleriyle kişiselleştirilebilen açık kaynak bir \"AI companion\" (dijital canlı) framework'ü sunuyor.",
+        "tech": "- **Vue.js + WebGPU/WebAudio/Web Workers/WASM**: Tüm sesli/görsel işleme tarayıcı içinde, sunucuya bağımlı kalmadan çalışıyor.\n- **xsAI SDK** ile OpenAI, Claude, DeepSeek, Ollama gibi birçok LLM sağlayıcısı takılıp çıkarılabiliyor.\n- **Three.js + VRM/Live2D** desteğiyle karakter, sektörün yaygın 3D/2D avatar formatlarında görselleştiriliyor.\n- **pnpm monorepo** yapısı; arayüz, ajan mantığı ve **DuckDB WASM** tabanlı yerel veri katmanı ayrı paketlerde.\n- **Electron** tabanlı masaüstü \"Tamagotchi-stage\" modu ve **Capacitor** ile mobil PWA dağıtımı.",
+        "why": "\"Neuro-sama\" fenomeninin yarattığı ilgiyle birlikte insanlar bu deneyimi kapalı platformlara bağımlı kalmadan, kendi sunucularında ve kendi seçtikleri modelle yaşamak istiyor. AIRI tam da bu boşluğu dolduruyor: hem gizlilik/kontrol isteyen self-host kitlesine hem de \"AI'ın gerçek zamanlı oyun oynaması\" merakına aynı anda hitap ediyor. 4.100'ün üzerinde commit ve düzenli devlog yayınlarıyla proje canlı bir geliştirme temposunda.",
+        "evolve": "- **Oyun kapsamı**: Şu an Minecraft ve Factorio ile sınırlı; daha fazla oyun entegrasyonu ilgiyi büyütebilir.\n- **Mobil performans**: Devlog'larda sıkça bahsedilen bir zayıflık; WebGPU'nun mobilde olgunlaşmasıyla iyileşmesi bekleniyor.\n- **Çoklu-companion orkestrasyon**: Şu an tek bir dijital karakter odaklı; birden fazla AIRI örneğinin birlikte çalışması (takım/grup senaryoları) doğal bir sonraki adım.\n- **Gizlilik**: Yerel çalışsa da seçilen LLM sağlayıcıya veri gönderimi söz konusu olabiliyor; tamamen yerel model (Ollama) kullanımına yönelik daha net rehberler faydalı olur."
+      },
+      "glossary": [
+        { "term": "AI VTuber / AI companion", "def": "Sesli, görsel ve davranışsal olarak canlandırılmış, kullanıcıyla gerçek zamanlı etkileşen yapay zekâ karakteri." },
+        { "term": "VRM / Live2D", "def": "3D (VRM) ve 2D (Live2D) sanal karakter/avatar modelleri için kullanılan yaygın dosya formatları." },
+        { "term": "WebGPU", "def": "Tarayıcıda GPU'ya doğrudan erişim sağlayan, yüksek performanslı grafik ve hesaplama standardı." },
+        { "term": "WASM (WebAssembly)", "def": "Tarayıcıda neredeyse yerel hızda çalışan, düşük seviyeli bir bayt kod formatı." },
+        { "term": "Self-hosted", "def": "Bir yazılımın üçüncü parti bulut yerine kullanıcının kendi sunucusunda/cihazında çalıştırılması." },
+        { "term": "Electron / Capacitor", "def": "Electron web teknolojileriyle masaüstü uygulaması, Capacitor ise web uygulamalarını mobil uygulamaya paketlemeye yarayan araçlardır." },
+        { "term": "DuckDB", "def": "Analitik sorgular için optimize edilmiş, uygulama içine gömülebilen hafif bir veritabanı motoru." }
+      ]
+    },
+    {
+      "name": "t8y2/dbx",
+      "url": "https://github.com/t8y2/dbx",
+      "stars": "12.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "DBeaver gibi klasik veritabanı istemcileri Java çalışma zamanı gerektiriyor, TablePlus yalnızca macOS'ta çalışıyor, çoğu modern araç ise gereksiz yere Chromium/Electron gömerek şişiyor. DBX, tek bir 20 MB'lık binary içinde MySQL, PostgreSQL, SQLite, Redis, MongoDB, DuckDB, SQL Server dahil **70'ten fazla veritabanına** (JDBC üzerinden Snowflake/BigQuery dahil) bağlanabilen, hafif ve hızlı bir istemci sunuyor.",
+        "tech": "- **Tauri 2** (Rust çekirdek + sistem webview) ile masaüstü uygulaması; Electron'a kıyasla çok daha küçük ve hızlı.\n- **Vue 3 + TypeScript + shadcn-vue + Tailwind CSS** arayüzü, **CodeMirror 6** tabanlı sorgu editörü.\n- Rust tarafında **sqlx, tiberius, redis-rs, mongodb** gibi native sürücülerle doğrudan veritabanı bağlantısı.\n- Native masaüstü uygulamasının yanında **Docker imajı** ve **web arayüzü** olarak da dağıtılabiliyor.\n- **MCP (Model Context Protocol) sunucu desteği**: AI kodlama ajanlarının veritabanına doğrudan, yapılandırılmış şekilde erişip sorgu çalıştırabilmesini sağlıyor.\n- AI destekli SQL asistanı, ER diyagramı görselleştirme, sanal kaydırmalı (virtual-scroll) büyük veri tabloları, SSH tüneli desteği.",
+        "why": "Proje iki güçlü trendin kesişiminde: bir yandan \"şişkin Electron araçlarına\" tepki olarak hafif, native performanslı yazılımlara talep artıyor; diğer yandan AI kodlama ajanlarının veritabanlarına doğrudan erişmesi (MCP entegrasyonu) günün en sıcak konularından biri. 4.300'ün üzerinde commit ile aktif geliştirilen DBX, bugün en yüksek yıldız ivmesine sahip projelerden biri oldu.",
+        "evolve": "- **Bulut veritabanı native desteği**: Snowflake/BigQuery gibi servisler şu an JDBC köprüsü üzerinden çalışıyor; native sürücüler gecikmeyi azaltır.\n- **Takım/paylaşım özellikleri**: Bağlantı ayarlarının ve kayıtlı sorguların ekip içinde senkronize edilmesi kurumsal kullanımı kolaylaştırır.\n- **Şema-farkında AI asistan**: Mevcut AI SQL yardımcısının veritabanı şemasını daha derinlemesine anlaması, daha isabetli sorgu önerileri üretebilir.\n- **Kurumsal kimlik doğrulama**: SSO/LDAP desteği, DBX'i ERP ve kurumsal veritabanı ortamlarında daha kullanılabilir hale getirir."
+      },
+      "glossary": [
+        { "term": "Tauri", "def": "Rust ile küçük, hızlı ve güvenli masaüstü uygulamaları oluşturmayı sağlayan, Electron'a alternatif bir framework." },
+        { "term": "JDBC", "def": "Java uygulamalarının farklı veritabanlarına standart bir arayüzle bağlanmasını sağlayan sürücü teknolojisi." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının dış araçlara ve veriye standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "ER diyagramı", "def": "Bir veritabanındaki tabloları ve aralarındaki ilişkileri görselleştiren şema diyagramı (Entity-Relationship)." },
+        { "term": "SSH tüneli", "def": "Güvenli bir SSH bağlantısı üzerinden, doğrudan erişilemeyen bir sunucudaki servise (örn. veritabanı) ulaşma yöntemi." },
+        { "term": "CodeMirror", "def": "Web tabanlı kod/sorgu editörlerinde yaygın kullanılan, sözdizimi vurgulama destekli bir metin editörü kütüphanesi." }
+      ]
+    },
+    {
+      "name": "langchain-ai/deepagents",
+      "url": "https://github.com/langchain-ai/deepagents",
+      "stars": "27.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bir LLM'e tek seferlik soru sorup cevap almak kolay; ama onu dosya sistemiyle çalışan, alt görevleri başka ajanlara devreden, uzun süre bağlamını kaybetmeden çalışan, gerektiğinde insandan onay isteyen \"uzun soluklu\" (long-horizon) bir ajana dönüştürmek, geliştiricinin bu altyapıyı sıfırdan kurmasını gerektiriyordu. Deep Agents, LangGraph üzerine kurulu, dosya erişimi, alt-ajanlar, bağlam yönetimi, shell komutları, kalıcı hafıza ve insan onayı gibi bileşenleri hazır sunan \"pilleri dahil\" (batteries-included) bir ajan iskeleti sağlıyor.",
+        "tech": "- **LangGraph** temelinde: akış (streaming), durum kalıcılığı (persistence) ve **checkpointing** (ilerlemeyi kaydedip kaldığı yerden devam etme) yetenekleri hazır geliyor.\n- Araç çağırma (**tool-calling**) destekleyen her LLM ile çalışabiliyor — büyük bulut modelleri, açık ağırlıklı veya tamamen yerel modeller dahil.\n- **LangSmith** entegrasyonu ile ajanın adım adım izlenmesi (tracing) ve değerlendirilmesi mümkün.\n- **MCP sunucu desteği** ve eklenebilir (pluggable) backend mimarisi ile farklı araç/veri kaynaklarına bağlanabiliyor.\n- Python sürümünün yanında bir **TypeScript sürümü (deepagentsjs)** ve hazır bir terminal aracı (Deep Agents CLI) da mevcut.",
+        "why": "2026'nın en belirgin trendlerinden biri, ajanların artık tek adımlık soru-cevaptan çok, saatler süren, çok adımlı gerçek işleri (araştırma, kod tabanı düzenleme, rapor hazırlama) tamamlaması. LangChain'in ekosistem güvenilirliği ve \"production-ready\" vurgusu, geliştiricilerin bu altyapıyı sıfırdan yazmak yerine hazır bir iskelet üzerine inşa etmeyi tercih etmesini sağlıyor; 150 açık issue ve 37 açık PR ile proje etrafında canlı bir topluluk oluşmuş durumda.",
+        "evolve": "- **Hazır alt-ajan şablonları**: Kod inceleme, test yazma, dokümantasyon gibi yaygın görevler için kutudan çıkan alt-ajanlar geliştirici deneyimini hızlandırabilir.\n- **Maliyet/token optimizasyonu**: Uzun soluklu ajanların en büyük riski token maliyeti; bunu izleyen/azaltan araçlar değerli olur.\n- **Kurumsal gözetim**: Denetim kaydı (audit log) ve hassas veri maskeleme gibi özellikler, ERP/kurumsal ortamlarda benimsenmeyi kolaylaştırır.\n- **Model karşılaştırma rehberleri**: Hangi açık/yerel modelin hangi görev türünde ne kadar güvenilir çalıştığına dair daha fazla kılavuz beklenebilir."
+      },
+      "glossary": [
+        { "term": "LangGraph", "def": "LLM tabanlı ajanların adım adım akışını, durumunu ve dallanan kararlarını yönetmek için kullanılan bir orkestrasyon kütüphanesi." },
+        { "term": "Checkpointing", "def": "Bir sürecin ilerlemesini belirli noktalarda kaydedip, kesinti sonrası kaldığı yerden devam edebilmesini sağlayan teknik." },
+        { "term": "Tool-calling", "def": "Bir yapay zekâ modelinin, kendisine tanımlanmış bir fonksiyonu/aracı doğru parametrelerle çağırabilmesi yeteneği." },
+        { "term": "Human-in-the-loop", "def": "Otomatik bir sürecin kritik adımlarında insandan onay veya müdahale istenen tasarım yaklaşımı." },
+        { "term": "LangSmith", "def": "LLM tabanlı uygulamaların adım adım izlenmesi, hata ayıklaması ve değerlendirilmesi için LangChain'in gözlemlenebilirlik platformu." },
+        { "term": "Sub-agent (alt-ajan)", "def": "Ana bir yapay zekâ ajanının belirli bir alt görevi devrettiği, kendi başına çalışabilen daha küçük ajan." }
+      ]
+    },
+    {
+      "name": "googleworkspace/cli",
+      "url": "https://github.com/googleworkspace/cli",
+      "stars": "30.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Google Workspace API'leriyle (Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin) çalışmak, her servis için ayrı SDK kurmak, ayrı kimlik doğrulama akışı yazmak ve tekrar eden kod (boilerplate) üretmek anlamına geliyordu. Bu resmi CLI, tüm Workspace API'lerine tek bir komut satırı aracından erişim sağlıyor — hem insan kullanıcılar hem de yapılandırılmış çıktıya ihtiyaç duyan AI ajanları için.",
+        "tech": "- **Rust** ile yazılmış, tek binary olarak dağıtılan bir araç.\n- **Google Discovery Service**'ten şemayı gerçek zamanlı çekip (24 saat önbellekli), komut ağacını **dinamik olarak** oluşturuyor — yeni bir Workspace API eklendiğinde CLI otomatik güncelleniyor.\n- İki aşamalı ayrıştırma: önce `argv[1]`'den servis belirleniyor, Discovery dokümanı çekiliyor, ardından kalan argümanlar bu şemaya göre yorumlanıyor.\n- **OAuth2, servis hesabı (service account) veya hazır token** ile çoklu kimlik doğrulama desteği; kimlik bilgileri **AES-256-GCM** ile şifrelenip OS anahtarlığında saklanıyor.\n- Yapılandırılmış **JSON** çıktısı ve **NDJSON streaming** desteğiyle hem script'lerde hem AI ajanlarında kullanılabiliyor; 40'tan fazla hazır \"agent skill\" ile OpenClaw ve Gemini CLI uzantılarına uyumlu.",
+        "why": "Google'ın resmi ekibi tarafından yayınlanması tek başına güven ve ilgi yaratıyor; ama asıl dikkat çeken, aracın hem klasik CLI kullanıcılarını hem de \"AI ajanlarına araç seti\" arayan geliştiricileri aynı anda hedeflemesi. Yapılandırılmış JSON çıktı ve hazır agent skill'ler, bu aracı doğrudan ajan iş akışlarına eklenebilir hale getiriyor — henüz v1.0 öncesi erken aşamada olmasına rağmen hızla yıldız topluyor.",
+        "evolve": "- Proje henüz **v1.0 öncesi**; API'de kırıcı değişiklikler bekleniyor, üretim kullanımı için dikkatli olunmalı.\n- Şu an kapsanan Workspace servisleri genişlemeye devam ediyor; eksik servisler zamanla eklenecek gibi görünüyor.\n- **Kurumsal admin senaryoları** (toplu kullanıcı/lisans yönetimi gibi) derinleştirilirse BT ekipleri için daha da değerli olur.\n- **Rate-limit ve kota yönetimi** konusunda kullanıcıya daha net geri bildirim (kalan kota, bekleme süresi gibi) faydalı olur."
+      },
+      "glossary": [
+        { "term": "OAuth2", "def": "Bir uygulamanın, kullanıcı adına üçüncü parti bir servise (örn. Google) güvenli şekilde erişim izni almasını sağlayan yetkilendirme standardı." },
+        { "term": "Discovery Service", "def": "Google API'lerinin güncel yapısını (komutlar, parametreler) makine tarafından okunabilir şekilde sunan servis." },
+        { "term": "NDJSON", "def": "Her satırı ayrı bir JSON nesnesi olan, akış (streaming) halinde veri işlemeye uygun bir dosya/veri formatı." },
+        { "term": "Service account", "def": "Bir insana değil, bir uygulamaya/servise ait, otomatik işlemler için kullanılan özel kimlik doğrulama hesabı." },
+        { "term": "Agent skill", "def": "Bir AI ajanının belirli bir görevi nasıl yapacağını tanımlayan, önceden hazırlanmış talimat/araç paketi." },
+        { "term": "OS anahtarlığı (keyring)", "def": "İşletim sisteminin şifre ve token gibi hassas bilgileri güvenli şekilde sakladığı yerleşik depolama sistemi." }
+      ]
+    }
+  ]
+}
