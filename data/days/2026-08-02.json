@@ -1,0 +1,87 @@
+{
+  "date": "2026-08-02",
+  "projects": [
+    {
+      "name": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "stars": "78.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "DeerFlow, bir AI ajanının tek seferlik soru-cevabın ötesine geçip **saatler süren, çok adımlı görevleri** (araştırma yapma, kod yazma, dosya üretme) tamamlayabilmesi için gereken altyapıyı sunan açık kaynaklı bir \"süper ajan çatısı\" (agent harness). Sıradan bir sohbet arayüzü uzun süreli akıl yürütme, dosya yönetimi ve paralel görev yürütme için tasarlanmamıştır — DeerFlow tam olarak bu boşluğu dolduruyor. Sürüm 2.0 ile proje, eski \"Deep Research\" çerçevesini tamamen bırakıp sıfırdan yeniden yazılmış.",
+        "tech": "Backend **Python 3.12+** ile LangChain/LangGraph üzerine, frontend **Node.js 22+** ve pnpm ile kurulu. Görevler Docker konteynerlerinde (opsiyonel Kubernetes provisioner ile) izole \"sandbox\"larda çalışıyor; yerel, Docker/AIO ya da E2B bulut sandbox seçenekleri var. Geliştirmede SQLite, üretimde PostgreSQL kullanılıyor; çok işçili (multi-worker) bir Gateway, Nginx reverse proxy ve opsiyonel Redis koordinasyonuyla ölçekleniyor.\n\n- **Skill sistemi**: Yetenekler Markdown dosyaları olarak tanımlanıyor ve bağlam penceresini şişirmemek için kademeli (progressive) yükleniyor; `/skill-adi` ile açıkça çağrılabiliyor. Deterministik bir **SkillScan** güvenlik taraması ve ardından LLM tabanlı inceleme yapılıyor.\n- **Alt-ajanlar (sub-agents)**: İzole bağlam ve kapsamlı araç erişimiyle, gerçekten gecikme kazandıracaksa paralel; uzmanlaşma/izolasyon önemliyse sıralı çalışabiliyor.\n- **Kalıcı hafıza**: DeerMem (varsayılan) ya da mem0 arka uçlarıyla, oturumlar arası kullanıcı profili ve birikmiş bilgi tutuluyor.\n- **`/goal <koşul>`** komutuyla bir konuşma dizisine tamamlanma kriteri bağlanabiliyor; sistem her çalıştırmadan sonra ilerlemeyi değerlendirip engelleyici yoksa otomatik devam ediyor.\n- Playwright tabanlı, WebSocket üzerinden çalışan bir **ajan-tarayıcı kontrolü** (gezinme, tıklama, form doldurma) ve Telegram/Slack/Feishu/WeChat/DingTalk gibi mesajlaşma kanallarına entegrasyon mevcut.",
+        "why": "78.8k yıldız ve 10.8k fork ile bugünün en çok yıldız toplayan projesi. İvmenin arkasında, ajanların artık \"sohbet et, cevap al\" modelinden \"dosyalarla, araçlarla, saatler süren gerçek işlerle\" uğraşan bir modele evrilmesi var — bu tema son haftalarda LangChain'in Deep Agents'ından çeşitli terminal harness'larına kadar tekrar tekrar karşımıza çıkıyor. ByteDance'ın arkasında olması ve kendi modelleri (Doubao-Seed-2.0-Code) için optimize edilmesi ölçek ve güven sağlıyor; \"sıfırdan yeniden yazım\" olması da altyapının olgunlaştığının bir işareti.",
+        "evolve": "- **Kurumsal ölçek**: Kubernetes provisioner tarafı hâlâ erken; çok kiracılı (multi-tenant), büyük ölçekli kurumsal dağıtımlar için daha fazla operasyonel dokümantasyon ve referans mimari faydalı olur.\n- **Skill güveni**: SkillScan'in deterministik kural + LLM incelemesi kombinasyonu iyi bir başlangıç, ama topluluk katkılı skill'lerin güvenilirliğini ölçen bir puanlama ya da sertifikasyon sistemi eksik.\n- **Model bağımsızlığı**: Şu an resmi olarak ByteDance'ın kendi modelleri öneriliyor; farklı sağlayıcılarla (özellikle Batı kurumsal ortamlarında tercih edilen modellerle) bağımsız performans karşılaştırmaları netleşirse benimseme daha da genişleyebilir."
+      },
+      "glossary": [
+        { "term": "Agent harness (ajan çatısı)", "def": "Bir yapay zeka ajanının çalışması için gereken araç çağırma, hafıza ve sandbox gibi altyapı bileşenlerini bir araya getiren çerçeve yazılım." },
+        { "term": "LangGraph", "def": "LLM tabanlı ajanların adım adım akışını, durumunu ve dallanan kararlarını yönetmeye yarayan bir orkestrasyon kütüphanesi." },
+        { "term": "Sandbox", "def": "Bir programın ana sisteme zarar veremeyecek şekilde izole bir ortamda çalıştırılması." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka ajanlarının harici araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Sub-agent (alt-ajan)", "def": "Ana bir ajanın belirli bir alt görevi devrettiği, kendi bağlamı ve araç erişimi olan yardımcı ajan." },
+        { "term": "E2B", "def": "AI ajanlarının kod çalıştırması için bulutta izole, geçici sandbox ortamları sağlayan bir servis." },
+        { "term": "vLLM", "def": "Büyük dil modellerini yüksek verimle sunucu üzerinden çalıştırmak için tasarlanmış açık kaynak çıkarım motoru." }
+      ]
+    },
+    {
+      "name": "usekaneo/kaneo",
+      "url": "https://github.com/usekaneo/kaneo",
+      "stars": "5.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Kaneo, Jira veya Linear gibi araçların zamanla biriktirdiği \"özellik şişkinliğine\" tepki olarak doğmuş, sade ve hızlı bir açık kaynak proje yönetim aracı. Kurucularının felsefesi net: \"her özellik gerçek bir problemi çözdüğü için var, demoda etkileyici göründüğü için değil.\" Kendi sunucunuzda barındırılabiliyor, böylece takımın proje verisi kendi kontrolünde kalıyor.",
+        "tech": "Frontend **React + TypeScript**, backend hafif bir web framework olan **Hono**, veritabanı **PostgreSQL**. pnpm workspaces ve **Turbo** ile yönetilen bir monorepo yapısı var. Docker/Docker Compose ile hızlı kurulum, Kubernetes + Helm chart'larla üretim dağıtımı destekleniyor; `drim` adlı özel bir CLI ile tek komutla deploy edilebiliyor. Kod kalitesi **Biome** (linter/formatter), Husky (git hook'ları) ve CodeRabbit (otomatik PR incelemesi) ile korunuyor. Çekirdek özellikler arasında Kanban tahtası ve issue takibi yer alıyor.",
+        "why": "Jira gibi araçların karmaşıklığından ve SaaS abonelik maliyetinden bunalan küçük/orta ölçekli ekiplerin \"sade ve kendi sunucumda\" arayışı sürekli canlı bir talep; Kaneo bunu MIT lisansıyla, aktif bir Discord topluluğuyla (2.313 commit, 51 açık issue, 29 açık PR) karşılıyor. Bu, son haftalarda tekrar tekrar gördüğümüz \"kapalı kurumsal SaaS'a kendi-barındırılan açık kaynak alternatif\" temasının proje yönetimi kategorisindeki bir devamı.",
+        "evolve": "- Şu an tek takım/tek çalışma alanı odaklı görünüyor; büyük organizasyonlarda çoklu takım hiyerarşisi ve ince taneli izin yönetimi (RBAC) derinleştirilebilir.\n- Jira/Linear'dan veri taşımayı kolaylaştıran resmi bir \"import\" aracı, geçiş yapmak isteyen ekipler için sürtünmeyi önemli ölçüde azaltabilir.\n- Raporlama/analitik tarafı (burndown chart, velocity gibi) şu an temel düzeyde görünüyor; bu, kurumsal kullanıcıları çekmek için doğal bir genişleme alanı."
+      },
+      "glossary": [
+        { "term": "Self-hosted (kendi sunucunda barındırma)", "def": "Bir yazılımın üçüncü taraf bir bulut hizmeti yerine kullanıcının kendi sunucusunda çalıştırılması." },
+        { "term": "Monorepo", "def": "Birden fazla paketin veya projenin tek bir git deposunda birlikte tutulduğu geliştirme yaklaşımı." },
+        { "term": "Hono", "def": "Hızlı ve hafif olması için tasarlanmış, sunucusuz ortamlarda da çalışabilen bir web sunucu framework'ü." },
+        { "term": "Helm chart", "def": "Bir uygulamayı Kubernetes üzerinde kurmak için gereken yapılandırmaları paketleyen standart bir şablon formatı." },
+        { "term": "RBAC (Role-Based Access Control)", "def": "Kullanıcılara doğrudan değil roller üzerinden yetki atayarak erişimi yöneten güvenlik modeli." },
+        { "term": "Kanban tahtası", "def": "Görevleri \"yapılacak / yapılıyor / bitti\" gibi sütunlar halinde görselleştiren, iş akışını takip etmeye yarayan pano." }
+      ]
+    },
+    {
+      "name": "github/gh-stack",
+      "url": "https://github.com/github/gh-stack",
+      "stars": "857",
+      "language": "Go",
+      "sections": {
+        "serves": "gh-stack, büyük bir kod değişikliğini tek dev bir pull request yerine, sırayla birbirinin üzerine inşa edilen küçük, incelemesi kolay **\"yığılmış\" (stacked) pull request'lere** bölmeyi kolaylaştıran resmi bir GitHub CLI eklentisi. Dal (branch) oluşturma, rebase'de tutma, doğru PR taban dallarını ayarlama ve katmanlar arasında gezinme gibi sıkıcı, hataya açık işleri otomatikleştiriyor.",
+        "tech": "**Go** ile yazılmış, `gh` CLI'nin (v2.0+) bir eklentisi olarak çalışıyor. Yığın (stack) meta verisi `.git/gh-stack` altında JSON olarak, commit'lenmeden yerel tutuluyor; rebase durumu ayrı bir dosyada izleniyor. Çakışma çözümlerini rebase'ler arasında hatırlamak için `git rerere` otomatik etkinleştiriliyor.\n\n`gh stack sync` tek komutuyla fetch + rebase + push + PR durumu senkronizasyonu yapılıyor; `up/down/top/bottom/trunk` komutlarıyla katmanlar arasında gezinilebiliyor, tam ekran bir TUI ile dal düzenleme ve PR gönderme mümkün. Birden fazla PR'ı atomik olarak birleştirme ve merge queue desteği var. Kodlama ajanları için ayrı bir \"skills\" paketi de sunuluyor; terminal teması açık/koyu arka plana göre otomatik uyum sağlıyor.",
+        "why": "GitHub'ın resmi hesabından çıkması güven sağlıyor; Graphite ve Sapling gibi araçlarla popülerleşen \"stacked PR\" iş akışı — büyük özellikleri küçük, incelemesi kolay parçalara bölme deseni — giderek daha fazla ekipte benimseniyor. gh-stack bunu üçüncü parti ayrı bir araca değil, doğrudan `gh` CLI ekosistemine getirerek kurulum sürtünmesini ortadan kaldırıyor.",
+        "evolve": "- Şu an yalnızca GitHub'a özel; GitLab veya Bitbucket gibi platformlara resmi destek olmaması, çoklu platform kullanan ekipler için bir sınırlama.\n- Stack yönetimi tek geliştirici odaklı görünüyor; bir stack üzerinde birden fazla kişinin eş zamanlı çalışması (sahiplik devri, çakışma bildirimi) net değil.\n- Kodlama ajanları için sunulan \"skills\" paketinin olgunluğu ve hangi ajanlarla test edildiği konusunda daha fazla dokümantasyon faydalı olur."
+      },
+      "glossary": [
+        { "term": "Stacked pull request (yığılmış PR)", "def": "Birbirinin üzerine sırayla inşa edilen, her biri ayrı ayrı incelenip birleştirilebilen küçük pull request zinciri." },
+        { "term": "Rebase", "def": "Bir dalın commit geçmişini, başka bir dalın en güncel haliyle yeniden sıralayarak günceleme işlemi." },
+        { "term": "git rerere", "def": "Git'in, daha önce çözülmüş birleştirme çakışmalarını hatırlayıp aynı çakışma tekrar çıktığında otomatik uygulayan özelliği (\"reuse recorded resolution\")." },
+        { "term": "TUI (Terminal User Interface)", "def": "Terminal içinde çalışan ama düzenli, etkileşimli öğeler barındıran metin tabanlı arayüz." },
+        { "term": "Merge queue", "def": "Birden fazla pull request'in, ana dala sırayla ve güvenli şekilde birleştirilmesini otomatikleştiren kuyruk mekanizması." },
+        { "term": "Trunk branch", "def": "Diğer tüm dalların üzerine inşa edildiği, genellikle 'main' adını taşıyan ana geliştirme dalı." }
+      ]
+    },
+    {
+      "name": "NomaDamas/k-skill",
+      "url": "https://github.com/NomaDamas/k-skill",
+      "stars": "6.8k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "K-Skill, AI ajanlarına — Claude Code, Codex, OpenCode gibi araçlara — Kore'ye özgü 170'ten fazla gündelik hizmeti (SRT/KTX tren bileti alma, emlak/tapu sorgulama, vergi kaydı denetleme, market fiyat karşılaştırma, restoran rezervasyonu \"sniping\"i, Korece imla denetimi) tek bir kurulumla kazandıran bir **agent skill** koleksiyonu. Sorun şu: onlarca Kore'ye özgü hizmetin her biri için ayrı entegrasyon yazmak yerine, hazır ve paylaşılabilir bir beceri paketi sunuluyor.",
+        "tech": "**Node.js 18+** üzerine kurulu, `npx skills add NomaDamas/k-skill --all -g` ile tek komutla kuruluyor; bazı özellikler Python destekli. Kimlik bilgisi olmadan çalışabilmek için opsiyonel bir proxy sunucusu (`k-skill-proxy`) barındırılıyor — kullanıcı isterse kendi API anahtarını girebiliyor, isterse hosted \"fallback\" servise güveniyor. Claude Code, Codex, OpenCode, OpenClaw/ClawHub gibi ajan platformlarına ve **MCP** sunucu protokolüne entegre; GitHub marketplace üzerinden plugin olarak dağıtılıyor. Ana lisans MIT, proxy bileşenleri (`packages/k-skill-proxy/` ve dashboard) AGPL-3.0.\n\nKapsadığı alanlar arasında ulaşım/bilet (SRT/KTX, şehirlerarası otobüs), emlak/hukuk (tapu sorgulama, icra satışı listeleri, patent/marka araması), devlet/idari (vergi borcu, işletme kaydı sorgulama), finans (Kore borsası, **DART** mali tablo API'leri), e-ticaret/yaşam (fiyat karşılaştırma, sinema koltuk müsaitliği) ve **HWP** (Korece kelime işlemci) belge işleme (Rust CLI ile) yer alıyor.",
+        "why": "6.8k yıldız, 799 fork ve 862 commit ile aktif geliştirilen K-Skill, \"agent skill\" trendinin ülkeye özgü, gündelik yaşamla iç içe bir uygulaması. Önceki haftalarda gördüğümüz genel amaçlı skill koleksiyonlarının (kod inceleme, tasarım kuralları gibi) aksine, K-Skill dar ama derin bir niş seçmiş: tek bir ülkenin bürokratik ve tüketici hizmetleri ekosistemini uçtan uca kapsamak. Bu, agent skill formatının yalnızca kod yazmaya değil, gerçek hayattaki idari/tüketici işlerine de uygulanabildiğini gösteren somut bir örnek.",
+        "evolve": "- Şu an tamamen Kore'ye özel; aynı \"ülkeye özgü skill paketi\" şablonu başka ülkeler için de (örneğin yerel e-devlet, banka, toplu taşıma servisleri) tekrarlanabilir bir model sunuyor.\n- Proxy bileşeninin (hosted fallback) güvenilirliği ve gizlilik politikası — kullanıcı kimlik bilgisi göndermeden hizmetlere nasıl erişiliyor — daha net dokümante edilirse güven artabilir.\n- 170'ten fazla hizmetin her biri üçüncü parti bir web sitesine/API'sine bağımlı; bu sitelerin arayüzü değiştiğinde skill'lerin ne kadar hızlı güncellendiği projenin bakım yükünü belirleyen kritik bir faktör."
+      },
+      "glossary": [
+        { "term": "Agent skill (ajan becerisi)", "def": "Bir AI ajanına belirli bir görevi nasıl yapacağını öğreten, yeniden kullanılabilir talimat/script paketi." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka ajanlarının harici araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "npx", "def": "Node.js ile gelen, bir paketi kurmadan doğrudan indirip çalıştırmayı sağlayan komut satırı aracı." },
+        { "term": "Proxy sunucusu", "def": "İstemci ile hedef servis arasında aracılık yapan, isteği kendi üzerinden ileten sunucu." },
+        { "term": "DART", "def": "Güney Kore şirketlerinin mali tablolarını ve resmi açıklamalarını yayınladığı devlet destekli elektronik açıklama sistemi." },
+        { "term": "HWP", "def": "Güney Kore'de yaygın kullanılan, Hancom firmasının kelime işlemci yazılımına ait belge formatı." },
+        { "term": "AGPL-3.0", "def": "Yazılımı ağ üzerinden (SaaS olarak) sunan herkesi de yaptığı değişiklikleri açık kaynak olarak paylaşmaya zorunlu kılan, GPL'in en katı türevlerinden biri." }
+      ]
+    }
+  ]
+}
