@@ -1,0 +1,183 @@
+{
+  "date": "2026-08-03",
+  "projects": [
+    {
+      "name": "antirez/ds4",
+      "url": "https://github.com/antirez/ds4",
+      "stars": "20.1k",
+      "language": "C",
+      "sections": {
+        "serves": "🎯 Büyük dil modellerini (DeepSeek V4 Flash/PRO, GLM 5.2) bulut bağımlılığı olmadan, kendi donanımınızda (Mac, NVIDIA, AMD) çalıştırmayı mümkün kılan, bu modellere özel yazılmış bir çıkarım (inference) motoru. Genel amaçlı bir GGUF çalıştırıcısı değil, deliberate olarak dar kapsamlı: sadece bu iki model ailesini iyi çalıştırmayı hedefliyor.",
+        "tech": "🛠️ C ile yazılmış motor, GGUF formatını kullanıyor ama \"genel GGUF çalıştırıcısı\" değil — DeepSeek ve GLM mimarilerine özel optimize edilmiş. Metal (Apple GPU), CUDA (NVIDIA, çoklu GPU ve DGX Spark dahil) ve ROCm (AMD Strix Halo) donanım arka uçlarını destekliyor.\n\nEn dikkat çekici kısmı **asimetrik kuantizasyon**: MoE (Mixture-of-Experts) uzmanlarını 2-bit'e kadar sıkıştırırken paylaşılan bileşenleri tam hassasiyette tutuyor. Uzmanları hızlı SSD'lerde tutup dinamik önbellekleme ile GPU belleğine akıtan (streaming) bir mimari sayesinde 512GB'lık iş istasyonlarında bile büyük modeller çalışabiliyor.\n\nBirden fazla makine arasında TCP üzerinden **pipeline paralelliği**, Thunderbolt üzerinden RDMA ile **tensor paralelliği** destekleniyor. Taslak bir modelin token önerip ana modelin doğruladığı **speculative decoding** (DSpark) deneysel olarak mevcut. `ds4-server` ile 16'ya kadar eşzamanlı KV oturumunu micro-batch'leyerek 8×L40S kartta 120 t/s toplam üretim hızına ulaşılabiliyor.",
+        "why": "📈 Redis'in yaratıcısı Salvatore Sanfilippo (antirez) tarafından geliştirilmesi kendi başına büyük ilgi çekti. DeepSeek V4 Flash/PRO ve GLM 5.2 gibi açık ağırlıklı modellerin, 96GB'lık MacBook'lardan 512GB'lık iş istasyonlarına kadar geniş bir donanım yelpazesinde barındırılabilir hale gelmesiyle zamanlaması örtüştü. Bulut maliyeti olmadan gizlilik odaklı çalışmak isteyen geliştiriciler ile artık vLLM tarafından desteklenmeyen eski NVIDIA kartlarını (Ada Lovelace) yeniden değerlendirmek isteyenler için özellikle cazip.",
+        "evolve": "💡 GLM 5.2 desteği henüz Flash kadar olgun değil (steering yok, harici MTP dosyası yok, daha sınırlı çalışma modları). Speculative decoding hâlâ deneysel ve belirgin bir hız kazancı sağlamıyor. Dağıtık çıkarım protokolünde şifreleme ve kimlik doğrulama eksik — proje bunu açıkça \"sürüm-kararlı değil\" olarak işaretliyor. PRO modelleri için GGUF üretimi hâlâ harici bir llama.cpp iş akışına bağımlı; bunun motöre entegre edilmesi kurulum sürecini önemli ölçüde sadeleştirir."
+      },
+      "glossary": [
+        {
+          "term": "GGUF",
+          "def": "Büyük dil modellerini sıkıştırılmış biçimde saklamak için kullanılan, llama.cpp ekosisteminde yaygın bir dosya formatı."
+        },
+        {
+          "term": "MoE (Mixture-of-Experts)",
+          "def": "Modelin her token için tüm parametreleri değil, uzman alt ağların yalnızca bir kısmını devreye soktuğu mimari; bu sayede daha büyük modeller daha az hesaplama ile çalıştırılabilir."
+        },
+        {
+          "term": "Kuantizasyon",
+          "def": "Model ağırlıklarını daha az bit ile temsil ederek bellek kullanımını azaltma işlemi; hız kazandırır ama biraz kalite kaybına yol açabilir."
+        },
+        {
+          "term": "Speculative decoding",
+          "def": "Küçük ve hızlı bir taslak modelin önden token üretip büyük modelin bunları toplu halde doğrulamasıyla üretim hızını artıran teknik."
+        },
+        {
+          "term": "RDMA",
+          "def": "Ağ üzerindeki iki bilgisayarın, işlemciyi meşgul etmeden birbirinin belleğine doğrudan erişebildiği düşük gecikmeli veri aktarım yöntemi."
+        },
+        {
+          "term": "KV cache",
+          "def": "Modelin daha önce işlediği token'lara ait ara hesaplamaları sakladığı önbellek; her seferinde baştan hesaplama yapılmasını önler."
+        }
+      ]
+    },
+    {
+      "name": "usekaneo/kaneo",
+      "url": "https://github.com/usekaneo/kaneo",
+      "stars": "6.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Jira, Linear gibi araçların özellik yükünden bunalan ekipler için basit, gereksiz karmaşıklıktan arındırılmış, kendi sunucunuzda barındırabileceğiniz (self-hosted) açık kaynak bir proje yönetim aracı. Proje, sorunun \"eksik özellik\" değil \"fazla özellik\" olduğu tezini savunuyor.",
+        "tech": "🛠️ React + TypeScript ön yüz, Hono adlı hafif bir web framework ile yazılmış arka uç, veri katmanında PostgreSQL kullanıyor. pnpm ve Turborepo ile yönetilen bir monorepo yapısı (`/apps`, `/packages`, `/scripts`), birden fazla servis arasında kod paylaşımını kolaylaştırıyor. Docker, Docker Compose ve Kubernetes (Helm chart'ları ile) üzerinden dağıtım destekleniyor; Biome kod formatlama/linting için, Husky git hook'ları için, CodeRabbit ise CI/CD sürecinde otomatik kod incelemesi için kullanılıyor.",
+        "why": "📈 \"Az özellik değil, çok özellik\" sorununu hedef alan minimalist felsefesi, kurumsal proje yönetimi araçlarından yorulmuş ekiplerde karşılık buluyor. MIT lisansıyla tamamen açık kaynak olması ve verilerin kendi sunucunuzda kalması (self-hosted), gizlilik ve veri egemenliğini önemseyen ekipler için çekici. Jira/Linear'a doğrudan alternatif konumlandırması ve 6binin üzerindeki yıldız, 500'ü aşkın fork sayısı topluluk ilgisinin somut göstergesi.",
+        "evolve": "💡 Kurumsal özellikler (rol tabanlı erişim kontrolü, denetim kaydı, uyumluluk sertifikaları) konusunda görünürlük sınırlı. Performans iddiaları için kamuya açık bir benchmark yok. Dokümantasyonun bazı bölümleri hâlâ harici kaynaklara yönlendiriyor; proje olgunlaştıkça bunların içselleştirilmesi kullanıcı deneyimini iyileştirir."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Yazılımın bir SaaS sağlayıcısının sunucusunda değil, kullanıcının kendi sunucusunda/altyapısında çalıştırılması; veri kontrolü kullanıcıda kalır."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla ilişkili paket veya uygulamanın tek bir git deposunda birlikte tutulduğu proje organizasyon yöntemi."
+        },
+        {
+          "term": "Kanban",
+          "def": "Görevlerin \"yapılacak / yapılıyor / tamamlandı\" gibi sütunlar halinde görselleştirildiği iş akışı yönetim yöntemi."
+        },
+        {
+          "term": "Helm chart",
+          "def": "Kubernetes üzerinde bir uygulamanın nasıl kurulacağını tanımlayan, yeniden kullanılabilir yapılandırma paketi."
+        },
+        {
+          "term": "Rol tabanlı erişim kontrolü (RBAC)",
+          "def": "Kullanıcılara, sahip oldukları role göre belirli işlemleri yapma yetkisi veren güvenlik modeli."
+        }
+      ]
+    },
+    {
+      "name": "microsoft/flint-chart",
+      "url": "https://github.com/microsoft/flint-chart",
+      "stars": "3.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI ajanlarının, karmaşık grafik kütüphanelerini elle yapılandırmak zorunda kalmadan (ölçek, eksen, boşluk, etiketleme gibi ayrıntılarla uğraşmadan) basit, insan tarafından okunabilir tanımlardan otomatik olarak şık ve doğru grafikler üretebilmesini sağlayan bir \"görselleştirme ara dili.\"",
+        "tech": "🛠️ TypeScript/JavaScript ile yazılan flint-chart kütüphanesi, tek bir girdi tanımını Vega-Lite, ECharts, Chart.js, Plotly ve Excel grafikleri gibi birden çok arka uç formatına derliyor. Veri alanlarını genel isimler yerine 70'in üzerinde anlamsal tipe (Rank, Temperature, Price, Country gibi) göre sınıflandıran bir \"semantik tipleme\" sistemi kullanıyor; bu sayede kütüphane, hangi ölçek/eksen/renk kararının doğru olduğuna kendisi karar veriyor ve veri çeşitliliğine (cardinality) göre otomatik yerleşim ayarlıyor. flint-chart-mcp adlı bir Model Context Protocol (MCP) sunucusu, ajanların sohbet akışı içinde doğrudan grafik oluşturup doğrulayarak önizleme yapmasına imkan tanıyor.",
+        "why": "📈 LLM'lerin veri analizi görevlerini giderek daha fazla üstlendiği bir dönemde, ajanların yapılandırma detaylarını uydurmadan (hallucinate) güvenilir grafik üretmesine duyulan ihtiyacı karşılıyor. Microsoft Research ile ideas-lab iş birliğinin desteklediği proje, Temmuz 2026'daki v0.4.0 sürümüyle 38 yeni Plotly tipi ve 18 Excel şablonu ekleyerek aktif geliştirildiğini ve gerçek bir talebe karşılık verdiğini gösteriyor.",
+        "evolve": "💡 Python paketi henüz \"sadece kaynak koddan önizleme\" aşamasında, resmi sürüm bekleniyor. Mimari dokümantasyon derinliği sınırlı; site örnekler ve bir editör sunsa da iç işleyişe dair daha fazla açıklama faydalı olur. Ayrı bir agent-skills dizininin varlığı, MCP'nin baştan itibaren varsayılan entegrasyon modeli olmadığını, projenin zamanla bu yönde evrildiğini gösteriyor."
+      },
+      "glossary": [
+        {
+          "term": "Model Context Protocol (MCP)",
+          "def": "AI ajanlarının harici araçlara ve verilere standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Semantik tipleme",
+          "def": "Veri alanlarını sadece isimleriyle değil, anlamlarına göre (fiyat, sıralama, sıcaklık gibi) sınıflandırma; bu sayede araç doğru görselleştirme kararlarını otomatik verebilir."
+        },
+        {
+          "term": "Vega-Lite / ECharts / Plotly",
+          "def": "Web tabanlı interaktif grafik ve veri görselleştirme oluşturmak için kullanılan popüler açık kaynak kütüphaneler."
+        },
+        {
+          "term": "Kardinalite",
+          "def": "Bir veri kümesindeki benzersiz değer sayısı; örneğin bir sütunda kaç farklı kategori olduğu."
+        }
+      ]
+    },
+    {
+      "name": "can1357/oh-my-pi",
+      "url": "https://github.com/can1357/oh-my-pi",
+      "stars": "21.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 IDE'nin sunduğu kod zekasını (tamamlama, hata tespiti, refactoring) ve gerçek bir debugger'ı doğrudan terminalden kontrol edilen bir AI kodlama ajanına gömen, kendi deyimiyle \"IDE'si dahili\" bir kodlama ajanı.",
+        "tech": "🛠️ Performans kritik kısımlar ~55.000 satır Rust ile, orkestrasyon ve CLI katmanı TypeScript ile yazılmış; Node çalışma ortamı olarak Bun kullanılıyor. `pi-natives` adlı yerleşik katman, arama, shell, AST analizi, PTY yönetimi ve görüntü işlemeyi ayrı süreç başlatmadan (fork/exec ek yükü olmadan) process içinde çalıştırıyor. Language Server Protocol (LSP) entegrasyonu sayesinde ajan editörünüzün bildiği her şeye erişip metin değil semantik düzeyde refactoring yapabiliyor. Debug Adapter Protocol (DAP) ile lldb, dlv, debugpy gibi gerçek debugger'ları sürüp çalışan kodu adım adım inceleyebiliyor. 40'ın üzerinde LLM sağlayıcısını, rol tabanlı model seçimi (varsayılan/küçük/yavaş/plan rolleri) ve yedek zincirleriyle destekliyor.\n\nProjenin özgün mekanizması **hash-anchored edits**: model, değiştireceği satırları satır numarası ya da bağlam metniyle değil, o satırların kriptografik hash'i ile referans alıyor. Dosyanın güncel hali hash'lerle uyuşmazsa yama, dosyayı bozmadan reddediliyor. Bu yöntem boşluk/girinti uyuşmazlığı, \"metin bulunamadı\" hataları ve bağlamı tekrar yazmaktan kaynaklanan token israfını ortadan kaldırıyor; Grok 4 Fast ile çıktı token sayısını %61 azalttığı belirtiliyor.",
+        "why": "📈 LLM'lerin gerçek kodlama görevlerini üstlenebilecek olgunluğa erişmesiyle aynı döneme denk geldi; çoğu ajan çerçevesinin model token'larını \"araç sürtünmesine\" harcadığı bir soruna çözüm sunuyor. 32 yerleşik araç, 14 LSP ve 28 DAP operasyonuyla kutudan çıktığı gibi eksiksiz olması kurulum sürtünmesini azaltıyor. Paralel görev çalıştıran subagent'lar ve WebRTC üzerinden ortak oturumlar gibi özellikler gerçek geliştirici iş akışlarının hedeflendiğini gösteriyor. Daha önce topluluk onayı gerektiren pull request sürecinin geçici olarak herkese açılması da projenin kendi yönüne olan güvenini yansıtıyor.",
+        "evolve": "💡 Windows desteği iddia edilse de Rust platform soyutlamaları ve PTY yönetimi macOS/Linux'u öncelikli gösteriyor. \"Gerçek kullanımla sürekli ayarlanıyor\" denilse de kamuya açık, karşılaştırmalı bir benchmark metodolojisi paylaşılmıyor. 40'ın üzerindeki sağlayıcı için yerleşik token/maliyet takibi bulunmuyor; kullanıcılar harcamalarını dışarıdan izlemek zorunda kalıyor. Genişletme (extension) ekosistemi vaat edilse de örnekler ve pazar yeri henüz olgunlaşmamış."
+      },
+      "glossary": [
+        {
+          "term": "LSP (Language Server Protocol)",
+          "def": "Editörlerin, kod tamamlama/hata tespiti/refactoring gibi zeka özelliklerini dile özel bir sunucudan standart bir arayüzle almasını sağlayan protokol."
+        },
+        {
+          "term": "DAP (Debug Adapter Protocol)",
+          "def": "Farklı debugger'lar (gdb, lldb, dlv gibi) arasındaki farkları soyutlayan, standart bir hata ayıklama arayüz protokolü."
+        },
+        {
+          "term": "AST (Abstract Syntax Tree)",
+          "def": "Kaynak kodun, yapısını temsil eden ağaç biçimindeki soyut gösterimi; araçların kodu metin yerine yapı olarak anlamasını sağlar."
+        },
+        {
+          "term": "PTY",
+          "def": "Terminal oturumlarını programatik olarak taklit edip yöneten sanal terminal arayüzü."
+        },
+        {
+          "term": "Subagent",
+          "def": "Ana ajanın, bir görevi paralel ve izole biçimde yürütmesi için başlattığı yardımcı yapay zeka süreci."
+        },
+        {
+          "term": "Hash-anchored edits (hash-çıpalı düzenleme)",
+          "def": "Bir metin düzenlemesinin, satır numarası yerine o satırların kriptografik özetiyle (hash) referans alınması; dosya beklenmedik şekilde değişmişse düzenleme otomatik olarak reddedilir."
+        }
+      ]
+    },
+    {
+      "name": "Panniantong/Agent-Reach",
+      "url": "https://github.com/Panniantong/Agent-Reach",
+      "stars": "65k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 AI ajanlarının Twitter, YouTube, Reddit, Bilibili, XiaoHongShu gibi platformlara güvenilir ve çoğunlukla ücretsiz şekilde erişmesini sağlayan, her platform için ayrı ayrı kimlik doğrulama/API anahtarı yapılandırma zorunluluğunu ortadan kaldıran bir \"yetenek katmanı.\"",
+        "tech": "🛠️ Python 3.10+ ile yazılmış, pip/pyproject.toml üzerinden dağıtılıyor. Her platform için birincil bir araç ve otomatik yedekleme (failover) sağlayan alternatifler tanımlanmış: web okuma için Jina Reader, YouTube için yt-dlp, Twitter/X için twitter-cli → OpenCLI → bird zinciri, Bilibili için bili-cli (yt-dlp B-site tarafından engellendiği için devre dışı), Reddit için OpenCLI/rdt-cli, global arama için Exa (mcporter aracılığıyla MCP entegrasyonu), GitHub için resmi gh CLI. `agent-reach doctor` komutu her arka ucun kullanılabilirliğini test edip mevcut yönlendirme kararlarını raporluyor. Kimlik bilgileri yerel olarak `~/.agent-reach/config.yaml` içinde kısıtlı dosya izniyle, buluta gönderilmeden saklanıyor.",
+        "why": "📈 GitHub'da #1 trend konumuna yükseldi çünkü üretim kalitesindeki ajanların (Claude Code, Cursor, Windsurf, OpenClaw) yaygınlaşmasıyla standart bir internet erişim katmanına duyulan ihtiyacı karşılıyor. Haziran 2026'da yt-dlp'nin Bilibili tarafından engellenmesi gibi olaylar, tek bir kazıma (scraping) aracına güvenmenin kırılganlığını gösterdi; Agent-Reach'in çoklu-arka-uçlu, sürdürülebilir stratejisi tam bu boşluğu dolduruyor.",
+        "evolve": "💡 Platformların kullanım şartlarına dair uyarı bulunmuyor; kazıma araçlarını kullanan hesaplar askıya alınma riskiyle karşılaşabilir. Platformların anti-scraping önlemleri değiştikçe sürekli bakım gerektiriyor. Platform tespitini önlemek için yerleşik bir hız sınırlama mekanizması yok. Bölgesel kısıtlı içerik için proxy rotasyonu bulunmuyor. Proje, kimlik bilgisi tabanlı kimlik doğrulama için tek kullanımlık test hesapları önererek bu riski şeffaf biçimde kabul ediyor."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının harici araçlara ve verilere standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Failover (otomatik yedekleme)",
+          "def": "Birincil bir aracın/sistemin çalışmaması durumunda otomatik olarak yedek bir alternatife geçilmesi."
+        },
+        {
+          "term": "Scraping (web kazıma)",
+          "def": "Bir web sitesinden veya platformdan, resmi bir API kullanmadan içerik/veri toplama işlemi."
+        },
+        {
+          "term": "Rate limiting (hız sınırlama)",
+          "def": "Bir sisteme kısa sürede yapılan istek sayısını sınırlayarak aşırı kullanımı ve tespit edilmeyi önleme yöntemi."
+        },
+        {
+          "term": "yt-dlp",
+          "def": "YouTube ve benzeri video platformlarından video/altyazı indirmek için kullanılan popüler açık kaynak komut satırı aracı."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırı arayüzü; kullanıcıların programları grafik arayüz yerine yazılı komutlarla çalıştırdığı arayüz türü."
+        }
+      ]
+    }
+  ]
+}
