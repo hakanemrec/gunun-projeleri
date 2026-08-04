@@ -1,0 +1,153 @@
+{
+  "date": "2026-08-04",
+  "projects": [
+    {
+      "name": "esengine/DeepSeek-Reasonix",
+      "url": "https://github.com/esengine/DeepSeek-Reasonix",
+      "stars": "30.2k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 DeepSeek modelleriyle çalışmaya özel, terminal tabanlı bir AI kodlama ajanı. Config ve plugin tabanlı; tek bir statik Go binary'si olarak dağıtılıyor, ağır bir çalışma zamanı veya Python bağımlılığı gerektirmiyor.",
+        "tech": "🛠️ Go ile yazılmış, CGO kapalı tek statik binary olarak altı platforma cross-compile ediliyor. DeepSeek'in prefix cache mekanizmasına özel optimize edilmiş: token maliyetlerini uzun oturumlarda düşük tutmak temel tasarım hedefi. Executor+planner ikili model mimarisi, her biri için ayrı cache-stable oturumlar kullanılabiliyor. Konfigürasyon `reasonix.toml` dosyalarıyla yapılıyor; hardcoded mantık yok, her şey dışarıdan tanımlanıyor. MCP uyumlu eklentiler stdio üzerinden JSON-RPC ile subprocess olarak izole çalışıyor. DeepSeek bir preset olarak geliyor ama OpenAI uyumlu herhangi bir endpoint, yeni kod yazmadan sadece config girdisi olarak eklenebiliyor.",
+        "why": "📈 Claude Code veya Aider gibi araçların genel-amaçlı model desteği yerine, DeepSeek'in ucuz ve güçlü modellerine (V4 Flash/PRO) odaklanan hafif bir alternatif sunuyor. Uzun kodlama oturumlarında token maliyetini düşürme vaadi, DeepSeek modellerinin popülerleşmesiyle birlikte ilgi çekti. 770 açık issue ve 222 açık PR aktif bir geliştirmeye işaret ediyor; npm, Homebrew, masaüstü uygulaması ve VS Code eklentisi gibi çoklu dağıtım kanalları erişimi kolaylaştırıyor.",
+        "evolve": "💡 Şu an DeepSeek'e \"preset\" olarak odaklanması hem güç hem sınırlama - diğer sağlayıcılara geçiş config ile mümkün olsa da resmi dokümantasyon ve topluluk desteği muhtemelen DeepSeek etrafında yoğunlaşacak. Masaüstü uygulaması ve VS Code eklentisi gibi çoklu arayüzlerin aynı anda bakımı bakım yükünü artırabilir. Checkpoint/rewind gibi özellikler olgunlaştıkça, ekip halinde kullanım senaryoları için paylaşılan config ve merkezi plugin kayıt defteri (registry) gibi tooling'e ihtiyaç doğabilir."
+      },
+      "glossary": [
+        {
+          "term": "Prefix cache",
+          "def": "Bir dil modelinin, tekrar eden başlangıç metnini (prompt'un sabit kısmını) yeniden işlemek yerine önbellekten okuyarak hem hızı artıran hem token maliyetini düşüren bir teknik."
+        },
+        {
+          "term": "CGO",
+          "def": "Go programlarının C koduyla etkileşmesini sağlayan mekanizma; kapatıldığında derlenen binary dış bağımlılık gerektirmeden tamamen bağımsız çalışabilir."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "TOML",
+          "def": "İnsan tarafından okunması kolay, yapılandırma dosyalarında sık kullanılan basit bir veri formatı."
+        },
+        {
+          "term": "Stdio JSON-RPC",
+          "def": "Programların standart giriş/çıkış akışları üzerinden JSON formatlı uzaktan yordam çağrılarıyla haberleştiği bir iletişim yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "firecrawl/pdf-inspector",
+      "url": "https://github.com/firecrawl/pdf-inspector",
+      "stars": "8.7k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 PDF dosyalarını nereye göndereceğine karar veren bir trafik polisi gibi çalışıyor: metin tabanlı PDF'leri yerel olarak milisaniyeler içinde işlerken, taranmış/görüntü tabanlı olanları pahalı OCR servislerine yönlendiriyor. Firecrawl'ın tespitine göre PDF'lerin yaklaşık %54'ü zaten metin içeriyor ve hiç OCR'a ihtiyaç duymuyor.",
+        "tech": "🛠️ Saf Rust ile, tek bağımlılık (lopdf) kullanılarak yazılmış. İçerik akışlarını (content stream) tam parse etmeden Tj/TJ (metin operatörleri) ve Do (görüntü operatörleri) arayarak PDF tipini (TextBased/Scanned/ImageBased/Mixed) saptıyor; 300 sayfayı aşan PDF'leri bile milisaniyeler içinde sınıflandırabiliyor. Sınıflandırmadan sonra extractor katmanı CID font decode, çok sütunlu düzen tespiti, dikdörtgen tabanlı tablo tespiti ve font boyutu oranlarına göre başlık seviyesi analizini yapıyor. Rust kütüphanesi, Python (PyO3), Node.js ve WebAssembly (sunucusuz, tarayıcıda çalışma) olarak dağıtılıyor; `pdf2md` ve `detect-pdf` CLI araçları da mevcut.",
+        "why": "📈 Firecrawl, AI ajanlarına ve RAG sistemlerine web/döküman verisi sağlayan bir şirket; PDF'lerin çoğunu gereksiz yere OCR'a göndermenin maliyet ve gecikme yarattığını görüp bu boşluğu dolduruyor. 200 PDF'lik bir kıyaslamada MarkItDown, PyMuPDF4LLM ve opendataloader gibi rakiplerden hem doğruluk (0.875 skor) hem hız (200 belge için 0.47 saniye, PyMuPDF4LLM'in 17 saniyesine karşı) açısından öne çıkması, RAG/AI pipeline'ı kuran geliştiricilerin dikkatini çekti.",
+        "evolve": "💡 Şu anki odak noktası rapor, fatura, araştırma makalesi gibi \"yapılandırılmış\" PDF'ler; el yazısı veya karmaşık grafik ağırlıklı belgelerde OCR'a devretme sınırının nerede çizildiği daha fazla gerçek dünya testi gerektiriyor gibi görünüyor. Tablo tespitinin dikdörtgen tabanlı ve sezgisel (heuristic) olması düzensiz tablolarda kırılma riski taşıyabilir; topluluk katkılarıyla bu kısmın öğrenme tabanlı bir sınıflandırıcıya evrilmesi olası bir yön."
+      },
+      "glossary": [
+        {
+          "term": "OCR",
+          "def": "Taranmış görüntülerdeki yazıyı düzenlenebilir metne çeviren optik karakter tanıma teknolojisi."
+        },
+        {
+          "term": "Content stream",
+          "def": "Bir PDF sayfasının nasıl çizileceğini tanımlayan, metin ve görüntü komutlarını içeren düşük seviyeli veri bloğu."
+        },
+        {
+          "term": "CID font",
+          "def": "Çince, Japonca gibi geniş karakter kümelerini destekleyen, karakterleri sayısal kimliklerle eşleyen bir font kodlama biçimi."
+        },
+        {
+          "term": "PyO3",
+          "def": "Rust ile yazılmış kodun Python'dan doğrudan çağrılabilmesini sağlayan bir köprü kütüphanesi."
+        },
+        {
+          "term": "WebAssembly",
+          "def": "Kodun tarayıcıda neredeyse yerel hızda, güvenli bir sanal alanda çalışmasını sağlayan taşınabilir bir bayt kodu formatı."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin cevap üretmeden önce ilgili belgeleri arayıp bulduğu, ardından bu belgelere dayanarak yanıt oluşturduğu yöntem."
+        }
+      ]
+    },
+    {
+      "name": "zhaoxuya520/reverse-skill",
+      "url": "https://github.com/zhaoxuya520/reverse-skill",
+      "stars": "16.4k",
+      "language": "PowerShell",
+      "sections": {
+        "serves": "🎯 Yetkili sızma testi (pentest) ve tersine mühendislik yapan güvenlik araştırmacıları için, hangi görevde hangi aracı (jadx, apktool, Frida, IDA, Burp Suite...) kullanacağını bilmeyen AI ajanlarına doğru metodolojiyi ve iş akışını öneren bir yönlendirme katmanı.",
+        "tech": "🛠️ Claude Code, Cursor, Cline, Kiro gibi AI kodlama istemcileriyle MCP sunucuları veya doğrudan CLI çağrıları üzerinden entegre oluyor. Mimari bir karar ağacı şeklinde işliyor: kullanıcı görevi → RULES.md (yetkilendirme kontrolü) → MASTER-ROUTING (hiyerarşik yönlendirme) → vaka başlatma → senaryoya özel skill dosyası → ilgili araç/script → kanıt toplama ve raporlama. APK/mobil analiz, ikili tersine mühendislik (IDA, radare2, Ghidra), JS/frontend şifre çözme, .NET/malware analizi, CTF, firmware ve API güvenliği dahil 15'ten fazla senaryo türünü kapsıyor. PowerShell/Bash script'leri Windows, Linux ve Kali üzerinde araç tespiti ve otomatik triyaj yapıyor.",
+        "why": "📈 AI ajanlarının güvenlik araçlarını doğru sırada ve doğru şekilde çağırmakta zorlanması yaygın bir sorun; bu proje bunu hazır, tekrarlanabilir iş akışlarına dönüştürerek büyük ilgi gördü (bir günde +2.446 yıldız, bugünkü listenin en yüksek ivmesi). RULES.md gibi yetkilendirme kapıları barındırması, \"sorumlu kullanım\" çerçevesi çizme çabasını gösteriyor ve bunun güvenlik topluluğunda güven kazanmasına yardımcı olduğu düşünülebilir.",
+        "evolve": "💡 Proje README'sinde yetkilendirme gerekliliği dışında ayrıntılı bir etik/güvenlik politikası yer almıyor; kötüye kullanım riskini azaltacak daha somut denetim mekanizmaları (loglama, kapsam doğrulama) eklenmesi güven inşası açısından önemli olabilir. Farklı lisanslara (MIT + GPLv3 alt modül) sahip olması, kurumsal kullanımda lisans uyumluluğu sorunlarına yol açabilir - bunun netleştirilmesi faydalı olur."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Pentest (sızma testi)",
+          "def": "Bir sistemin güvenlik açıklarını, sahibinin izniyle, gerçek bir saldırgan gibi davranarak tespit etme çalışması."
+        },
+        {
+          "term": "Tersine mühendislik",
+          "def": "Bir yazılımın veya donanımın iç yapısını, kaynak koduna sahip olmadan analiz ederek nasıl çalıştığını anlama süreci."
+        },
+        {
+          "term": "CTF (Capture The Flag)",
+          "def": "Katılımcıların güvenlik açıklarını bularak gizli \"bayrakları\" ele geçirdiği, eğitim amaçlı siber güvenlik yarışması."
+        },
+        {
+          "term": "Triyaj",
+          "def": "Çok sayıda bulgu veya olayı önem sırasına göre hızlıca sınıflandırma işlemi."
+        }
+      ]
+    },
+    {
+      "name": "livekit/agents",
+      "url": "https://github.com/livekit/agents",
+      "stars": "12.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Gerçek zamanlı, sesli AI ajanları (voice AI) inşa etmek için sunucu tarafında çalışan, Python tabanlı açık kaynak bir framework. Konuşmadan metne (STT), dil modeli (LLM) ve metinden konuşmaya (TTS) gibi birbirinden bağımsız servisleri tek, uyumlu bir boru hattında birleştiriyor.",
+        "tech": "🛠️ OpenAI, Deepgram, Cartesia, Google gibi sağlayıcılar arasında STT/LLM/TTS bileşenlerini karıştırıp eşleştirmeye izin veren esnek bir model kompozisyonu sunuyor. Kullanıcının konuşmasının ne zaman bittiğini anlamak için transformer tabanlı \"semantic turn detection\" kullanıyor, bu da gereksiz kesintileri azaltıyor. WebRTC üzerinden gerçek zamanlı bağlantı, dahili iş zamanlama (job dispatch) API'leri, telefon santrali (telephony) entegrasyonu ve MCP sunucularından araçları tek satır kodla kullanabilme gibi altyapı özellikleri barındırıyor.",
+        "why": "📈 Sesli AI ajanı kurmak geleneksel olarak birbirinden bağımsız STT/LLM/TTS servislerini gerçek zamanlı koordine etmeyi gerektiren, karmaşık bir mühendislik problemi. LiveKit Agents bu karmaşıklığı hazır entegrasyonlarla soyutlayarak, sesli asistan trendinin yükseldiği bir dönemde geliştiricilerin sıfırdan altyapı kurma ihtiyacını ortadan kaldırıyor - bu da onu hem girişimler hem de büyük ürün ekipleri için cazip kılıyor.",
+        "evolve": "💡 Çoklu sağlayıcı desteği güçlü bir esneklik sağlasa da, her sağlayıcı kombinasyonunun gecikme (latency) ve ses kalitesi üzerindeki etkisini karşılaştırmalı ölçen resmi bir kıyaslama seti şu an eksik görünüyor - bu da geliştiricilerin doğru kombinasyonu seçmesini zorlaştırabilir. Çoklu ajan devri (multi-agent handoff) desenlerinin daha görsel/deklaratif biçimde tanımlanabilmesi (bir akış editörü gibi), karmaşık sesli iş akışlarını daha erişilebilir kılabilir."
+      },
+      "glossary": [
+        {
+          "term": "STT (Speech-to-Text)",
+          "def": "Sesli konuşmayı yazılı metne çeviren teknoloji."
+        },
+        {
+          "term": "TTS (Text-to-Speech)",
+          "def": "Yazılı metni sesli konuşmaya çeviren teknoloji."
+        },
+        {
+          "term": "LLM (Large Language Model)",
+          "def": "Büyük miktarda metinle eğitilmiş, doğal dili anlayıp üretebilen yapay zeka modeli."
+        },
+        {
+          "term": "WebRTC",
+          "def": "Tarayıcılar ve uygulamalar arasında ek eklenti gerektirmeden gerçek zamanlı ses/görüntü iletişimi sağlayan açık standart."
+        },
+        {
+          "term": "Turn detection",
+          "def": "Bir diyalogda konuşmacının sırasının bitip bitmediğini algılayan mekanizma."
+        },
+        {
+          "term": "Telephony (telefon santrali) entegrasyonu",
+          "def": "Bir yazılımın geleneksel telefon şebekesi üzerinden arama yapabilmesi/alabilmesi."
+        },
+        {
+          "term": "Latency (gecikme)",
+          "def": "Bir isteğin gönderilmesiyle yanıtın alınması arasında geçen süre."
+        }
+      ]
+    }
+  ]
+}
