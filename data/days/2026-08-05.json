@@ -1,0 +1,84 @@
+{
+  "date": "2026-08-05",
+  "projects": [
+    {
+      "name": "TencentCloud/TencentDB-Agent-Memory",
+      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
+      "stars": "14.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI ajanlarının her yeni oturumda projeyi sıfırdan öğrenmesi sorununa çözüm: konuşmaları, dokümanları ve kod tabanını dört farklı \"hafıza varlığına\" dönüştürüp takım genelinde tekrar kullanılabilir hale getiriyor. Mantık şu: bir proje bir ajana zaten anlatıldıysa, aynı bilgi başka bir ajana veya oturuma tekrar anlatılmamalı.",
+        "tech": "🛠️ Dört katmanlı bir hafıza mimarisi kuruyor: **Chat Memory** ham konuşmaları L0-L3 arası kademelerde (atomik notlardan uzun vadeli \"persona\"lara) damıtıyor; **Skills** konuşmalardan çıkarılmış, sürümlenebilir tekrar kullanılabilir iş akışları tutuyor; **Wiki** dokümanları bağlantı grafikleriyle ilişkilendiriyor; **CodeGraph** ise kod tabanını sembol düzeyinde indeksleyip çağrı ilişkileri ve etki analizi sağlıyor. Arama tarafında vektör tabanlı semantik eşleştirme ile BM25 anahtar kelime aramasını RRF (Reciprocal Rank Fusion) ile birleştiren hibrit bir yaklaşım var. Node.js üzerinde çalışıyor, Docker ile memory-core + memory-hub + proxy şeklinde çoklu servis olarak dağıtılıyor; Claude Code, CodeBuddy gibi araçlara SDK düzeyinde entegre oluyor. Hafıza varlıklarına erişim, takımların agent'lara özel roller/görünürlük tanımlayabildiği bir ACL (erişim kontrol listesi) modeliyle yönetiliyor.",
+        "why": "📈 Şirketlerin tek bir ajan yerine birçok özelleşmiş ajanı aynı anda çalıştırmaya başlamasıyla, bu ajanlar arasında deneyim paylaşımı ihtiyacı öne çıktı. Ayrıca uzun context pencerelerinin maliyeti arttıkça, her şeyi tekrar tekrar prompt'a eklemek yerine seçici hafıza çağırma stratejisi ekonomik hale geldi. Kurumsal kullanım, klasik RAG'ın veremediği şeyi istiyor: hangi varlığı kimin kullanabileceği, hangi sürümün geçerli olduğu ve hangi ajanın hangi bilgiyi alması gerektiği gibi sahiplik ve versiyon takibi. Tencent'in bulut altyapısı arkasında olması da kurumsal güven açısından ilgi çekiyor.",
+        "evolve": "💡 CodeGraph şu an öncelikle herkese açık HTTPS repo'ları destekliyor; özel repo ve SSH kimlik bilgisi desteği eksik, bu da kurumsal kapalı kod tabanlarında kullanımı sınırlıyor. Hafıza varlıklarının hangi ajana bağlanacağı hâlâ büyük ölçüde manuel yapılıyor - tam otomatik yönlendirme henüz olgunlaşmamış. Wiki ve CodeGraph asenkron inşa edildiği için yeni eklenen içeriğin \"ready\" durumuna geçmesi gecikmeye neden olabiliyor. ACL modeli kullanıcı/rol/agent düzeyinde çalışıyor ama kaynak (resource) düzeyinde daha ince taneli izin kontrolüne henüz sahip değil; bu, büyük ölçekli kurumsal dağıtımlarda bir sonraki geliştirme alanı gibi duruyor."
+      },
+      "glossary": [
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir dil modelinin cevap üretirken önce ilgili belgeleri bir veri tabanından çekip bu belgeleri bağlam olarak kullandığı yöntem." },
+        { "term": "BM25", "def": "Anahtar kelime eşleşmesine dayanan, arama motorlarında yaygın kullanılan klasik bir metin arama algoritması." },
+        { "term": "RRF (Reciprocal Rank Fusion)", "def": "Farklı arama yöntemlerinin (örneğin anahtar kelime ve semantik arama) sonuç sıralamalarını birleştirip tek bir nihai sıralama üreten teknik." },
+        { "term": "ACL (Access Control List)", "def": "Bir sisteme kimin hangi kaynağa erişebileceğini tanımlayan erişim kontrol listesi." },
+        { "term": "Context window", "def": "Bir dil modelinin tek seferde işleyebildiği metin miktarının sınırı; bu sınır aşılırsa eski bilgiler modelin \"görüş alanından\" düşer." },
+        { "term": "Cold-start problemi", "def": "Bir sistemin veya ajanın, hakkında hiç geçmiş veri/deneyim olmayan yeni bir görevle ilk karşılaşmasında yaşadığı zorluk." }
+      ]
+    },
+    {
+      "name": "uber/ADR",
+      "url": "https://github.com/uber/ADR",
+      "stars": "772",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Kurumların Claude Code, Cursor, Codex gibi AI kodlama ajanlarını ve otomatik destek ajanlarını üretimde kullanırken karşılaştığı görünürlük ve güvenlik boşluğunu kapatıyor. Yani soru şu: bu ajanlar tam olarak ne yapıyor, yetkisiz araç erişimi veya prompt injection gibi saldırılara karşı nasıl korunuyor? ADR bu soruları cevaplayacak bir gözlemleme ve tespit katmanı sunuyor.",
+        "tech": "🛠️ Dört parçalı bir savunma hattı kuruyor: **Sensor** macOS, Linux ve Windows'ta 7'den fazla ajan aracından telemetri toplayıp niyet, araç çağrıları ve çalıştırma izlerini ortak bir şemaya normalize ediyor. **ADR-Bench**, 300'den fazla sentetik savunma görevi, 133 MCP (Model Context Protocol) sunucusu ve 17 belgelenmiş ajan saldırı tekniğini kapsayan bir değerlendirme ortamı sunuyor. **Detector** iki katmanlı bir mimariyle çalışıyor: önce yüksek geri çağırma (recall) oranlı hızlı bir eleme, ardından şüpheli oturumları derinlemesine inceleyen ikinci bir \"ajan\" muhakeme katmanı. Dördüncü parça olan **Prevention** (saldırıları çalışmadan önce engelleyen bileşen) ise kapalı kaynak tutuluyor. Python üzerine kurulu, bağımlılık yönetimi için `uv` kullanıyor, Claude ve OpenAI API'leriyle entegre çalışıyor.",
+        "why": "📈 ChatGPT sonrası kurumsal AI ajan benimsemesi hızla arttı ve bu ajanların üretim ortamında gözetimsiz çalışması ciddi bir güvenlik riski haline geldi. Projenin MLSys 2026'da akademik olarak kabul edilmesi olgunluğunu kanıtlıyor; Uber'in kendi içinde canlı olarak kullanması ise gerçek dünya etkinliğine dair somut bir referans sağlıyor. Ajan güvenliği alanında ciddi bir tooling boşluğu olduğu için bu tür açık kaynak projeler hızla dikkat çekiyor.",
+        "evolve": "💡 En kritik bileşen olan Prevention (saldırıları önceden engelleme) kapalı kaynak; bu da projenin gerçek koruma gücünün açık kaynak kısımla sınırlı kalmasına yol açıyor. ADR Explorer adlı çevrimdışı red-teaming motoru da henüz açık kaynak değil. Benchmark tamamen sentetik veri ve taklit ortamlar üzerine kurulu - sahte kimlik bilgileri ve emüle edilmiş ortamlar kullanıldığından gerçek dünya saldırı senaryolarına aktarılabilirliği sınırlı olabilir. Ayrıca desteklenen araç seti şu an başlıca IDE ajanlarıyla sınırlı; hızla çoğalan yeni ajan çerçevelerine (framework) uyum sağlamak sürekli bir bakım yükü oluşturacaktır."
+      },
+      "glossary": [
+        { "term": "Prompt injection", "def": "Bir saldırganın, AI modeline verilen girdinin içine gizlenmiş talimatlarla modelin asıl amacından saptırılmasını sağladığı saldırı türü." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Telemetri", "def": "Bir sistemin çalışması sırasında topladığı, sonradan analiz edilmek üzere kaydedilen kullanım ve davranış verileri." },
+        { "term": "Recall (geri çağırma)", "def": "Bir tespit sisteminin, gerçekte var olan tüm pozitif/riskli vakaların ne kadarını yakalayabildiğini gösteren ölçüt." },
+        { "term": "Red-teaming", "def": "Bir sistemin zayıflıklarını bulmak için saldırgan gibi davranıp kasıtlı olarak açık arama sürecine verilen isim." }
+      ]
+    },
+    {
+      "name": "obra/superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "stars": "266.7k",
+      "language": "Shell",
+      "sections": {
+        "serves": "🎯 AI kodlama ajanlarının doğrudan koda atlamak yerine önce gereksinimi netleştirip, çözümü tasarlayıp, planlayıp sonra sistematik şekilde uygulamasını sağlayan bir metodoloji ve \"skill\" (beceri) çerçevesi. Amaç, Claude Code, Cursor, Gemini CLI gibi birbirinden farklı araçlarda tutarlı, disiplinli bir geliştirme akışı kurmak.",
+        "tech": "🛠️ Beş aşamalı bir iş akışı tanımlıyor: **Brainstorming** (diyalogla spesifikasyonu netleştirme), **Planning** (2-5 dakikalık küçük görev parçalarına bölme), **Development** (alt-ajanların iki aşamalı incelemeyle görevi yürütmesi), **Testing** (klasik RED-GREEN-REFACTOR test-güdümlü geliştirme) ve son olarak kod incelemesi ile branch'in tamamlanması. Mimari, oturum başlangıcında ve Git worktree'lerinde otomatik devreye giren, eklenti (plugin) tabanlı bir \"skill\" sistemi üzerine kurulu; her skill (ör. test-driven-development, systematic-debugging) kendi başına kapsüllenmiş bir iş akışı bileşeni. Claude Code, Cursor, Codex, Kimi Code, OpenCode, GitHub Copilot, Gemini CLI dahil on'a yakın farklı AI kodlama aracını destekliyor - JavaScript/TypeScript (Node.js) altyapısıyla.",
+        "why": "📈 AI kodlama ajanlarının hızla çoğalıp parçalanması (her platformun kendi yaklaşımı, kendi eklenti sistemi) geliştiricileri araçtan araca tutarsız sonuçlarla baş başa bıraktı. Superpowers bu farklı ajanlar (Claude, GPT-4, Gemini varyantları) üzerinde aynı disiplinli iş akışını standartlaştırarak, agentic (ajan-güdümlü) geliştirmenin hızla olgunlaştığı kritik bir dönemde boşluğu dolduruyor. YAGNI ve DRY gibi köklü mühendislik prensiplerini AI ajan iş akışına sistematik şekilde yerleştirmesi, deneyimli geliştiricilerde güven uyandırıyor ve organik paylaşımla hızla yayılıyor.",
+        "evolve": "💡 Proje sahipleri yeni skill katkılarını genel olarak kabul etmediğini belirtiyor - bu, topluluk katkısına dayalı organik büyümeyi sınırlayan bilinçli bir tercih. Yerleşik bir test çerçevesi yok; harici bir değerlendirme aracına (superpowers-evals) bağımlı kalınıyor. Her AI kodlama aracına ayrı kurulum gerektirmesi, çoklu araç kullanan ekipler için bakım yükü yaratıyor. Görsel/takip özellikleri isteğe bağlı harici telemetriye dayandığından, bu özelliklerin kurumsal ortamlarda güvenlik/gizlilik onayı ayrı bir engel olabilir. İlerleyen dönemde tek bir merkezi skill kayıt defteri (registry) ve daha açık bir katkı modeli, ekosistemin büyümesini hızlandırabilir."
+      },
+      "glossary": [
+        { "term": "Agentic geliştirme", "def": "Yazılım geliştirme görevlerinin doğrudan bir insan yerine otonom çalışan AI ajanlar tarafından planlanıp yürütüldüğü yaklaşım." },
+        { "term": "TDD (Test-Driven Development)", "def": "Önce başarısız olan bir test yazıp (RED), sonra bu testi geçirecek en az kodu yazıp (GREEN), ardından kodu temizleyen (REFACTOR) geliştirme disiplini." },
+        { "term": "YAGNI (You Aren't Gonna Need It)", "def": "Şu an ihtiyaç duyulmayan özelliği önceden eklememe prensibi; gereksiz karmaşıklığı önler." },
+        { "term": "DRY (Don't Repeat Yourself)", "def": "Aynı mantığın kod içinde birden fazla yerde tekrarlanmaması, tekilleştirilmesi prensibi." },
+        { "term": "Git worktree", "def": "Aynı Git deposunun birden fazla dizinde, birbirinden bağımsız branch'ler üzerinde eşzamanlı çalışılmasını sağlayan özellik." },
+        { "term": "Subagent (alt-ajan)", "def": "Bir ana görevi yürütmek için dinamik olarak başlatılan, belirli bir alt görevle sınırlı, bağımsız çalışan yardımcı AI ajanı." }
+      ]
+    },
+    {
+      "name": "lyogavin/airllm",
+      "url": "https://github.com/lyogavin/airllm",
+      "stars": "28.6k",
+      "language": "Jupyter Notebook",
+      "sections": {
+        "serves": "🎯 Tüketici seviyesindeki, çok sınırlı VRAM'e sahip GPU'larda dev boyutlu dil modellerini çalıştırma sorununu çözüyor. Llama 3.1 405B modelini 8GB'lık, DeepSeek-V3'ü (671B parametre) ise yaklaşık 12GB'lık bir GPU'da, modeli küçültmeden (quantization, distillation veya pruning olmadan) çalıştırabiliyor - normalde bu donanımlarda imkânsız kabul edilen bir şey.",
+        "tech": "🛠️ Temel yenilik **katman bazlı akış (layer-wise streaming)**: modelin tamamını GPU belleğine yüklemek yerine, her seferinde yalnızca tek bir katman GPU'ya taşınıyor, işleniyor ve bellekten atılıyor. Seyrek MoE (Mixture-of-Experts) modellerinde bu avantaj daha da büyüyor, çünkü tüm bir katman yerine yalnızca aktif olan \"expert\" akıtılıyor. Model önce katmanlara ayrıştırılıp diske verimli şekilde kaydediliyor; bu, hız yerine erişilebilirliği önceleyen bir mübadele (trade-off). PyTorch ve Hugging Face Transformers üzerine kurulu, SafeTensors formatını kullanıyor; 4-bit/8-bit blok bazlı quantization ile isteğe bağlı olarak 3 kata kadar hızlanma sağlıyor. CUDA GPU'ların yanı sıra Apple Silicon (MLX) ve CPU üzerinde de çalışabiliyor; Llama, Qwen, DeepSeek, Mistral, Phi, Gemma gibi popüler açık modelleri otomatik olarak (\"AutoModel\") destekliyor.",
+        "why": "📈 Frontier seviyesindeki (405B+ parametreli) modelleri, pahalı kurumsal donanıma erişimi olmayan bireysel araştırmacı ve geliştiricilerin erişimine açması büyük ilgi çekiyor. Doğruluk kaybı olmadan (distillation cezası olmadan) çalışması, sıkıştırılmış/küçültülmüş model alternatiflerine kıyasla önemli bir avantaj. DeepSeek gibi büyük açık kaynak modellerin popülerleşmesi ve 2026'daki güncel model desteğiyle aktif geliştirmenin sürmesi, projeyi tekrar gündeme taşıyor.",
+        "evolve": "💡 Model ayrıştırma işlemi disk alanını ciddi şekilde tüketiyor, bu da sınırlı depolama alanına sahip kullanıcılar için ayrı bir darboğaz oluşturuyor. Katman akışı, tamamen belleğe yüklü bir modele kıyasla gecikme (latency) getiriyor - bu araç hız değil erişilebilirlik için optimize edilmiş, bu yüzden gerçek zamanlı/düşük gecikmeli uygulamalar için uygun değil. Sadece çıkarım (inference) için tasarlanmış, eğitim (training) desteklemiyor. GPU mimarisine göre optimizasyon farklılık gösteriyor ve ilk çalıştırmada modelin katmanlara ayrıştırılması zaman ve kaynak gerektiriyor. İlerleyen dönemde akıllı önbellekleme veya sık kullanılan katmanların bellekte tutulması gibi hibrit yaklaşımlar gecikme sorununu hafifletebilir."
+      },
+      "glossary": [
+        { "term": "VRAM", "def": "Bir grafik kartının (GPU) kendi üzerinde barındırdığı, veri işleme için kullanılan özel bellek." },
+        { "term": "Quantization", "def": "Bir modelin ağırlıklarını daha az bit ile temsil ederek boyutunu küçültme ve hızlandırma tekniği; genelde küçük bir doğruluk kaybına yol açar." },
+        { "term": "Distillation (damıtma)", "def": "Büyük bir modelin bilgisinin, daha küçük bir modele aktarılarak benzer performansı daha az kaynakla elde etmeye çalışılan teknik." },
+        { "term": "Pruning (budama)", "def": "Bir modelin daha az katkı sağlayan bağlantılarını/parametrelerini kaldırarak boyutunu küçültme yöntemi." },
+        { "term": "MoE (Mixture-of-Experts)", "def": "Modelin tüm parametrelerini her girdi için değil, yalnızca ilgili \"uzman\" alt ağları aktive ederek kullandığı mimari; hesaplama maliyetini düşürür." },
+        { "term": "SafeTensors", "def": "Model ağırlıklarını güvenli ve hızlı şekilde diskte saklamak için kullanılan, kötü amaçlı kod çalıştırma riskini azaltan bir dosya formatı." }
+      ]
+    }
+  ]
+}
