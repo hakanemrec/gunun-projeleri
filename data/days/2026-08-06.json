@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-06",
+  "projects": [
+    {
+      "name": "cloudflare/computer",
+      "url": "https://github.com/cloudflare/computer",
+      "stars": "3.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI ajanlarına \"kendi bilgisayarını\" veren bir altyapı: kod çalıştırma ve kalıcı (persistent) dosya sistemi erişimini tek bir arayüz arkasında birleştiriyor. Sorun şu: bir ajanın dosya oluşturup düzenlemesi, script çalıştırması, bir sonraki adımda bu dosyalara tekrar erişebilmesi gerekiyor - ama bunu güvenli, izole ve ölçeklenebilir şekilde yapmak normalde her ekibin kendi başına çözmesi gereken bir altyapı sorunu. Cloudflare bu katmanı hazır sunuyor.",
+        "tech": "🛠️ Mimarinin merkezinde SQLite durumunu (state) tutan bir **Durable Object** var; çalıştırma (execution) işlemi `workspace.runtime` üzerinden dışa açılıyor. Üç ayrı, birbirinin yerine takılabilir (pluggable) backend var: **Container** (SQLite durumunu FUSE ile tam bir Linux ortamına bağlayan sandbox), **Isolate Shell** (Dynamic Worker içinde çalışan hafif bir bash) ve **Isolate JavaScript** (her seferinde taze bir Dynamic Worker'da çalışan JS modülleri). Bu backend'ler `workspace.runtime.exec()` ile seçiliyor ve aynı workspace altında birlikte var olabiliyor. İletişim için Cloudflare'in kendi geliştirdiği `capnweb` RPC protokolü, çalıştırma ortamı için de Workers/Dynamic Workers kullanılıyor. Backend bağlantısı ilk kullanımda tembel (lazy) şekilde kuruluyor.",
+        "why": "📈 Coding agent'ların ve \"computer use\" yaklaşımının yaygınlaşmasıyla, ajanlara güvenli ve kalıcı bir çalışma ortamı sağlama ihtiyacı öne çıktı. Cloudflare, zaten sahip olduğu Workers/Durable Objects altyapısını bu yeni pazara taşıyarak agent altyapısı alanına giriyor - bu da büyük bir bulut sağlayıcının imzasını taşıması nedeniyle güven ve dikkat topluyor. Bugün tek günde kazanılan 891 yıldız, toplam yıldız sayısının dörtte birine yakın; bu da duyurunun taze ve viral olduğunu gösteriyor.",
+        "evolve": "💡 Proje henüz önizleme (preview) aşamasında ve üretim ortamı için uygun değil - README bunu açıkça belirtiyor. `docs/` altındaki spesifikasyon, mevcut implementasyondan çok ileriye dönük niyeti yansıtıyor; bu da beklenti ile gerçeklik arasında karışıklığa yol açabilir. Tamamen Cloudflare'in kendi platformuna (Durable Objects, Workers) bağımlı olması, projeyi tek bir buluta kilitliyor - AWS veya GCP üzerinde çalışmak isteyenler için taşınabilirlik yok. Üç farklı backend'in tutarlı davranması ve birbirleriyle uyumlu kalması da uzun vadede ayrı bir mühendislik yükü."
+      },
+      "glossary": [
+        {
+          "term": "Durable Object",
+          "def": "Cloudflare Workers platformunda, durumu (state) kalıcı ve tutarlı şekilde saklayan, tek bir mantıksal örnek üzerinden erişilen sunucusuz bileşen."
+        },
+        {
+          "term": "FUSE (Filesystem in Userspace)",
+          "def": "Normalde işletim sistemi çekirdeğinde olan dosya sistemi mantığının, kullanıcı alanında çalışan bir programla uygulanmasını sağlayan arayüz."
+        },
+        {
+          "term": "RPC (Remote Procedure Call)",
+          "def": "Bir programın, ağ üzerindeki başka bir bilgisayardaki fonksiyonu sanki yerel bir fonksiyonmuş gibi çağırabilmesini sağlayan iletişim yöntemi."
+        },
+        {
+          "term": "Serverless / Workers",
+          "def": "Geliştiricinin sunucu yönetmeden, sağlayıcının otomatik olarak ölçeklendirdiği kısa ömürlü fonksiyonlar çalıştırdığı bulut modeli."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Çalıştırılan kodun, ana sistemden izole edilmiş, kontrollü bir ortamda çalışmasını sağlayan güvenlik mekanizması."
+        }
+      ]
+    },
+    {
+      "name": "huangruiteng/loopx",
+      "url": "https://github.com/huangruiteng/loopx",
+      "stars": "2.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Günler süren, birden fazla AI ajanın el değiştirdiği uzun soluklu projelerde \"şu an neredeyiz, ne yapıldı, sırada ne var, kim onaylamalı\" sorularının cevapsız kalması sorununu çözüyor. Sohbet hafızası ve basit zamanlayıcılar, çok-turlu ve gün aşan ajan çalışmalarında yetersiz kalıyor; LoopX bunun yerine hedefleri, onay noktalarını (gate), yapılacakları ve kanıtları kalıcı bir durumda tutan hafif bir \"kontrol düzlemi\" sunuyor.",
+        "tech": "🛠️ Codex, Claude Code, Cursor gibi araçlardan bağımsız (agent-agnostic) çalışan, Python 3.11+ ile yazılmış ve kasıtlı olarak standart kütüphane dışında hiçbir bağımlılığı olmayan bir sistem. Akış şöyle işliyor: bir **objective** (hedef) tanımlanır, buna bağlı **gates** (insan onayı gereken noktalar), **todos** (çalıştırılabilir görevler), **evidence** (kanıt) ve **quota** (kota) takibi yapılır; ajan sınırlı bir dilim işi yürütür ve sonucu geri yazar (writeback). `loopx status`, `loopx todo claim`, `loopx quota spend-slot` gibi CLI komutlarıyla kullanılıyor. Birden fazla ajanın aynı işe çakışmadan katılabilmesi için **claim** (sahiplenme) ve **lease** (kiralama) tabanlı bir sahiplik modeli var; kurulum tek satırlık bir shell script ile, repo klonlamadan yapılabiliyor.",
+        "why": "📈 AI ajanları tek seferlik sohbet asistanlığından çok-günlük, yarı-otonom çalışmaya geçtikçe, bu çalışmanın izlenebilir ve insan denetiminde kalması konusunda ciddi bir boşluk oluştu. LoopX, tehlikeli izinleri ve üretim ortamına yazma yetkisini bilinçli olarak insanın elinde tutarak agent governance (ajan yönetişimi) tartışmalarının tam ortasına oturuyor. Proje sayfasında paylaşılan, 200 saati aşan iki gerçek kullanım izi (bir açık kaynak PR akışı ve bir AutoML deneyi), tek seferlik demo değil gerçek dünya kullanımı olduğunu gösteriyor ve bu da güven inşa ediyor.",
+        "evolve": "💡 Proje oldukça yeni ve topluluk/ekosistem henüz küçük; iddia edilen \"200+ saatlik iz\" örnekleri şu an sınırlı sayıda ve resmi olarak doğrulanmamış. Şu an yalnızca macOS ve Linux'ta shell erişimiyle çalışıyor, Windows desteği yok. Claim/lease tabanlı çoklu ajan koordinasyonu, katılımcı ajan sayısı arttıkça karmaşıklaşabilir - çakışma ve kilitlenme senaryolarının pratikte ne kadar sağlam olduğu henüz geniş ölçekte test edilmemiş görünüyor. Çok-proje panosu (dashboard) şu an salt-okunur (\"read-first\") düzeyde; ileride buradan doğrudan onay/müdahale gibi çift yönlü kontrol eklenmesi kullanılabilirliği artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "State kernel (durum çekirdeği)",
+          "def": "Bir sistemin güncel durumunu (hedefler, görevler, ilerleme) merkezi ve kalıcı şekilde tutan, diğer bileşenlerin bu duruma göre karar aldığı temel bileşen."
+        },
+        {
+          "term": "Handoff (devir teslim)",
+          "def": "Bir işin veya görevin, üzerinde çalışan biri (veya bir ajan) tarafından bir başkasına, bağlamı kaybetmeden aktarılması."
+        },
+        {
+          "term": "Agent governance (ajan yönetişimi)",
+          "def": "Otonom AI ajanlarının hangi yetkilere sahip olacağını, hangi kararların insan onayı gerektireceğini düzenleyen kurallar ve mekanizmalar bütünü."
+        },
+        {
+          "term": "Claim / Lease",
+          "def": "Birden fazla ajanın aynı görevi aynı anda almasını önlemek için kullanılan, bir görevi geçici süreliğine \"sahiplenme\" (claim) ve bu sahipliğin süresini sınırlayan \"kiralama\" (lease) mekanizması."
+        },
+        {
+          "term": "CLI (Command Line Interface)",
+          "def": "Kullanıcının bir programı, grafik arayüz yerine yazılı komutlarla kontrol ettiği metin tabanlı arayüz."
+        }
+      ]
+    },
+    {
+      "name": "roboflow/supervision",
+      "url": "https://github.com/roboflow/supervision",
+      "stars": "49k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Farklı bilgisayarlı görü (computer vision) modellerinin çıktısını birbirinden çok farklı formatlarda vermesi sorununu çözüyor. Bir YOLO modeli ile bir Transformers tabanlı modelin tespit (detection) sonuçları normalde bambaşka veri yapılarında gelir; supervision bunları tek, standart bir `Detections` sınıfına indirgeyerek geliştiricinin her model için ayrı \"yapıştırma kodu\" (glue code) yazmasını gereksiz kılıyor.",
+        "tech": "🛠️ Kütüphanenin temelinde model-agnostik (hangi modelden geldiği önemli olmayan) bir `Detections` veri sınıfı var; Ultralytics, Hugging Face Transformers, MMDetection ve Roboflow Inference gibi popüler çerçevelere hazır bağlayıcılar (connector) sağlıyor. Üzerine, tespitleri görsel/video üzerine çizen özelleştirilebilir **annotator**'lar, bölge bazlı sayım (zone counting), hız tahmini ve çoklu nesne takibi (multi-object tracking) gibi analiz araçları ile YOLO/COCO/Pascal VOC gibi formatlar arasında veri seti dönüştürme araçları ekleniyor. Python 3.10+ üzerine, OpenCV ve PIL ile kurulu; PyTorch ve TensorFlow ile uyumlu çalışıyor.",
+        "why": "📈 Bilgisayarlı görü projelerinde her ekip, model çıktısını işlemek için benzer ama birbirinden bağımsız kod yazmak zorunda kalıyordu; supervision bu tekrarı ortadan kaldırarak ekiplerin model seçiminden bağımsız, tutarlı bir işleme/görselleştirme katmanına güvenmesini sağlıyor. 49 bin yıldız ve 4.6 bin fork, kütüphanenin zaten olgunlaşmış ve endüstride yerleşmiş olduğunu gösteriyor; bugünkü artış muhtemelen yeni bir sürüm duyurusu veya paylaşılan bir eğitim (tutorial) içeriğiyle tetiklenmiş bir dalgalanma.",
+        "evolve": "💡 Çok sayıda üçüncü taraf çerçeveye (Ultralytics, Transformers, MMDetection vb.) bağlı olmak, bu kütüphanelerin kendi API'lerini değiştirmesi durumunda sürekli bir uyum/bakım yükü yaratıyor. Kütüphane şu an ağırlıklı olarak 2D görsel ve video üzerine odaklanıyor; 3D veya nokta bulutu (point cloud) gibi görü alanlarına henüz uzanmıyor. Gerçek zamanlı, yüksek kare hızı (FPS) gerektiren senaryolarda annotator'ların CPU üzerinde çalışması performans darboğazı yaratabilir - GPU hızlandırmalı görselleştirme ileride değerli bir geliştirme alanı olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Detection (tespit)",
+          "def": "Bir görsel/video karesinde belirli nesnelerin nerede olduğunu (genellikle bir kutu/koordinat ile) bulan bilgisayarlı görü görevi."
+        },
+        {
+          "term": "Annotator",
+          "def": "Model tarafından bulunan tespit/segmentasyon sonuçlarını, görsel veya video üzerine kutu, etiket ya da maske olarak çizen bileşen."
+        },
+        {
+          "term": "Model-agnostik",
+          "def": "Belirli bir modele veya çerçeveye bağlı olmadan, farklı kaynaklardan gelen verilerle aynı şekilde çalışabilen tasarım."
+        },
+        {
+          "term": "Connector (bağlayıcı)",
+          "def": "Bir kütüphaneyi başka bir araç veya çerçeveyle uyumlu hale getiren, aradaki veri/format farkını çeviren köprü kod."
+        },
+        {
+          "term": "Veri seti formatı (YOLO/COCO/Pascal VOC)",
+          "def": "Bilgisayarlı görü modellerini eğitmek için kullanılan, görsellerdeki nesne etiketlerinin nasıl saklandığını tanımlayan farklı standart dosya biçimleri."
+        }
+      ]
+    },
+    {
+      "name": "tailwindlabs/tailwindcss",
+      "url": "https://github.com/tailwindlabs/tailwindcss",
+      "stars": "97k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Geliştiricilerin her proje için özel CSS dosyaları yazması yerine, doğrudan HTML/JSX içinde kullanabilecekleri hazır \"utility\" (yardımcı) sınıflarla arayüz inşa etmesini sağlayan bir CSS framework'ü. Böylece stil yazarken CSS dosyası ile HTML/component dosyası arasında sürekli gidip gelme (context-switching) ihtiyacı ortadan kalkıyor; stil, kullanıldığı yerde tanımlanıyor.",
+        "tech": "🛠️ Proje pnpm workspaces ile yönetilen bir monorepo: performans açısından kritik olan derleme (compilation) motoru Rust ile yazılmış (`crates/` klasörü), geliştirici tarafındaki araçlar ve eklentiler ise JavaScript/Node.js paketleri olarak (`packages/`) ayrı tutuluyor. Görev orkestrasyonu için Turbo, testler için Vitest kullanılıyor; Next.js, Vue gibi popüler framework'ler için ayrı entegrasyon paketleri sağlanıyor. Bu hibrit Rust+JS yaklaşımı, büyük projelerde CSS derleme hızını önemli ölçüde artırmayı hedefliyor.",
+        "why": "📈 Utility-first (yardımcı sınıf öncelikli) yaklaşım, frontend geliştirmede artık bir endüstri standardı haline geldi ve Tailwind bu akımın en çok benimsenen öncüsü konumunda. shadcn/ui gibi popüler bileşen kütüphanelerinin Tailwind üzerine kurulu olması, ekosistemin sürekli büyümesini ve projeye ilginin canlı kalmasını sağlıyor. Bugünkü belirgin yıldız artışı, muhtemelen derleme motorunun Rust'a taşınmasıyla gelen hız kazanımları veya yakın zamanda yayınlanan bir sürümle ilgili paylaşımların tetiklediği bir dalga.",
+        "evolve": "💡 Utility-first yaklaşım, HTML/JSX etiketlerinin uzun class listeleriyle dolup \"class çorbası\"na dönüşmesine yol açabiliyor; bu, okunabilirlik açısından hâlâ eleştirilen bir nokta. Derleme motorunun Rust'a taşınması büyük bir mimari değişiklik olduğundan, üçüncü taraf eklentilerin (plugin) ve araçların bu geçişe tam uyum sağlaması zaman alabilir. Yeni başlayanlar için \"her stili class olarak ezbere bilme\" öğrenme eğrisi hâlâ dik; framework, IDE eklentileri ve otomatik tamamlama olmadan verimli kullanmak zorlaşıyor."
+      },
+      "glossary": [
+        {
+          "term": "Utility-first CSS",
+          "def": "Karmaşık özel CSS kuralları yazmak yerine, her biri tek bir stil özelliğine karşılık gelen küçük, hazır sınıfları doğrudan HTML/JSX içinde birleştirerek arayüz oluşturma yaklaşımı."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paketin veya projenin, ayrı depolar yerine tek bir Git deposu içinde birlikte tutulduğu proje yapısı."
+        },
+        {
+          "term": "pnpm workspaces",
+          "def": "pnpm paket yöneticisinin, bir monorepo içindeki birden fazla paketi birbirine bağımlılık olarak bağlayıp ortak şekilde yönetmesini sağlayan özelliği."
+        },
+        {
+          "term": "Compilation (derleme)",
+          "def": "Yazılan kodun (burada CSS class kullanımlarının), tarayıcının doğrudan çalıştırabileceği son CSS dosyasına dönüştürülmesi işlemi."
+        },
+        {
+          "term": "Context-switching",
+          "def": "Bir geliştiricinin çalışırken sürekli farklı dosyalar veya bağlamlar (örneğin HTML ve ayrı bir CSS dosyası) arasında zihinsel olarak geçiş yapmak zorunda kalması."
+        }
+      ]
+    }
+  ]
+}
