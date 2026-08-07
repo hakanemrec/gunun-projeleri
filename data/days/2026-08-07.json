@@ -1,0 +1,167 @@
+{
+  "date": "2026-08-07",
+  "projects": [
+    {
+      "name": "ever-co/ever-gauzy",
+      "url": "https://github.com/ever-co/ever-gauzy",
+      "stars": "4.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "\ud83c\udfaf \u0130\u015fletmelerin \u00e7al\u0131\u015fan y\u00f6netimi, proje takibi ve finans s\u00fcre\u00e7leri i\u00e7in ayr\u0131 ayr\u0131 SaaS ara\u00e7lar\u0131 (Jira, BambooHR, QuickBooks gibi) sat\u0131n almas\u0131 yerine, tek bir a\u00e7\u0131k kaynak platformda ERP + CRM + HRM + ATS + proje y\u00f6netimini birle\u015ftiriyor. Zaman takibi, aktivite izleme, faturalama, envanter ve i\u015fe al\u0131m gibi i\u015flevleri tek \u00e7at\u0131 alt\u0131nda sunarak k\u00fc\u00e7\u00fck ve orta \u00f6l\u00e7ekli i\u015fletmelerin ara\u00e7 y\u0131\u011f\u0131n\u0131n\u0131 (tool sprawl) azaltmay\u0131 hedefliyor.",
+        "tech": "\ud83d\udee0\ufe0f Backend **NestJS** (TypeScript) \u00fczerine kurulu, **TypeORM/MikroORM** ile PostgreSQL/MySQL (demo i\u00e7in SQLite) kullan\u0131yor. Frontend **Angular** + RxJS + Ngx-admin. **Nx/Lerna** ile monorepo y\u00f6netiliyor. Da\u011f\u0131t\u0131k \u00f6nbellek ve arama i\u00e7in opsiyonel Redis/OpenSearch, dosya depolama i\u00e7in MinIO, analitik i\u00e7in Cube entegre edilmi\u015f. Docker/Kubernetes ile \u00fcretim da\u011f\u0131t\u0131m\u0131 destekleniyor. Yak\u0131n zamanda \"Ever Works\" ad\u0131nda otonom bir ajan \u00e7al\u0131\u015fma zaman\u0131 eklendi - platforma agent tabanl\u0131 otomasyon katman\u0131 katma giri\u015fimi.",
+        "why": "\ud83d\udcc8 Bug\u00fcn 4.3k y\u0131ld\u0131za ula\u015ft\u0131; as\u0131l dikkat \u00e7eken taraf\u0131 kurumsal yaz\u0131l\u0131m (ERP/CRM/HRM) alan\u0131nda nadir bulunan, ger\u00e7ekten \u00fcretime haz\u0131r bir a\u00e7\u0131k kaynak alternatif olmas\u0131. AGPL-3.0 ile \u00fccretsiz bir Community s\u00fcr\u00fcm\u00fc sunmas\u0131, kurumsal lisans maliyetlerinden ka\u00e7\u0131nmak isteyen KOB\u0130'lere do\u011frudan hitap ediyor - PL/SQL/ERP d\u00fcnyas\u0131ndan gelen ekiplerin de yak\u0131ndan tan\u0131yaca\u011f\u0131 bir problem alan\u0131.",
+        "evolve": "\ud83d\udca1 27 bin+ commit ile olgun bir kod taban\u0131, ama bu ayn\u0131 zamanda karma\u015f\u0131kl\u0131k demek - yeni kat\u0131lan geli\u015ftiriciler i\u00e7in \u00f6\u011frenme e\u011frisi dik olabilir. Geli\u015fmi\u015f \u00f6zellikler (da\u011f\u0131t\u0131k arama, \u00f6nbellekleme) opsiyonel altyap\u0131 (Redis/OpenSearch) gerektiriyor, bu da \"tek t\u0131kla kurulum\" vaadini zay\u0131flat\u0131yor. \"Ever Works\" agentic runtime'\u0131n\u0131n platforma ne kadar derin entegre olaca\u011f\u0131 ve bak\u0131m\u0131n\u0131n nas\u0131l s\u00fcrd\u00fcr\u00fclece\u011fi belirsiz; bu t\u00fcr yan projelerin ana \u00fcr\u00fcn\u00fcn oda\u011f\u0131n\u0131 da\u011f\u0131tma riski var."
+      },
+      "glossary": [
+        {
+          "term": "NestJS",
+          "def": "Node.js \u00fczerinde \u00e7al\u0131\u015fan, b\u00fcy\u00fck \u00f6l\u00e7ekli backend uygulamalar\u0131 i\u00e7in yap\u0131land\u0131r\u0131lm\u0131\u015f bir TypeScript framework'\u00fc."
+        },
+        {
+          "term": "ORM (TypeORM/MikroORM)",
+          "def": "Veritaban\u0131 tablolar\u0131n\u0131 programlama dilindeki nesnelerle e\u015fle\u015ftirerek, SQL yazmadan veritaban\u0131yla \u00e7al\u0131\u015fmay\u0131 sa\u011flayan k\u00fct\u00fcphane."
+        },
+        {
+          "term": "Monorepo (Nx/Lerna)",
+          "def": "Birden fazla projenin/paketin tek bir git deposunda birlikte tutulup ortak ara\u00e7larla y\u00f6netildi\u011fi geli\u015ftirme yakla\u015f\u0131m\u0131."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yaz\u0131l\u0131m\u0131 de\u011fi\u015ftirip a\u011f \u00fczerinden (SaaS olarak) sunanlar\u0131n da kaynak kodu payla\u015fmas\u0131n\u0131 zorunlu k\u0131lan, g\u00fc\u00e7l\u00fc bir a\u00e7\u0131k kaynak lisans\u0131."
+        },
+        {
+          "term": "MinIO",
+          "def": "Amazon S3 ile uyumlu, kendi sunucunuzda \u00e7al\u0131\u015ft\u0131rabilece\u011finiz a\u00e7\u0131k kaynak nesne depolama sistemi."
+        }
+      ]
+    },
+    {
+      "name": "FalkorDB/FalkorDB",
+      "url": "https://github.com/FalkorDB/FalkorDB",
+      "stars": "5.4k",
+      "language": "Rust",
+      "sections": {
+        "serves": "\ud83c\udfaf LLM tabanl\u0131 sistemlerin (RAG, agent haf\u0131zas\u0131, bilgi grafikleri) ihtiya\u00e7 duydu\u011fu d\u00fc\u015f\u00fck gecikmeli \u00e7izge (graph) sorgulama sorununu \u00e7\u00f6z\u00fcyor. Klasik graph veritabanlar\u0131 b\u00fcy\u00fck \u00e7izgelerde gezinme (traversal) yapt\u0131k\u00e7a yava\u015fl\u0131yor; FalkorDB bunun yerine \u00e7izgeyi matematiksel bir yap\u0131ya (seyrek matris) d\u00f6n\u00fc\u015ft\u00fcr\u00fcp sorgular\u0131 \u00e7ok daha h\u0131zl\u0131 \u00e7al\u0131\u015ft\u0131r\u0131yor.",
+        "tech": "\ud83d\udee0\ufe0f \u00c7ekirdekte **GraphBLAS** var - \u00e7izgeleri \"seyrek matris\" (\u00e7o\u011fu h\u00fccresi bo\u015f olan matris) olarak temsil eden bir k\u00fct\u00fcphane; sorgular klasik d\u00fc\u011f\u00fcm-gezinme yerine lineer cebir i\u015flemleriyle (matris \u00e7arp\u0131m\u0131 gibi) \u00e7al\u0131\u015ft\u0131r\u0131l\u0131yor. Bu yakla\u015f\u0131m\u0131 uygulayan ilk property graph veritaban\u0131 oldu\u011fu iddia ediliyor. Redis protokol\u00fc \u00fczerinden konu\u015fuyor (bir Redis mod\u00fcl\u00fc gibi \u00e7al\u0131\u015f\u0131yor), tam metin arama i\u00e7in RediSearch, sorgu dili i\u00e7in **OpenCypher** (baz\u0131 kendi uzant\u0131lar\u0131yla) kullan\u0131l\u0131yor. Python, Java, Node.js, Go, C# gibi \u00e7o\u011fu pop\u00fcler dil i\u00e7in istemci k\u00fct\u00fcphanesi mevcut.",
+        "why": "\ud83d\udcc8 RAG ve agent-haf\u0131zas\u0131 mimarilerinin patlamas\u0131, \"LLM'ler i\u00e7in knowledge graph\" ihtiyac\u0131n\u0131 \u00f6ne \u00e7\u0131kard\u0131; FalkorDB tam bu bo\u015flu\u011fa oturuyor. 5.4k y\u0131ld\u0131za ula\u015fm\u0131\u015f olmas\u0131, performans iddialar\u0131 (matris tabanl\u0131 h\u0131z avantaj\u0131) ve bulut s\u00fcr\u00fcm\u00fcn\u00fcn (FalkorDB Cloud) varl\u0131\u011f\u0131 ilgiyi art\u0131r\u0131yor.",
+        "evolve": "\ud83d\udca1 480 a\u00e7\u0131k issue, aktif ama h\u00e2l\u00e2 olgunla\u015fmakta olan bir proje oldu\u011funu g\u00f6steriyor. Seyrek matris yakla\u015f\u0131m\u0131n\u0131n \u00e7ok b\u00fcy\u00fck ve yo\u011fun ba\u011flant\u0131l\u0131 (dense) \u00e7izgelerde bellek/performans avantaj\u0131n\u0131 ne kadar koruyaca\u011f\u0131 belirsiz - literat\u00fcrde bu t\u00fcr y\u00f6ntemler genelde seyrek \u00e7izgelerde avantajl\u0131. Redis ekosistemine ba\u011f\u0131ml\u0131l\u0131k, Redis'in kendi lisans politikas\u0131 de\u011fi\u015fiklikleri ba\u011flam\u0131nda uzun vadeli bir risk ta\u015f\u0131yabilir."
+      },
+      "glossary": [
+        {
+          "term": "GraphBLAS",
+          "def": "\u00c7izge (graph) i\u015flemlerini seyrek matris (sparse matrix) matemati\u011fi kullanarak son derece h\u0131zl\u0131 \u00e7al\u0131\u015ft\u0131rmay\u0131 sa\u011flayan bir k\u00fct\u00fcphane standard\u0131."
+        },
+        {
+          "term": "Seyrek matris (sparse matrix)",
+          "def": "H\u00fccrelerinin b\u00fcy\u00fck \u00e7o\u011funlu\u011fu s\u0131f\u0131r/bo\u015f olan matris; bu bo\u015fluktan yararlan\u0131larak bellek ve hesaplama tasarrufu sa\u011flan\u0131r."
+        },
+        {
+          "term": "OpenCypher",
+          "def": "\u00c7izge veritabanlar\u0131nda d\u00fc\u011f\u00fcmler ve ili\u015fkiler aras\u0131nda sorgu yazmak i\u00e7in kullan\u0131lan, okunakl\u0131 bir a\u00e7\u0131k kaynak sorgu dili."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir LLM'in cevap \u00fcretmeden \u00f6nce harici bir veri kayna\u011f\u0131ndan ilgili bilgiyi \u00e7ekip ba\u011flama ekledi\u011fi y\u00f6ntem."
+        },
+        {
+          "term": "Redis mod\u00fcl\u00fc",
+          "def": "Redis veritaban\u0131n\u0131n temel i\u015flevlerine, ayr\u0131 bir eklenti olarak yeni veri tipleri veya komutlar kazand\u0131ran geni\u015fletme mekanizmas\u0131."
+        }
+      ]
+    },
+    {
+      "name": "aws/agent-toolkit-for-aws",
+      "url": "https://github.com/aws/agent-toolkit-for-aws",
+      "stars": "2.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "\ud83c\udfaf Claude Code, Cursor, Codex gibi AI kodlama ajanlar\u0131n\u0131n AWS \u00fczerinde g\u00fcvenli ve kontroll\u00fc \u015fekilde i\u015f yapabilmesi i\u00e7in gereken ara\u00e7, bilgi ve \"koruma \u00e7itlerini\" (guardrails) tek pakette sunuyor. Ama\u00e7, ajanlar\u0131n AWS kaynaklar\u0131n\u0131 yanl\u0131\u015fl\u0131kla bozmadan, do\u011fru ve g\u00fcncel dok\u00fcmantasyona eri\u015ferek \u00fcretim ortam\u0131nda g\u00fcvenle \u00e7al\u0131\u015fabilmesi.",
+        "tech": "\ud83d\udee0\ufe0f Merkezde bir **MCP (Model Context Protocol)** sunucusu var; bu sunucu 300'den fazla AWS servisine kimlik do\u011frulamal\u0131 eri\u015fim, sanal alan (sandbox) i\u00e7inde Python betik \u00e7al\u0131\u015ft\u0131rma ve ger\u00e7ek zamanl\u0131 dok\u00fcman arama sa\u011fl\u0131yor. \u00dcst\u00fcne \"Agent Skills\" (g\u00f6reve \u00f6zel, ihtiya\u00e7 an\u0131nda y\u00fcklenen talimat paketleri) ve \u00f6nceden paketlenmi\u015f \"Plugin\"ler (aws-core, aws-agents, aws-data-analytics, aws-agents-for-devsecops) ekleniyor. Kurumsal kullan\u0131m i\u00e7in IAM ko\u015ful anahtarlar\u0131yla insan/ajan eylemlerini ay\u0131rt etme, CloudWatch metrikleri ve CloudTrail denetim kayd\u0131 gibi y\u00f6neti\u015fim (governance) \u00f6zellikleri var.",
+        "why": "\ud83d\udcc8 2025'te AWS Labs ara\u00e7lar\u0131n\u0131n halefi olarak konumland\u0131r\u0131ld\u0131; \"agent g\u00fcvenli\u011fi/y\u00f6neti\u015fimi\" konusu kurumsal AI benimsemesinin \u00f6n\u00fcndeki en b\u00fcy\u00fck engellerden biri oldu\u011fu i\u00e7in bu t\u00fcr denetlenebilir agent-altyap\u0131 ara\u00e7lar\u0131na talep y\u00fcksek. 2.3k y\u0131ld\u0131z ve Claude, Cursor, Codex, Kiro gibi birden fazla platformu desteklemesi, geni\u015f bir geli\u015ftirici kitlesine hitap etmesini sa\u011fl\u0131yor.",
+        "evolve": "\ud83d\udca1 Kurulum i\u00e7in yerel AWS kimlik bilgileri ve `uv` paket y\u00f6neticisi gerekiyor - bu, daha az teknik kullan\u0131c\u0131lar i\u00e7in bir giri\u015f engeli olu\u015fturabilir. Ajan platformlar\u0131 aras\u0131nda plugin deste\u011fi e\u015fit de\u011fil (baz\u0131 entegrasyonlar di\u011ferlerinden daha olgun), bu tutars\u0131zl\u0131k kullan\u0131c\u0131 deneyimini karma\u015f\u0131kla\u015ft\u0131rabilir. Governance \u00f6zellikleri (IAM, CloudTrail) g\u00fc\u00e7l\u00fc ama do\u011fru yap\u0131land\u0131r\u0131lmalar\u0131 ayr\u0131 bir uzmanl\u0131k gerektiriyor - yanl\u0131\u015f yap\u0131land\u0131r\u0131lm\u0131\u015f bir ajan h\u00e2l\u00e2 \u00fcretim ortam\u0131na zarar verebilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlar\u0131n\u0131n harici ara\u00e7lara, verilere ve servislere standart bir aray\u00fcz \u00fczerinden ba\u011flanmas\u0131n\u0131 sa\u011flayan a\u00e7\u0131k protokol."
+        },
+        {
+          "term": "IAM (Identity and Access Management)",
+          "def": "AWS'de hangi kullan\u0131c\u0131n\u0131n/servisin hangi kayna\u011fa hangi izinle eri\u015febilece\u011fini tan\u0131mlayan kimlik ve eri\u015fim y\u00f6netim sistemi."
+        },
+        {
+          "term": "CloudTrail",
+          "def": "AWS hesab\u0131nda yap\u0131lan her API \u00e7a\u011fr\u0131s\u0131n\u0131 ve eylemi kay\u0131t alt\u0131na alan denetim (audit) g\u00fcnl\u00fc\u011f\u00fc servisi."
+        },
+        {
+          "term": "Sandbox (sanal alan)",
+          "def": "Kodun ana sistemden izole, g\u00fcvenli bir ortamda \u00e7al\u0131\u015ft\u0131r\u0131larak olas\u0131 zararl\u0131 etkilerin s\u0131n\u0131rland\u0131r\u0131ld\u0131\u011f\u0131 \u00e7al\u0131\u015fma alan\u0131."
+        },
+        {
+          "term": "uv",
+          "def": "Python paketlerini ve sanal ortamlar\u0131 h\u0131zl\u0131 \u015fekilde kurup y\u00f6neten, Rust ile yaz\u0131lm\u0131\u015f modern bir paket y\u00f6neticisi."
+        }
+      ]
+    },
+    {
+      "name": "rtk-ai/rtk",
+      "url": "https://github.com/rtk-ai/rtk",
+      "stars": "75.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "\ud83c\udfaf AI kodlama ajanlar\u0131 (Claude Code, Copilot, Cursor gibi) terminal komutlar\u0131n\u0131 \u00e7al\u0131\u015ft\u0131rd\u0131\u011f\u0131nda d\u00f6nen \u00e7\u0131kt\u0131 genelde gereksiz uzun oluyor (log sat\u0131rlar\u0131, tekrarlar); bu da her istekte LLM'e g\u00f6nderilen token say\u0131s\u0131n\u0131 - ve dolay\u0131s\u0131yla maliyeti - \u015fi\u015firiyor. RTK, komut \u00e7\u0131kt\u0131s\u0131n\u0131 ajana ula\u015fmadan \u00f6nce ak\u0131ll\u0131ca s\u0131k\u0131\u015ft\u0131rarak bu israf\u0131 \u00f6nl\u00fcyor.",
+        "tech": "\ud83d\udee0\ufe0f S\u0131f\u0131r ba\u011f\u0131ml\u0131l\u0131kl\u0131 tek bir **Rust** ikili dosyas\u0131 (binary) olarak \u00e7al\u0131\u015f\u0131yor; bash komutlar\u0131n\u0131 \u00e7al\u0131\u015ft\u0131r\u0131lmadan \u00f6nce yakalay\u0131p `rtk` e\u015fde\u011ferlerine d\u00f6n\u00fc\u015ft\u00fcren bir \"hook\" (kanca) mekanizmas\u0131yla entegre oluyor. S\u0131k\u0131\u015ft\u0131rma d\u00f6rt katmanl\u0131: g\u00fcr\u00fclt\u00fc filtreleme, benzer \u00f6\u011feleri gruplama, alakal\u0131 ba\u011flam\u0131 koruyarak k\u0131rpma (truncation) ve tekrarlanan girdileri saya\u00e7la birle\u015ftirme (deduplication). Git, test \u00e7al\u0131\u015ft\u0131r\u0131c\u0131lar\u0131 (Jest, pytest, cargo test), build ara\u00e7lar\u0131, AWS CLI, Docker/Kubernetes dahil 100'den fazla komutu destekliyor; 16 farkl\u0131 AI kodlama arac\u0131yla uyumlu.",
+        "why": "\ud83d\udcc8 Agentic coding'in (Claude Code, Copilot, Cursor gibi ara\u00e7larla otonom kod yazma) yayg\u0131nla\u015fmas\u0131yla, bu ajanlar\u0131n i\u015fletim maliyetini (token/API harcamas\u0131) d\u00fc\u015f\u00fcrmek somut bir ekonomik de\u011fer haline geldi. 75.1k y\u0131ld\u0131za ula\u015fm\u0131\u015f olmas\u0131, Claude Code ekosistemiyle s\u0131k\u0131 entegrasyonu ve `rtk gain` gibi somut tasarruf g\u00f6steren analitik panelinin kullan\u0131c\u0131ya \"g\u00f6rd\u00fc\u011f\u00fcn fayda\" hissi vermesiyle a\u00e7\u0131klanabilir.",
+        "evolve": "\ud83d\udca1 Sadece Bash ara\u00e7 \u00e7a\u011fr\u0131lar\u0131n\u0131 kaps\u0131yor; Claude Code'un yerle\u015fik Read/Grep/Glob gibi ara\u00e7lar\u0131 bu kancan\u0131n d\u0131\u015f\u0131nda kal\u0131yor, yani tasarruf potansiyeli s\u0131n\u0131rl\u0131 bir alanda ger\u00e7ekle\u015fiyor. Bildirilen tasarruf y\u00fczdeleri ger\u00e7ek token say\u0131m\u0131 de\u011fil, kaba bir tahmin (bayt / 4) - bu da raporlanan verimlili\u011fin ne kadar g\u00fcvenilir oldu\u011funu tart\u0131\u015fmal\u0131 k\u0131l\u0131yor. Varsay\u0131lan olarak kapal\u0131 ama kurulumda opsiyonel a\u00e7\u0131lan telemetri, gizlilik konusunda dikkatli kullan\u0131c\u0131lar i\u00e7in bir soru i\u015fareti."
+      },
+      "glossary": [
+        {
+          "term": "Token (LLM ba\u011flam\u0131nda)",
+          "def": "Bir dil modelinin metni i\u015flerken kulland\u0131\u011f\u0131 en k\u00fc\u00e7\u00fck par\u00e7a birimi; API maliyetleri genelde token say\u0131s\u0131na g\u00f6re hesaplan\u0131r."
+        },
+        {
+          "term": "Hook (kanca) mekanizmas\u0131",
+          "def": "Bir program\u0131n normal ak\u0131\u015f\u0131na araya girip belirli bir olay ger\u00e7ekle\u015fti\u011finde otomatik olarak devreye giren kod par\u00e7as\u0131."
+        },
+        {
+          "term": "Deduplication (tekille\u015ftirme)",
+          "def": "Tekrarlanan verileri tespit edip tek bir kay\u0131t ve saya\u00e7la temsil ederek veri hacmini azaltma i\u015flemi."
+        },
+        {
+          "term": "Binary (ikili dosya)",
+          "def": "Kaynak kodun derlenmi\u015f, do\u011frudan i\u015fletim sistemi taraf\u0131ndan \u00e7al\u0131\u015ft\u0131r\u0131labilen tek par\u00e7a h\u00e2li."
+        }
+      ]
+    },
+    {
+      "name": "makeplane/plane",
+      "url": "https://github.com/makeplane/plane",
+      "stars": "55.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "\ud83c\udfaf Jira, Linear, Monday.com gibi ticari proje y\u00f6netimi ara\u00e7lar\u0131na a\u00e7\u0131k kaynak, kendi sunucunuzda bar\u0131nd\u0131r\u0131labilen (self-hosted) bir alternatif sunuyor. Ekiplerin veri egemenli\u011fini (data sovereignty) korurken, i\u015f \u00f6\u011feleri, sprint'ler (cycles) ve mod\u00fcller \u00fczerinden proje takibi yapmas\u0131n\u0131 sa\u011fl\u0131yor.",
+        "tech": "\ud83d\udee0\ufe0f Frontend **React** + Vite + TypeScript ile React Router kullan\u0131yor; backend **Django** (Python) ve Node.js kombinasyonu \u00fczerine kurulu, veritaban\u0131 PostgreSQL, \u00f6nbellek/oturum y\u00f6netimi i\u00e7in Redis kullan\u0131l\u0131yor. Docker Compose ve Kubernetes ile kendi sunucunda kurulum destekleniyor. \"Cycles\" (burn-down grafikleriyle sprint y\u00f6netimi), \"Modules\" (b\u00fcy\u00fck projeleri alt par\u00e7alara b\u00f6lme) ve AI destekli dok\u00fcmantasyon sayfalar\u0131 \u00f6ne \u00e7\u0131kan \u00f6zellikler aras\u0131nda.",
+        "why": "\ud83d\udcc8 55.7k y\u0131ld\u0131z ve 7.100+ commit ile olgun bir proje; kurumsal ara\u00e7lara \u00f6zellik e\u015fde\u011ferli\u011fi (feature parity) sunmas\u0131, verilerin kendi sunucusunda kalmas\u0131n\u0131 isteyen ve ara\u00e7 maliyetini/\u00f6zelle\u015ftirmesini kontrol etmek isteyen ekiplerin ilgisini \u00e7ekiyor. \u00dcretkenlik/proje y\u00f6netimi kategorisinde a\u00e7\u0131k kaynak alternatiflere olan s\u00fcrekli talep, projeyi d\u00fczenli olarak trending listesine ta\u015f\u0131yor.",
+        "evolve": "\ud83d\udca1 764 a\u00e7\u0131k issue ve 229 a\u00e7\u0131k PR, aktif ama bak\u0131m y\u00fck\u00fc y\u00fcksek bir proje oldu\u011funa i\u015faret ediyor. AGPL-3.0 lisans\u0131, ticari bir SaaS \u00fcr\u00fcn\u00fc i\u00e7ine g\u00f6mmek isteyen \u015firketler i\u00e7in hukuki bir engel olu\u015fturabilir. Django + Node.js + React kar\u0131\u015f\u0131k teknoloji y\u0131\u011f\u0131n\u0131, tek bir dilde uzmanla\u015fm\u0131\u015f k\u00fc\u00e7\u00fck ekipler i\u00e7in bak\u0131m ve i\u015fe al\u0131m maliyetini art\u0131rabilir."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yaz\u0131l\u0131m\u0131n \u00fc\u00e7\u00fcnc\u00fc taraf bir bulut yerine, kullan\u0131c\u0131n\u0131n kendi sunucusunda kurulup \u00e7al\u0131\u015ft\u0131r\u0131lmas\u0131."
+        },
+        {
+          "term": "Django",
+          "def": "Python dilinde yaz\u0131lm\u0131\u015f, veritaban\u0131 ve y\u00f6netim paneli gibi haz\u0131r bile\u015fenler sunan pop\u00fcler bir web framework'\u00fc."
+        },
+        {
+          "term": "Burn-down grafi\u011fi",
+          "def": "Bir sprint boyunca kalan i\u015f miktar\u0131n\u0131n zamana g\u00f6re nas\u0131l azald\u0131\u011f\u0131n\u0131 g\u00f6steren, proje y\u00f6netiminde kullan\u0131lan grafik t\u00fcr\u00fc."
+        },
+        {
+          "term": "Data sovereignty (veri egemenli\u011fi)",
+          "def": "Bir kurulu\u015fun verilerinin nerede sakland\u0131\u011f\u0131 ve hangi yasalara tabi oldu\u011fu \u00fczerinde tam kontrol sahibi olmas\u0131 ilkesi."
+        }
+      ]
+    }
+  ]
+}
