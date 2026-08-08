@@ -1,0 +1,195 @@
+{
+  "date": "2026-08-08",
+  "projects": [
+    {
+      "name": "PrimeIntellect-ai/prime-agent",
+      "url": "https://github.com/PrimeIntellect-ai/prime-agent",
+      "stars": "7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bugüne kadarki kodlama asistanları tek bir sohbet penceresiyle sınırlıydı: pencere kapanınca bağlam da giderdi. Prime Agent, saatler hatta günler süren araştırma ve kodlama görevlerini **oturumlar arası kesintisiz** sürdürebilen bir ajan sunuyor. Terminal kapansa, bağlantı kopsa bile arka planda çalışmaya devam ediyor; kullanıcı geri döndüğünde kaldığı yerden bağlamı hatırlıyor.\n\nBunu mümkün kılan fikir **RLM (Recursive Language Model)** yaklaşımı: bağlamı sabit bir metin yığını değil, programlanabilir bir **değişken** gibi ele alıyor. Ajan, araçları klasik şablon zincirleri yerine kalıcı bir Python ortamında kod çalıştırarak çağırıyor ve gerektiğinde kendi alt-ajanlarını (subagent) özyinelemeli olarak başlatıp sonuçlarını programatik biçimde topluyor.",
+        "tech": "Mimarinin kalbinde kalıcı bir **IPython REPL** ortamı var — model kod üretiyor, bu kod doğrudan çalıştırılıyor, shell komutları ve araç çağrıları da aynı döngünün parçası. Bu, ajanı önceden tanımlı 'tool-calling' şablonlarına hapsetmek yerine serbest bırakıyor.\n\nUzun soluklu çalışmayı sağlayan katman **Continual Harness**: ek promptları, birikmiş 'hafıza' notlarını, beceri (skill) tanımlarını ve alt-ajan spesifikasyonlarını kalıcı durum olarak saklıyor. `/refine` komutu, geçmiş çalışma izlerini (trajectory) inceleyip bu harness durumuna küçük, kanıta dayalı güncellemeler uyguluyor — ama temel sistem promptu **değişmez** kalıyor ve her rafine işlemi geri alınabilir bir anlık görüntü (snapshot) bırakıyor. Oturumlar, terminal kapansa da yaşayan bir **daemon** üzerinde tutuluyor; periyodik 'heartbeat' sinyalleriyle ajan kendiliğinden tekrar devreye giriyor.",
+        "why": "Günlük 2.000'in üzerinde yıldız kazanarak bugünün en hızlı yükselen deposu oldu. Bunun arkasında iki dinamik var: Prime Intellect'in dağıtık eğitim ve açık kaynak RL (pekiştirmeli öğrenme) çalışmalarıyla zaten tanınan bir ekip olması, ve 'kendi kendini iyileştiren, oturumlar arası hafızası olan ajan' fikrinin şu anda ajan-araçları alanındaki en sıcak arayış olması. Uzun süredir çalışan otonom kodlama ajanları arayan geliştiriciler ile araştırmacılar için doğrudan bir cevap niteliğinde.",
+        "evolve": "README açıkça uyarıyor: bu bir **güvenlik sandbox'ı değil** — ajan, kullanıcının yetkileriyle çalışıyor, yani üretim ortamlarında dikkatli izolasyon gerektiriyor. `/refine` mekanizmasının hangi güncellemelerin 'kanıta dayalı' sayılacağına dair netliğinin artması, ajanlar-arası doğrudan iletişimin standardize edilmesi ve token/süre bütçeleriyle sınırlı otonom modun daha görünür raporlama sunması, projenin olgunlaşma alanları olarak öne çıkıyor."
+      },
+      "glossary": [
+        {
+          "term": "RLM (Recursive Language Model)",
+          "def": "Bağlamı sabit metin yerine programlanabilir bir değişken gibi ele alan, alt-ajanları özyinelemeli biçimde çağırabilen ajan yaklaşımı."
+        },
+        {
+          "term": "REPL",
+          "def": "Kod satırlarının anında çalıştırılıp sonucun hemen görüldüğü etkileşimli programlama ortamı (Read-Eval-Print Loop)."
+        },
+        {
+          "term": "Harness",
+          "def": "Bir ajanın hafızasını, ek talimatlarını ve beceri tanımlarını tutan, oturumlar arasında kalıcı olan durum katmanı."
+        },
+        {
+          "term": "Daemon",
+          "def": "Kullanıcı terminali kapansa bile arka planda çalışmaya devam eden sunucu süreci."
+        },
+        {
+          "term": "Heartbeat",
+          "def": "Bir sistemin periyodik olarak 'hâlâ çalışıyorum' sinyali gönderip görevi otomatik tekrar tetiklemesi."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Bir programın sistemin geri kalanına zarar veremeyeceği, izole edilmiş güvenli çalışma alanı."
+        }
+      ]
+    },
+    {
+      "name": "jdx/mise",
+      "url": "https://github.com/jdx/mise",
+      "stars": "32.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Bir projeye başlarken genelde üç ayrı sorunla uğraşırsınız: doğru Node/Python/Go sürümünü kurmak, ortam değişkenlerini (`.env`) doğru yüklemek ve build/test/deploy komutlarını hatırlamak. Genelde bunlar için üç ayrı araç kullanılır (asdf, direnv, make gibi). **mise**, bu üç işi tek bir `mise.toml` dosyası ve tek bir CLI altında topluyor: proje klasörüne girdiğiniz an doğru araç sürümleri, doğru ortam değişkenleri ve tanımlı görevler otomatik hazır oluyor.",
+        "tech": "Rust ile yazılmış, derlenmiş ve hızlı çalışan bir CLI. Diğer bazı sürüm yöneticilerinin aksine mise, çağrıları yönlendiren 'shim' katmanı kullanmak yerine kurulu araçlara **doğrudan gerçek yol (path)** veriyor — bu da ek gecikme olmadan çalışması anlamına geliyor. Bash, Zsh, Fish ve PowerShell için shell başlatma dosyalarına kanca atan (hook) aktivasyon betikleri sayesinde, dizine girer girmez ortam otomatik kuruluyor. Yüzlerce aracın (Node, Python, Go, Terraform vb.) sürüm yönetimini tek konfigürasyon formatında birleştiriyor.",
+        "why": "Geliştirici araçları ilgi alanının tam merkezinde: 'yeni bilgisayarda ortamı ayağa kaldırma' yorgunluğu yaşayan herkesin bildiği bir acıyı çözüyor. Rust'ın performans avantajı ve tek-dosya-tek-araç basitliği, asdf gibi daha eski/yavaş çözümlerden geçiş yapan geliştiriciler arasında organik bir büyüme yaratıyor; 32k'yı aşan yıldız sayısı ve günlük yüzlerce yeni yıldızla istikrarlı bir yükseliş gösteriyor.",
+        "evolve": "Proje zaten olgun, ama ekosistem tarafı büyümeye devam ediyor: aynı geliştiricinin yan projesi olan Aube (hızlı bir Node.js paket yöneticisi) gibi tamamlayıcı araçlarla entegrasyonun derinleşmesi, CI/CD boru hatlarında kullanım örneklerinin çoğalması ve daha az yaygın dillerin/araçların desteğinin genişlemesi öne çıkan yönler."
+      },
+      "glossary": [
+        {
+          "term": "Shim",
+          "def": "Gerçek programı çağırmadan önce araya giren, çoğunlukla hangi sürümün çalışacağına karar veren küçük yönlendirme katmanı."
+        },
+        {
+          "term": "mise.toml",
+          "def": "mise aracının proje ayarlarını (araç sürümleri, ortam değişkenleri, görevler) tuttuğu yapılandırma dosyası."
+        },
+        {
+          "term": "Activation script",
+          "def": "Bir dizine girildiğinde shell tarafından otomatik çalıştırılan, ortamı hazırlayan küçük betik."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırından kullanılan program (Command Line Interface)."
+        }
+      ]
+    },
+    {
+      "name": "semantica-agi/semantica",
+      "url": "https://github.com/semantica-agi/semantica",
+      "stars": "2.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bir yapay zeka ajanı önemli bir karar verdiğinde ('bu talebi reddet', 'bu sözleşmeyi onayla') genelde geriye sadece bir metin çıktısı kalır — *neden* o kararı verdiğini adım adım göstermek zordur. Semantica, LLM'lerin altına **denetlenebilir, izlenebilir bir bilgi grafiği** katmanı yerleştirerek bu boşluğu kapatıyor: her karar, her varlık ve her ilişki artık sorgulanabilir, geriye izlenebilir bir düğüm haline geliyor.",
+        "tech": "Sistem uçtan uca bir boru hattı işletiyor: veri alımı → ayrıştırma → varlık/ilişki çıkarımı → çelişki tespiti → tekilleştirme → bilgi grafiği → üzerine ontoloji, akıl yürütme ve **W3C PROV-O** standardında köken (provenance) bilgisi. Akıl yürütme katmanında Rete ağları, Datalog ve SPARQL CONSTRUCT şablonları gibi **açıklanabilir** (kara kutu olmayan) yöntemler kullanılıyor. Depolama tarafında esnek: RDF üçlü depoları (Oxigraph, Blazegraph, Jena) veya özellik grafikleri (Neo4j, FalkorDB, Neptune) ile birlikte klasik vektör veritabanları (FAISS, Qdrant, Pinecone) da destekleniyor — yani vektör aramayı tamamen atmıyor, üstüne akıl yürütme katmanı ekliyor.",
+        "why": "Bu proje tam olarak veritabanı + yapay zeka kesişiminde duruyor ve düzenlemeye tabi sektörlerin (finans, sağlık, hukuk, kamu) giderek daha sık sorduğu 'yapay zeka bu kararı neden verdi?' sorusuna kurumsal düzeyde bir cevap sunuyor. Databricks ve Snowflake ile doğal entegrasyonu, verisini üçüncü parti SaaS'a göndermek istemeyen kurumsal veri ekiplerinin ilgisini çekiyor; bu da onu klasik RAG/vektör-arama trendinin bir adım ötesine taşıyan niş ama gerçek bir ihtiyaca oturtuyor.",
+        "evolve": "Projenin kendi dokümantasyonu dürüst: Rete motorunun koşul eşleştiricisi 'kasıtlı olarak basit' tutulmuş, yani üretim ortamındaki uyumluluk kapılarında çıktıların insan tarafından doğrulanması gerekiyor. LangChain, CrewAI, LlamaIndex, AutoGen gibi popüler ajan çerçeveleriyle doğrudan entegrasyon araç setleri henüz yol haritasında — şu an bu çerçevelerle bağlantı REST API veya MCP sunucusu üzerinden dolaylı kuruluyor."
+      },
+      "glossary": [
+        {
+          "term": "Bilgi grafiği (Knowledge Graph)",
+          "def": "Varlıkları ve aralarındaki ilişkileri düğüm ve kenarlarla temsil eden, sorgulanabilir veri yapısı."
+        },
+        {
+          "term": "RDF",
+          "def": "Bilgiyi 'özne-yüklem-nesne' üçlüleri şeklinde temsil eden, web'in anlamsal veri standardı."
+        },
+        {
+          "term": "SPARQL",
+          "def": "RDF formatındaki bilgi grafiklerini sorgulamak için kullanılan sorgu dili."
+        },
+        {
+          "term": "Rete ağı (Rete network)",
+          "def": "Kural tabanlı sistemlerde hangi kuralın hangi veriyle eşleştiğini verimli şekilde bulan algoritma yapısı."
+        },
+        {
+          "term": "Datalog",
+          "def": "Mantıksal kurallardan yeni bilgi türetmek için kullanılan basit, deklaratif bir sorgu/programlama dili."
+        },
+        {
+          "term": "Provenance (köken bilgisi)",
+          "def": "Bir verinin veya kararın nereden geldiğini, hangi adımlardan geçtiğini kayıt altına alan bilgi."
+        },
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metinleri sayısal 'embedding' vektörlerine çevirip anlamsal benzerliğe göre arama yapan veritabanı türü."
+        }
+      ]
+    },
+    {
+      "name": "denoland/celld",
+      "url": "https://github.com/denoland/celld",
+      "stars": "2.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Cloudflare'in Durable Objects'i, durumlu (stateful) sunucusuz uygulamalar yazmak için sevilen bir model: her 'hücre' kendi başına bir SQLite veritabanı gibi davranıyor ve isimle adreslenebiliyor. Ama bu model şimdiye dek yalnızca Cloudflare'in bulutunda çalışıyordu. **celld**, aynı programlama modelini **kendi sunucularınızda** çalıştırmanızı sağlıyor — vendor kilidine takılmadan aynı basit, parçalara-göre-ölçeklenen mimariden faydalanabiliyorsunuz.",
+        "tech": "Rust ile yazılmış bir daemon, içine **V8** JavaScript motorunu gömerek çalışıyor. Her düğüm, sahip olduğu 'hücre' veritabanlarını sürekli olarak **S3 uyumlu bir depolama alanına** replike ediyor; hangi düğümün hangi hücrenin sahibi olduğu ise obje depolamanın **compare-and-swap** (karşılaştır-ve-değiştir) özelliğiyle belirleniyor. Dikkat çekici nokta: klasik dağıtık sistemlerde alışık olduğumuz **konsensüs protokolü**, üyelik takibi veya ayrı bir kontrol düzlemi burada yok — tek doğruluk kaynağı depolama bucket'ı, düğümler ise kolayca değiştirilebilir/yeniden başlatılabilir durumda. Boşta kalan hücreler otomatik olarak minimum kaynağa 'uyuyor' (hibernasyon).",
+        "why": "Kendi kendine barındırılan (self-hosted), dağıtık veritabanı/altyapı ilgi alanına doğrudan hitap ediyor. Deno ekibinin imzasını taşıması dikkatleri hızla üzerine çekti; konsensüs protokolü gerektirmeyen, sadece obje depolamaya güvenen 'basit ama iddialı' mimari tercihi, dağıtık sistemler camiasında tartışma ve merak yarattı — bu da günlük 500'ün üzerindeki yıldız artışını açıklıyor.",
+        "evolve": "README, üretimde halka açık filo (fleet) çalıştırmak için ayrı güvenlik ve sınırlamalar dokümantasyonuna işaret ediyor — bu da projenin henüz 'kutudan çıkar çıkmaz production-ready' olmadığının bir işareti. Çoklu bölge (multi-region) desteğinin olgunlaşması, güvenlik modelinin sertleştirilmesi ve gerçek dünya yük testlerinin paylaşılması, projenin bir sonraki aşaması için doğal adımlar olarak görünüyor."
+      },
+      "glossary": [
+        {
+          "term": "Durable Object",
+          "def": "Kendi verisini kalıcı olarak saklayan, isimle adreslenen ve otomatik olarak tek bir düğümde çalışan durumlu sunucusuz birim."
+        },
+        {
+          "term": "V8",
+          "def": "Google Chrome ve Node.js'in de kullandığı, JavaScript'i çalıştıran motor."
+        },
+        {
+          "term": "S3 uyumlu depolama",
+          "def": "Amazon S3 ile aynı arayüzü konuşan, farklı sağlayıcılarda çalışabilen nesne depolama servisi."
+        },
+        {
+          "term": "Compare-and-swap",
+          "def": "Bir değeri yalnızca beklenen eski değere eşitse güncelleyen, yarış durumlarını önleyen atomik işlem."
+        },
+        {
+          "term": "Konsensüs protokolü",
+          "def": "Dağıtık sistemdeki düğümlerin ortak bir karar üzerinde anlaşmasını sağlayan algoritma (ör. Raft, Paxos)."
+        },
+        {
+          "term": "Sharding",
+          "def": "Veriyi parçalara bölüp farklı sunuculara dağıtarak ölçeklenebilirlik sağlama yöntemi."
+        },
+        {
+          "term": "Hibernasyon (idle)",
+          "def": "Kullanılmayan bir bileşenin kaynak tüketimini azaltmak için düşük güç/aktivite moduna geçmesi."
+        }
+      ]
+    },
+    {
+      "name": "tashfeenahmed/freellmapi",
+      "url": "https://github.com/tashfeenahmed/freellmapi",
+      "stars": "18.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bir LLM projesine hızlıca başlamak isteyen geliştirici genelde şu duvara çarpar: onlarca sağlayıcının (Google, Groq, Mistral, Cohere, HuggingFace...) her birinin kendi SDK'sı, kendi rate-limit kuralları ve kendi hata biçimleri vardır. **freellmapi**, 28 farklı sağlayıcının ücretsiz kotalarını — toplamda ayda yaklaşık 4 milyar token — tek, OpenAI uyumlu bir `/v1` uç noktasının arkasında birleştiriyor. Tek entegrasyon, onlarca ücretsiz model.",
+        "tech": "Sistem bir **akıllı yönlendirme proxy'si** olarak çalışıyor: gelen isteği, canlı hız/kapasite/güvenilirlik skorlarına göre altı farklı stratejiden biriyle en uygun modele yönlendiriyor. Bir sağlayıcı 429 (rate limit) veya 5xx hatası döndürdüğünde, sistem otomatik olarak zincirdeki bir sonraki modele geçiyor ve o sağlayıcıyı bir süre 'soğumaya' alıyor. Her API anahtarı için dakika/gün başına istek ve token sayıları (RPM/RPD/TPM/TPD) takip edilerek ücretsiz kota sınırları aşılmadan kullanım sağlanıyor. Sağlayıcı anahtarları, yalnızca istek anında çözülen **AES-256-GCM** şifrelemesiyle SQLite'ta saklanıyor. Node.js üzerinde çalışıyor; Docker, Electron masaüstü uygulaması ve CLI olarak dağıtılıyor.",
+        "why": "AI/API ilgi alanına doğrudan ve pratik bir çözümle hitap ediyor: 'ücretsiz LLM API'lerini denemek istiyorum ama hangisini seçeceğimi bilmiyorum' sorununu tek satırlık bir entegrasyonla çözüyor. Erken aşama prototipleme yapan, ücretli API'lere henüz bütçe ayırmak istemeyen geliştiriciler arasında hızla yayılması, günlük yüz civarı yıldız artışını ve toplamda 18 bini aşan yıldızı açıklıyor.",
+        "evolve": "Proje kendi sınırlarını açıkça listeliyor: en yeni/en güçlü ('frontier') modellere erişim yok, gecikme değişken ve hizmet seviyesi garantisi (SLA) yok, günün ilerleyen saatlerinde (UTC'ye göre) popüler sağlayıcıların günlük kotaları tükendiği için performans düşüyor. Bu da projeyi açıkça 'prodüksiyon için değil, deneme ve öğrenme için' konumlandırıyor — bir sonraki adım muhtemelen daha akıllı kota tahmini ve daha şeffaf sağlayıcı durum takibi olacaktır."
+      },
+      "glossary": [
+        {
+          "term": "Proxy",
+          "def": "İstemci ile gerçek sunucu arasına girip istekleri yönlendiren, filtreleyen veya birleştiren ara katman."
+        },
+        {
+          "term": "Failover",
+          "def": "Bir sistem/sağlayıcı çalışmadığında otomatik olarak alternatifine geçme mekanizması."
+        },
+        {
+          "term": "Rate limit (RPM/RPD/TPM/TPD)",
+          "def": "Bir API'nin dakika veya gün başına izin verdiği istek/token sayısı sınırı."
+        },
+        {
+          "term": "AES-256-GCM",
+          "def": "Verileri hem şifreleyen hem de bütünlüğünü doğrulayan, yaygın kullanılan güçlü bir şifreleme yöntemi."
+        },
+        {
+          "term": "OpenAI uyumlu API",
+          "def": "OpenAI'nin API formatını taklit ederek farklı sağlayıcıların aynı arayüzle kullanılmasını sağlayan standart."
+        },
+        {
+          "term": "Kota (quota)",
+          "def": "Bir kullanıcıya veya anahtara belirli bir dönemde tanınan azami kullanım hakkı."
+        }
+      ]
+    }
+  ]
+}
