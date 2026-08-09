@@ -1,0 +1,90 @@
+{
+  "date": "2026-08-09",
+  "projects": [
+    {
+      "name": "google/skills",
+      "url": "https://github.com/google/skills",
+      "stars": "16.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Google Cloud ile çalışan bir AI ajanı (Claude Code, Gemini CLI gibi) her seferinde BigQuery'nin nasıl sorgulanacağını, GKE'de bir pod'un nasıl debug edileceğini ya da Cloud SQL maliyetinin nasıl optimize edileceğini sıfırdan \"keşfetmek\" zorunda kalır. Bu depo, Google'ın kendisinin yazdığı, hazır \"yetenek\" (skill) paketleriyle bu keşif sürecini ortadan kaldırıyor: ajan artık deneme-yanılmayla değil, doğrudan doğru adımları içeren bir talimat setiyle işe koyuluyor.",
+        "tech": "🛠️ Yetenekler, agentskills.io standardına uyan Markdown tabanlı talimat dosyaları olarak yazılmış ve `npx skills add google/skills` komutuyla tek satırda kuruluyor. Claude Code, Codex ve Antigravity CLI gibi birden fazla ajan aracıyla uyumlu olacak şekilde tasarlanmış; bazı yetenekler ayrıca doğrudan MCP sunucularıyla eşleştirilmiş. 100'ün üzerinde yetenek; BigQuery, AlloyDB, Cloud SQL, Spanner gibi veritabanı servislerini, GKE ve ağ/depolama altyapısını, Cloud Logging ve maliyet optimizasyonunu, hatta Google Ads API entegrasyonlarını kapsıyor. Mimari tercih bilinçli: kod değil, \"nasıl yapılır\" bilgisini taşıyan doküman üretmek — böylece herhangi bir ajan çatısı bunu okuyup uygulayabiliyor.",
+        "why": "📈 Google'ın kendi ürünleri için resmi bir \"agent skill\" deposu yayınlaması, kurumsal AI ajanı benimsemesinin artık deneysel değil stratejik bir öncelik haline geldiğinin işareti. Şirket içi Google Cloud kullanan geliştirici ekipleri ve DevOps/veri mühendisliği ekipleri asıl hedef kitle; bu hafta boyunca tekrar eden \"ajanlara yetenek/metodoloji kazandırma\" temasının kurumsal, resmi versiyonu olarak öne çıkıyor.",
+        "evolve": "💡 Şu an tamamen Google ekosistemine kilitli; AWS ya da Azure kullanan ekipler için doğrudan bir karşılığı yok. Yeteneklerin serbest metin (Markdown) formatında olması hızlı katkıya izin verse de, sürüm kontrolü ve kalite denetimi klasik bir kod kütüphanesine göre daha gevşek kalıyor — yanlış ya da güncelliğini yitirmiş bir yetenek, ajanı yanlış yönlendirebilir. Aktif geliştirme aşamasında olduğu belirtiliyor; topluluk katkı süreçleri açık."
+      },
+      "glossary": [
+        { "term": "Agent Skills", "def": "Bir AI ajanına belirli bir görevi nasıl yapacağını adım adım anlatan, önceden yazılmış talimat/doküman paketleri." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "npx", "def": "Node.js paketlerini kurmadan doğrudan çalıştırmaya yarayan komut satırı aracı." },
+        { "term": "GKE (Google Kubernetes Engine)", "def": "Google'ın yönetilen Kubernetes (konteyner orkestrasyon) hizmeti." },
+        { "term": "BigQuery", "def": "Google Cloud'un çok büyük veri kümeleri üzerinde hızlı SQL sorguları çalıştırmaya yarayan, sunucusuz veri ambarı servisi." },
+        { "term": "Spanner", "def": "Google'ın global ölçekte tutarlılık garantisi veren, dağıtık ilişkisel veritabanı servisi." }
+      ]
+    },
+    {
+      "name": "TauricResearch/TradingAgents",
+      "url": "https://github.com/TauricResearch/TradingAgents",
+      "stars": "96.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Piyasa kararlarını tek bir yapay zekaya \"ne alsam iyi olur?\" diye sormak yerine, gerçek bir yatırım firmasındaki gibi işbölümü kuran bir araştırma çerçevesi: ayrı ayrı temel analiz, teknik analiz, haber/duyarlılık analizi yapan uzman ajanlar, bulgularını birbirine karşı savunuyor ve nihai kararı bir \"trader\" ile \"risk yönetimi\" ajanı birlikte veriyor.",
+        "tech": "🛠️ Çoklu ajan orkestrasyonu LangGraph üzerine kurulu. OpenAI, Gemini, Claude, Grok, DeepSeek, Alibaba Qwen, Zhipu GLM, MiniMax, OpenRouter ve yerel Ollama dahil neredeyse tüm büyük LLM sağlayıcılarını destekliyor — model seçimi kullanıcıya bırakılmış. Veri katmanında Yahoo Finance, Alpha Vantage, StockTwits, Reddit ve FRED (makroekonomik göstergeler) gibi kaynaklar birleştiriliyor. Karar zinciri şöyle işliyor: analistler rapor üretir → araştırmacılar boğa/ayı (bullish/bearish) argümanlarıyla tartışır → trader bir pozisyon önerir → portföy yöneticisi ve risk ekibi onaylar ya da reddeder.",
+        "why": "📈 96.6k yıldızla bu haftanın en çok ilgi gören projesi TradingAgents oldu; LLM tabanlı çoklu ajan sistemlerine duyulan ilginin finans dünyasına sıçramasının somut örneği. Bir arXiv makalesiyle birlikte yayınlanması akademik bir meşruiyet kazandırmış; \"kendi AI hedge fund'ını kur\" fikri hem geliştiricilerin hem meraklı yatırımcıların ilgisini çekiyor.",
+        "evolve": "💡 Yazarlar projenin araştırma amaçlı olduğunu ve yatırım tavsiyesi teşkil etmediğini açıkça belirtiyor. Aynı hisse ve aynı tarih için iki farklı çalıştırma, model örneklemesi (sampling) ve canlı veri farklılıkları yüzünden birbirinden farklı sonuçlar verebiliyor — yani sistem şu an tekrarlanabilir (reprodüksiyon) bir karar mekanizması değil. Performans, seçilen modele ve temperature ayarına aşırı duyarlı; gerçek sermaye ile kullanmadan önce ciddi bir doğrulama ve risk çerçevesi gerektiriyor."
+      },
+      "glossary": [
+        { "term": "LangGraph", "def": "Birden fazla AI ajanının birbiriyle etkileşimini durum makinesi (graph) mantığıyla yöneten, LLM uygulama geliştirme kütüphanesi." },
+        { "term": "Duyarlılık analizi (sentiment analysis)", "def": "Metinlerdeki (haber, sosyal medya paylaşımı vb.) olumlu/olumsuz eğilimi otomatik olarak tespit etme yöntemi." },
+        { "term": "Temel analiz", "def": "Bir şirketin finansal tablolarına, gelirine ve iş modeline bakarak değerini değerlendiren yatırım yaklaşımı." },
+        { "term": "Teknik analiz", "def": "Fiyat ve işlem hacmi grafiklerindeki örüntülere dayanarak yatırım kararı verme yaklaşımı." },
+        { "term": "Reprodüksiyon (yeniden üretilebilirlik)", "def": "Aynı girdilerle çalıştırıldığında bir sistemin her seferinde aynı sonucu üretebilmesi özelliği." },
+        { "term": "Temperature (sıcaklık parametresi)", "def": "Bir dil modelinin çıktılarındaki rastgeleliği/yaratıcılığı ayarlayan parametre; yüksek değer daha değişken sonuçlar üretir." },
+        { "term": "arXiv", "def": "Bilim insanlarının hakem denetiminden geçmemiş araştırma makalelerini yayınladığı, yaygın kullanılan açık erişimli platform." }
+      ]
+    },
+    {
+      "name": "goauthentik/authentik",
+      "url": "https://github.com/goauthentik/authentik",
+      "stars": "24k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Kurumların kullanıcı giriş/kimlik doğrulama işini Okta, Auth0 ya da Microsoft Entra ID gibi ücretli, buluta bağımlı servislere emanet etmesi yerine; tüm uygulamalara tek noktadan giriş (SSO) sağlayan kimlik sağlayıcıyı (Identity Provider) kendi sunucunuzda, kendi verinizin üzerinde çalıştırmanıza olanak tanıyor.",
+        "tech": "🛠️ SAML, OAuth2/OIDC, LDAP ve RADIUS gibi başlıca kurumsal kimlik doğrulama protokollerinin hepsini destekliyor; aynı zamanda ters proxy (reverse proxy) olarak da çalışıp eski, protokol desteği olmayan uygulamaların önüne kimlik doğrulama katmanı koyabiliyor. Mimari, Python/Django tabanlı bir çekirdek ile Rust ve Go'da yazılmış \"outpost\" adı verilen uzak servislerden (ör. proxy outpost, LDAP outpost) ve TypeScript tabanlı bir web arayüzünden oluşuyor. Docker Compose, Kubernetes (Helm chart) ve bulut sağlayıcı şablonlarıyla (AWS CloudFormation, DigitalOcean) kurulabiliyor.",
+        "why": "📈 Bu hafta tekrarlayan \"SaaS'a self-hosted alternatif\" temasının kimlik yönetimi ayağı olarak öne çıkıyor. Veri egemenliği kaygıları, KVKK/GDPR benzeri düzenlemelerin baskısı ve kimlik altyapısında tek bir buluta bağımlı kalmama isteği, hem küçük ekiplerin hem büyük kurumların ilgisini çekiyor; \"authentication glue\" (kimlik doğrulama tutkalı) sloganı da tam olarak bu esnekliği vurguluyor.",
+        "evolve": "💡 Açık kaynak sürümün yanında ayrı bir \"enterprise\" teklifin varlığı, büyük ölçekli kurulumlarda bazı sınırlamalar olduğuna işaret ediyor. 842 açık issue, kurulumun ve yapılandırmanın kolay olmayabileceğini gösteriyor; çok dilli arayüz (i18n) desteği hâlâ genişletiliyor. Gelecekte kurulum sadeleştirmesi ve daha fazla protokol/entegrasyon desteği beklenebilir."
+      },
+      "glossary": [
+        { "term": "Identity Provider (IdP)", "def": "Kullanıcıların kimliğini doğrulayıp diğer uygulamalara \"bu kullanıcı gerçekten kim\" bilgisini ileten merkezi sistem." },
+        { "term": "SSO (Single Sign-On)", "def": "Bir kez giriş yaparak birden fazla uygulamaya erişebilme; tek oturum açma." },
+        { "term": "SAML", "def": "Kurumsal uygulamalar arasında kimlik doğrulama bilgisini XML tabanlı olarak taşıyan eski ama yaygın bir standart." },
+        { "term": "OAuth2/OIDC", "def": "Modern uygulamaların yetkilendirme (OAuth2) ve kimlik doğrulama (OpenID Connect) için kullandığı web standardı." },
+        { "term": "LDAP", "def": "Kurumsal dizinlerde (kullanıcı, grup bilgisi) sorgulama yapmaya yarayan eski ve yaygın bir dizin erişim protokolü." },
+        { "term": "RADIUS", "def": "Özellikle ağ cihazlarında (VPN, Wi-Fi) kullanıcı kimlik doğrulaması için kullanılan bir ağ protokolü." },
+        { "term": "Outpost", "def": "Authentik'te ana sunucudan ayrı, farklı bir ağda veya konumda çalışabilen yardımcı servis birimi." },
+        { "term": "Django", "def": "Python dilinde yazılmış, hızlı web uygulaması geliştirmeye yarayan popüler bir sunucu tarafı çatısı (framework)." },
+        { "term": "Reverse proxy", "def": "Gelen istekleri arka plandaki gerçek sunuculara yönlendiren, arada bir katman olarak çalışan sunucu." }
+      ]
+    },
+    {
+      "name": "google/guava",
+      "url": "https://github.com/google/guava",
+      "stars": "51.9k",
+      "language": "Java",
+      "sections": {
+        "serves": "🎯 Java'nın standart kütüphanesinde eksik kalan ama neredeyse her projede ihtiyaç duyulan araçları — değişmez (immutable) koleksiyonlar, multimap/multiset gibi gelişmiş veri yapıları, eşzamanlılık yardımcıları, hashleme ve dosya/G-Ç (I/O) işlemleri — tek, Google'ın kendi üretim sistemlerinde yıllardır test ettiği bir pakette topluyor.",
+        "tech": "🛠️ Saf Java ile yazılmış; JDK 8 ve üzeri için \"jre\", Android API 24 ve üzeri için ayrı bir \"android\" dağıtımı sunuluyor. Maven ve Gradle üzerinden bağımlılık olarak eklenip kullanılıyor, güncel sürümü 33.6.0. `@Beta` etiketli API'ler kararlı kabul edilmiyor ve önceden haber verilmeden değişebiliyor; `failureaccess` adlı küçük bir yardımcı paket çalışma zamanında zorunlu bağımlılık olarak geliyor.",
+        "why": "📈 15 yılı aşkın, 51.9k yıldızlı köklü bir kütüphanenin birden yeniden trend olması genelde ya büyük bir sürüm/güvenlik güncellemesiyle ya da geniş çaplı bir \"yeniden keşif\" dalgasıyla açıklanır. Bu haftanın genel eğilimi — AI kodlama ajanlarının bağımlılık önerirken sınanmış, olgun kütüphanelere yönelmesi — Guava gibi köklü, güvenilirliği kanıtlanmış projelerin görünürlüğünü artıran olası bir etken; ajanlar Java projelerinde önerecekleri \"güvenli varsayılan\" olarak sık sık Guava'ya işaret ediyor.",
+        "evolve": "💡 `@Beta` API'ler için geriye dönük uyumluluk garantisi verilmiyor, bu da büyük projelerde sürüm yükseltmelerini riskli kılabiliyor. Serileştirme (serialization) formatının sabit olmaması, nesneleri diskte/ağda saklayan sistemlerde dikkat gerektiriyor. 617 açık issue, köklü bir kod tabanının taşıdığı doğal bakım yükünü gösteriyor; bazı I/O özellikleri Linux dışı platformlarda tam çalışmayabiliyor."
+      },
+      "glossary": [
+        { "term": "Immutable (değişmez) koleksiyon", "def": "Oluşturulduktan sonra içeriği değiştirilemeyen liste/harita gibi veri yapıları; çoklu iş parçacığında güvenli kullanım sağlar." },
+        { "term": "Multimap / Multiset", "def": "Bir anahtara birden fazla değer (multimap) veya aynı elemanın birden fazla kez sayıldığı (multiset) gelişmiş koleksiyon türleri." },
+        { "term": "Concurrency (eşzamanlılık)", "def": "Bir programın birden fazla işi aynı anda, birbirini bozmadan yürütebilmesiyle ilgili programlama alanı." },
+        { "term": "Hashing", "def": "Bir veriyi sabit uzunlukta, benzersiz sayılabilecek bir özet değere dönüştürme işlemi." },
+        { "term": "Maven / Gradle", "def": "Java projelerinde bağımlılık yönetimi ve derleme (build) sürecini otomatikleştiren iki popüler araç." },
+        { "term": "@Beta API", "def": "Henüz kararlı kabul edilmeyen, gelecekte değişebilecek veya kaldırılabilecek olarak işaretlenmiş kütüphane arayüzü." },
+        { "term": "Serialization (seri hale getirme)", "def": "Bir programdaki nesneyi diske kaydedilebilecek veya ağdan gönderilebilecek bir bayt dizisine dönüştürme işlemi." }
+      ]
+    }
+  ]
+}
