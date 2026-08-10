@@ -1,0 +1,89 @@
+{
+  "date": "2026-08-10",
+  "projects": [
+    {
+      "name": "vitali87/code-graph-rag",
+      "url": "https://github.com/vitali87/code-graph-rag",
+      "stars": "3.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Büyük, çok dilli bir monorepo'da \"bu fonksiyonu kim çağırıyor\", \"bu sınıfı silersem ne bozulur\" sorularına doğru cevap almak** klasik yöntemlerle zor. Metin araması sadece kelime eşleşmesi bulur, klasik RAG (Retrieval-Augmented Generation) sistemleri ise kod parçacıklarını anlamsal benzerliğe göre eşleştirir ama fonksiyonlar arası çağrı zincirini, kalıtım ilişkisini ya da hangi kodun artık kullanılmadığını (\"ölü kod\") bilmez.\n\nCode-Graph-RAG, kodu önce gerçek bir **bilgi grafiğine** (knowledge graph) dönüştürüp doğal dil sorularını bu grafikteki gerçek yapısal ilişkilere \"topraklıyor\". Sonuçta cevaplar halüsinasyon riski taşıyan tahminler değil, kodun gerçek iskeletinden gelen bulgular oluyor — dead-code tespiti, çağrı grafiği analizi ve yapısal arama-değiştirme gibi işlemler dahil.",
+        "tech": "Mimarinin kalbinde üç katman var:\n- **Tree-sitter** tabanlı çok dilli bir ayrıştırıcı (parser), Python, TypeScript, Rust, Go, Java, C/C++, C#, PHP, Lua, Dart gibi 13 dilde fonksiyon/sınıf/modül ilişkilerini çıkarıyor; Ruby desteği ise `ast-grep` desen eşleştirmesiyle geldi.\n- Çıkarılan yapı, dilden bağımsız ortak bir şemayla **Memgraph** grafik veritabanına yazılıyor; doğal dil sorguları buradan **Cypher** grafik sorgu diline çevriliyor.\n- Anlamsal (semantic) arama ihtiyacı için ayrıca **Qdrant** vektör veritabanı kullanılıyor.\n\nSistem, Claude Code gibi AI araçlarıyla doğrudan konuşabilmesi için **MCP (Model Context Protocol)** sunucusu olarak da çalışıyor; her şey Docker ile paketlenmiş, yeni diller YAML desenleriyle eklenebiliyor.",
+        "why": "AI destekli kodlama ajanlarının (Claude Code, Cursor vb.) hızla yaygınlaşmasıyla birlikte geliştiricilerin en büyük şikayeti, bu araçların büyük kod tabanlarında bağlamı kaybetmesi ve halüsinasyon üretmesi. Code-Graph-RAG tam bu noktada, \"metne değil yapıya dayalı bağlam\" vaadiyle öne çıkıyor ve MCP entegrasyonu sayesinde doğrudan mevcut AI kodlama iş akışlarına takılabiliyor. Bu da onu; ayrı bir arama motoru öğrenmek yerine zaten kullandıkları asistana \"gerçek anlama yeteneği\" ekleyen bir katman arayan geliştiriciler için cazip kılıyor.",
+        "evolve": "Şu an desteklenen dil sayısı geniş olsa da her yeni dil elle YAML deseni yazmayı gerektiriyor — bu, topluluk katkısına bağımlı, yavaş ölçeklenen bir model. Büyük monorepo'larda grafiğin artımlı (incremental) güncellenmesi ve çoklu-repo (cross-repo) ilişkilerin modellenmesi henüz olgunlaşmamış görünüyor. İlerleyen aşamada barındırılan (managed) bir grafik servisi, IDE eklentileri ve ekip genelinde paylaşılan canlı bir kod grafiği sunmak, projeyi bireysel araçtan takım altyapısına taşıyabilir."
+      },
+      "glossary": [
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir yapay zeka modelinin cevap üretirken önce ilgili belge/veriyi bulup (retrieval) o veriye dayanarak yanıt vermesi; halüsinasyonu azaltmayı hedefler." },
+        { "term": "Bilgi grafiği (knowledge graph)", "def": "Varlıklar (ör. fonksiyon, sınıf) ve aralarındaki ilişkilerin düğüm-kenar yapısıyla modellendiği veri yapısı." },
+        { "term": "Tree-sitter", "def": "Kaynak kodunu hızlıca ayrıştırıp söz dizimi ağacı (syntax tree) çıkaran, birçok programlama dilini destekleyen bir ayrıştırma kütüphanesi." },
+        { "term": "Cypher", "def": "Graf veritabanlarında (Neo4j, Memgraph gibi) düğümler ve ilişkiler üzerinde sorgu yazmak için kullanılan sorgu dili." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka asistanlarının harici araç ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Vektör veritabanı", "def": "Metin/kodun anlamsal temsilini sayısal vektörler olarak saklayıp benzerlik araması yapmaya yarayan veritabanı türü (ör. Qdrant)." },
+        { "term": "ast-grep", "def": "Kodun söz dizimi ağacı üzerinden desen eşleştirme ve yapısal arama-değiştirme yapan bir araç." },
+        { "term": "Monorepo", "def": "Birden fazla proje veya paketin tek bir git deposunda birlikte tutulduğu geliştirme yapısı." }
+      ]
+    },
+    {
+      "name": "pranshuparmar/witr",
+      "url": "https://github.com/pranshuparmar/witr",
+      "stars": "20.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "\"Bu port neden meşgul?\", \"bu süreç neden hâlâ çalışıyor?\", \"bu dosyayı hangi program kilitledi?\" — sistem yöneticileri ve geliştiriciler bu sorulara cevap bulmak için `ps`, `top`, `lsof`, `systemctl` gibi araçların çıktısını elle birbirine bağlamak zorunda kalır. witr (\"Why Is This Running?\") bu dedektiflik işini otomatikleştiriyor: verilen bir süreç, port, container ya da dosyayı, onu başlatan tüm zincire (ör. systemd → PM2 → node) kadar geriye doğru izliyor ve nedenselliği tek komutla ortaya koyuyor.",
+        "tech": "Go ile yazılmış, tek dosyalık statik ikili (binary) olarak Linux, macOS, Windows ve FreeBSD'de çalışıyor. Platforma göre farklı kaynaklardan besleniyor: Linux'ta **/proc dosya sistemi**, macOS'ta `ps`/`lsof`/`sysctl`, Windows'ta doğrudan Win32 API'leri (ToolHelp32, PSAPI), FreeBSD'de `procstat`. Port, servis ya da container gibi her şeyi sonunda bir **PID**'e (süreç kimliği) bağlayıp soy zincirini (ancestry chain) kuruyor; Docker, Podman, containerd, Kubernetes (crictl), LXC/LXD gibi sekiz farklı **container runtime**'ı tek arayüzden okuyabiliyor. Hem tek komutluk CLI/JSON çıktısı hem de dört sekmeli (süreçler, portlar, container'lar, dosya kilitleri) canlı bir **TUI** (terminal arayüzü) sunuyor; TUI üzerinden süreci öldürme, duraklatma, önceliğini değiştirme gibi eylemler de yapılabiliyor.",
+        "why": "Olay müdahalesinde (incident response) ve günlük DevOps/SRE işlerinde tekrar eden, sinir bozucu bir sürtünmeyi çözdüğü için hızla yayıldı; Product Hunt ve Trendshift'te öne çıkması organik geliştirici ilgisini gösteriyor. Tek bir ikiliğe kurulup 15'ten fazla paket yöneticisinden (Homebrew, apt, npm, Winget vb.) anında kurulabilmesi, deneme eşiğini neredeyse sıfırlıyor — bu da viral büyümeyi hızlandıran pratik bir etken.",
+        "evolve": "Şu an odak tek makine; Kubernetes'te pod'lar arası ya da düğümler (node) arası dağıtık nedensellik zincirlerini izlemek daha karmaşık bir problem ve henüz kapsam dışı görünüyor. Geçmişe dönük bir \"denetim izi\" (audit trail) saklama, ekip içi paylaşılabilir bir web panosu ya da uyarı/otomasyon kurallarıyla (ör. \"bu port her açıldığında bildir\") entegrasyon, aracı tek seferlik teşhisten sürekli gözlemlenebilirlik katmanına taşıyabilir."
+      },
+      "glossary": [
+        { "term": "CLI", "def": "Command Line Interface; komut satırından metin komutlarıyla kullanılan arayüz." },
+        { "term": "TUI", "def": "Terminal User Interface; terminal içinde çalışan, menü ve panellerle etkileşimli görsel arayüz." },
+        { "term": "PID", "def": "Process ID; işletim sisteminde her çalışan sürece atanan benzersiz kimlik numarası." },
+        { "term": "/proc dosya sistemi", "def": "Linux çekirdeğinin çalışan süreçler ve sistem durumu hakkındaki bilgiyi sanal dosyalar olarak sunduğu özel dosya sistemi." },
+        { "term": "Container runtime", "def": "Docker, Podman gibi container'ları (izole çalışma ortamlarını) oluşturup çalıştıran alt yazılım katmanı." },
+        { "term": "systemd", "def": "Linux dağıtımlarında servisleri başlatıp yöneten, önyükleme (boot) sürecini yöneten sistem ve servis yöneticisi." },
+        { "term": "Olay müdahalesi (incident response)", "def": "Bir sistemde arıza/kesinti yaşandığında sorunu tespit edip çözmek için izlenen süreç." }
+      ]
+    },
+    {
+      "name": "msitarzewski/agency-agents",
+      "url": "https://github.com/msitarzewski/agency-agents",
+      "stars": "141k",
+      "language": "Shell",
+      "sections": {
+        "serves": "Bir AI kodlama asistanından pazarlama metni, satış stratejisi ya da ürün yönetimi desteği de istemek isteyen kullanıcılar genelde genel geçer \"bir pazarlamacı gibi davran\" komutlarıyla yetersiz sonuçlar alır. Agency-Agents bunun yerine mühendislikten tasarıma, pazarlamadan satışa, ürün yönetiminden niş uzmanlık alanlarına kadar **230'dan fazla hazır \"ajan kişiliği\"** sunuyor; her biri kendi kimliği, iş akışı ve somut çıktı standartlarıyla tanımlanmış, adeta cebinizde eksiksiz bir ajans kadrosu taşımak gibi.",
+        "tech": "Her ajan, kimlik/kişilik özellikleri, temel görev tanımı, kod örnekleriyle somut teslimatlar ve başarı metriklerini içeren bir **markdown** dosyası olarak tutuluyor; bölüm bazında (mühendislik, tasarım, pazarlama vb.) klasörlenmiş. `convert.sh` betiği bu tek kaynaktan, Claude Code, Cursor, Windsurf, GitHub Copilot, Gemini CLI, Codex gibi 14'ten fazla platforma özgü formatlara (Codex için TOML, Kimi için YAML, Cursor için `.mdc` kuralları) otomatik dönüşüm yapıyor — yani sistem **model-agnostik**: hangi LLM'i kullanırsanız kullanın aynı ajan tanımı işliyor. Ayrıca macOS/Linux/Windows için ajanları otomatik keşfedip tek tıkla kuran bir masaüstü uygulaması da eklenmiş.",
+        "why": "AI ajan ekosistemindeki patlamayla birlikte \"prompt yazmayı öğrenmek\" yerine \"hazır uzman kütüphanesinden seç ve kullan\" yaklaşımı çok daha düşük eşikli bir değer teklifi sunuyor; bu da klasik \"awesome-list\" tarzı depoların gördüğü türden viral, hızlı yıldız birikimini açıklıyor. Model-agnostik tasarım sayesinde hangi araca bağlı olursa olsun geliştirici topluluğunun büyük kısmına hitap etmesi de yayılma hızını artıran önemli bir etken.",
+        "evolve": "230'dan fazla topluluk kaynaklı ajan tanımının tutarlılığını ve kalitesini korumak zor bir problem; şu an nesnel bir değerlendirme/benchmark mekanizması görünmüyor, dolayısıyla bazı ajanların gerçekten \"uzman\" seviyesinde olup olmadığını doğrulamak kullanıcıya kalıyor. Ajanlar arası devretme (handoff) ve çoklu ajan orkestrasyonu (ör. bir mühendislik ajanının çıktısını otomatik olarak bir tasarım ajanına iletmesi) eklenmesi, statik bir kişilik kütüphanesini gerçek bir iş akışı motoruna dönüştürebilir."
+      },
+      "glossary": [
+        { "term": "LLM (Large Language Model)", "def": "Büyük miktarda metinle eğitilmiş, doğal dilde metin üretebilen yapay zeka modeli (ör. Claude, GPT)." },
+        { "term": "Prompt engineering", "def": "Bir yapay zeka modelinden istenen sonucu almak için giriş metnini (prompt) özenle tasarlama pratiği." },
+        { "term": "Model-agnostik", "def": "Belirli bir yapay zeka modeline bağımlı olmayan, farklı modellerle çalışabilen tasarım." },
+        { "term": "Ajan (AI agent)", "def": "Kendi başına görev planlayıp adımlar atabilen, araçları kullanabilen yapay zeka sistemi." },
+        { "term": "Orkestrasyon", "def": "Birden fazla bileşenin (burada birden fazla AI ajanının) koordineli biçimde birlikte çalışmasının yönetilmesi." },
+        { "term": "TOML / YAML", "def": "Yapılandırma dosyalarında sıkça kullanılan, insan tarafından okunabilir iki farklı veri biçimlendirme dili." }
+      ]
+    },
+    {
+      "name": "ZhuLinsen/daily_stock_analysis",
+      "url": "https://github.com/ZhuLinsen/daily_stock_analysis",
+      "stars": "61.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bireysel yatırımcının A-shares (Çin), Hong Kong, ABD, Japonya, Kore ve Tayvan borsalarını her gün tek tek takip edip anlamlandırması hem zaman alıcı hem de teknik olarak zor. Bu proje, seçilen hisseler için günlük bir \"karar panosu\" üretip WeChat, Telegram, Slack, Discord gibi zaten kullanılan mesajlaşma kanallarına otomatik gönderiyor — üstelik hiçbir sunucu kiralamadan, tamamen ücretsiz altyapı üzerinde.",
+        "tech": "Analiz motoru; OpenAI-uyumlu API'ler, Google Gemini, Anthropic Claude, DeepSeek, Alibaba'nın Tongyi Qianwen'i ve yerelde çalışan **Ollama** dahil birçok **LLM sağlayıcısını** destekliyor, kullanıcı maliyet/yetenek dengesine göre seçim yapabiliyor. Piyasa verisi için AkShare, Tushare, YFinance, Longbridge gibi kaynaklar; haber ve duyarlılık (sentiment) analizi için Tavily, Brave Search, ayrıca Reddit/X/Polymarket verisi çekebilen bir Stock Sentiment API kullanılıyor. Zamanlama tamamen **GitHub Actions** üzerinde çalıştığı için sunucu maliyeti sıfırlanıyor; isteyenler için ayrıca **FastAPI** tabanlı bir web servisi ve Docker desteği de var. Sistem hareketli ortalama, Elliott dalga teorisi gibi 15'ten fazla dahili strateji içeriyor ve gerçek zamanlı veriyle diyalog kurulabilen bir \"strateji soru-cevap\" ajan modu sunuyor.",
+        "why": "LLM destekli kişisel finans araçlarına olan talep büyürken, bu projenin \"sunucu kiralamadan, GitHub Actions üzerinde bedava çalışan\" mimarisi giriş engelini neredeyse ortadan kaldırıyor — bir hesap ve API anahtarıyla kurulabiliyor. Çoklu piyasa ve çoklu LLM sağlayıcı desteği, farklı bölgelerden ve bütçelerden yatırımcıya aynı anda hitap etmesini sağlıyor; Trendshift'te Python kategorisinde bir numaraya çıkması bu geniş erişilebilirliğin bir sonucu.",
+        "evolve": "Yatırım tavsiyesi niteliğinde çıktı üreten bir sistemin şeffaflığı kritik: hangi stratejinin geçmişte ne kadar isabetli olduğunu gösteren bağımsız bir **backtest** raporlama katmanı henüz öne çıkmıyor, bu da kullanıcıların üretilen sinyallere ne kadar güveneceğini belirsizleştiriyor. Ayrıca bölgesel finansal regülasyon ve sorumluluk (\"bu yatırım tavsiyesi değildir\" ötesinde) konuları olgunlaştıkça netleşmesi gereken alanlar; gerçek zamanlı emir/broker entegrasyonu eklenmesi projeyi analiz aracından uçtan uca bir yatırım asistanına taşıyabilir."
+      },
+      "glossary": [
+        { "term": "LLM sağlayıcısı", "def": "Yapay zeka dil modeli hizmeti sunan şirket/API (ör. OpenAI, Google Gemini, Anthropic Claude)." },
+        { "term": "Ollama", "def": "Büyük dil modellerini kullanıcının kendi bilgisayarında, internete bağlanmadan çalıştırmasını sağlayan araç." },
+        { "term": "GitHub Actions", "def": "GitHub üzerinde kod deposuna bağlı, belirli olaylarda veya zamanlanmış olarak otomatik görev/iş akışı çalıştıran ücretsiz otomasyon hizmeti." },
+        { "term": "FastAPI", "def": "Python ile hızlı web API'leri yazmak için kullanılan modern bir web framework'ü." },
+        { "term": "Backtest", "def": "Bir yatırım stratejisinin geçmiş piyasa verisi üzerinde simüle edilerek ne kadar başarılı olacağının test edilmesi." },
+        { "term": "Duyarlılık analizi (sentiment analizi)", "def": "Metin verisinden (haber, sosyal medya paylaşımı) olumlu/olumsuz eğilimin otomatik olarak çıkarılması." },
+        { "term": "Elliott dalga teorisi", "def": "Piyasa fiyat hareketlerinin tekrarlayan dalga örüntüleri izlediğini öne süren bir teknik analiz yöntemi." }
+      ]
+    }
+  ]
+}
