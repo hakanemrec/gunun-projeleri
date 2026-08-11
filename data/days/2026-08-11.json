@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-11",
+  "projects": [
+    {
+      "name": "firecrawl/firecrawl",
+      "url": "https://github.com/firecrawl/firecrawl",
+      "stars": "165.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "LLM'lerin ve AI agent'ların web'den güvenilir, temiz veri çekmesini sağlayan bir API ve altyapı katmanı. Normalde bir siteyi kazımak istediğinizde JavaScript ile render edilen sayfalar, IP engelleri, rate limiting ve HTML'den anlamlı metne geçiş gibi bir sürü ayrı problemle uğraşmanız gerekir. Firecrawl bunların hepsini tek bir API arkasında topluyor: `scrape` bir URL'yi markdown/JSON'a çeviriyor, `crawl` bir sitenin tamamını geziyor, `search` web'de arama yapıp sonuç sayfalarının içeriğini getiriyor, `agent` modu ise doğal dil talimatıyla veri toplama görevini kendisi planlıyor.",
+        "tech": "Çekirdek altyapı Docker ile self-host edilebiliyor (AGPL-3.0), SDK'lar ve UI bileşenleri ise MIT lisanslı. Python, Node.js, Go, Java, Rust, Ruby, .NET, PHP ve Elixir için resmi SDK'lar var; bu kadar geniş dil desteği, projenin \"her stack'ten kolay entegre edilsin\" hedefini gösteriyor. Yapılandırılmış çıktı için Pydantic şemaları kullanılabiliyor, yani \"bana şu alanları JSON olarak ver\" demek yeterli. MCP (Model Context Protocol) sunucusu sayesinde Claude gibi agent'lar Firecrawl'u doğrudan bir araç olarak çağırabiliyor. İki farklı AI model modu (hızlı \"Spark Mini\" ve daha derin \"Spark Pro\") hız/kalite dengesini kullanıcıya bırakıyor.",
+        "why": "Agent tabanlı uygulamaların patlamasıyla birlikte \"AI'a gerçek zamanlı web erişimi\" kritik bir altyapı parçası haline geldi; artık her ekip kendi scraping çözümünü yazmak yerine hazır bir API'ye yöneliyor. MCP, Zapier, n8n ve Lovable gibi entegrasyonlarla Firecrawl, agent ekosisteminde neredeyse standart bir \"web gözü\" konumuna geldi. 165 binin üzerinde yıldız ve 6.000'i aşkın commit, projenin hem çok kullanıldığını hem de aktif geliştirildiğini gösteriyor.",
+        "evolve": "Çekirdeğin AGPL-3.0, bulut SaaS'ın ise kapalı olması zamanla \"ne kadarı gerçekten açık kaynak\" tartışmasını büyütebilir. `agent` modunun siteleri otonom şekilde gezip veri toplaması, robots.txt ve kullanım şartları ihlalleri riskini otomatikleştirdiği için hukuki/etik sınırların netleştirilmesi önemli. Daha fazla yerelleştirilmiş ayrıştırma (ör. RTL diller, bölgesel site yapıları) potansiyel bir geliştirme alanı."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI agent'ların harici araçları (API, veritabanı, dosya sistemi vb.) standart bir protokolle çağırmasını sağlayan bağlantı katmanı."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılımı ağ üzerinden servis olarak sunanların da kaynak kodu paylaşmasını zorunlu kılan, GPL'in daha katı bir sürümü olan açık kaynak lisansı."
+        },
+        {
+          "term": "Pydantic şeması",
+          "def": "Python'da verinin hangi alanlardan ve tiplerden oluşacağını tanımlayıp otomatik doğrulama yapan bir kütüphane/yöntem."
+        },
+        {
+          "term": "Rate limiting",
+          "def": "Bir sunucunun belirli bir sürede kabul ettiği istek sayısını sınırlayarak aşırı yüklenmeyi veya kötüye kullanımı engelleme yöntemi."
+        },
+        {
+          "term": "Self-host",
+          "def": "Bir yazılımı üçüncü taraf bulut hizmeti yerine kendi sunucunuzda kurup çalıştırmak."
+        }
+      ]
+    },
+    {
+      "name": "paperclipai/paperclip",
+      "url": "https://github.com/paperclipai/paperclip",
+      "stars": "76.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Birden fazla AI agent'ı (Claude, Codex, Cursor, bash script'leri, HTTP tabanlı araçlar) tek bir çatı altında koordine etmeye yarayan bir \"agent yönetim şirketi\" simülasyonu. Proje kendini şöyle özetliyor: \"Bir agent bir çalışansa, Paperclip o çalışanların işlediği şirkettir.\" Yani tek tek agent'lar yerine, agent'lardan oluşan bir organizasyonu -roller, raporlama hatları, bütçeler, onay süreçleriyle- yönetme problemini çözüyor.",
+        "tech": "Node.js backend, lokal kullanımda gömülü PostgreSQL veya üretimde harici veritabanı ile çalışıyor; arayüz React ile yazılmış ve mobil uyumlu. pnpm tabanlı monorepo yapısında; test için Vitest ve uçtan uca testler için Playwright kullanılıyor, izleme için opsiyonel OpenTelemetry desteği var. Sistem ayrı modüllere bölünmüş: kimlik/erişim kontrolü, org chart yönetimi, görev yürütme, periyodik \"heartbeat\" zamanlaması, workspace izolasyonu, onay (governance) akışları, bütçe takibi, plugin mimarisi ve secrets yönetimi.",
+        "why": "Şirketler agent sayısını artırdıkça \"hangi agent ne yapıyor, ne kadar harcıyor, kim onaylıyor\" sorusu operasyonel bir zorunluluk haline geldi. Paperclip bunu tanıdık bir İK/organizasyon şeması metaforuyla çözerek, teknik olmayan kullanıcılar için bile anlaşılır kılıyor. Herhangi bir agent sağlayıcısıyla çalışabilmesi (Claude, Codex, Cursor fark etmeksizin) kurumsal benimsenmeyi kolaylaştıran önemli bir tasarım tercihi.",
+        "evolve": "Bütçe ve onay mekanizmaları olsa da agent'ların gerçek dünyada yanlış bir eylem gerçekleştirme riski hâlâ büyük ölçüde insan gözetimine bağlı; daha güçlü sandboxing ve otomatik geri alma (rollback) mekanizmaları eklenmesi güven seviyesini artırabilir. Çoklu şirket/organizasyon izolasyonu özelliği, projeyi kurumsal bir SaaS ürününe doğru evriltebilir."
+      },
+      "glossary": [
+        {
+          "term": "Org chart",
+          "def": "Bir organizasyondaki rollerin ve raporlama ilişkilerinin şematik gösterimi; burada insan yerine agent'lar için kullanılıyor."
+        },
+        {
+          "term": "Heartbeat",
+          "def": "Bir sistemin veya agent'ın belirli aralıklarla \"hâlâ çalışıyorum, sırada ne var\" diye kendini kontrol ettiği periyodik döngü."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan performans ve hata verisi (log, metrik, trace) toplamak için kullanılan açık standart bir gözlemlenebilirlik araç seti."
+        },
+        {
+          "term": "Sandboxing",
+          "def": "Bir programın veya agent'ın, sistemin geri kalanına zarar veremeyeceği izole bir ortamda çalıştırılması."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paket veya projenin tek bir git deposunda birlikte tutulduğu geliştirme yapısı."
+        }
+      ]
+    },
+    {
+      "name": "danielmiessler/LifeOS",
+      "url": "https://github.com/danielmiessler/LifeOS",
+      "stars": "18.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI'ı, kullanıcının kim olduğunu, ne istediğini ve nereye gitmek istediğini hatırlayan kişisel/profesyonel bir \"işletim sistemine\" dönüştürmeyi hedefliyor. Merkezi fikir \"mevcut durum -> ideal durum\": sistem sürekli olarak kullanıcının şu anki konumuyla hedeflediği konum arasındaki farkı takip edip, AI'ın bu farkı kapatacak şekilde çalışmasını sağlıyor. Her seferinde AI'a bağlamı yeniden anlatma zorunluluğunu ortadan kaldırmayı amaçlıyor.",
+        "tech": "Bun çalışma zamanı üzerinde TypeScript ve Bash ile yazılmış; Claude Code, Cursor gibi farklı AI harness'leriyle çalışabilecek şekilde \"harness'tan bağımsız\" tasarlanmış. Tüm sistem, sistem promptu, algoritmalar, 49 hazır skill, hook'lar, agent'lar ve arayüz bileşenlerini içeren tek bir kendi kendine yeten \"skill bundle\" olarak dağıtılıyor. Cortex adlı kalıcı hafıza katmanı; insan, şirket, fikir ve araştırma gibi tipte bilgileri saklıyor. Algorithm v8.4.0, gözlemle-düşün-planla-inşa et-uygula-doğrula-öğren şeklinde yedi aşamalı bir genel problem çözme döngüsü tanımlıyor. Pulse adlı gösterge paneli sesli arayüz, hook'lar ve gözlemlenebilirliği bir araya getiriyor; Hermes ise aynı kimlik ve skill'lere terminal üzerinden erişim sağlayan alternatif bir arayüz.",
+        "why": "\"AI'a her seferinde aynı bağlamı yeniden anlatma\" yorgunluğu, yoğun AI kullanan geliştiricilerin ortak şikayeti; LifeOS bunu kalıcı hafıza ile doğrudan çözmeye çalışıyor. Kurucusu Daniel Miessler'in güvenlik ve AI camiasındaki tanınırlığı projenin hızlı yayılmasına katkı sağlıyor. Kurulumun \"AI agent'ına şu linki ver, kendi kendine kursun\" şeklinde olması da teknik bariyeri düşürerek benimsenmeyi kolaylaştırıyor.",
+        "evolve": "Kişisel, kalıcı ve derin bağlamsal veri içeren bir hafıza sistemi ciddi bir gizlilik ve veri güvenliği sorumluluğu taşıyor; şifreleme ve erişim kontrolü netleştirilmesi gereken kritik alanlar. \"Harness'tan bağımsız\" iddiası, her AI aracında aynı kalitede çalışacağını garanti etmiyor; farklı araçlarla test kapsamının genişletilmesi güveni artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Runtime (çalışma zamanı)",
+          "def": "Bir programın çalışması için gereken ortamı sağlayan yazılım katmanı; burada Bun, JavaScript/TypeScript kodunu çalıştıran ortamdır."
+        },
+        {
+          "term": "Harness",
+          "def": "Bir AI modelini veya agent'ı çalıştırıp onunla etkileşim kurmayı sağlayan çevreleyici yazılım çerçevesi (ör. Claude Code, Cursor)."
+        },
+        {
+          "term": "Skill bundle",
+          "def": "Bir AI agent'ına belirli görevleri nasıl yapacağını öğreten, talimat ve araçlardan oluşan paketlenmiş yetenek seti."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir sistemde belirli bir olay gerçekleştiğinde otomatik olarak tetiklenen özel kod parçası."
+        },
+        {
+          "term": "Gözlemlenebilirlik (observability)",
+          "def": "Bir sistemin iç durumunu loglar, metrikler ve izler üzerinden dışarıdan anlayabilme yeteneği."
+        }
+      ]
+    },
+    {
+      "name": "NanmiCoder/MediaCrawler",
+      "url": "https://github.com/NanmiCoder/MediaCrawler",
+      "stars": "61.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "Xiaohongshu, TikTok, Kuaishou, Bilibili, Weibo, Baidu Tieba ve Zhihu gibi yedi büyük platformdan herkese açık veriyi (gönderi, yorum, kullanıcı profili) tek bir araçla toplamaya yarıyor. Normalde her platformun kendi şifreleme ve bot koruma mekanizmasını tek tek tersine mühendislik yapmak gerekirken, proje bu işi kullanıcı adına halletmiş durumda.",
+        "tech": "Playwright ile tarayıcı otomasyonu yapıyor; Chrome DevTools Protocol (CDP) modunda yeni bir tarayıcı açmak yerine kullanıcının zaten açık olan gerçek Chrome'una bağlanarak bot tespit sistemlerinin yakalama riskini azaltıyor. Backend Python ve FastAPI ile yazılmış, WebUI ise Vue.js + Vite ile geliştirilmiş; komut satırı kullanmak istemeyenler için görsel bir yapılandırma arayüzü sunuyor. Paket yönetimi için UV öneriliyor. Toplanan veri CSV, JSON, JSONL, Excel, SQLite veya MySQL olarak dışa aktarılabiliyor. QR kod ile giriş bilgisini önbelleğe alma, IP proxy havuzu ve yorum kelime bulutu gibi pratik özellikler mevcut.",
+        "why": "Sosyal medya verisiyle çalışan araştırmacılar, pazarlamacılar ve AI eğitim verisi toplayan ekipler için Çin platformlarına erişim özellikle zor, çünkü bu platformlar agresif bot koruması kullanıyor. Proje, \"yeni bir headless tarayıcı açmak yerine gerçek tarayıcıya bağlan\" yaklaşımıyla bu korumayı büyük ölçüde aşıyor, bu da onu diğer scraper araçlarından ayırıyor. Ticari bir Pro sürüm planının duyurulması da projeye olan ilgiyi tazeleyen bir gelişme.",
+        "evolve": "Proje \"yalnızca eğitim ve araştırma amaçlıdır\" uyarısı yapsa da toplu veri kazıma hukuki ve kullanım şartları riskleri taşıyor; ticarileşme planı bu gri alanı daha da büyütebilir. Geliştirici ekibin Playwright bağımlılığını azaltma yönündeki planı hayata geçerse hem performans hem de bot tespitine karşı direnç artabilir."
+      },
+      "glossary": [
+        {
+          "term": "Playwright",
+          "def": "Web sayfalarını gerçek bir tarayıcı gibi otomatik olarak açıp gezinmeyi sağlayan, test ve veri toplama amacıyla kullanılan bir otomasyon kütüphanesi."
+        },
+        {
+          "term": "Chrome DevTools Protocol (CDP)",
+          "def": "Chrome tarayıcısının dışarıdan programatik olarak kontrol edilmesini sağlayan arayüz; mevcut bir tarayıcı oturumuna bağlanmak için kullanılır."
+        },
+        {
+          "term": "Bot tespiti",
+          "def": "Bir web sitesinin, isteği gönderenin gerçek bir insan mı yoksa otomatik bir program mı olduğunu anlamaya çalışan koruma mekanizması."
+        },
+        {
+          "term": "Proxy havuzu",
+          "def": "İsteklerin farklı IP adresleri üzerinden gönderilmesini sağlayarak engellenme riskini azaltan, birden fazla proxy sunucusundan oluşan sistem."
+        },
+        {
+          "term": "Ters mühendislik (reverse engineering)",
+          "def": "Bir yazılımın veya protokolün nasıl çalıştığını, kaynak koduna sahip olmadan analiz ederek çözmek."
+        }
+      ]
+    }
+  ]
+}
