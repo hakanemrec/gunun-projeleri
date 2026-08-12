@@ -1,0 +1,155 @@
+{
+  "date": "2026-08-12",
+  "projects": [
+    {
+      "name": "anthropics/skills",
+      "url": "https://github.com/anthropics/skills",
+      "stars": "168k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bu depo, Claude'un belirli görevlerde uzmanlaşmasını sağlayan **Agent Skills** (Ajan Becerileri) sisteminin resmi kaynağı. Sorun şu: her özel görev için (marka kurallarına uygun doküman yazmak, belirli bir kurumsal süreci takip etmek, PDF/PPTX gibi dosya formatlarını üretmek) devasa promptlar yazmak hem verimsiz hem tutarsız. Skills, bu bilgiyi **modüler, tekrar kullanılabilir paketler** haline getirip Claude'a yalnızca ihtiyaç duyduğu anda yükletiyor.\n\n- Marka/organizasyon tutarlılığı sağlar\n- Tekrarlayan iş akışlarını standartlaştırır\n- Gerektiğinde eklenip çıkarılabilen \"eklenti\" mantığıyla çalışır",
+        "tech": "🛠️ Bir beceri, aslında çok basit: bir `SKILL.md` dosyası — YAML ön bilgisi (isim, açıklama) + serbest metin talimatlar. Karmaşık bir çerçeve yerine bilinçli olarak minimal tutulmuş.\n\n- **Progressive disclosure**: Claude, bir beceriyi yalnızca alakalı olduğunda context'e yükler, böylece gereksiz yere token harcanmaz\n- `skills/`, `spec/`, `template/` dizinleri: sırasıyla örnekler, protokol tanımı ve başlangıç şablonu\n- Claude Code'da `/plugin marketplace add` komutuyla kurulum; Claude.ai'de hazır beceriler, API'de özel entegrasyon\n- Resmi DOCX/PDF/PPTX/XLSX becerileri, sistemin üretim ortamında nasıl çalıştığını gösteren referans örnekler\n- `agentskills.io` üzerinden framework-bağımsız bir standart tanımlanıyor",
+        "why": "📈 Ajan tabanlı sistemlerin hızla yaygınlaşmasıyla birlikte şirketler, ajanların kendi süreçlerine uymasını istiyor ama her seferinde prompt yazmak istemiyor. Bu depo hem Anthropic'in kendi ürün özelliklerinin (doküman oluşturma gibi) referans implementasyonunu hem de üçüncü taraf entegrasyonların (ör. Notion) büyüdüğü bir ekosistemin merkezini oluşturuyor — bu da geliştiricileri ve kurumsal kullanıcıları aynı anda çekiyor.",
+        "evolve": "💡 Şu an minimal ve esnek olması bir avantaj ama ekosistem büyüdükçe: beceriler arası **çakışma/versiyon yönetimi**, güvenlik doğrulaması (üçüncü taraf bir SKILL.md kötü niyetli talimat içerebilir mi?) ve keşfedilebilirlik (hangi beceri ne zaman devreye girecek?) gibi sorular önem kazanacak. `agentskills.io` standardının farklı LLM sağlayıcıları arasında ne kadar taşınabilir olacağı da izlenmeye değer."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skills",
+          "def": "Bir AI ajanına belirli bir görevi nasıl yapacağını öğreten, dosya halinde paketlenmiş talimat ve kaynak setleri."
+        },
+        {
+          "term": "YAML frontmatter",
+          "def": "Bir dosyanın başında yer alan, isim/açıklama gibi meta bilgileri tanımlayan kısa yapılandırma bloğu."
+        },
+        {
+          "term": "Progressive disclosure",
+          "def": "Bilginin tamamının değil, o an gerekli olan kısmının sisteme yüklenmesi ilkesi; gereksiz veri yükünü azaltır."
+        },
+        {
+          "term": "Plugin marketplace",
+          "def": "Kullanıcıların hazır eklentileri (bu bağlamda beceri paketlerini) keşfedip kurabildiği bir dağıtım platformu."
+        }
+      ]
+    },
+    {
+      "name": "stanfordnlp/dspy",
+      "url": "https://github.com/stanfordnlp/dspy",
+      "stars": "37.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Büyük dil modelleriyle çalışırken en büyük sorunlardan biri, elle yazılmış promptların kırılgan olması: model güncellenince, veri değişince ya da başka bir göreve uyarlanınca prompt yeniden yazılmak zorunda kalır. DSPy, promptları elle yazmak yerine **kod olarak tanımlayıp otomatik optimize etmeyi** öneriyor — yani \"prompt mühendisliği\" yerine \"LLM programlama\".",
+        "tech": "🛠️ Üç temel yapı taşı var:\n\n- **Signature**: Bir görevin girdi-çıktı sözleşmesini bildirimsel şekilde tanımlar (ör. \"soru → cevap\")\n- **Module**: Birden fazla LM çağrısını birleştiren, yeniden kullanılabilir bileşenler\n- **Optimizer / Teleprompter**: Prompt'u (ve bazen model ağırlıklarını) otomatik olarak iyileştiren algoritmalar\n\nSaf Python ile yazılan compositional pipeline'lar, DSPy'ın optimizer'ları sayesinde belirli bir metrik üzerinde otomatik olarak ayarlanabiliyor. Yaklaşım, ICLR 2024'te akademik olarak da doğrulandı.",
+        "why": "📈 RAG sistemleri ve ajan döngüleri büyüdükçe, prompt'ları elle ince ayar yapmak ölçeklenmiyor. Stanford NLP kökenli olması akademik güven veriyor; framework'ün \"kendi kendini optimize eden\" pipeline vaadi, hem araştırmacıları hem üretim ekiplerini cezbetmeye devam ediyor.",
+        "evolve": "💡 Daha fazla model sağlayıcıyla native entegrasyon, optimizasyon sürecinin şeffaflığı (\"neden bu prompt seçildi?\") ve üretim ortamında gözlemlenebilirlik/debugging araçları DSPy'ın önündeki doğal genişleme alanları. Fine-tuning ile prompt optimizasyonunun tek bir akışta birleşmesi de ilgi çekici bir yön."
+      },
+      "glossary": [
+        {
+          "term": "Prompt mühendisliği",
+          "def": "Bir dil modelinden istenen çıktıyı almak için giriş metnini (prompt) elle tasarlama ve deneme-yanılma ile iyileştirme süreci."
+        },
+        {
+          "term": "Signature",
+          "def": "DSPy'da bir görevin girdi ve çıktısını tanımlayan, kodla ifade edilen kısa sözleşme."
+        },
+        {
+          "term": "Teleprompter / Optimizer",
+          "def": "Bir DSPy pipeline'ının promptlarını veya parametrelerini otomatik olarak iyileştiren algoritma."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin cevap üretirken önce ilgili belgeleri arayıp bulduğu bilgiyle cevabı zenginleştirdiği yöntem."
+        }
+      ]
+    },
+    {
+      "name": "modelcontextprotocol/typescript-sdk",
+      "url": "https://github.com/modelcontextprotocol/typescript-sdk",
+      "stars": "13.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI ajanlarının dış dünyadaki araçlara ve verilere erişmesi gerekiyor, ama her model/platform için ayrı entegrasyon yazmak sürdürülemez. **Model Context Protocol (MCP)**, bu bağlamı LLM'in kendisinden ayırıp standart bir arayüz üzerinden sunmayı amaçlayan bir protokol; bu depo da onun resmi TypeScript uygulaması.",
+        "tech": "🛠️ SDK, hem sunucu hem istemci tarafını kapsıyor:\n\n- **Sunucu tarafı**: araç, kaynak ve prompt'ları stdio veya HTTP üzerinden dışa açan MCP sunucuları kurmayı sağlar; Express, Fastify, Hono gibi framework'ler için middleware desteği var\n- **İstemci tarafı**: uygulamaların MCP sunucularına bağlanıp yetenekleri keşfetmesini ve uzaktaki araçları çağırmasını sağlar\n- Şema doğrulama için **Standard Schema** kullanılıyor (Zod, Valibot, ArkType ile uyumlu)\n- Node.js, Bun ve Deno runtime'larını destekliyor; OAuth entegrasyonu mevcut\n- Güncel v2 sürümü, 2026-07-28 tarihli MCP spesifikasyonunu uyguluyor",
+        "why": "📈 Ajan ekosisteminin büyümesiyle birlikte \"her araç için özel entegrasyon\" yaklaşımı sürdürülemez hale geldi. MCP, bu soruna endüstri çapında ortak bir cevap sunuyor; yeni v2 spesifikasyonunun yayınlanması ve çoklu framework desteği, SDK'nın bugün trend olmasının başlıca nedeni.",
+        "evolve": "💡 Daha fazla runtime ve framework desteği, OAuth/güvenlik katmanının olgunlaşması, ve protokol sürümleri arttıkça geriye dönük uyumluluk yönetimi önemli başlıklar. Ekosistem büyüdükçe, üçüncü taraf MCP sunucularının güvenilirliğini doğrulayacak bir \"kayıt/incelemesi\" mekanizması da gündeme gelebilir."
+      },
+      "glossary": [
+        {
+          "term": "Model Context Protocol (MCP)",
+          "def": "AI ajanlarının dış araç ve verilere standart bir yöntemle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Transport (stdio/HTTP)",
+          "def": "İki bileşenin (örn. istemci ve sunucu) birbiriyle veri alışverişi yaptığı iletişim kanalı türü."
+        },
+        {
+          "term": "OAuth",
+          "def": "Kullanıcı adına bir uygulamanın başka bir servise güvenli, yetkilendirilmiş erişim almasını sağlayan standart protokol."
+        },
+        {
+          "term": "Şema doğrulama (Zod/Valibot/ArkType)",
+          "def": "Bir verinin beklenen yapıya uyup uymadığını kod düzeyinde kontrol eden kütüphaneler."
+        }
+      ]
+    },
+    {
+      "name": "gitleaks/gitleaks",
+      "url": "https://github.com/gitleaks/gitleaks",
+      "stars": "28.6k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 Geliştiriciler zaman zaman API anahtarı, şifre ya da token gibi gizli bilgileri yanlışlıkla git commit'lerine dahil ediyor. Gitleaks, bu sızıntıları commit geçmişinde ya da mevcut dosyalarda **otomatik olarak tespit edip** uyarı veren bir tarama aracı — sorun büyümeden, sızıntı repoya işlenmeden yakalanmasını hedefliyor.",
+        "tech": "🛠️ Tespit motoru iki katmanlı çalışıyor: **regex kalıp eşleştirme** ile bilinen sır formatlarını (AWS anahtarı, API token vb.) yakalıyor, ardından **Shannon entropi** hesaplamasıyla rastgele/yüksek entropili dizgileri (gerçek bir sır olma ihtimali yüksek) ayırt ediyor.\n\n- `git log -p` ile tüm commit geçmişini tarayabiliyor\n- Dizin, dosya, stdin ve arşiv (zip/tar) içeriklerini de tarayabiliyor\n- base64/hex/percent-encoding ile gizlenmiş sırları recursive olarak çözüp yakalayabiliyor\n- Kurallar TOML formatında özelleştirilebiliyor; allowlist ve çoklu-kalıp eşleşen \"composite rules\" destekleniyor\n- Go ile yazılmış, tek binary + Docker + Homebrew olarak dağıtılıyor",
+        "why": "📈 Sır sızıntıları, güvenlik ihlallerinin en yaygın ve en kolay önlenebilir nedenlerinden biri. Gitleaks'in pre-commit hook ve GitHub Actions ile sıfır sürtünmeli entegrasyonu, hem bireysel geliştiriciler hem kurumsal CI/CD hatlarında hızla benimsenmesini sağlıyor — güvenlik ekiplerinin \"varsayılan olarak açık\" istediği türden bir araç.",
+        "evolve": "💡 Proje bakımcısı, aracın artık \"özellik olarak tamamlandığını\" ve yeni geliştirmelerin ticari **Betterleaks** ürününe kaydığını belirtiyor; açık kaynak sürüm ise güvenlik yamalarıyla sürdürülüyor. Bu, topluluğun ileride bir fork ya da alternatif açık kaynak proje etrafında toplanıp toplanmayacağı sorusunu gündeme getiriyor."
+      },
+      "glossary": [
+        {
+          "term": "Shannon entropi",
+          "def": "Bir dizginin ne kadar 'rastgele' göründüğünü ölçen matematiksel değer; yüksek entropi genelde gerçek bir şifre/anahtar işaretidir."
+        },
+        {
+          "term": "Pre-commit hook",
+          "def": "Bir commit oluşturulmadan hemen önce otomatik olarak çalışan, kontrol/kural uygulayan script."
+        },
+        {
+          "term": "TOML",
+          "def": "Yapılandırma dosyaları için kullanılan, okunması kolay bir veri formatı."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak test edilip dağıtıma alındığı sürekli entegrasyon/sürekli teslimat süreci."
+        }
+      ]
+    },
+    {
+      "name": "lfnovo/open-notebook",
+      "url": "https://github.com/lfnovo/open-notebook",
+      "stars": "36.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Google'ın NotebookLM'i, yüklediğiniz belgeler üzerinden AI destekli özet ve podcast üretmesiyle popüler oldu — ama verileriniz Google'ın bulutunda kalıyor ve tek bir model sağlayıcısına bağımlısınız. Open Notebook, aynı fikri **kendi sunucunuzda barındırabileceğiniz, gizlilik odaklı** bir açık kaynak alternatif olarak sunuyor: PDF, video, ses ve web içeriğini tek bir yerde toplayıp AI ile analiz etmenizi sağlıyor.",
+        "tech": "🛠️ Yığın: **Python/FastAPI** backend, **SurrealDB** veritabanı (esnek, çoklu-model bir veri deposu), **Next.js/React** arayüz. \"Esperanto\" adlı özel kütüphane ve LangChain ile 18'den fazla LLM sağlayıcısı (OpenAI, Anthropic, Ollama dahil) tek bir arayüzde birleştiriliyor.\n\n- Docker/docker-compose ile kolay dağıtım\n- Tam metin + embedding tabanlı hibrit arama\n- 1-4 konuşmacılı özelleştirilebilir podcast üretimi (Google'ın sabit 2 konuşmacı formatının aksine)\n- Tam REST API ile programatik erişim\n- Çoklu dil arayüzü (İngilizce, Portekizce, Çince, Japonca, Rusça, Bengalce)",
+        "why": "📈 Bulut tabanlı AI araçlarına yönelik artan gizlilik kaygısı ve tek bir sağlayıcıya bağımlı kalmak istemeyen kullanıcı kitlesi, bu projenin temel çekim gücü. Ollama ile tamamen offline çalışabilmesi, hem maliyet hem veri kontrolü isteyen araştırmacılar ve kurumlar için özellikle cazip.",
+        "evolve": "💡 Podcast üretim kalitesinin ticari alternatiflere yaklaşması, daha fazla dil ve kaynak türü desteği, kurumsal self-host dağıtımlarını kolaylaştıracak yönetim araçları (kullanıcı yönetimi, erişim kontrolü) doğal genişleme alanları. SurrealDB gibi görece yeni bir veritabanı tercihinin uzun vadeli operasyonel olgunluğu da izlenmeye değer."
+      },
+      "glossary": [
+        {
+          "term": "SurrealDB",
+          "def": "Belge, grafik ve ilişkisel veri modellerini tek bir sistemde birleştiren, görece yeni bir çoklu-model veritabanı."
+        },
+        {
+          "term": "LangChain",
+          "def": "Farklı dil modeli sağlayıcılarını ve araçlarını ortak bir arayüz altında birleştirmeye yarayan yazılım kütüphanesi."
+        },
+        {
+          "term": "Embedding tabanlı arama",
+          "def": "Metinleri anlamlarına göre sayısal vektörlere dönüştürüp, anlamca yakın içerikleri bulmaya dayanan arama yöntemi."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üçüncü taraf bir bulut servisi yerine kullanıcının kendi sunucusunda çalıştırılması."
+        }
+      ]
+    }
+  ]
+}
