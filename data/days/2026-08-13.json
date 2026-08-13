@@ -1,0 +1,207 @@
+{
+  "date": "2026-08-13",
+  "projects": [
+    {
+      "name": "stablyai/orca",
+      "url": "https://github.com/stablyai/orca",
+      "stars": "44.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Orca**, aynı anda birden fazla yapay zekâ kodlama ajanını (Claude Code, Codex, OpenCode, Cursor, GitHub Copilot vb.) paralel çalıştırıp karşılaştırmayı tek bir masaüstü uygulamasında toplayan bir \"ajan orkestrasyon\" aracı. Sorun şu: geliştiriciler artık tek bir AI asistanına değil, birbirinden farklı güçlü yönlere sahip birden çok ajana erişebiliyor, ama her birini ayrı terminalde açıp çıktıları elle karşılaştırmak zaman kaybı ve bağlam kaybına yol açıyor. Orca aynı görevi birkaç ajana paralel olarak veriyor, her birini kendi git worktree'sinde izole çalıştırıyor, sonuçları yan yana gösteriyor ve beğenilen değişiklikleri seçip birleştirmeyi tek tıka indiriyor.",
+        "tech": "- **Git worktree izolasyonu**: Her ajan kendi worktree'sinde çalışır, böylece aynı repoda paralel denemeler birbirinin dosyalarını kirletmez.\n- **Masaüstü + mobil çift arayüz**: Masaüstü istemci (macOS, Windows, Linux) yanında bir mobil refakatçi uygulama, uzaktan ajanları izlemeyi sağlıyor.\n- **WebGL tabanlı terminal emülasyonu ve SSH desteği**: Ajanlar yerelde ya da uzak sunucuda (VPS) çalıştırılabiliyor, terminal çıktısı performanslı biçimde render ediliyor.\n- **Gömülü tarayıcı + \"design mode\"**: Üretilen arayüzü doğrudan uygulama içinde inceleyip AI'ya görsel geri bildirim vermek mümkün.\n- **GitHub/Linear entegrasyonu**: Görev takibi doğrudan issue/PR akışına bağlanıyor.\n- **CLI arayüzü**: Orkestrasyonu scriptleyerek CI benzeri otomasyonlara sokmak mümkün.\n\nMimari tercih, \"tek doğru ajan yok\" varsayımına dayanıyor: model/araç bağımsız bir orkestrasyon katmanı kurup kullanıcının kendi abonelikleriyle istediği ajanı takmasına izin veriyor.",
+        "why": "2026 ortasında AI kodlama ajanlarının sayısı patladı (Claude Code, Codex, Cursor, OpenCode, Copilot...) ve her biri farklı görevlerde farklı güçlü/zayıf yönler gösteriyor. Bu, \"hangi ajanı seçeyim\" sorusunu \"hepsini paralel dene, en iyisini al\" stratejisine dönüştürdü. Orca bu davranış değişikliğini araç haline getirdiği için, özellikle yüksek üretkenlik arayan \"power user\" geliştiriciler ve ajan-yoğun ekipler arasında hızla yayıldı. Bugün 1.235 yeni yıldızla trend listesine girmesi, toplam 44 binin üzerindeki yıldız sayısıyla birlikte, \"agentic coding tooling\" kategorisinin şu anda GitHub'da en sıcak alanlardan biri olduğunu gösteriyor.",
+        "evolve": "- **Maliyet şeffaflığı**: Aynı görevi 3-4 ajana paralel göndermek token maliyetini katlıyor; entegre bir maliyet/karşılaştırma panosu (hangi ajan hangi bütçeyle ne kalitede sonuç verdi) değer katar.\n- **Otomatik \"en iyi sonucu seç\" değerlendirmesi**: Şu an seçim büyük ölçüde insana kalıyor; test çalıştırma, statik analiz gibi otomatik sinyallerle ajanları puanlayan bir katman eklenebilir.\n- **Kurumsal SSO/erişim kontrolü**: Ekipler için paylaşımlı worktree'lere rol bazlı erişim ve denetim kaydı eksik görünüyor.\n- **Model-agnostik benchmark**: Hangi görev tipinde hangi ajanın istatistiksel olarak daha iyi performans gösterdiğine dair topluluk verisi toplayıp öneri motoru haline getirmek mümkün."
+      },
+      "glossary": [
+        {
+          "term": "Git worktree",
+          "def": "Aynı Git deposunun farklı dallarını/durumlarını aynı anda, birbirinden bağımsız klasörlerde çalışır hâlde tutmayı sağlayan özellik."
+        },
+        {
+          "term": "SSH",
+          "def": "Bir bilgisayara veya sunucuya güvenli, şifreli şekilde uzaktan bağlanmayı sağlayan ağ protokolü."
+        },
+        {
+          "term": "CLI (komut satırı arayüzü)",
+          "def": "Programların grafik arayüz yerine yazılı komutlarla kullanıldığı arayüz türü."
+        },
+        {
+          "term": "WebGL",
+          "def": "Web tarayıcısında donanım hızlandırmalı 2D/3D grafik çizmeyi sağlayan bir tarayıcı teknolojisi."
+        },
+        {
+          "term": "VPS",
+          "def": "Fiziksel bir sunucunun sanallaştırılarak bölündüğü, kullanıcıya kendi işletim sistemiyle ayrılmış bir dilim sunan kiralık sunucu türü."
+        }
+      ]
+    },
+    {
+      "name": "embabel/embabel-agent",
+      "url": "https://github.com/embabel/embabel-agent",
+      "stars": "4.3k",
+      "language": "Kotlin",
+      "sections": {
+        "serves": "**Embabel**, Java/Kotlin (JVM) dünyasında kurumsal uygulamalar için yapay zekâ ajanları yazmayı hedefleyen bir çatı (framework). Sorun şu: mevcut ajan framework'lerinin büyük çoğunluğu Python tabanlı ve gevşek tipli (\"magic dictionary\" ile veri taşıyan) yapılar sunuyor; bu da yıllardır Spring ekosistemiyle güçlü tipli, test edilebilir, kurumsal ölçekte kod yazan Java/Kotlin ekipleri için uyumsuz. Embabel, LLM'lerin esnekliğiyle klasik kodun/domain modellerinin güvenilirliğini aynı çatı altında birleştirerek, ajanların önceden yazılmış sabit bir akışı izlemek yerine hedefe göre dinamik plan kurup yürütmesini sağlıyor.",
+        "tech": "- **GOAP (Goal-Oriented Action Planning) ve Utility AI**: Ajan; elindeki aksiyonları, hedefleri ve koşulları kullanarak -LLM'e sormadan, klasik bir AI planlama algoritmasıyla- hangi adımları hangi sırayla atacağına karar veriyor. Bu, planlamayı deterministik ve izlenebilir kılıyor.\n- **OODA döngüsü**: Her aksiyondan sonra ortam yeniden değerlendirilip plan tazeleniyor; yani sabit bir iş akışı yerine sürekli yeniden planlanan bir sistem var.\n- **Güçlü tipli domain modelleri**: Ajan durumunu taşımak için sıradan map/dictionary yerine gerçek Kotlin/Java sınıfları kullanılıyor; bu refactoring güvenliği ve derleme zamanı hata yakalama sağlıyor.\n- **Spring/Spring Boot/Spring AI üzerine inşa**: Var olan kurumsal Java altyapısına (dependency injection, güvenlik, izlenebilirlik) doğrudan oturuyor.\n- **MCP (Model Context Protocol) desteği**: Ajanlar dış araçlara standart bir protokolle bağlanabiliyor.\n- **OpenTelemetry ile izlenebilirlik**: Zipkin/Langfuse gibi araçlara plan ve aksiyon izleri gönderilebiliyor.\n- **İki yazım tarzı**: Spring MVC benzeri `@Agent`/`@Goal`/`@Action` anotasyonları veya Kotlin DSL (`agent { }` blokları).",
+        "why": "Kurumsal yazılım dünyasının büyük kısmı hâlâ JVM üzerinde çalışıyor, ama üretken AI ajan araçlarının neredeyse tamamı Python merkezli geliştirildi. Bu boşluk, Java/Kotlin ekiplerini ya Python'a geçmeye ya da ajan trendinin dışında kalmaya zorluyordu. Embabel, \"Spring AI, servlet API gibiyse, Embabel de Spring MVC gibi\" analojisiyle bu boşluğu dolduruyor ve GOAP gibi oyun yapay zekâsından ödünç alınmış, LLM'e bağımlı olmayan bir planlama tekniğini kurumsal Java koduna taşıyor. Bugün trend olması, büyük şirketlerin \"agentic AI\"ı üretime almak isterken mevcut JVM yatırımlarını korumak istemesiyle örtüşüyor.",
+        "evolve": "- **Ekosistem küçük**: Python tarafındaki LangChain/LangGraph gibi devasa topluluk ve hazır entegrasyon setiyle kıyaslandığında konektör/örnek sayısı hâlâ sınırlı; büyümesi zaman alacak.\n- **Görsel plan izleme aracı**: GOAP planlarının çalışma zamanında nasıl oluştuğunu gösteren bir arayüz (plan ağacı görselleştirme) geliştiriciye büyük fayda sağlar.\n- **Non-JVM dillerle köprü**: MCP üzerinden Python/Node ajanlarıyla karma çalışma senaryoları daha da olgunlaştırılabilir.\n- **Maliyet optimizasyonu araçları**: \"LLM mixing\" özelliği var ama hangi adımda hangi modelin ne kadar maliyete mal olduğunu otomatik öneren bir katman henüz yok."
+      },
+      "glossary": [
+        {
+          "term": "JVM (Java Virtual Machine)",
+          "def": "Java, Kotlin gibi dillerde yazılan kodu farklı işletim sistemlerinde çalıştırabilen sanal makine ortamı."
+        },
+        {
+          "term": "GOAP (Hedef Odaklı Aksiyon Planlama)",
+          "def": "Bir yapay zekânın elindeki eylemleri kullanarak belirlenen hedefe ulaşacak adım sırasını otomatik olarak hesapladığı, oyun yapay zekâsından gelen bir planlama tekniği."
+        },
+        {
+          "term": "OODA döngüsü",
+          "def": "Gözlemle, yönelim belirle, karar ver, uygula adımlarını sürekli tekrarlayan; değişen duruma göre planı yeniden ayarlayan karar verme modeli."
+        },
+        {
+          "term": "Domain model",
+          "def": "Bir uygulamanın iş kurallarını ve verilerini temsil eden, gerçek dünyadaki kavramlara karşılık gelen yazılım sınıfları."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Yazılımların çalışma zamanı verilerini (iz, metrik, log) toplayıp izlenebilirlik araçlarına aktarmak için kullanılan açık kaynak standart."
+        },
+        {
+          "term": "DSL (Alana Özgü Dil)",
+          "def": "Belirli bir problem alanını ifade etmek için tasarlanmış, genel amaçlı olmayan küçük programlama dili."
+        }
+      ]
+    },
+    {
+      "name": "infiniflow/ragflow",
+      "url": "https://github.com/infiniflow/ragflow",
+      "stars": "87.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "**RAGFlow**, kurumların kendi belgelerini (PDF, Word, taranmış görüntüler, web sayfaları) güvenilir bir şekilde LLM'lere \"bağlam\" olarak sunmasını sağlayan açık kaynak bir RAG (Retrieval-Augmented Generation) motoru. Sorun şu: büyük dil modelleri kendi başlarına şirket içi/özel verilere erişemiyor ve halüsinasyon üretebiliyor. Basit RAG kurulumları (belgeyi parçala, gömme vektörüne çevir, en yakın parçaları getir) genelde düşük kaliteli parçalama yüzünden kötü sonuç veriyor. RAGFlow, \"çöp girer çöp çıkar\" sorununu belge anlama kalitesini artırarak çözmeye odaklanıyor ve üstüne ajan yetenekleri (kod çalıştırma, hafıza, çoklu kanal entegrasyonu) ekliyor.",
+        "tech": "- **DeepDoc belge ayrıştırma katmanı**: PDF, taranmış görüntü, tablo gibi karmaşık formatları düzen bilgisini koruyarak ayrıştırıyor; bu, düz metin çıkarmaktan çok daha zor ve kaliteyi doğrudan etkiliyor.\n- **Şablon tabanlı akıllı parçalama (chunking)**: Belgeyi rastgele sabit uzunlukta değil, doküman tipine uygun mantıksal birimlere bölüyor; kullanıcı bu parçalamayı görselleştirip elle düzeltebiliyor.\n- **Çoklu vektör deposu desteği**: Elasticsearch veya Infinity (kendi vektör motorları) ile çalışabiliyor, GPU hızlandırmalı belge işleme destekleniyor.\n- **Çoklu getirme + yeniden sıralama**: Tek bir arama stratejisi yerine birden fazla getirme yöntemi birleştirilip sonuçlar yeniden sıralanarak isabet oranı artırılıyor.\n- **Kaynak gösterimi (grounded citation)**: Üretilen her yanıt, hangi belge parçasından geldiğini gösteren referanslarla destekleniyor; bu halüsinasyonu azaltmanın somut bir yöntemi.\n- **Docker Compose ile çoklu servis mimarisi**: MinIO (nesne depolama), Redis (önbellek/kuyruk), MySQL (meta veri) gibi servisler bir araya getiriliyor.\n- **Ajan iş akışları**: Kod çalıştırma ve hafıza desteğiyle RAG'ı basit soru-cevaptan öteye, çok adımlı görevlere taşıyor.",
+        "why": "RAG, 2023'ten beri üretken AI'ın kurumsal benimsenmesindeki en kritik parça oldu, çünkü şirketler kendi verilerini modele \"öğretmeden\" güvenle kullanmak istiyor. RAGFlow'un öne çıkmasının temel nedeni, çoğu RAG aracının zayıf halkası olan \"belge anlama\" kısmına ekstra mühendislik yatırımı yapması; bu da onu özellikle karmaşık, tablo ve görsel ağırlıklı kurumsal belgelerle (finans raporları, sözleşmeler, teknik dokümantasyon) çalışan ekipler için cazip kılıyor. RAG'ın ajan yetenekleriyle birleşmesi de 2026'da kategori genelinde güçlü bir trend; RAGFlow bu birleşimi erken ve olgun biçimde sunduğu için 87 binin üzerindeki yıldızıyla kategori lideri konumunda.",
+        "evolve": "- **Kaynak tüketimi**: Elasticsearch/Infinity + MinIO + Redis + MySQL kombinasyonu, küçük ekipler için kurulumu ve işletim maliyetini ağırlaştırıyor; daha hafif \"tek konteyner\" bir mod fayda sağlar.\n- **Çoklu dil kalitesi**: Belge ayrıştırma kalitesi dile göre değişebiliyor; Latin alfabesi dışı ve karma dilli belgelerde ek doğrulama gerekebilir.\n- **Değerlendirme araçları**: Getirme kalitesini otomatik ölçen, regresyonları yakalayan yerleşik bir test/metrik paneli hâlâ olgunlaşma aşamasında.\n- **İnce ayarlı erişim kontrolü**: Kurumsal kullanımda belge bazlı, satır bazlı yetkilendirme (kim hangi belgeyi RAG üzerinden görebilir) kritik bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin yanıt üretirken önce ilgili belgelerden bilgi getirip bu bilgiyi bağlam olarak kullandığı yöntem."
+        },
+        {
+          "term": "Halüsinasyon",
+          "def": "Bir yapay zekâ modelinin gerçekte var olmayan veya yanlış bilgiyi kendinden eminmiş gibi üretmesi."
+        },
+        {
+          "term": "Chunking (parçalama)",
+          "def": "Uzun bir belgeyi, arama ve bağlam için yönetilebilir küçük metin parçalarına bölme işlemi."
+        },
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metinlerin sayısal anlam temsillerini (embedding) saklayıp anlamca en yakın olanları hızlıca bulmaya yarayan veritabanı türü."
+        },
+        {
+          "term": "Re-ranking (yeniden sıralama)",
+          "def": "İlk arama sonucunda gelen adayları, daha isabetli bir modelle tekrar puanlayıp sıralamayı iyileştirme adımı."
+        },
+        {
+          "term": "GPU hızlandırma",
+          "def": "Hesaplama yoğun işleri genel işlemci yerine grafik işlemci biriminde çalıştırarak hızlandırma."
+        },
+        {
+          "term": "Grounded citation (dayanaklı kaynak gösterimi)",
+          "def": "Üretilen bir yanıtın hangi kaynak belgeye dayandığını açıkça göstermesi."
+        }
+      ]
+    },
+    {
+      "name": "macro-inc/macro",
+      "url": "https://github.com/macro-inc/macro",
+      "stars": "2.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Macro**, e-posta, ekip mesajlaşması, doküman düzenleme, görev takibi, CRM ve yapay zekâ ajanlarını tek bir uygulamada birleştiren bir \"iş işletim sistemi\". Sorun şu: küçük ekipler genelde Slack + Linear + Notion + HubSpot gibi 4-5 ayrı araç kullanıyor; bu araçlar birbirinden kopuk olduğu için bilgi sürekli eskiyor, aynı müşteri veya görev bilgisi birden fazla yerde elle güncellenmek zorunda kalıyor. Macro, tüm bu verileri tek bir çift yönlü grafik veritabanı üzerinde birleştirip (@ ile birbirine bağlanabilen e-posta, görev, doküman, mesaj) veri tutarlılığını mimari düzeyde çözmeyi hedefliyor.",
+        "tech": "- **Bloklar (blocks) mimarisi**: Her işlev (e-posta, sohbet, doküman vb.) kendi başına bir modül, ama hepsi ortak bir çift yönlü grafik veritabanını paylaşıyor; böylece bir e-postadan bir göreve, bir göreve bir müşteri kaydına doğrudan referans verilebiliyor.\n- **SolidJS ön uç + Rust arka uç**: Performans kritik arka uç 167 ayrı Rust kütüphanesine bölünmüş; bu, büyük bir monolit yerine bakımı kolay, bağımsız deploy edilebilen 42 servisle çalışıyor.\n- **CRDT tabanlı gerçek zamanlı işbirliği**: Dokümanlar, çakışmaları otomatik çözen CRDT yapılarıyla eş zamanlı düzenlenebiliyor; bu Google Docs benzeri deneyimi altyapı düzeyinde sağlıyor.\n- **Cloudflare Durable Objects**: Gerçek zamanlı senkronizasyon durum yönetimi için kullanılıyor.\n- **Gece çalışan \"takım hafızası\"**: Tüm çalışma alanı etkinliğini her gece yeniden özetleyip güncel bir bağlam katmanı oluşturuyor; bu, tekil sohbet geçmişine bağlı klasik chatbot hafızasından farklı.\n- **MCP tabanlı ajan araç erişimi**: Ajanlar, hız sınırı olmadan neredeyse tüm iç araçlara MCP üzerinden erişebiliyor.\n- **Tauri masaüstü paketleme, Pulumi ile altyapı, Nix ile geliştirme ortamı standardizasyonu.**\n- **Lisans**: Tamamen açık kaynak, AGPLv3 — \"open core\" değil, tüm kod açık.",
+        "why": "\"Araç yorgunluğu\" küçük ekipler ve girişimler arasında giderek daha çok konuşulan bir sorun; her yeni SaaS aracı entegrasyon ve senkronizasyon yükü ekliyor. Macro bu acıyı doğrudan hedef alıyor ve \"iletişimin olduğu yerde iş de olmalı\" tezini mimari kararla (tek grafik veritabanı) somutlaştırıyor. AGPLv3 ile tam açık kaynak olması, kapalı \"all-in-one\" rakiplerine (Notion, HubSpot gibi) güvenmek istemeyen teknik ekiplerin ilgisini çekiyor. Trend olmasının arkasında hem \"all-in-one çalışma alanı\" kategorisinin genel popülerliği hem de Rust/SolidJS gibi performans odaklı teknoloji seçimlerinin geliştirici kitlesinde yarattığı merak var.",
+        "evolve": "- **Geçiş (migration) maliyeti**: Var olan Slack/Notion/HubSpot verisini Macro'nun grafik modeline taşımak için sağlam, kayıpsız içe aktarma araçları kritik olacak.\n- **Kendi kendine barındırma deneyimi**: 42 servisli bir mimariyi tek başına ayağa kaldırmak küçük ekipler için zor olabilir; basitleştirilmiş \"tek komutla kur\" bir dağıtım seçeneği benimsenmeyi hızlandırır.\n- **Üçüncü taraf entegrasyon pazarı**: Kapalı rakiplerin geniş eklenti ekosistemine karşı, topluluk katkılı entegrasyon/blok pazaryeri oluşturmak büyümeyi destekler.\n- **Ölçek testleri**: Gece çalışan takım hafızası özelliğinin yüzlerce/binlerce kişilik organizasyonlarda performansı ve maliyeti henüz kanıtlanmış değil."
+      },
+      "glossary": [
+        {
+          "term": "CRM (Müşteri İlişkileri Yönetimi)",
+          "def": "Bir şirketin müşteri ve potansiyel müşteri bilgilerini, iletişim geçmişini tek yerde tutup yönettiği sistem."
+        },
+        {
+          "term": "Grafik veritabanı",
+          "def": "Verileri satır-sütun yerine düğümler ve aralarındaki ilişkiler (kenarlar) olarak saklayan, bağlantılı verileri sorgulamada güçlü veritabanı türü."
+        },
+        {
+          "term": "CRDT (Çakışmasız Çoğaltılmış Veri Tipi)",
+          "def": "Birden fazla kullanıcının aynı veriyi eşzamanlı düzenlemesine izin verip çakışmaları otomatik ve tutarlı şekilde çözen veri yapısı."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle yazılmış arayüzleri küçük ve performanslı masaüstü uygulamalarına dönüştüren bir çatı."
+        },
+        {
+          "term": "AGPLv3",
+          "def": "Yazılımın sunucu üzerinden (SaaS olarak) sunulması durumunda bile kaynak kodun açık kalmasını zorunlu kılan güçlü bir açık kaynak lisansı."
+        },
+        {
+          "term": "Pulumi",
+          "def": "Bulut altyapısını (sunucu, veritabanı, ağ vb.) programlama dilleriyle kod olarak tanımlamayı sağlayan bir altyapı-kod aracı."
+        },
+        {
+          "term": "Nix",
+          "def": "Paket ve geliştirme ortamlarını tekrarlanabilir ve tutarlı şekilde kurmayı sağlayan bir paket yöneticisi/derleme sistemi."
+        }
+      ]
+    },
+    {
+      "name": "cathrynlavery/diagram-design",
+      "url": "https://github.com/cathrynlavery/diagram-design",
+      "stars": "11.6k",
+      "language": "HTML",
+      "sections": {
+        "serves": "**Diagram Design**, Claude Code, Codex ve Pi gibi AI kodlama ajanlarına eklenen ve \"editoryal kalitede\" diyagram üretmeyi öğreten bir ajan becerisi (agent skill). Sorun şu: AI'a \"bana bir mimari şeması çiz\" dendiğinde genelde gölgeli, yuvarlak köşeli, birbirine benzeyen \"tipik yapay zekâ görseli\" çıkıyor — profesyonel bir yayında kullanılamayacak kalitede. Bu araç, 29 farklı diyagram tipini (akış şeması, mimari, Gantt, veri modeli vb.) markanıza uyan tipografi ve renklerle, 60 saniyede kurulum sonrası otomatik üretmeyi hedefliyor.",
+        "tech": "- **Kademeli açıklama (progressive disclosure)**: Önce kısa bir `SKILL.md` yükleniyor, yalnızca gerekli olduğunda tipe özel referans dosyaları devreye giriyor; bu, ajanın bağlam penceresini gereksiz bilgiyle doldurmamak için bilinçli bir tasarım.\n- **Statik HTML + SVG çıktısı**: Üretilen diyagramlar derleme adımı, JavaScript ya da dış görsel bağımlılığı gerektirmiyor; tek dosya olarak taşınabiliyor.\n- **Marka otomasyonu**: Herhangi bir web sitesinden baskın renkleri, tipografiyi ve kontrast oranlarını çıkarıp diyagramlara otomatik uyguluyor, ne tespit edildiğini gösteren bir \"doğruluk makbuzu\" sunuyor.\n- **İçe aktarma hattı**: Var olan draw.io ve Mermaid diyagramlarını aynı tasarım sistemine çevirip yeniden çiziyor; format, boyut, detay ve hedef kitle olmak üzere 4 ayarla çıktı özelleştirilebiliyor.\n- **Erişilebilirlik**: SVG'ler `role=\"img\"`, `aria-labelledby`, `<title>/<desc>` etiketleriyle geliyor; hareket azaltma tercihine göre statik alternatif sunuluyor.\n- **Playwright ile PNG üretimi ve GitHub Actions ile çoklu işletim sistemi (Linux/Windows/macOS) test otomasyonu.**",
+        "why": "AI ajanlarının kod yazma dışında sunum, dokümantasyon ve iletişim materyali üretmesi 2026'da hızla büyüyen bir kullanım alanı; ama görsel kalite hâlâ zayıf halka. Bu proje, tam da bu boşluğu -\"AI görseli gibi durmayan\" bir tasarım disiplini dayatarak- dolduruyor ve Claude Code'un beceri/eklenti ekosistemine erken, iyi cilalanmış bir katkı olarak öne çıkıyor. Teknik yazarlar, ürün ekipleri ve içerik üreticileri arasında \"Figma bilmeden marka uyumlu diyagram\" vaadi hızlı benimsenmeye yol açtı; 2.855 günlük yıldızla bugünün en hızlı yükselen projesi konumunda.",
+        "evolve": "- **Etkileşimli diyagram desteği yok**: Şu an tamamen statik; tıklanabilir/yakınlaştırılabilir büyük mimari şemalarında bu bir kısıt olabilir.\n- **Takım genelinde marka tutarlılığı**: Marka tespiti her seferinde yeniden yapılıyor gibi görünüyor; kurumsal kullanımda bir kere tanımlanıp paylaşılan \"marka profili\" dosyası iş akışını hızlandırır.\n- **Diğer araçlarla dışa aktarım**: Figma/Sketch gibi tasarım araçlarına düzenlenebilir formatta aktarım eklenmesi, tasarımcı-geliştirici iş birliğini güçlendirir.\n- **Çok dilli/RTL metin desteği**: Sağdan sola yazılan diller ve uzun Türkçe/Almanca gibi kelime yapıları için otomatik metin taşması testleri faydalı olur."
+      },
+      "glossary": [
+        {
+          "term": "Agent skill (ajan becerisi)",
+          "def": "Bir AI ajanına belirli bir görevi doğru ve tutarlı şekilde yapması için verilen, talimat ve örnekler içeren paket."
+        },
+        {
+          "term": "SVG (Ölçeklenebilir Vektör Grafik)",
+          "def": "Görselleri matematiksel şekillerle tanımlayan, büyütüldüğünde kalitesi bozulmayan bir grafik formatı."
+        },
+        {
+          "term": "Progressive disclosure (kademeli açıklama)",
+          "def": "Kullanıcıya veya sisteme bilgiyi bir anda değil, ihtiyaç duyuldukça adım adım sunma tasarım ilkesi."
+        },
+        {
+          "term": "Context window (bağlam penceresi)",
+          "def": "Bir yapay zekâ modelinin tek seferde işleyebildiği metin miktarı sınırı."
+        },
+        {
+          "term": "Mermaid",
+          "def": "Metin tabanlı basit komutlarla akış şeması, sıralama diyagramı gibi görseller oluşturmayı sağlayan açık kaynak araç."
+        },
+        {
+          "term": "GitHub Actions",
+          "def": "Bir GitHub deposundaki olaylara bağlı olarak otomatik iş akışları (test, derleme, dağıtım) çalıştıran CI/CD hizmeti."
+        },
+        {
+          "term": "Fidelity receipt (doğruluk makbuzu)",
+          "def": "Bir otomasyon aracının kaynaktan neyi ne kadar doğru algıladığını kullanıcıya özetleyen rapor."
+        }
+      ]
+    }
+  ]
+}
