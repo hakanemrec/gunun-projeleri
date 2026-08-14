@@ -1,0 +1,171 @@
+{
+  "date": "2026-08-14",
+  "projects": [
+    {
+      "name": "NVIDIA-NeMo/Switchyard",
+      "url": "https://github.com/NVIDIA-NeMo/Switchyard",
+      "stars": "1.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Switchyard**, yapay zekâ kodlama ajanlarını (Claude Code, Codex gibi) belirli bir API formatına ve sağlayıcıya kilitlenmeden farklı model altyapılarına bağlamayı sağlayan bir yönlendirme/çeviri katmanı. Sorun şu: bir ajan genelde ya OpenAI'nin Chat Completions formatını ya da Anthropic'in Messages API'sini konuşacak şekilde yazılır; ama geliştirici o ajanı vLLM, Ollama veya NVIDIA NIM üzerinde çalışan açık kaynak bir modelle kullanmak isteyince, aradaki format uyuşmazlığı yüzünden ya ajanı değiştirmek ya da özel entegrasyon yazmak zorunda kalır. Switchyard, istemciyle backend arasına girip isteği/yanıtı iki yönlü çevirerek bu sürtünmeyi ortadan kaldırıyor: ajan kendi native API'sini konuşmaya devam ederken, arka planda istenen herhangi bir model sunucusu isteği karşılıyor.",
+        "tech": "- **Rust çekirdek, üç kullanım şekli**: Launcher (kodlama ajanlarına CLI ile entegrasyon), server (bağımsız proxy) ve library (Rust uygulamalarına gömülü yönlendirme) modları aynı çekirdeği paylaşıyor.\n- **Protokol çevirisi**: Gelen istek OpenAI Chat Completions veya Anthropic Messages formatından backend'in beklediği formata çevriliyor, yanıt da tersine çevrilip istemciye native formatında dönüyor.\n- **Değiştirilebilir yönlendirme algoritmaları**: LLM sınıflandırıcı, aşamalı (stage) yönlendirici, yükseltme (escalation) yönlendirici ve rastgele yönlendirici gibi tipli, birbirinin yerine geçebilen stratejiler var.\n- **Prometheus ile gözlemlenebilirlik**: İstek sayısı, hata oranı, gecikme ve token kullanımı gibi metrikler doğrudan toplanıyor.\n- **Taşıma katmanından ayrık mimari**: Kütüphane modeli hiç doğrudan çağırmıyor; sadece yönlendirme kararını üretip çağırana bırakıyor, böylece Switchyard mevcut bir proxy'nin içine HTTP katmanını değiştirmeden gömülebiliyor.",
+        "why": "2026 ortasında açık kaynak ve alternatif model ekosistemi (DeepSeek, Qwen, Kimi gibi ailelerin yeni sürümleri) hızla büyürken, geliştiriciler Claude Code gibi agentic kodlama araçlarını tek bir kapalı sağlayıcıya bağımlı kalmadan kullanmak istiyor. Switchyard'ın NVIDIA tarafından, hem maliyet/performans optimizasyonu (A/B test, model değiştirme) hem de vendor lock-in'den kaçış vaadiyle çıkması, \"hangi modeli, hangi maliyetle kullanayım\" sorusunun kurumsal düzeyde ciddiye alındığını gösteriyor. Rust ile yazılmış, düşük gecikmeli bir altyapı bileşeni olması da onu prodüksiyon proxy'lerine gömülebilir kılıyor — bu da agent tooling ekosistemindeki altyapı katmanına ilgiyi artırıyor.",
+        "evolve": "- **Pre-alpha olgunluk seviyesi**: Proje kendini üretime hazır olmayan, deneysel bir aşamada tanımlıyor; gerçek trafik için kararlılık ve hata toleransı testleri henüz olgunlaşmamış.\n- **Sınırlı protokol kapsamı**: Şu an yalnızca OpenAI ve Anthropic formatları destekleniyor; Gemini, Bedrock gibi diğer büyük API'lerin eklenmesi kapsamı genişletir.\n- **Kimlik doğrulama ve çok kiracılı (multi-tenant) erişim**: Kurumsal kullanım için rol bazlı erişim kontrolü ve kota yönetimi eksik görünüyor.\n- **Gözlemlenebilirlik panosu**: Prometheus metrikleri var ama hazır bir dashboard/UI sunulmuyor; entegre bir izleme arayüzü benimsenmeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "API",
+          "def": "Farklı yazılımların birbirleriyle konuşmasını sağlayan, tanımlı istek/yanıt kurallarına sahip programlama arayüzü."
+        },
+        {
+          "term": "Proxy",
+          "def": "İstemci ile hedef sunucu arasına girip istekleri ileten, gerekirse dönüştüren ara katman sunucu."
+        },
+        {
+          "term": "vLLM",
+          "def": "Büyük dil modellerini sunucu üzerinde hızlı ve verimli şekilde çalıştırmaya yarayan açık kaynak çıkarım (inference) motoru."
+        },
+        {
+          "term": "Prometheus",
+          "def": "Sistem ve uygulama metriklerini zaman içinde toplayıp izlemeye yarayan yaygın açık kaynak izleme aracı."
+        },
+        {
+          "term": "Vendor lock-in",
+          "def": "Bir ürünü belirli bir sağlayıcıya bağımlı hale getiren, başka bir sağlayıcıya geçişi zorlaştıran durum."
+        }
+      ]
+    },
+    {
+      "name": "kepano/obsidian-skills",
+      "url": "https://github.com/kepano/obsidian-skills",
+      "stars": "46.0k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "**obsidian-skills**, yapay zekâ ajanlarına (Claude Code, Codex, OpenCode gibi) Obsidian not uygulamasının dosya formatlarını ve komut satırı arayüzünü doğru şekilde kullanmayı öğreten, Agent Skills spesifikasyonuna uygun beş \"beceri\" paketi. Sorun şu: bir ajan kullanıcının Obsidian kasasına (vault) dokunmak istediğinde, wikilink ve callout gibi Obsidian'a özgü Markdown uzantılarını, Bases görünüm/formül sözdizimini veya JSON Canvas dosya biçimini bilmiyorsa ya bozuk dosyalar üretir ya da masaüstü uygulamasını açmaya muhtaç kalır. Bu paket, ajanın Obsidian'ı hiç açmadan, doğrudan dosya sistemi ve CLI üzerinden doğru biçimli notlar, canvas'lar ve Bases görünümleri üretmesini sağlıyor.",
+        "tech": "- **obsidian-markdown**: Wikilink (`[[not]]`), gömme (embed) ve callout gibi Obsidian'a özgü Markdown uzantılarını doğru sözdizimiyle üretmeyi öğretiyor.\n- **obsidian-bases**: Obsidian'ın veritabanı benzeri \"Bases\" özelliği için görünüm ve formül tanımlayan `.base` dosyaları oluşturmayı kapsıyor.\n- **json-canvas**: Görsel bağlantı haritaları için açık JSON Canvas standardına uygun `.canvas` dosyaları üretiyor.\n- **obsidian-cli**: Ajanın masaüstü uygulamasını açmadan, komut satırından kasaya not ekleyip düzenlemesini sağlıyor.\n- **defuddle**: Web sayfalarından reklam ve gezinme öğelerini ayıklayıp temiz Markdown çıkarma becerisi.\n\nMimari tercih, kapalı bir API yerine açık dosya formatlarına (`.md`, `.base`, `.canvas`) ve CLI'a dayanıyor; bu da becerileri Obsidian'a özel bir entegrasyon yerine, Agent Skills spesifikasyonunu destekleyen her ajanla uyumlu kılıyor.",
+        "why": "Anthropic'in yayımladığı Agent Skills spesifikasyonu, ajanlara yeniden kullanılabilir \"beceri\" paketleri tanımlamanın standart bir yolunu getirdi ve ekosistemde bir beceri-paketi furyası başlattı. kepano'nun (Obsidian'ın kurucu ortağı) kendi adına yayımladığı bu paket, hem Obsidian'ın milyonlarca kullanıcılı not tutma kitlesine hem de \"AI ajanımla notlarımı yönetmek istiyorum\" diyen güçlü bir talebe denk geldiği için hızla yıldız topladı. Resmî bir Obsidian ürünü olmasa da yaratıcısının konumu, projeye ekstra güvenilirlik ve görünürlük kazandırdı.",
+        "evolve": "- **Resmî entegrasyon eksikliği**: Proje Obsidian şirketinin resmî deposu değil; ileride resmî bir \"Obsidian MCP sunucusu\" ile birleşmesi tutarlılığı artırabilir.\n- **Çakışma koruması yok**: Ajan bir dosyayı düzenlerken kullanıcı aynı anda masaüstü uygulamasında değişiklik yapıyorsa çakışma yönetimi tanımlı değil.\n- **Topluluk eklenti verileriyle uyum**: Şu an temel dosya formatlarına odaklanıyor; topluluk eklentilerinin ürettiği özel veri yapılarını (ör. Dataview sorguları) desteklemek kapsamı genişletebilir.\n- **Doğrulama katmanı**: Üretilen `.base`/`.canvas` dosyalarının biçim olarak geçerli olduğunu otomatik test eden bir doğrulayıcı, hatalı çıktı riskini azaltır."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skills spesifikasyonu",
+          "def": "Yapay zekâ ajanlarına belirli görevleri nasıl yapacaklarını öğreten, yeniden kullanılabilir talimat paketleri tanımlamak için kullanılan standart format."
+        },
+        {
+          "term": "Vault (kasa)",
+          "def": "Obsidian'da tüm notların ve dosyaların tutulduğu, bir klasör yapısına karşılık gelen çalışma alanı."
+        },
+        {
+          "term": "Wikilink",
+          "def": "Bir notu başka bir notla `[[not adı]]` şeklinde birbirine bağlayan, wiki tarzı kısa bağlantı sözdizimi."
+        },
+        {
+          "term": "JSON Canvas",
+          "def": "Kutular, notlar ve oklardan oluşan görsel bağlantı haritalarını açık, uygulamadan bağımsız bir dosya biçiminde saklayan standart."
+        },
+        {
+          "term": "CLI (komut satırı arayüzü)",
+          "def": "Programların grafik arayüz yerine yazılı komutlarla kullanıldığı arayüz türü."
+        }
+      ]
+    },
+    {
+      "name": "cactus-compute/needle",
+      "url": "https://github.com/cactus-compute/needle",
+      "stars": "5.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Needle**, telefon, akıllı saat, ev otomasyonu cihazı ve robot gibi kaynağı kısıtlı donanımlarda bulut bağlantısı olmadan çalışabilen, araç çağırma (tool calling) ve yapılandırılmış veri çıkarımı için özelleşmiş 45 milyon parametrelik minik bir yapay zekâ modeli. Sorun şu: günümüzün \"ajan\" modelleri genelde milyarlarca parametreli, GB'larca yer kaplayan ve buluta internet bağlantısı gerektiren sistemler; bu da düşük güçlü, offline çalışması gereken cihazlarda ajan tabanlı otomasyonu imkânsız kılıyor. Needle, modeli 14MB'lık tek bir ikili dosyaya sıkıştırıp ağırlıkları doğrudan çıkarım motoruna gömerek, cihaz üzerinde araç çağırma ve yapılandırılmış çıktı üretmeyi mümkün kılıyor.",
+        "tech": "- **Simple Attention Network (SAN) mimarisi**: Klasik transformer'ın FFN katmanı yerine Hadamard MLP kullanıyor, ayrıca Grouped Query Attention (GQA) ile bellek kullanımını azaltıyor.\n- **Engram bellek sistemi**: Uzun bağlamı tam dikkat (full attention) yerine \"hashlenmiş n-gram tabloları\" olarak öğrenilen bir anahtar-değer belleğinde tutuyor; bu da düşük bellekle daha uzun geçmişi hatırlamayı sağlıyor.\n- **2-bit nicemleme (quantization)**: Ağırlıklar 2-bit hassasiyetle sıkıştırılıyor, bu da 45M parametreyi 14MB'a indiren asıl etken.\n- **Bayt düzeyinde dilbilgisi kısıtlaması**: Model çıktısı, tanımlanan JSON şemasına token seviyesinde zorlanarak üretiliyor, bu da geçersiz JSON riskini ortadan kaldırıyor.\n- **Sınırlı bellek penceresi**: 256 token'lık kayan pencere ve araçların KV-sink olarak sabitlenmesiyle çalışma zamanı RAM kullanımı ~28MB'ta tutuluyor.\n- **JAX ile eğitim, LoRA ile ince ayar**: Eğitim JAX üzerinde yapılıyor; kullanıcı LoRA adaptörleriyle ince ayar yapıp tek bir dağıtım dosyasında birleştirebiliyor.",
+        "why": "Yapay zekâ endüstrisinin büyük kısmı \"daha büyük model, daha iyi sonuç\" yönünde ilerlerken, giyilebilir cihazlar, akıllı ev ve robotik gibi alanlarda tam tersi bir ihtiyaç var: küçük, hızlı, offline çalışan ve pil dostu modeller. Needle bu az konuşulan ama büyüyen nişe (edge AI / cihaz üstü yapay zekâ) doğrudan hitap ettiği, üstelik \"45M parametreyle 270M+ modelleri geride bırakıyoruz\" gibi somut bir iddiayla çıktığı için, hem donanım üreticilerinin hem de gizlilik odaklı geliştiricilerin ilgisini çekti. Cihaz üstü çalışmanın enerji ve gecikme avantajı, özellikle sürekli çalışan giyilebilir/IoT ürünlerde kritik olduğundan trend olması sürpriz değil.",
+        "evolve": "- **Yetenek sınırı**: 45M parametre, genel sohbet veya karmaşık akıl yürütme için yeterli değil; model bilinçli olarak dar bir göreve (araç çağırma, çıkarım) odaklanmış — bu sınırın netleşmesi kullanıcı beklentisini yönetmeye yardımcı olabilir.\n- **Donanım desteği genişletilebilir**: Şu an CUDA ve Apple Metal destekleniyor; daha fazla gömülü/mikrodenetleyici hedefi eklemek, gerçek \"wearable\" senaryolarını güçlendirir.\n- **Araç kataloğu ölçeklenebilirliği**: Büyük araç kataloglarından her turda sadece ilk 5'ini seçme yaklaşımı, çok araçlı karmaşık sistemlerde yanlış araç seçimi riskini artırabilir; daha akıllı bir ön-filtreleme katmanı fayda sağlar.\n- **Topluluk model zoo'su**: LoRA ince ayarların paylaşılabileceği merkezi bir depo, farklı cihaz/kullanım senaryoları için hazır adaptör ekosistemi oluşturabilir."
+      },
+      "glossary": [
+        {
+          "term": "Nicemleme (quantization)",
+          "def": "Bir modelin sayısal ağırlıklarını daha az bit ile temsil ederek boyutunu küçültme ve hızlandırma tekniği."
+        },
+        {
+          "term": "LoRA",
+          "def": "Büyük bir modelin tüm ağırlıklarını değiştirmek yerine, az sayıda ek parametre ekleyerek ucuz ve hızlı ince ayar yapmayı sağlayan yöntem."
+        },
+        {
+          "term": "Transformer",
+          "def": "Günümüz büyük dil modellerinin çoğunun temelini oluşturan, dikkat (attention) mekanizmasına dayalı sinir ağı mimarisi."
+        },
+        {
+          "term": "KV önbelleği (KV cache)",
+          "def": "Bir modelin daha önce işlediği token'lara ait anahtar/değer bilgilerini saklayıp tekrar hesaplamaktan kaçınmasını sağlayan bellek yapısı."
+        },
+        {
+          "term": "Cihaz üstü (on-device) yapay zekâ",
+          "def": "Modelin buluta veri göndermeden, doğrudan telefon, saat gibi yerel cihaz üzerinde çalışması."
+        }
+      ]
+    },
+    {
+      "name": "altic-dev/FluidVoice",
+      "url": "https://github.com/altic-dev/FluidVoice",
+      "stars": "10.0k",
+      "language": "Swift",
+      "sections": {
+        "serves": "**FluidVoice**, macOS için geliştirilmiş, sesi bulut sunucusuna göndermeden tamamen cihaz üzerinde metne çeviren bir dikte (dictation) uygulaması. Sorun şu: piyasadaki popüler dikte araçlarının çoğu (ör. Wispr Flow) ses kaydını işlemek için buluta bağımlı, bu da hem gizlilik endişesi hem de internet bağlantısına muhtaçlık yaratıyor. FluidVoice, konuşmayı yerel STT (konuşmadan metne) modelleriyle çevirip isteğe bağlı yerel bir yapay zekâ katmanıyla düzenleyerek, kullanıcının sesinin ve yazdıklarının cihazdan hiç çıkmadığı, yine de doğal ve düzenli metin üreten bir alternatif sunuyor.",
+        "tech": "- **Native Swift uygulama**: macOS'a özgü erişilebilirlik (accessibility) API'leriyle entegre çalışıyor, bu sayede herhangi bir uygulamaya doğrudan metin ekleyebiliyor.\n- **Çoklu STT model seçeneği**: Apple Speech (indirmesiz), Whisper, Parakeet, Nemotron, Cohere Transcribe gibi farklı doğruluk/hız dengesine sahip modeller arasından seçim yapılabiliyor.\n- **Fluid Intelligence**: Ham transkripti düzenleyen, noktalama ve akıcılık ekleyen yerel bir AI son-işleme katmanı; llama.cpp üzerinden çalışıyor.\n- **İki çalışma modu**: Command Mode ile sesli Mac otomasyonu, Write Mode ile doğrudan metin girişi yapılabiliyor.\n- **Global kısayol ve bildirim çubuğu entegrasyonu**: Herhangi bir uygulamadan tek tuşla dikteye başlanabiliyor, aktif uygulamaya göre ayarlar özelleştirilebiliyor.\n\nMimari tercih \"her şey opsiyonel\" ilkesine dayanıyor: AI zenginleştirme, ses geçmişi kaydı ve analitik varsayılan olarak kapalı, kullanıcı açıkça izin vermedikçe hiçbir veri buluta gitmiyor.",
+        "why": "Uzaktan çalışma ve sesle metin yazma alışkanlığı yaygınlaşırken, kullanıcılar giderek daha fazla mikrofon verisinin buluta gönderilmesinden rahatsız oluyor — özellikle şirket içi veya kişisel konuşmalar söz konusu olduğunda. FluidVoice, popüler ama bulut bağımlı bir ürünün (Wispr Flow) doğrudan yerel alternatifi olarak konumlanıp, \"gizlilik + hız\" ikilisini aynı anda vaat ettiği için üretkenlik odaklı Mac kullanıcıları arasında hızla yayıldı. GPLv3 ile açık kaynak olması ve birden fazla STT modelini denemeye izin vermesi de teknik kullanıcılar için cazibesini artırdı.",
+        "evolve": "- **Platform sınırı**: Şu an yalnızca macOS'ta çalışıyor; Windows/Linux desteği kullanıcı tabanını önemli ölçüde genişletebilir.\n- **Model performans karşılaştırması**: Kullanıcı hangi STT modelinin kendi aksanı/dili için en uygun olduğunu deneme-yanılmayla buluyor; yerleşik bir karşılaştırma aracı bu süreci kısaltabilir.\n- **Çok dilli destek olgunluğu**: İngilizce dışı dillerde model kalitesi değişkenlik gösterebilir; dil bazlı doğruluk raporları şeffaflığı artırır.\n- **Kurumsal kullanım**: Şu an tek kullanıcı odaklı; toplu kurulum ve merkezi ayar yönetimi eklenmesi işyeri benimsemesini kolaylaştırabilir."
+      },
+      "glossary": [
+        {
+          "term": "STT (Speech-to-Text)",
+          "def": "Sesli konuşmayı yazılı metne çeviren yapay zekâ teknolojisi."
+        },
+        {
+          "term": "llama.cpp",
+          "def": "Büyük dil modellerini normal bilgisayarlarda, güçlü sunucu donanımı olmadan verimli çalıştırmayı sağlayan açık kaynak çıkarım motoru."
+        },
+        {
+          "term": "Erişilebilirlik (Accessibility) API'si",
+          "def": "İşletim sisteminin, uygulamaların ekrandaki diğer uygulamalarla etkileşime girmesine (ör. metin girişi yapmasına) izin veren arayüzü."
+        },
+        {
+          "term": "GPLv3",
+          "def": "Türetilmiş çalışmaların da aynı şartlarla açık kaynak kalmasını zorunlu kılan, kopyleft tabanlı bir açık kaynak yazılım lisansı."
+        }
+      ]
+    },
+    {
+      "name": "unslothai/unsloth",
+      "url": "https://github.com/unslothai/unsloth",
+      "stars": "71.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Unsloth**, büyük dil modellerini (LLM) ince ayar (fine-tuning) yapmanın maliyetini ve donanım gereksinimini büyük ölçüde düşüren bir kütüphane/araç seti. Sorun şu: bir LLM'i kendi verinizle özelleştirmek normalde pahalı GPU'lar ve onlarca GB VRAM gerektiriyor, bu da bireysel geliştiricileri ve küçük ekipleri dışarıda bırakıyor. Unsloth, eğitim sürecinin bellek ve hız açısından en verimsiz kısımlarını özel olarak optimize ederek, aynı ince ayarı tüketici sınıfı GPU'larda çok daha az bellek ve sürede yapılabilir hale getiriyor.",
+        "tech": "- **Özel Triton kernel'leri**: RoPE, MLP gibi kritik katmanların hesaplamaları elle yazılmış, GPU'ya özel Triton kernel'leriyle hızlandırılıyor.\n- **Padding-free packing**: Farklı uzunluktaki eğitim örnekleri boşluk (padding) israfı olmadan paketlenerek bellek verimliliği artırılıyor.\n- **PyTorch + Hugging Face üzerine inşa**: transformers ve TRL kütüphaneleriyle uyumlu çalışıyor, mevcut Hugging Face iş akışlarına kolayca entegre oluyor.\n- **Çoklu donanım desteği**: NVIDIA (CUDA), AMD (ROCm), Intel GPU ve Apple Metal üzerinde çalışabiliyor.\n- **Üç kullanım yüzeyi**: Tauri tabanlı masaüstü uygulaması, tarayıcı tabanlı Unsloth Studio ve Python kütüphanesi (Unsloth Core) aynı motoru farklı kullanıcı profillerine sunuyor.\n- **Geniş yöntem desteği**: LoRA, QLoRA, tam ince ayar, pekiştirmeli öğrenme (GRPO, DPO) ve ön-eğitim destekleniyor; çıktı GGUF, NVFP4, FP8 gibi formatlarda dışa aktarılabiliyor.",
+        "why": "2026'da açık kaynak model aileleri (Qwen, DeepSeek, Gemma, Llama, Mistral, Kimi, MiniMax gibi) hızla çoğalırken, bu modelleri kendi verisiyle özelleştirmek isteyen geliştirici kitlesi de büyüdü — ama donanım maliyeti hâlâ en büyük engel. Unsloth'un \"2 kat daha hızlı, %70 daha az VRAM\" iddiası, tek bir tüketici GPU'suyla bile ciddi ince ayar yapılabilmesini sağladığı için, hem bireysel araştırmacılar hem de bütçesi kısıtlı ekipler arasında büyük yankı buldu. Ayrıca yerel modelleri Claude Code, Codex gibi agentic araçlara bağlama desteği eklemesi, projeyi salt bir eğitim kütüphanesinden \"yerel ajan altyapısı\" konumuna taşıyarak trend listesinde kalıcılığını güçlendirdi.",
+        "evolve": "- **Çoklu GPU eğitimi olgunluğu**: Odak büyük ölçüde tek GPU verimliliğinde; büyük ekiplerin ihtiyaç duyduğu çoklu GPU/çoklu düğüm dağıtık eğitim desteğinin derinleşmesi kurumsal benimsemeyi hızlandırabilir.\n- **Lisans karmaşıklığı**: Çekirdek Apache 2.0 iken Studio arayüzü AGPL-3.0; bu ikili lisanslama, hangi bileşenin ne şekilde kullanılabileceği konusunda kafa karışıklığı yaratabilir ve daha net belgelenebilir.\n- **Model doğrulama araçları**: İnce ayar sonrası modelin orijinal yeteneklerini ne kadar koruduğunu ölçen otomatik bir değerlendirme paneli eklenmesi kaliteyi garanti altına alır.\n- **Bulut entegrasyonu**: Cloudflare tünel desteği var ama büyük ekipler için yönetilen bir bulut eğitim/dağıtım seçeneği eksik görünüyor."
+      },
+      "glossary": [
+        {
+          "term": "VRAM",
+          "def": "Grafik kartı üzerindeki, model ağırlıklarını ve ara hesaplamaları tutan hızlı bellek."
+        },
+        {
+          "term": "Triton kernel",
+          "def": "GPU üzerinde çalışan hesaplama adımlarını doğrudan ve verimli şekilde yazmayı sağlayan, Python benzeri bir programlama dili/aracı."
+        },
+        {
+          "term": "QLoRA",
+          "def": "Model ağırlıklarını önce nicemleyip (quantization) sonra LoRA ile ince ayar yaparak belleği daha da azaltan yöntem."
+        },
+        {
+          "term": "GGUF",
+          "def": "İnce ayarı yapılmış modelleri tek bir dosyada, farklı sistemlerde kolayca çalıştırılabilecek şekilde paketleyen dosya formatı."
+        },
+        {
+          "term": "RoPE",
+          "def": "Bir modelin bir dizideki kelimelerin/tokenların sırasını anlamasını sağlayan konum kodlama (positional encoding) tekniği."
+        }
+      ]
+    }
+  ]
+}
