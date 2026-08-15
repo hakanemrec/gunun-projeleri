@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-15",
+  "projects": [
+    {
+      "name": "github/spec-kit",
+      "url": "https://github.com/github/spec-kit",
+      "stars": "129k",
+      "language": "Python",
+      "sections": {
+        "serves": "AI kod asistanları (Copilot, Claude, Codex vb.) hızlıca kod üretebiliyor ama üretilen kod çoğu zaman \"ne inşa ediyoruz, neden bu şekilde\" sorusuna cevap vermeden ortaya çıkıyor; birkaç hafta sonra kimse mimari kararların gerekçesini hatırlamıyor. Spec Kit, kodlamadan önce bir **spesifikasyon** yazmayı zorunlu kılan bir iş akışı sunuyor: önce ne yapılacağı ve neden yapılacağı netleşiyor, sonra teknik plan çıkarılıyor, ardından görevlere bölünüyor ve en son AI ajanı bu görevleri uyguluyor. Böylece AI'nin ürettiği kod rastgele bir \"kod dökümü\" olmaktan çıkıp, baştan tanımlı bir niyetin sonucu haline geliyor.",
+        "tech": "Araç Python 3.11+ ile yazılmış, `uv` (ya da `pipx`) üzerinden kurulan bir CLI (`specify`) olarak dağıtılıyor. Proje köküne `.specify/` klasörü açıp buraya YAML tabanlı şablonlar yerleştiriyor; bu şablonlar \"constitution → specify → plan → tasks → implement → converge\" adımlarının her birinde kullanılıyor. 30'dan fazla AI ajanıyla (GitHub Copilot, Claude, Codex CLI, ChatGPT vb.) `/speckit.*` gibi slash komutları üzerinden entegre oluyor; yani şablonlar ajan tarafında çalışma zamanında çözümleniyor, çekirdek koda dokunmadan. Kurumsal kullanım için üç katmanlı bir özelleştirme sistemi var: proje bazlı override'lar, organizasyon çapında \"preset\"ler ve tamamen yeni komut ekleyen \"extension\"lar; bu da ekiplerin uyumluluk/güvenlik kurallarını fork almadan enjekte edebilmesini sağlıyor.",
+        "why": "GitHub'ın kendi projesi olması ve 30'dan fazla ajanla native entegrasyon sunması güven inşa ediyor; \"vibe coding\" eleştirilerinin arttığı bir dönemde, AI'ye kod yazdırırken mimari tutarlılığı koruma vaadi hem bireysel geliştiricilere hem kurumsal ekiplere hitap ediyor. Rol bazlı \"bundle\"lar (ürün yöneticisi, güvenlik araştırmacısı, geliştirici) sayesinde teknik olmayan paydaşların da sürece dahil olabilmesi, projeyi sadece bir CLI aracı değil bir metodoloji haline getiriyor; bu da organik paylaşımı ve yıldız ivmesini besliyor.",
+        "evolve": "Şu an şablon tabanlı YAML sistemi güçlü ama öğrenme eğrisi dik olabilir; görsel bir \"spec editörü\" ya da IDE eklentisi eklenmesi benimsemeyi hızlandırabilir. \"Converge\" adımı (kod ile spesifikasyonun uyumunu kontrol etme) otomatik CI kontrolüne dönüştürülürse, spesifikasyon-kod sapması commit aşamasında yakalanabilir. Ayrıca extension/preset pazaryerinin topluluk tarafından beslenmesi, kurumların birbirinin \"constitution\" şablonlarından öğrenmesini sağlayabilir."
+      },
+      "glossary": [
+        {
+          "term": "Spec-Driven Development",
+          "def": "Kodlamaya başlamadan önce ne yapılacağının ve nedeninin yazılı bir spesifikasyonla netleştirildiği geliştirme yaklaşımı."
+        },
+        {
+          "term": "CLI (Command Line Interface)",
+          "def": "Komut satırından çalıştırılan, arayüzü yazılı komutlardan oluşan araç türü."
+        },
+        {
+          "term": "YAML",
+          "def": "İnsan tarafından kolay okunan, ayar ve şablon dosyalarında sık kullanılan bir veri biçimi."
+        },
+        {
+          "term": "Slash komut",
+          "def": "Sohbet arayüzünde \"/\" ile başlayan, önceden tanımlı bir işlemi tetikleyen kısayol komut."
+        },
+        {
+          "term": "uv / pipx",
+          "def": "Python paketlerini izole ortamlarda kurup çalıştırmaya yarayan paket yöneticisi araçları."
+        }
+      ]
+    },
+    {
+      "name": "holaboss-ai/holaOS",
+      "url": "https://github.com/holaboss-ai/holaOS",
+      "stars": "7.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bugün bir geliştirici Claude Code'da kodluyor, Notion'da not tutuyor, Slack'te konuşuyor ve her araç için ayrı ayrı bağlam/entegrasyon kurmak zorunda kalıyor. holaOS, farklı AI ajanlarını (Claude Code, Codex, kendi native ajanı) aynı masaüstü uygulamasında, ortak bir hafıza ve ortak araç setiyle çalıştırarak bu parçalanmışlığı ortadan kaldırıyor. Yani hangi model arkada çalışırsa çalışsın, ajan aynı entegrasyonlara ve aynı proje geçmişine erişebiliyor.",
+        "tech": "Electron tabanlı bir masaüstü uygulaması (macOS, Windows, Linux), TypeScript ile yazılmış ve Turbo ile yönetilen bir monorepo yapısında. Hafıza sistemi bulutta değil, yerel dosya tabanlı: kullanıcı bu dosyaları görebiliyor ve düzenleyebiliyor, bu da \"kilitli, opak bulut hafızası\" yerine şeffaf bir tercih. Entegrasyonlar (Gmail, Notion, Slack, GitHub, Linear ve 50'den fazlası) bir kez OAuth ile bağlanıp tüm ajanlar tarafından paylaşılıyor; buna ek olarak Model Context Protocol (MCP) üzerinden topluluk sunucuları da bir pazaryerinden kurulabiliyor. Notion veya tarayıcı gibi uygulamalar ajanın yanında etkileşimli arayüz yüzeyleri olarak render ediliyor, böylece kullanıcı süreci canlı izleyip müdahale edebiliyor.",
+        "why": "Tek bir ajan sağlayıcısına kilitlenmeden (Claude Opus 5, GPT 5.6, Kimi K3 gibi birden fazla frontier modeli destekleyerek) çalışabilmek, \"agent lock-in\" konusunda endişeli geliştiricilere cazip geliyor. Hafızanın cihazda, düzenlenebilir dosyalar halinde tutulması gizlilik odaklı kullanıcıları çekiyor. \"Tek satır kurulum\" gibi düşük sürtünmeli onboarding ve değiştirilmiş Apache 2.0 lisansıyla açık kaynak şeffaflığı, hem bireysel hem kurumsal (SSO destekli) kullanıcı tabanını büyütüyor.",
+        "evolve": "Çoklu ajan + paylaşılan hafıza fikri güçlü, ama hafızanın büyümesiyle \"hangi ajan neyi ne zaman yazdı\" konusunda çakışma/denetim mekanizmaları kritik hale gelecek; versiyon kontrolüne benzer bir \"hafıza diff'i\" faydalı olabilir. Mobil erişim veya web tabanlı hafif bir istemci eklenmesi, masaüstüne bağımlılığı azaltabilir. Ayrıca MCP pazaryerinin güvenlik incelemesi (kötü niyetli sunucu riski) olgunlaştıkça kurumsal benimseme artabilir."
+      },
+      "glossary": [
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (JS/HTML/CSS) masaüstü uygulaması geliştirmeyi sağlayan çerçeve."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paket/projenin tek bir git deposunda birlikte tutulduğu yapı."
+        },
+        {
+          "term": "OAuth",
+          "def": "Kullanıcı adı-şifre paylaşmadan, üçüncü parti uygulamalara güvenli yetkilendirme vermeyi sağlayan standart."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının dış araç ve verilere standart bir protokolle bağlanmasını sağlayan açık standart."
+        },
+        {
+          "term": "SSO (Single Sign-On)",
+          "def": "Kullanıcının tek bir girişle birden fazla sisteme erişebildiği kimlik doğrulama yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "ToolJet/ToolJet",
+      "url": "https://github.com/ToolJet/ToolJet",
+      "stars": "39.2k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "Şirket içi araç, dashboard ya da iş uygulaması ihtiyacı doğduğunda genelde sıfırdan bir frontend + backend + veritabanı yazmak gerekir; bu haftalarca sürebilir. ToolJet, sürükle-bırak bileşenlerle (tablo, grafik, form vb.) ve 80'den fazla veri kaynağına (veritabanları, API'ler, SaaS araçları) bağlanarak bu süreci saatlere indiren açık kaynak bir düşük kod (low-code) platformu.",
+        "tech": "Frontend React.js ve TypeScript ile yazılmış, 60'tan fazla hazır ve responsive bileşen sunuyor. Backend Node.js üzerinde çalışıyor, veri kalıcılığı için PostgreSQL kullanılıyor; ayrıca kod yazmadan veri yönetimi yapılabilen dahili bir \"ToolJet Database\" var. \"Code Anywhere\" özelliğiyle uygulama içinde JavaScript veya Python çalıştırılabiliyor, yani düşük kod ile tam kod arasında geçiş serbest. Docker/Kubernetes desteğiyle AWS, GCP, Azure gibi ortamlarda self-hosted kurulabiliyor; bu da verinin şirket sınırları dışına çıkmasını istemeyen (PL/SQL/ERP dünyasına yakın) kurumlar için önemli bir tercih sebebi.",
+        "why": "Kurumsal iç araç ihtiyacının hiç bitmemesi ve \"AI-native\" düşük kod platformlarına olan ilginin büyümesi ToolJet'i öne çıkarıyor. Ticari sürümdeki ToolJet AI, doğal dilden uygulama üretme, sorgu yazımına yardım ve iş akışı otomasyonu gibi özellikler ekleyerek \"düşük kod + AI ajanı\" trendine oturuyor; 17 binin üzerinde commit ve aktif geliştirme, projenin olgunluğunu ve sürekliliğini gösteriyor.",
+        "evolve": "Açık kaynak sürümün AI özelliklerinin bir kısmının ticari pakette kalması, topluluk sürümüyle başlayanların bir noktada üst sürüme geçme baskısı hissetmesine yol açabilir; bu dengenin şeffaf tutulması güven için önemli. Veritabanı bağlayıcılarının (ör. Oracle/PL-SQL tabanlı ERP sistemleri) daha derin desteklenmesi, kurumsal/ERP entegrasyon senaryolarında ToolJet'i daha güçlü bir alternatif yapabilir. Bileşen pazaryeri veya topluluk şablonlarının genişletilmesi de benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Low-code (düşük kod)",
+          "def": "Uygulamaların çoğunlukla sürükle-bırak arayüzlerle, minimum elle kod yazarak geliştirilmesini sağlayan yaklaşım."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Açık kaynaklı, ilişkisel bir veritabanı yönetim sistemi."
+        },
+        {
+          "term": "API (Application Programming Interface)",
+          "def": "Farklı yazılımların birbiriyle veri alışverişi yapmasını sağlayan arayüz/protokol."
+        },
+        {
+          "term": "Docker / Kubernetes",
+          "def": "Uygulamaları taşınabilir \"container\"lar halinde paketleyip (Docker) bunları ölçekli şekilde yönetmeyi (Kubernetes) sağlayan araçlar."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üçüncü parti bulut yerine kendi sunucularında/altyapısında çalıştırılması."
+        }
+      ]
+    },
+    {
+      "name": "citrolabs/ego-lite",
+      "url": "https://github.com/citrolabs/ego-lite",
+      "stars": "10.5k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "AI ajanlarının tarayıcıda görev yapması (form doldurma, veri toplama vb.) genelde ya ayrı, oturum açılmamış bir tarayıcı penceresinde oluyor ya da ChatGPT Atlas gibi kapalı, tek bir ajana kilitli bir \"AI tarayıcısı\" gerektiriyor. ego-lite, kullanıcının zaten oturum açtığı normal tarayıcıyı, hem insanın hem ajanın **aynı anda ve çakışmadan** kullanabileceği şekilde tasarlıyor.",
+        "tech": "JavaScript tabanlı, şimdilik macOS'ta çalışan bir tarayıcı; kurulumda Chrome'daki mevcut veriler (giriş bilgileri, çerezler, eklentiler, yer imleri) aktarılıyor. Her ajan görevi \"Space\" adı verilen izole bir çalışma alanında yürütülüyor, böylece kullanıcının açık sekmeleriyle karışmıyor. Ajanlar tarayıcıyı komut satırı üzerinden değil, `ego-browser` adlı bir JavaScript fonksiyon kütüphanesi (snapshot, fill, click, navigate, wait, capture gibi) üzerinden doğrudan çağırıyor; bu da çok adımlı görevlerin tek seferde, \"çağır-incele-tekrar çağır\" döngüsüne girmeden yazılabilmesini sağlıyor. Derin iç içe geçmiş iframe'leri bile doğru okuyabilen özel bir sayfa-anlama (snapshot) motoru var.",
+        "why": "AI ajan benimsemesi hızlanırken tarayıcı otomasyonu hâlâ dağınık ve sürtünmeli; ego-lite hem \"kendi oturumunu kullanabilme\" hem \"insanla paralel çalışabilme\" gibi somut sorunları çözerek altyapı katmanı olmayı hedefliyor. Vercel'in agent-browser aracına kıyasla 2.5 kat daha hızlı görev tamamlama ve belirgin şekilde daha az token harcama iddiası, performans odaklı geliştiricilerin ilgisini çekiyor; Claude Code, Codex gibi mevcut ajan CLI'larıyla uyumlu olması da benimsemeyi kolaylaştırıyor.",
+        "evolve": "Şu an yalnızca macOS'ta çalışması, Windows/Linux kullanıcılarını dışarıda bırakıyor; yol haritasında bu platformlar var ama zamanlaması belirsiz. Oturum verilerinin cihazda tutulması gizlilik açısından iyi, ama kurumsal ortamlarda merkezi denetim/audit log ihtiyacı doğabilir. Çoklu ajanın aynı \"Space\" içinde eşzamanlı çalışması senaryosu (şu an her görev kendi alanında izole) desteklenirse, ekip halinde tarayıcı otomasyonu daha da güçlenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Tarayıcı otomasyonu",
+          "def": "Bir yazılımın (burada AI ajanının) web tarayıcısını insan yerine kontrol ederek görev yürütmesi."
+        },
+        {
+          "term": "Iframe",
+          "def": "Bir web sayfası içine gömülü başka bir web sayfası/çerçeve."
+        },
+        {
+          "term": "Token",
+          "def": "Büyük dil modellerinin metni işlerken kullandığı, kelime/kelime parçası büyüklüğündeki temel birim; kullanım miktarı maliyeti ve hızı etkiler."
+        },
+        {
+          "term": "CLI (Command Line Interface)",
+          "def": "Komut satırından çalıştırılan araç arayüzü."
+        },
+        {
+          "term": "Snapshot (anlık görüntü)",
+          "def": "Bir web sayfasının o anki yapısının/içeriğinin ajan tarafından okunabilir bir özeti."
+        }
+      ]
+    }
+  ]
+}
