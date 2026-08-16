@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-16",
+  "projects": [
+    {
+      "name": "cursor/plugins",
+      "url": "https://github.com/cursor/plugins",
+      "stars": "3.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI destekli kod editörü Cursor'ın resmi plugin (eklenti) deposu ve spesifikasyonu. Sorun şuydu: Cursor gibi ajan tabanlı editörlerde her ekip kendi iç araçlarını (PR incelemesi, dokümantasyon) ve üçüncü parti servisleri (Gmail, Salesforce, HubSpot) ajanın \"bilgi dağarcığına\" manuel olarak, tekrar tekrar entegre etmek zorunda kalıyordu. Bu repo, bu entegrasyonları standart, paylaşılabilir paketler haline getirip bir \"eklenti pazarı\" kuruyor.",
+        "tech": "Plugin sistemi üç parçadan oluşuyor: `skills/` klasöründeki `SKILL.md` dosyaları (ajanın bir görevi nasıl yapacağını doğal dilde anlatan \"beceri\" tanımları), `.mdc` formatındaki `rules/` (editörün otomatik uyguladığı davranış kuralları) ve `mcp.json` (Model Context Protocol üzerinden dış servislere bağlanan sunucu tanımları). Her plugin kendi `.cursor-plugin/plugin.json` manifestosuyla tanımlanıyor, kök dizindeki `marketplace.json` ise tüm paketleri kataloglayan bir tür \"app store\" indeksi. 28'den fazla plugin iki kategoriye ayrılıyor: Cursor'ın kendi iç araçları (ör. `pr-review-canvas`, `docs-canvas`) ve üçüncü parti SaaS entegrasyonları (Gmail, Salesforce, Ashby, Circleback). MIT lisanslı ve büyük ölçüde JSON/Markdown olduğu için topluluk katkısı düşük bariyerli.",
+        "why": "Cursor, \"vibe coding\"tan ajan destekli düzenlemeye geçişte pazar liderliğini pekiştirmeye çalışıyor; resmi bir plugin ekosistemi açması, VS Code'un eklenti pazarının ajan çağındaki karşılığı gibi okunuyor. Ekiplerin kendi iç iş akışlarını (PR incelemesi, onboarding) standart `SKILL.md`'lere dökebilmesi büyük şirketlerin ilgisini çekiyor; listede Salesforce ve HubSpot gibi kurumsal araçların olması B2B tarafındaki ilgiyi gösteriyor. Rakip editörlerin benzer hamleler yapması beklendiğinden, erken hareket eden bu resmi depo dikkat topluyor.",
+        "evolve": "Şu an üçüncü parti bir plugin'in MCP sunucusu üzerinden hassas verilere (Gmail, Salesforce) erişebildiği düşünülürse, merkezi bir inceleme/imzalama süreci ve açık bir izin modeli eksik görünüyor. Topluluk katkıları arttıkça VS Code marketplace'e benzer bir keşif/puanlama arayüzü faydalı olur. Plugin'ler arası bağımlılık yönetimi (bir skill'in başka bir skill'e ihtiyaç duyması) henüz olgunlaşmamış."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının dış araçlara ve verilere standart bir protokolle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "SKILL.md / Skill",
+          "def": "Bir AI ajanına belirli bir görevi nasıl yapacağını doğal dilde anlatan, editörün okuduğu talimat dosyası."
+        },
+        {
+          "term": "Manifest",
+          "def": "Bir yazılım paketinin adını, sürümünü ve bağımlılıklarını tanımlayan yapılandırma dosyası."
+        },
+        {
+          "term": "Marketplace",
+          "def": "Kullanıcıların eklenti/plugin keşfedip kurabildiği merkezi katalog."
+        },
+        {
+          "term": ".mdc rules",
+          "def": "Cursor editörünün belirli durumlarda otomatik devreye soktuğu davranış kuralı dosya formatı."
+        }
+      ]
+    },
+    {
+      "name": "MakazhanAlpamys/Soup",
+      "url": "https://github.com/MakazhanAlpamys/Soup",
+      "stars": "1.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "LLM (büyük dil modeli) fine-tuning yapmak isteyen ama altyapı karmaşıklığıyla boğuşan geliştiriciler için. Ekipler zamanlarının %30-50'sini modeli iyileştirmek yerine GPU ayarları, ortam kurulumu ve dağıtık eğitim script'leriyle uğraşarak geçiriyor. Soup, tüm bu ayarları tek bir `soup.yaml` dosyasına indirip `soup train` komutuyla eğitimi başlatan bir CLI sunuyor; GPU tespiti ve batch boyutlandırma otomatik yapılıyor.",
+        "tech": "Motor PyTorch, Hugging Face Transformers, PEFT ve TRL üzerine kurulu; opsiyonel olarak Unsloth (2-5x hızlanma) ve Apple'ın MLX'i backend olarak destekleniyor. Asıl yenilik \"layer streaming\": dondurulmuş taban model ağırlıkları GPU belleği yerine sistem RAM'inde tutuluyor, eğitim sırasında decoder katmanları teker teker GPU'ya akıtılıyor. Bu sayede 8 milyar parametreli bir model, 4GB VRAM'li bir laptop GPU'sunda eğitilebiliyor — RTX 3050 ve H100 üzerinde bağımsız doğrulanmış, \"119.6 tok/s, 3.32GB tepe kullanım\" rakamları yayımlanmış. Kütüphane NF4/FP8 kuantizasyonunu, HuggingFace Hub entegrasyonunu ve eğitim sonrası OpenAI-uyumlu API ile servis etmeyi destekliyor; teknik hâlâ \"opt-in ve beta\" ama akışsız eğitimle bit-eşit sonuç verdiği iddia ediliyor.",
+        "why": "\"Tüketici GPU'sunda büyük model eğitimi\" vaadi, bulut GPU maliyetlerinin arttığı bir dönemde bireysel geliştiricilere ve küçük ekiplere doğrudan hitap ediyor; QLoRA gibi teknikler zaten VRAM ihtiyacını azaltıyordu, layer streaming bunu bir adım öteye taşıyıp \"hiç VRAM'e sığmayan modeli bile eğitilebilir\" hale getiriyor. Proje ayrıca \"ölçülmüş, iddia edilmemiş\" performans kültürünü benimseyip başarısız denemeleri bile şeffaf şekilde paylaşıyor; bu mühendislik dürüstlüğü ML topluluğunda güven ve organik paylaşım yaratıyor.",
+        "evolve": "Layer streaming hâlâ beta ve muhtemelen disk/RAM bant genişliğine bağımlı olduğundan büyük veri setleriyle eğitim hızında darboğaz oluşabilir; donanıma göre stream/no-stream kararını otomatik veren bir \"oto-profil\" özelliği benimsemeyi kolaylaştırır. Çoklu-GPU'ya (streaming + veri paralelliği) ölçeklenme desteği eklenmesi, projeyi hobi kullanımından küçük-orta ölçekli üretim eğitimine taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Metin üretmek ve anlamak için milyarlarca parametreyle eğitilmiş yapay zeka modeli."
+        },
+        {
+          "term": "Fine-tuning",
+          "def": "Önceden eğitilmiş bir modelin belirli bir görev veya veri setine özel olarak yeniden, kısmen eğitilmesi."
+        },
+        {
+          "term": "Layer streaming",
+          "def": "Model katmanlarının tamamı yerine o an işlenen katmanın GPU belleğine akıtılıp sonra boşaltıldığı bellek tasarrufu tekniği."
+        },
+        {
+          "term": "Kuantizasyon (NF4/FP8)",
+          "def": "Model ağırlıklarını daha az bit ile (örn. 4 veya 8 bit) temsil ederek bellek kullanımını azaltma yöntemi."
+        },
+        {
+          "term": "VRAM",
+          "def": "Ekran kartı üzerinde, model ağırlıkları ve hesaplamalar için kullanılan özel bellek."
+        }
+      ]
+    },
+    {
+      "name": "HKUDS/CLI-Anything",
+      "url": "https://github.com/HKUDS/CLI-Anything",
+      "stars": "47.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bugünün profesyonel yazılımları (Blender, GIMP, LibreOffice, video editörleri) insan kullanıcılar için tasarlanmış grafik arayüzlerle geliyor; AI ajanlarının bunları kontrol etmesi ya kırılgan ekran-tıklama otomasyonuna ya da yazılımın gerçek yeteneklerinin küçük bir kısmını kapsayan basit API sarmalayıcılarına dayanıyordu. CLI-Anything, gerçek yazılımın tüm yeteneklerini (Blender'ın Python API'si `bpy`, GIMP'in `GEGL`'i, LibreOffice'in ODF'i gibi) otomatik olarak yapılandırılmış, ajan-dostu bir komut satırı arayüzüne dönüştürüyor.",
+        "tech": "Sistem 7 fazlı otomatik bir üretim hattı çalıştırıyor: kaynak kodu/API analizi → komut mimarisi tasarımı → Click tabanlı CLI + REPL implementasyonu → test planı → birim/E2E test yazımı → dokümantasyon → setuptools ile PyPI'a yayın. Üretilen her CLI, durum tutan bir REPL modu, `--json` bayrağıyla ajan-okunur çıktı ve gerçek arka uç çalıştırma (LibreOffice gerçekten PDF render ediyor, Blender gerçekten sahne render ediyor) sunuyor — yani basitleştirilmiş değil, \"otantik\" entegrasyon. `cli-anything.<yazılım>` isim alanı altında paketlenen 18'den fazla harness mevcut; her biri 1.732 birim + 579 E2E testle doğrulanmış ve arka uç eksikse test atlanmıyor, doğrudan başarısız oluyor (\"zero-compromise\" prensibi). Ayrı bir paket olan CLI-Hub (`pip install cli-anything-hub`) ise ajanların bu harness'ları `cli-hub search`/`install` ile keşfedip kurmasını sağlayan bir paket yöneticisi.",
+        "why": "Claude Code, Codex, GitHub Copilot CLI gibi ajanların \"gerçek dünya\" yazılımlarını kullanabilmesi, ajan tabanlı otomasyonun bir sonraki sınırı olarak görülüyor; bu proje somut, çalışan, test edilmiş bir çözümle bu boşluğu dolduruyor. HKUDS'nin (Hong Kong Üniversitesi veri bilimi grubu) daha önce RAG ve ajan hafızası alanında tanınmış olması projeye teknik güvenilirlik katıyor. \"Bugünün yazılımları insana hizmet ediyor, yarının kullanıcıları ajan olacak\" söylemi, agent-native yazılım trendinin zirve yaptığı bu dönemde geliştiricilerin ilgisini doğrudan çekiyor.",
+        "evolve": "Şu an 18 uygulamayla sınırlı; topluluk katkısıyla kapsamın yüzlerce araca (IDE'ler, CAD yazılımları, DAW'lar) yayılması projeyi gerçek bir \"evrensel ajan arayüzü\" standardına dönüştürebilir. Harness'ların bakımı (üstündeki yazılım güncellendiğinde CLI'nin senkron kalması) uzun vadede en büyük risk; bir sürüm uyumluluk matrisi ve otomatik regresyon testi altyapısı bu riski azaltabilir. CLI-Hub'ın güvenlik modeli — bir ajanın otomatik kurduğu üçüncü parti harness'a ne kadar güvenileceği — netleşmeli."
+      },
+      "glossary": [
+        {
+          "term": "Harness",
+          "def": "Bir yazılımı dışarıdan, burada bir CLI üzerinden kontrol edilebilir hale getiren köprü/sarmalayıcı katman."
+        },
+        {
+          "term": "REPL (Read-Eval-Print Loop)",
+          "def": "Kullanıcının komut girip anında sonuç aldığı, oturumu canlı tutan etkileşimli komut satırı ortamı."
+        },
+        {
+          "term": "Click",
+          "def": "Python'da komut satırı arayüzleri yazmak için kullanılan popüler bir kütüphane."
+        },
+        {
+          "term": "E2E test (uçtan uca test)",
+          "def": "Bir sistemi gerçek kullanım senaryosuyla, baştan sona gerçek bileşenleriyle test etme yöntemi."
+        },
+        {
+          "term": "Namespace (isim alanı)",
+          "def": "Aynı isimde paketlerin/fonksiyonların çakışmasını önlemek için kullanılan gruplama mekanizması."
+        }
+      ]
+    },
+    {
+      "name": "cordiverse/cordis",
+      "url": "https://github.com/cordiverse/cordis",
+      "stars": "4.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Node.js/TypeScript dünyasında eklenti tabanlı uygulamalar genellikle kendi plugin sistemlerini sıfırdan yazıyor: bağımlılık yönetimi, kapanışta yan etkilerin temizlenmesi (event listener'ların kaldırılması, bağlantıların kapatılması) gibi sorunları her proje ayrı ayrı, çoğu zaman eksik ve sızıntılı şekilde çözüyor. Cordis bunu jenerik bir \"plugin çekirdeği\" olarak çözüyor: dört yıldır Koishi chatbot framework'ünün altyapısında çalışıyor ve 4.000'den fazla topluluk plugin'i üzerinde üretimde doğrulanmış durumda.",
+        "tech": "\"Spatiotemporal composability\" (uzam-zamansal kompozisyon) üç mekanizmayla somutlaşıyor: `ctx.effect`, bir plugin'in açtığı her yan etkiyi (dosya izleyici, event listener, zamanlayıcı) otomatik iz altına alıp plugin kapandığında tersine çeviriyor; `ready`/`dispose`/`fork` yaşam döngüsü olayları plugin'lerin ne zaman hazır olduğunu ve ne zaman temiz şekilde söküleceğini tanımlıyor; servis sistemi ise bir plugin'in sağladığı servisi başka bir plugin tüketirken, sağlayıcının tüketiciden önce başlayıp sonra kapanmasını garanti ediyor. Proje bir Yarn workspaces monorepo'su, Vitest ile test ediliyor ve özel `yakumo` görev çalıştırıcısını kullanıyor; API henüz stabil değil.",
+        "why": "Bugünkü yıldız patlamasının doğrudan nedeni belli: 13 Ağustos 2026'da DeepSeek, Cordis v4 üzerine inşa edilen \"DeepSeek Harness\" adlı ajan çatısının geliştirici önizlemesini yayımladı ve aynı gün Cordis ekibiyle Pekin Üniversitesi ortaklaşa \"A Programming Paradigm for Spatiotemporal Composability\" başlıklı 80 sayfalık akademik makaleyi (DeepSeek'in bu yılki 7. makalesi) duyurdu. Harness'ın temel motivasyonu \"kendi kendini geliştiren ajanlar\": çalışırken kendi bileşenlerini üretip devreye alabilen ajan sistemleri, tam da Cordis'in \"her şey geri alınabilir bir plugin\" felsefesine ihtiyaç duyuyor. Dört yıllık, 4.000+ plugin'le kanıtlanmış Koishi geçmişi, bu iddiaya somut bir güvenilirlik referansı sağlıyor — DeepSeek soyut bir fikri değil, üretimde test edilmiş bir çekirdeği seçti.",
+        "evolve": "API stabil olmadığından erken benimseyenler kırılma değişiklikleriyle karşılaşabilir; DeepSeek Harness'ın ilgisiyle birlikte 1.0 sürümüne ve net bir göç kılavuzuna olan baskı artacaktır. Şu ana kadar ağırlıklı olarak sohbet botları için kullanılan çekirdeğin, çalışırken kendini değiştiren ajan-native sistemlerde ne kadar dayanıklı olduğu henüz kanıtlanmadı; DeepSeek Harness'ın üretim ölçeğindeki deneyimi bu konuda belirleyici olacak. TypeScript dışı dillere (Python gibi) port edilmesi, çoğunlukla Python olan ajan ekosisteminin geri kalanıyla entegrasyonu kolaylaştırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Meta-framework",
+          "def": "Doğrudan uygulama değil, başka framework'lerin üzerine inşa edildiği temel çatı yazılım."
+        },
+        {
+          "term": "Dependency injection (bağımlılık enjeksiyonu)",
+          "def": "Bir bileşenin ihtiyaç duyduğu servisleri kendisi oluşturmak yerine dışarıdan aldığı tasarım deseni."
+        },
+        {
+          "term": "Plugin lifecycle (yaşam döngüsü)",
+          "def": "Bir eklentinin yüklenme, çalışma ve kapatılma anlarındaki tanımlı aşamaları."
+        },
+        {
+          "term": "Reversible side effect (tersinir yan etki)",
+          "def": "Bir eklenti kapandığında, açtığı tüm etkilerin otomatik olarak geri alınabilmesi."
+        },
+        {
+          "term": "Microkernel",
+          "def": "Sistemin yalnızca en temel çekirdek işlevleri barındırdığı, geri kalan her şeyin eklenti olarak eklendiği mimari yaklaşım."
+        }
+      ]
+    }
+  ]
+}
