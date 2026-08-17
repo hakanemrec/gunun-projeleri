@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-17",
+  "projects": [
+    {
+      "name": "t8y2/dbx",
+      "url": "https://github.com/t8y2/dbx",
+      "stars": "15.2k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Veritabanı yöneticileri ve geliştiriciler genelde MySQL, PostgreSQL, MongoDB, Redis gibi farklı sistemler için ayrı ayrı, çoğu zaman Java gibi ağır bir çalışma zamanı gerektiren istemci uygulamaları kullanmak zorunda kalıyor. DBX bunu tek bir ~20MB'lık, çalışma zamanı bağımlılığı olmayan yürütülebilir dosyaya indiriyor: 80'den fazla veritabanını (MySQL, PostgreSQL, SQLite, Redis, MongoDB, DuckDB, SQL Server, Dameng dahil) tek arayüzden yönetiyor, üstüne doğal dili SQL'e çeviren bir AI asistan ve AI ajanlarının veritabanına doğrudan erişebilmesi için bir MCP sunucusu ekliyor.",
+        "tech": "Backend Rust ile yazılmış; `sqlx` (genel SQL bağlantıları), `tiberius` (SQL Server), `redis-rs` ve resmi `mongodb` sürücüsü gibi kütüphaneler kullanılıyor. Masaüstü uygulaması Tauri 2 üzerine kurulu, böylece Electron'a göre çok daha küçük bir paket boyutu elde ediliyor; arayüz Vue 3 + TypeScript + shadcn-vue bileşenleriyle, SQL editörü ise CodeMirror 6 ile geliştirilmiş. Ayrı bir Rust tabanlı MCP sunucusu, DBX'te tanımlı veritabanı bağlantılarını Claude Code, Cursor, Windsurf gibi AI ajanlarına araç olarak sunuyor. AI asistan Claude, OpenAI, Ollama veya OpenAI-uyumlu uç noktalarla çalışabiliyor ve ürettiği SQL'i çalıştırmadan önce güvenlik doğrulamasından geçiriyor. Ek olarak ER diyagramı ile şema görselleştirme, SSH tüneli desteği, şifreli bağlantı bilgisi saklama ve büyük sonuç kümeleri için sanal kaydırmalı veri tabloları sunuluyor.",
+        "why": "2026'nın belirleyici teması AI kodlama ajanlarının yapılandırılmış veri erişimine ihtiyaç duyması ve bunun standart yolu olarak MCP'nin (Model Context Protocol) yerleşmesi; MCP sunucusu sunan her araç bu ekosistemin momentumundan doğrudan faydalanıyor. DBX'in 20MB'lık, JVM gerektirmeyen yapısı, DBeaver gibi ağır Java tabanlı araçlardan yorulmuş geliştiriciler için net bir karşıt konumlandırma sağlıyor. Dameng gibi Çin'de kurumsal/kamu ortamlarında Oracle alternatifi olarak kullanılan bir veritabanının desteklenmesi, projenin Çin kurumsal geliştirici pazarında da ilgi görmesini açıklıyor.",
+        "evolve": "Şu an sunulan veri karşılaştırma/migrasyon özellikleri tam teşekküllü bir migrasyon-fark aracına genişletilebilir. AI'ın ürettiği SQL'in yıkıcı olma riski düşünüldüğünde, denetim kaydı (audit log) ve daha ayrıntılı onay adımları eklenmesi kurumsal güveni artırır. MCP sunucusu üzerinden ajanlara verilen erişimin rol bazlı kısıtlanması (salt-okunur ajan erişimi gibi) şu an eksik görünen, güvenlik açısından öncelikli bir alan."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının dış araçlara ve verilere standart bir protokolle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "ER diyagramı (Varlık-İlişki diyagramı)",
+          "def": "Veritabanı tablolarının ve aralarındaki ilişkilerin görsel olarak gösterildiği şema türü."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle yazılmış arayüzleri Rust çekirdeğiyle birleştirip küçük boyutlu masaüstü uygulamaları üretmeyi sağlayan framework."
+        },
+        {
+          "term": "SSH tüneli",
+          "def": "Güvenli olmayan bir ağ bağlantısını SSH protokolü üzerinden şifreli bir kanaldan geçirme yöntemi."
+        },
+        {
+          "term": "Dameng",
+          "def": "Çin merkezli, kurumsal ve kamu ortamlarında sıklıkla Oracle'a alternatif olarak kullanılan ilişkisel veritabanı yönetim sistemi."
+        }
+      ]
+    },
+    {
+      "name": "AlexsJones/llmfit",
+      "url": "https://github.com/AlexsJones/llmfit",
+      "stars": "31.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Yerel bilgisayarında büyük dil modeli çalıştırmak isteyen geliştiriciler, yüzlerce model ve onlarca kuantizasyon varyantı arasından hangisinin kendi RAM'i, CPU'su ve GPU'suyla gerçekten uyumlu ve hızlı çalışacağını kestiremiyor. llmfit, donanımını otomatik tespit edip modelleri uyum, hız, kalite ve bağlam penceresi boyutuna göre puanlayan bir terminal aracı sunuyor.",
+        "tech": "Sistem donanımı (RAM, CPU, GPU/VRAM, çoklu-GPU kurulumları) otomatik tespit ediyor ve modelleri dört boyutta puanlıyor: bellek uyumu, tahmini hız, kalite ve bağlam penceresi. Hız tahminleri, gerçek çalışma zamanı örneklemesi ve topluluktan gelen ölçümlere dayanan bir \"bellek bant genişliği modeli\" ile üretiliyor; her tahmin, dayandığı varsayımları açıkça gösteriyor. MoE (Mixture-of-Experts) mimarilerinde dinamik kuantizasyon seçimi yapabiliyor. Ollama, llama.cpp, MLX, Docker Model Runner ve LM Studio gibi birden çok yerel çalışma zamanını destekliyor. Varsayılan arayüz etkileşimli bir TUI, ayrıca script/ajan tüketimi için `--json` çıktılı klasik bir CLI modu mevcut. Kullanıcılar kendi donanımlarında ölçüm yapıp gerçek tok/s verilerini topluluğa geri katkı olarak sunabiliyor; böylece zamanla tahminler gerçek verilerle yer değiştiriyor. Araç yerel-öncelikli çalışıyor, otomatik telemetri göndermiyor.",
+        "why": "2026'da yerel LLM çalıştırma eğiliminin (gizlilik, maliyet, çevrimdışı kullanım gerekçeleriyle) sürmesi ve aynı anda model/kuantizasyon çeşitliliğinin patlaması, \"bu model benim donanımımda çalışır mı\" sorusunu somut bir sürtünme noktası haline getiriyor. Aracın tek günde 187 yıldız kazanması, viral bir paylaşımın işareti. CLI'nin ajan tarafından tüketilebilir JSON çıktısı sunması, bir AI ajanının kendi görevi için en uygun yerel modeli otomatik seçebilmesine imkan tanıyarak ajan tabanlı iş akışlarına doğal şekilde uyuyor.",
+        "evolve": "Topluluktan toplanan kıyaslama (benchmark) verisinin doğruluğu için bir doğrulama/uzlaşı (consensus) mekanizması eksik görünüyor; kötü niyetli veya hatalı veri girişleri tahminleri bozabilir. Bulut GPU sağlayıcıları için de öneri üretilmesi, aracı sadece \"yerelde çalışır mı\" sorusundan \"hangi bulut instance'ı ekonomik olur\" sorusuna genişletebilir. Şu an CLI/TUI odaklı olan aracın, ajanlar tarafından doğrudan çağrılabilecek yerel bir API/servis moduna sahip olması doğal bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "Kuantizasyon",
+          "def": "Model ağırlıklarını daha az bit ile temsil ederek bellek kullanımını ve hesaplama maliyetini azaltma yöntemi."
+        },
+        {
+          "term": "MoE (Mixture of Experts)",
+          "def": "Girdiye göre modelin yalnızca belirli \"uzman\" alt ağlarının aktifleştiği, hesaplama verimliliği sağlayan model mimarisi."
+        },
+        {
+          "term": "TUI (Terminal User Interface)",
+          "def": "Terminal içinde çalışan, metin tabanlı ama etkileşimli grafik arayüz."
+        },
+        {
+          "term": "Bellek bant genişliği",
+          "def": "Bellek ile işlemci arasında birim zamanda taşınabilen veri miktarı; model çıkarım hızını doğrudan etkiler."
+        },
+        {
+          "term": "tok/s (token/saniye)",
+          "def": "Bir dil modelinin saniyede üretebildiği token sayısını ölçen performans birimi."
+        }
+      ]
+    },
+    {
+      "name": "kenn-io/agentsview",
+      "url": "https://github.com/kenn-io/agentsview",
+      "stars": "5.1k",
+      "language": "Go",
+      "sections": {
+        "serves": "Claude Code, Copilot CLI, Cursor, Codex gibi 40'tan fazla farklı AI kodlama ajanını kullanan geliştiriciler, hangi oturumda ne kadar token/maliyet harcadıklarını ve hangi dosyaların değiştirildiğini takip etmekte zorlanıyor; her araç kendi log formatını kullanıyor ve bulut hesabı olmadan merkezi bir görünürlük yok. AgentsView, bu farklı araçların yerel oturum kayıtlarını tarayıp tek bir arama ve analitik arayüzünde birleştiriyor.",
+        "tech": "Go ile yazılmış backend, ana arşiv olarak SQLite kullanıyor; ekip panoları/analitik için opsiyonel PostgreSQL veya DuckDB yansıtması destekleniyor. Arayüz Svelte 5 + Vite + TypeScript ile geliştirilmiş, macOS/Windows için Tauri masaüstü sarmalayıcısı mevcut. Oturum içeriklerinde SQLite'ın FTS5 motoruyla tam metin arama, opsiyonel olarak OpenAI-uyumlu embedding'lerle semantik arama yapılabiliyor. LiteLLM fiyatlandırma verileriyle (çevrimdışı yedek dahil) otomatik maliyet hesaplama, prompt-caching'i hesaba katan model bazlı maliyet analizi sunuluyor. Salt-okunur sorgularla yazma işlemlerini ayıran ayrı bir daemon mimarisi kullanılıyor.",
+        "why": "AI kodlama ajanlarının 2026'da günlük geliştirme iş akışına iyice yerleşmesiyle birlikte \"bu ajanlar bana ne kadara mal oluyor, zamanımı nasıl kullanıyorum\" sorusu somut ve gündelik bir ihtiyaç haline geldi; ekipler ajan harcamalarını izlemek istiyor. Bulut hesabı gerektirmeyen yerel-öncelikli yaklaşımı, gizlilik hassasiyeti olan bireysel geliştiriciler ve şirketler için cazip. 40'tan fazla ajanı tek konsolda toplaması, araç yorgunluğu yaşayan geliştiricilere \"hepsi bir arada\" bir çözüm vaat ediyor.",
+        "evolve": "Takım/organizasyon seviyesinde bütçe limiti ve aşım uyarısı gibi mekanizmalar eklenmesi kurumsal kullanım için değer katar. Araç şu an ağırlıklı olarak gözlem/izleme odaklı; toplanan verilerin \"hangi promptlar daha verimli\" gibi somut önerilere dönüştürülmesi doğal bir sonraki adım olabilir. Semantik arama opsiyonel bir dış embedding API'sine bağımlı; tamamen yerel/çevrimdışı bir embedding seçeneği eklenmesi gizlilik iddiasını güçlendirir."
+      },
+      "glossary": [
+        {
+          "term": "FTS5 (Full-Text Search 5)",
+          "def": "SQLite veritabanının metin içinde hızlı arama yapılmasını sağlayan yerleşik tam metin arama motoru."
+        },
+        {
+          "term": "Semantik arama",
+          "def": "Kelimelerin birebir eşleşmesi yerine anlamsal benzerliğe dayanan arama yöntemi."
+        },
+        {
+          "term": "Embedding",
+          "def": "Metni, anlamsal benzerliğin sayısal olarak ölçülebildiği bir vektöre dönüştürme işlemi."
+        },
+        {
+          "term": "Daemon",
+          "def": "Arka planda sürekli çalışan, doğrudan kullanıcı etkileşimi gerektirmeyen sistem süreci."
+        },
+        {
+          "term": "Prompt caching",
+          "def": "Aynı veya benzer prompt parçalarının tekrar işlenmemesi için önbelleğe alınması; maliyet ve hız avantajı sağlar."
+        }
+      ]
+    },
+    {
+      "name": "CodebuffAI/freebuff",
+      "url": "https://github.com/CodebuffAI/freebuff",
+      "stars": "9.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI destekli kodlama araçlarının büyük çoğunluğu abonelik, kredi veya API anahtarı gerektiriyor; bu da öğrenciler, hobi geliştiricileri ve bazı bölgelerdeki kullanıcılar için bir giriş bariyeri oluşturuyor. Freebuff, hiçbir ödeme bilgisi istemeden beş farklı ürün (Desktop, CLI, Web, Cloud, Chat) üzerinden ücretsiz AI destekli kodlama, uygulama geliştirme ve araştırma erişimi sunuyor.",
+        "tech": "Freebuff, açık kaynaklı çoklu-ajan çatısı Codebuff üzerine inşa edilmiş; context toplama, planlama, kod değiştirme, araç çalıştırma ve sonuç doğrulama için uzmanlaşmış ayrı ajanlar kullanıyor. Dosya-bulucu ajanlar kod tabanında ilgili bölümleri haritalıyor, implementasyon ajanları değişiklikleri yapıp test/lint kontrollerini çalıştırıyor, araştırma ajanları ise gerçek bir tarayıcıda dokümantasyona göz atabiliyor. Masaüstü sürümü, paralel çalışan ajanları birbirinden izole workspace'lerde çalıştırıyor. Proje Bun ile derlenen bir TypeScript monorepo'su; sandbox'lı çalışma ortamları ve tarayıcı otomasyonu içeriyor. DeepSeek V4, GPT-5.6 Luna, MiniMax M3 gibi modellerden oluşan küratörlü bir model kataloğu sunuluyor; altyapı, orkestrasyon ve SDK (`@codebuff/sdk`) doğrudan Codebuff'tan geliyor.",
+        "why": "\"Abonelik yorgunluğu\" yaşayan geliştirici kitlesine, metin reklamla finanse edilen tamamen ücretsiz bir AI kodlama deneyimi vaat etmesi doğrudan ilgi çekiyor. Codebuff'ın kendi çoklu-ajan altyapısını \"ücretsiz vitrin\" ürünü olarak sunması, hem SDK'sına farkındalık hem de kullanıcı tabanı kazandırıyor — ücretsiz ürünün ücretli/kurumsal altyapıya trafik çektiği klasik bir strateji. Beş farklı ürün formunun (masaüstü, CLI, web, GitHub entegrasyonlu bulut, sohbet) aynı anda sunulması, farklı kullanım alışkanlıklarına sahip geniş bir kitleye tek seferde ulaşmayı sağlıyor.",
+        "evolve": "Metin reklamla finanse edilen modelin, özellikle yüksek token tüketen ajan iş akışlarında uzun vadeli sürdürülebilirliği belirsiz; kullanım arttıkça kısıtlamalar sertleşebilir. Şu an desteklenmeyen bölge/VPN kullanıcıları için günde altı saatlik bir sınır uygulanıyor — bu adil kullanım politikasının daha şeffaf hale getirilmesi güven inşa eder. Kurumsal/takım kullanımına açılmak isteniyorsa, ajanın attığı her adımın izlenebildiği bir denetim kaydı (audit log) eklenmesi gerekir."
+      },
+      "glossary": [
+        {
+          "term": "Çoklu-ajan çatısı (multi-agent framework)",
+          "def": "Birden fazla uzmanlaşmış AI ajanının birlikte çalışarak karmaşık görevleri tamamladığı sistem mimarisi."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Kodun ana sistemden izole, güvenli bir ortamda çalıştırılmasını sağlayan izole çalışma alanı."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla projenin/paketin tek bir git deposunda birlikte tutulduğu geliştirme yapısı."
+        },
+        {
+          "term": "SDK (Software Development Kit)",
+          "def": "Geliştiricilerin bir platform veya sistem için uygulama geliştirmesini sağlayan araç ve kütüphane paketi."
+        },
+        {
+          "term": "Freemium (tersine çevrilmiş)",
+          "def": "Normalde temel özelliklerin ücretsiz, gelişmişlerin ücretli olduğu modelin burada tamamen ücretsiz ama reklamla finanse edilen haliyle kullanılması."
+        }
+      ]
+    }
+  ]
+}
