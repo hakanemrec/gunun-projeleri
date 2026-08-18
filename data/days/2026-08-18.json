@@ -1,0 +1,165 @@
+{
+  "date": "2026-08-18",
+  "projects": [
+    {
+      "name": "usestrix/strix",
+      "url": "https://github.com/usestrix/strix",
+      "stars": "54.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "Klasik sızma testi (**pentesting**) süreci ya pahalı ve yavaş bir insan işidir, ya da statik analiz araçlarının ürettiği devasa **false positive** (yanlış pozitif) yığınıyla boğuşmaktır. Strix, açık kaynak bir otonom AI ajan sürüsü kullanarak uygulamalardaki güvenlik açıklarını gerçekten **istismar ederek** kanıtlıyor — \"bulundu\" demek yerine çalışan bir **PoC** (Proof of Concept) üretiyor. Yani geliştiricinin önüne teorik bir uyarı değil, gerçekten çalışan bir saldırı örneği koyuyor.",
+        "tech": "Mimarinin kalbinde bir **multi-agent orkestrasyon** sistemi var: keşif (reconnaissance), istismar (exploitation) ve sızma-sonrası (post-exploitation) adımlarını, gerçek bir kırmızı takım gibi koordine olan uzman ajanlar yürütüyor. Ajanlar HTTP trafiğini yakalamak için Caido, tarayıcı otomasyonu için Playwright kullanıyor; tüm istismarlar izole **Docker sandbox** içinde çalışıyor ki gerçek sistemlere zarar verilmesin. Model seçimini esnek tutmak için LiteLLM tabanlı bir **LLM abstraction layer** var — OpenAI, Anthropic, Google Vertex AI veya yerel modellerden biri seçilebiliyor. Sonuçlar terminalde bir **TUI** (Terminal UI) ile, isteğe bağlı olarak da yerel bir web panelinde gösteriliyor; **CI/CD** (GitHub Actions) entegrasyonu sayesinde her PR'da otomatik güvenlik taraması da yapılabiliyor.",
+        "why": "2026'da \"agentic security\" (ajan tabanlı güvenlik) DevSecOps dünyasının en sıcak başlıklarından biri; ekipler artık gürültülü statik tarama çıktısı yerine doğrulanmış, çalışan kanıt istiyor. Strix'in **OWASP Top 10** ve iş mantığı açıklarını birlikte hedeflemesi, hem geliştiricilere hem güvenlik ekiplerine hitap etmesini sağlıyor. Ticari bulut sürümünün (app.strix.ai) SOC 2, ISO 27001, PCI DSS gibi uyumluluk raporlaması sunması, projenin arkasında ciddi bir yol haritası ve muhtemelen yatırım olduğuna işaret ediyor — bu da açık kaynak tarafına güven ve momentum kazandırıyor. Ayrıca Claude Code ve Cursor gibi kodlama ajanlarına \"skill\" olarak eklenebilmesi, mevcut ajan-araç ekosistemi dalgasına tam oturuyor.",
+        "evolve": "Şu an tamamen çevrimdışı/hava boşluklu (air-gapped) kurumsal kullanım tam desteklenmiyor; yerel model desteği var ama olgunlaşmaya muhtaç. Mobil ve IoT gibi hedef türlerine genişleme, ürünü daha kapsamlı hale getirebilir. Bulunan açıkların otomatik olarak düzeltme PR'ı açması (auto-fix-as-PR) hâlâ ticari katmanda; bu yeteneğin açık kaynağa daha fazla sızması, ekiplerin bulgu-yorgunluğunu azaltabilir. Uyumluluk ekipleri için sandbox içindeki her adımın daha ayrıntılı denetim izi (audit trail) tutması da faydalı olurdu."
+      },
+      "glossary": [
+        {
+          "term": "Pentesting (sızma testi)",
+          "def": "Bir sistemin güvenlik açıklarını, gerçek bir saldırgan gibi davranarak izinli şekilde test etme yöntemi."
+        },
+        {
+          "term": "False positive (yanlış pozitif)",
+          "def": "Bir tarama aracının aslında zararsız olan bir durumu güvenlik açığı olarak işaretlemesi."
+        },
+        {
+          "term": "PoC (Proof of Concept)",
+          "def": "Bir güvenlik açığının gerçekten istismar edilebildiğini gösteren, çalışan küçük bir örnek/kanıt."
+        },
+        {
+          "term": "Multi-agent orkestrasyon",
+          "def": "Birden fazla yapay zeka ajanının, farklı görevler üstlenerek koordineli biçimde birlikte çalışmasını yöneten sistem."
+        },
+        {
+          "term": "LLM abstraction layer",
+          "def": "Farklı yapay zeka model sağlayıcılarını (OpenAI, Anthropic vb.) tek bir ortak arayüz üzerinden kullanılabilir kılan yazılım katmanı."
+        },
+        {
+          "term": "Docker sandbox",
+          "def": "Bir programın, ana bilgisayar sistemine zarar veremeyecek şekilde izole bir konteyner içinde çalıştırılması."
+        },
+        {
+          "term": "TUI (Terminal UI)",
+          "def": "Grafik arayüz yerine terminal/komut satırı içinde çalışan, yine de görsel öğeler içeren kullanıcı arayüzü."
+        },
+        {
+          "term": "OWASP Top 10",
+          "def": "Web uygulamalarında en sık karşılaşılan on güvenlik açığı türünü listeleyen, sektörün referans aldığı standart liste."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak test edilip (Continuous Integration) yayına alınmasını (Continuous Deployment) sağlayan süreç."
+        }
+      ]
+    },
+    {
+      "name": "volcengine/OpenViking",
+      "url": "https://github.com/volcengine/OpenViking",
+      "stars": "28.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Yapay zeka ajanlarının hafızasını, bilgi tabanını ve becerilerini (skills) yönetmek için kullanılan klasik **vektör veritabanı**'ları birer kara kutu gibi çalışır: bir bilginin neden getirildiğini görmek zordur ve gereksiz yere çok **token** harcanır. OpenViking, tüm bu bağlamı (memory, knowledge, skills) opak bir vektör sorgusu yerine, `viking://` adında özel bir **URI** protokolüyle gezilebilen bir **dosya sistemi** gibi kurguluyor — ajan artık `ls`, `tree`, `find` gibi tanıdık komutlarla bağlamında \"gezinebiliyor\".",
+        "tech": "Verinin işlenmesi üç katmanlı bir yükleme sistemiyle yapılıyor: **L0** (~100 token'lık özet, alaka filtrelemesi için), **L1** (~2 bin token'lık genel bakış, planlama için) ve **L2** (gerekmedikçe yüklenmeyen tam içerik). Bu yaklaşım, her sorguda tüm veriyi çekmek yerine sadece gerektiği kadar detayı getirerek maliyeti düşürüyor. Sistem üç ayrı modülden oluşuyor: oturum sonrası kullanıcı tercihlerini çıkaran **Memory**, dizin-bazlı derinlemesine arama yapan **Knowledge RAG** (Retrieval-Augmented Generation), ve URI referanslarıyla deterministik biçimde çağrılan **Skills**. Performans kritik arka uç Rust ile yazılmış (düşük gecikmeli dizin gezinimi için), Python istemci kütüphanesi de sunuluyor; Claude Code, Cursor, LangChain/LangGraph ve **MCP** (Model Context Protocol) istemcileriyle entegre çalışıyor. Proje, VLDB 2026'da yayımlanan akademik VikingMem makalesindeki fikirleri hayata geçiriyor.",
+        "why": "OpenViking, ByteDance'in bulut kolu Volcengine tarafından geliştiriliyor — yani arkasında ciddi bir altyapı oyuncusu var. Ajanların çok-turlu (multi-turn) konuşmalarının uzayıp token maliyetlerinin can sıtıcı hale geldiği bir dönemde, gerçek bir soruna gerçek sayılarla çözüm sunuyor: yayımlanan kıyaslamalarda kullanıcı hafızası doğruluğu %24'ten %80-83'e çıkarken, giriş token kullanımı %34-91 azalıyor. \"Ajan hafızası\" (agent memory) konusu 2026 boyunca en çok konuşulan başlıklardan biri oldu ve OpenViking bunu doğrudan bir **veritabanı** problemi olarak çerçeveleyip yeni bir kategori açıyor.",
+        "evolve": "Proje henüz erken aşamada; 139 açık issue, hâlâ şekillenmekte olan bir topluluk katkı modeline işaret ediyor. Çok-kullanıcılı kurumsal özellikler şu an sadece ticari SaaS sürümünde mevcut — bunların açık kaynak sürümüne de kademeli olarak taşınması benimsenmeyi hızlandırabilir. Tamamen çevrimdışı çalışma (yerel Ollama desteği var ama sınırlı) olgunlaştırılabilir. CLI ağaç görünümünün ötesinde görsel bir gözlemlenebilirlik/izleme (observability) paneli, sorgu yörüngelerini hata ayıklamayı kolaylaştırır ve benimsenmeyi artırır."
+      },
+      "glossary": [
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metinleri sayısal vektörlere dönüştürüp anlamsal benzerliğe göre arama yapmayı sağlayan veritabanı türü."
+        },
+        {
+          "term": "URI",
+          "def": "Bir kaynağı (dosya, adres, veri parçası) benzersiz şekilde tanımlayan standart adresleme biçimi."
+        },
+        {
+          "term": "Token",
+          "def": "Büyük dil modellerinin metni işlerken kullandığı, kelime veya kelime parçası büyüklüğündeki en küçük işlem birimi."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir yapay zeka modelinin, cevap üretmeden önce ilgili belgeleri veritabanından çekip bu belgelere dayanarak yanıt vermesi yöntemi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka ajanlarının dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Multi-turn (çok-turlu konuşma)",
+          "def": "Bir yapay zeka ile kullanıcı arasında art arda birden fazla mesaj alışverişiyle süren, bağlamın korunduğu konuşma."
+        }
+      ]
+    },
+    {
+      "name": "liustack/modlens",
+      "url": "https://github.com/liustack/modlens",
+      "stars": "2.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "DeepSeek ve GLM gibi ucuz ve hızlı ama metin-odaklı (text-only) dil modelleri, görseli \"göremez\" — oysa geliştiriciler kodlama ajanlarına sürekli ekran görüntüsü, hata mesajı ekranı veya diyagram yapıştırıyor. ModLens, yapıştırılan görseli **OCR** metniyle, yerleşim (layout) bilgisiyle ve anlamsal ilişkilerle dolu yapılandırılmış bir JSON'a çevirerek bu metin-odaklı modellere görseli \"okutuyor\" — model artık halüsinasyon görmek yerine gerçek görsel kanıta dayanarak cevap veriyor.",
+        "tech": "ModLens, ajan iş akışına ağır bir sarmalayıcı (wrapper) veya arka planda çalışan bir servis olarak değil, ince bir **plugin/skill** olarak ekleniyor — proje kendini \"piyasadaki en hafif dokunuş\" olarak tanımlıyor: kurulum konfigürasyonu yok, Claude Code ya da Codex gibi araçlarda zaten var olan kimlik bilgilerini yeniden kullanıyor. Görsel işlemek için birbirine yedekli (failover) on farklı \"görme motoru\" kaynağı arasından geçiş yapabiliyor: Gemini API, OpenAI-uyumlu uç noktalar, Anthropic, Claude CLI, Kimi CLI ve dört yerel harness CLI'ı. Tüm bunlar tek bir `modlens_read_image` araç çağrısı arkasında gizleniyor. Teknik olarak TypeScript/Node.js üzerine, pnpm ve Vite ile geliştirilmiş; **npm paketi** olarak tek komutla kurulabiliyor.",
+        "why": "2026'da maliyet baskısı arttıkça kodlama ajanları giderek daha ucuz, metin-odaklı modellere (DeepSeek-V4-Flash, GLM varyantları) kayıyor — ama bu modeller çok-modlu (multimodal) yeteneği kaybediyor. ModLens tam bu boşluğu, pahalı bir çok-modlu modele geçmeye gerek bırakmadan dolduruyor. Aynı zamanda \"agent skills/plugins\" ekosisteminin (Claude Skills, Cursor rules gibi) yükselen dalgasına biniyor: tek geliştiricili, dar kapsamlı ama iyi yürütülmüş bir aracın bile bu ekosistemde hızla ilgi görebildiğinin (2,9k yıldız, 77 fork) iyi bir örneği.",
+        "evolve": "Proje şu an dışarıdan **PR** (pull request) katkısı kabul etmiyor — tek yazarlı bakım modeli güvenilirliği artırsa da uzun vadede ekosistem büyümesini sınırlayabilir. Görme motoru gecikmesi kaynağa göre büyük fark gösteriyor (API tabanlı 5-10 saniye, CLI yedeği 15-45 saniye); cihaz-üstü bir OCR seçeneği hız tutarlılığını artırabilir. Aynı makinede birden fazla ajan çalıştığında paylaşılan CLI kotalarında çakışma riski var — daha akıllı bir kota dağıtımı gerekiyor. Statik görsellerin ötesinde video/ekran kaydı gibi kanıt türlerine genişlemek de doğal bir sonraki adım olabilir."
+      },
+      "glossary": [
+        {
+          "term": "OCR (Optical Character Recognition)",
+          "def": "Görsel içindeki yazıyı otomatik olarak tanıyıp düzenlenebilir metne çeviren teknoloji."
+        },
+        {
+          "term": "Plugin / Skill",
+          "def": "Bir yapay zeka ajanına veya yazılıma, temel sistemi değiştirmeden yeni bir yetenek ekleyen takılabilir modül."
+        },
+        {
+          "term": "Failover",
+          "def": "Birincil kaynak çalışmadığında sistemin otomatik olarak yedek bir kaynağa geçmesi."
+        },
+        {
+          "term": "npm paketi",
+          "def": "JavaScript/Node.js dünyasında kod ve araçların paylaşıldığı, tek komutla kurulabilen standart paket birimi."
+        },
+        {
+          "term": "Çok-modlu (multimodal) model",
+          "def": "Sadece metni değil, görsel, ses gibi farklı veri türlerini de işleyebilen yapay zeka modeli."
+        },
+        {
+          "term": "PR (Pull Request)",
+          "def": "Bir geliştiricinin yaptığı kod değişikliğini, ana projeye eklenmesi için gönderdiği öneri/istek."
+        }
+      ]
+    },
+    {
+      "name": "amruthpillai/reactive-resume",
+      "url": "https://github.com/amruthpillai/reactive-resume",
+      "stars": "40.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Çoğu online özgeçmiş (CV) oluşturucu, içeriği bir ödeme duvarının arkasına kilitler ya da kullanıcı verisini toplar. Reactive Resume, tamamen ücretsiz, açık kaynak ve gizlilik odaklı bir özgeçmiş oluşturucu: kimse verinizi almadan, para ödemeden profesyonel bir CV hazırlayıp birden fazla formatta dışa aktarabiliyorsunuz — isterseniz de tamamını kendi sunucunuzda (**self-hosting**) çalıştırabiliyorsunuz.",
+        "tech": "Ön yüzde TanStack Start (React 19 + Vite), Tailwind CSS ve shadcn tarzı bileşen kütüphanesi; durum yönetimi Zustand ve TanStack Query ile yapılıyor. Arka uçta Node.js, veri katmanında **ORM** (Drizzle ORM) üzerinden PostgreSQL, istemci-sunucu iletişiminde tip-güvenli bir RPC katmanı olan ORPC, kimlik doğrulamada ise passkey ve **2FA** destekli Better Auth kullanılıyor. Tüm sistem Docker ile self-hosting için paketlenmiş; isteğe bağlı olarak SeaweedFS üzerinden **S3-uyumlu depolama** eklenebiliyor. PDF çıktısı, sunucuya yük bindirmemek için tamamen istemci tarafında (@react-pdf/renderer ile) üretiliyor. Son güncellemelerle OpenAI, Gemini ve Claude destekli isteğe bağlı bir yapay zeka içerik önerisi özelliği de eklendi.",
+        "why": "2026'da veri gizliliğine duyulan güvensizlik arttıkça, kendi sunucunuzda çalıştırabildiğiniz, izleme (tracking) içermeyen araçlar özel bir değer kazanıyor. Reactive Resume'un hiçbir ücretli katmanı olmaması ve verinin tam dışa aktarma/silme imkânı sunması gerçek bir güven inşa ediyor. Ayrıca hedef kitlesi sadece geliştiriciler değil — iş arayan herkes — bu da onu çoğu trend geliştirici aracından daha geniş bir kullanıcı tabanına yayıyor ve yeni bir lansman olmamasına rağmen (5.741 commit'lik olgun bir proje) günde 255 yıldız gibi sürdürülebilir bir ivme kazanmasını açıklıyor.",
+        "evolve": "PDF üretiminin tamamen istemci tarafında olması, tarayıcı ve cihaza göre tutarsız sonuçlara yol açabiliyor — sunucu tarafı render'ı yedek seçenek olarak eklemek faydalı olurdu. Self-hosting hâlâ Docker + PostgreSQL + isteğe bağlı S3 bilgisi gerektiriyor; tek tıkla dağıtım (one-click deploy) düğmesi bu eşiği düşürebilir. Yapay zeka özellikleri tamamen dışarıdan sağlanan API anahtarlarına bağlı — projenin gizlilik odaklı kimliğine daha uygun, yerel/gömülü bir model seçeneği eklenebilir. Ayrıca özgeçmişlerin otomatik işe alım filtrelerinden (ATS) geçme olasılığını puanlayan bir özellik, kullanıcılar için somut bir katma değer olurdu."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosting",
+          "def": "Bir yazılımı üçüncü taraf bir bulut hizmeti yerine kendi sunucunuzda kurup çalıştırma."
+        },
+        {
+          "term": "ORM (Object-Relational Mapping)",
+          "def": "Veritabanı tablolarıyla programlama dilindeki nesneler arasında otomatik dönüşüm yapan katman."
+        },
+        {
+          "term": "2FA (İki Faktörlü Doğrulama)",
+          "def": "Şifreye ek olarak ikinci bir doğrulama adımı (kod, uygulama vb.) isteyen giriş güvenliği yöntemi."
+        },
+        {
+          "term": "S3-uyumlu depolama",
+          "def": "Amazon S3 ile aynı arayüzü kullanan, dosya/nesne saklamaya yarayan bulut veya self-hosted depolama sistemi."
+        },
+        {
+          "term": "ATS (Applicant Tracking System)",
+          "def": "İş başvurularını otomatik olarak tarayıp filtreleyen, şirketlerin kullandığı yazılım sistemi."
+        }
+      ]
+    }
+  ]
+}
