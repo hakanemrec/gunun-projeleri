@@ -1,0 +1,203 @@
+{
+  "date": "2026-08-19",
+  "projects": [
+    {
+      "name": "akitaonrails/ai-memory",
+      "url": "https://github.com/akitaonrails/ai-memory",
+      "stars": "2.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "AI kodlama ajanları (Claude Code, Codex, Cursor vb.) her oturum bittiğinde bağlamı unutur; geliştirici her seferinde proje mimarisini, denenip başarısız olan yaklaşımları ve açık soruları yeniden anlatmak zorunda kalır. **ai-memory**, oturumlar ve farklı ajan araçları arasında paylaşılan, kalıcı bir hafıza katmanı sunarak bu tekrar sürtünmesini ortadan kaldırıyor.",
+        "tech": "Rust ile yazılmış tek bir binary, hem **MCP** protokolü hem de HTTP sunucusu olarak çalışıyor (Axum framework). Kaynak veri git ile versiyonlanan markdown wiki sayfaları; sorgulamada SQLite üzerinde **FTS5** tam metin arama, isim/varlık eşleştirme ve isteğe bağlı **embedding** tabanlı benzerlik araması bir arada kullanılıyor. LLM kullanımı tamamen opsiyonel: LLM olmadan da kural tabanlı özetleme ve FTS5 araması çalışıyor; bir LLM (Anthropic, OpenAI, Voyage, Gemini) eklenirse özetler daha akıcı hale geliyor. Oturum bitişinde lifecycle **hook**'ları devreye girip gözlemleri **sanitize** edip markdown sayfasına \"derliyor\"; sonraki oturum başlarken bu özet otomatik olarak yeni ajanın bağlamına ekleniyor — buna proje \"bounded handoff\" diyor.",
+        "why": "2026'da aynı anda birden fazla AI kodlama ajanı (Claude Code, Cursor, Codex, Devin vb.) kullanan geliştiriciler artıyor, ama her araç kendi hafızasını ayrı tutuyor ve aralarında taşınabilir bir devir teslim mekanizması yok. ai-memory tam bu boşluğu dolduruyor; **vendor-agnostic** (araçtan bağımsız) olması ve MCP standardını kullanarak neredeyse her ajanla entegre olabilmesi, projeyi hızla popüler kılan asıl sebep.",
+        "evolve": "Şu an tüm yazma işlemleri tek bir SQLite writer üzerinden seri şekilde geçiyor; bu da çok kullanıcılı veya yüksek trafikli kurulumlarda darboğaz yaratabilir — dağıtık/cluster desteği doğal bir sonraki adım. Ayrıca embedding tabanlı arama opsiyonel kaldığı için varsayılan kurulumda semantik arama kalitesi FTS5'in sınırlarında kalıyor; hafif, yerel bir embedding modelinin varsayılana eklenmesi \"LLM'siz\" deneyimi daha da güçlendirebilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "FTS5",
+          "def": "SQLite veritabanının hızlı tam metin arama yapmasını sağlayan dahili bir eklenti/motor."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını sayısal bir vektöre dönüştürerek, anlamca benzer içeriklerin karşılaştırılabilmesini sağlayan teknik."
+        },
+        {
+          "term": "Hook (kanca)",
+          "def": "Bir programın belirli anlarında (örn. oturum başı/sonu) otomatik olarak devreye giren, önceden tanımlanmış kod parçası."
+        },
+        {
+          "term": "Sanitize (arındırma)",
+          "def": "Ham veriden hassas veya gereksiz bilgiyi ayıklayarak temiz, güvenli bir hale getirme işlemi."
+        },
+        {
+          "term": "Vendor-agnostic",
+          "def": "Belirli bir şirketin veya aracın ürününe bağımlı olmadan, farklı sağlayıcılarla da çalışabilen yazılım tasarımı."
+        }
+      ]
+    },
+    {
+      "name": "chaitanyagiri/munder-difflin",
+      "url": "https://github.com/chaitanyagiri/munder-difflin",
+      "stars": "2.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Birden fazla AI ajan CLI aracını (Claude Code, Gemini, Codex, Grok vb.) ayrı ayrı terminal sekmelerinde açıp takip etmek yorucu ve koordinasyonsuz bir iş. **Munder Difflin**, bu ajanları görsel bir \"sanal ofis\"te bir araya getirip, aralarında mesajlaşma ve hafıza paylaşımı sağlayan, insanın gerektiğinde araya girebildiği bir koordinasyon katmanı sunuyor.",
+        "tech": "**Electron** + React masaüstü uygulaması; ofis görselleştirmesi Pixi.js ile 2D pixel-art olarak render ediliyor, terminaller ise xterm.js ve node-**PTY** ile gerçek terminal süreçleri olarak çalıştırılıyor. Ajanlar birbiriyle doğrudan konuşmuyor; yerel bir git deposundaki düz metin dosyalarından oluşan bir \"mailbox\" (posta kutusu) sistemi üzerinden mesajlaşıyorlar — bir router mesajları doğru gelen kutusuna yönlendiriyor. \"GOD agent\" adlı bir **orkestratör** süreç rutin kararları otonom çözüyor, harcama veya geri alınamaz işlem gibi kritik anlarda kararı insana **escalate** ediyor. Git çakışmalarını önlemek için sadece ana süreç commit atıyor; ajanlar version control'e doğrudan dokunmuyor, paralel çalışan ajanlar ise ayrı **git worktree**'lerde izole ediliyor.",
+        "why": "2026'da tek bir AI ajanla çalışmak yerine birden fazla ajana paralel görev dağıtmak yaygınlaşıyor, ama bu ajanları yönetmek karmaşık hale geliyor. Munder Difflin'in \"Animal Crossing tarzı\" pixel-art ofis estetiğiyle bu teknik karmaşıklığı yumuşatması, hem eğlenceli hem pratik bir çözüm sunduğu için ilgi görüyor; özellikle kullanıcı uzaktayken ajanların çalışmaya devam edip yalnızca kritik kararlarda insanı beklemesi fikri geliştirici topluluğunda merak uyandırıyor.",
+        "evolve": "Proje henüz \"çalışan prototip\" (v0.4.4) aşamasında; ölçek büyüdükçe dosya tabanlı mailbox sisteminin performans sınırlarına gelmesi olası. Token bütçeleri ve maliyet takibi mevcut ama daha granüler bir politika motoru (örneğin belirli işlemleri tamamen yasaklama) eklenmesi güven açısından faydalı olur; Slack dışındaki sohbet entegrasyonlarının (Discord, Teams) genişletilmesi de yol haritasında."
+      },
+      "glossary": [
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML/CSS/JS) masaüstü uygulaması geliştirmeyi sağlayan bir çatı (framework)."
+        },
+        {
+          "term": "PTY (Pseudo-Terminal)",
+          "def": "Bir programın gerçek bir terminal gibi davranan, yazılımsal olarak oluşturulmuş sanal terminal arayüzü."
+        },
+        {
+          "term": "Orkestratör",
+          "def": "Birden fazla bileşenin veya sürecin ne zaman, hangi sırayla çalışacağını yöneten merkezi kontrol birimi."
+        },
+        {
+          "term": "Escalate (yükseltme)",
+          "def": "Otomatik sistemin çözemediği veya riskli bulduğu bir kararı, onay için bir üst mercie (burada insana) iletmesi."
+        },
+        {
+          "term": "Git worktree",
+          "def": "Aynı git deposunun birden fazla klasörde, birbirinden bağımsız dallar üzerinde eşzamanlı çalışılmasını sağlayan özellik."
+        },
+        {
+          "term": "Circuit breaker",
+          "def": "Bir sistemin anormal/riskli davranış sergilediğinde otomatik olarak durdurulmasını veya sınırlandırılmasını sağlayan güvenlik mekanizması."
+        }
+      ]
+    },
+    {
+      "name": "mukul975/Anthropic-Cybersecurity-Skills",
+      "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+      "stars": "29.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "AI ajanları kod yazabiliyor ve web'de arama yapabiliyor, ama deneyimli bir güvenlik analistinin \"bu durumda hangi tekniği, ne zaman, hangi ön koşullarla kullanmalıyım\" bilgisine sahip değil. Bu proje, 817 adet yapılandırılmış siber güvenlik **skill**'ini (beceri tanımını) makine tarafından okunabilir formatta sunarak ajanlara uzman seviyesinde rehberlik kazandırıyor.",
+        "tech": "Her skill, **YAML front-matter** (isim, açıklama, alan, framework ID'leri) ve ardından \"Ne zaman kullanılır\", \"Ön koşullar\", \"İş akışı\", \"Doğrulama\" bölümlerinden oluşan bir Markdown dosyası olarak tanımlanmış. Ajanlar önce sadece front-matter'ı (~30 token) tarayıp ilgili skill'leri buluyor, sonra yalnızca uygun olanların tam içeriğini (500-2000 token) yüklüyor — bu \"kademeli açığa çıkarma\" (**progressive disclosure**) yaklaşımı, **context window**'un boşa harcanmasını önlüyor. Skill'ler; **MITRE ATT&CK**, NIST CSF, MITRE D3FEND, NIST AI RMF, MITRE ATLAS ve MITRE F3 gibi altı endüstri standardı çerçevesiyle çapraz eşleştirilmiş.",
+        "why": "Siber güvenlik alanında nitelikli işgücü açığı büyürken, AI ajanlarının güvenlik görevlerinde \"junior seviyesinde\" kalması pratik bir sorun haline geldi. Anthropic'in kendi \"Skills\" standardını (agentskills.io) kullanan bu proje, Claude Code, GitHub Copilot, Cursor gibi araçlarla doğrudan uyumlu olması ve kapsamının devasa büyüklüğü (817 skill, 29 güvenlik alanı) sayesinde hızla popülerlik kazanıyor.",
+        "evolve": "Ofansif teknikler (**C2** emülasyonu, phishing simülasyonu) için \"yalnızca yetkili ve yasal kullanım\" uyarısı var, ama teknik bir erişim kısıtlaması (örn. lisans/izin bazlı kilitleme) yok — kötüye kullanım riski büyük ölçüde topluluk moderasyonuna bırakılmış durumda. Ayrıca skill'lerin güncel kalması için (ATT&CK ve CSF gibi çerçeveler sık güncellenir) sürdürülebilir bir bakım süreci kritik önem taşıyacak."
+      },
+      "glossary": [
+        {
+          "term": "Skill (AI ajan becerisi)",
+          "def": "Bir AI ajanının belirli bir görevi nasıl yapacağını adım adım anlatan, yapılandırılmış talimat dosyası."
+        },
+        {
+          "term": "YAML front-matter",
+          "def": "Bir Markdown dosyasının başına eklenen, dosya hakkında yapılandırılmış meta bilgi (başlık, etiket vb.) içeren bölüm."
+        },
+        {
+          "term": "Progressive disclosure",
+          "def": "Bilginin tamamını bir kerede değil, ihtiyaç oldukça kademeli olarak sunma tasarım ilkesi."
+        },
+        {
+          "term": "Context window",
+          "def": "Bir yapay zeka modelinin bir seferde işleyebildiği maksimum metin (token) miktarı."
+        },
+        {
+          "term": "MITRE ATT&CK",
+          "def": "Gerçek dünyadaki siber saldırı taktik ve tekniklerini kataloglayan, sektörde yaygın kullanılan bir bilgi tabanı."
+        },
+        {
+          "term": "C2 (Command and Control)",
+          "def": "Saldırganların ele geçirdikleri sistemleri uzaktan yönetmek için kullandığı komuta-kontrol altyapısı."
+        }
+      ]
+    },
+    {
+      "name": "pipeshub-ai/pipeshub-ai",
+      "url": "https://github.com/pipeshub-ai/pipeshub-ai",
+      "stars": "3.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Kurumsal veriler (Slack, Google Workspace, Jira, Notion, GitHub vb.) onlarca farklı sistemde dağınık durur; çalışanlar bilgiye ulaşmak için sistemden sisteme gezinmek zorunda kalır. **PipesHub**, bu verileri erişim izinlerini koruyarak tek bir aranabilir katmanda birleştiren, kaynağını gösteren (**citation**) açıklanabilir bir kurumsal arama ve ajan otomasyonu platformu sunuyor.",
+        "tech": "Next.js/React tabanlı arayüzün arkasında çok parçalı bir backend var: ilişkileri modellemek için Neo4j veya ArangoDB (**knowledge graph**), semantik arama için Qdrant/OpenSearch/Redis (**vector database**), doküman deposu için MongoDB, mesajlaşma için Kafka/Redis Streams, arka plan görevleri için Celery kuyruğu. Modellere erişim LangChain üzerinden soyutlanmış, böylece istenen herhangi bir LLM sağlayıcısı ya da **self-hosted** bir model kullanılabiliyor — veri hiçbir zaman şirketin kendi altyapısının (**VPC**) dışına çıkmıyor. Arama, vektör benzerliğiyle graf ilişkilerini birleştiren bir **hybrid retrieval** yaklaşımıyla çalışıyor; üretilen cevaplar blok seviyesinde kaynağa atıf yapıyor.",
+        "why": "Kurumsal AI asistanlarında en büyük güven sorunu \"bu cevap nereden geldi, ben bu belgeye gerçekten erişebiliyor muyum\" belirsizliği. PipesHub, izinleri kaynak seviyesinde koruyup her cevaba atıf ekleyerek bu güven açığını kapatıyor; 50'den fazla **connector** ve MCP desteğiyle mevcut kurumsal araç yığınına kolayca oturması, kurumsal otomasyon (ERP benzeri iş akışları dahil) dünyasıyla kesişen bu yaklaşımı geliştirici kitlesinde hızla popüler kılıyor.",
+        "evolve": "Bu kadar çok bileşenli (Neo4j/ArangoDB + Qdrant/OpenSearch + MongoDB + Kafka) bir mimariyi kendi kendine barındırmak ciddi operasyonel karmaşıklık yaratıyor; \"slim\" kurulum seçeneği olsa da yönetilen (managed) bulut sürümü olmadan küçük ekipler için giriş engeli yüksek kalabilir. **No-code** ajan oluşturucunun derinliği ve kurumsal denetim/loglama özelliklerinin ne kadar olgunlaştığı da izlenmesi gereken bir alan."
+      },
+      "glossary": [
+        {
+          "term": "Connector (bağlayıcı)",
+          "def": "Bir platformu Slack, Jira gibi dış sistemlere bağlayıp veri alışverişi yapmasını sağlayan modül."
+        },
+        {
+          "term": "Knowledge graph (bilgi grafiği)",
+          "def": "Varlıklar ve aralarındaki ilişkileri düğüm ve kenarlarla modelleyen bir veri yapısı."
+        },
+        {
+          "term": "Vector database (vektör veritabanı)",
+          "def": "Metinlerin anlamsal temsillerini (embedding) saklayıp, anlam benzerliğine göre hızlı arama yapılmasını sağlayan veritabanı türü."
+        },
+        {
+          "term": "Citation (atıf)",
+          "def": "Bir AI cevabının hangi kaynak belgeye veya veriye dayandığını gösteren referans."
+        },
+        {
+          "term": "Hybrid retrieval",
+          "def": "Anlamsal (vektör) arama ile ilişkisel (graf) aramayı birleştirerek daha isabetli sonuç bulma yöntemi."
+        },
+        {
+          "term": "Self-hosted / VPC",
+          "def": "Bir yazılımın üçüncü taraf bulut yerine, şirketin kendi sunucularında veya özel bulut ağında (Virtual Private Cloud) çalıştırılması."
+        },
+        {
+          "term": "No-code",
+          "def": "Kod yazmadan, görsel arayüzler sürükleyip bırakarak yazılım/otomasyon oluşturabilme yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "jundot/omlx",
+      "url": "https://github.com/jundot/omlx",
+      "stars": "19.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "Apple Silicon Mac'lerde büyük dil modellerini yerel olarak çalıştırmak isteyenler ya basit ama sınırlı araçlarla (tek model, kontrol yok) ya da güçlü ama karmaşık kurulumlarla karşılaşıyor. **oMLX**, menü çubuğundan yönetilebilen, birden fazla modeli aynı anda bellekte tutup talebe göre otomatik değiştirebilen, \"kurumsal seviye\" bir yerel **inference** sunucusu sunuyor.",
+        "tech": "FastAPI tabanlı bir sunucu, OpenAI ve Anthropic API'leriyle uyumlu uçlar sağlıyor; arka planda Apple'ın **MLX** framework'ü ve mlx-lm kütüphanesi kullanılıyor. \"EnginePool\" bileşeni birden fazla model tipini (LLM, **VLM**, embedding, **reranker**) aynı anda yönetiyor; \"BatchedEngine\" ise MLX'in toplu üretici mekanizmasıyla **continuous batching** yaparak eşzamanlı istekleri verimli işliyor. En dikkat çekici kısım katmanlı **KV cache**: sık kullanılan bloklar RAM'de tutulurken, taşan kısımlar `safetensors` formatında SSD'ye yazılıyor ve sunucu yeniden başlatılsa bile korunuyor — bu da uzun bağlamlı iş akışlarını pratik hale getiriyor.",
+        "why": "2026'da yerel LLM çalıştırma araçları (Ollama, LM Studio vb.) yaygınlaşsa da, çoğu araç \"kaynak yönetimi\" (bellek limiti, otomatik model değiştirme, katmanlı önbellek) konusunda ya çok basit ya da çok manuel kalıyor. oMLX'in \"menü çubuğundan tam kontrol + otomatik yönetim\" dengesini kurması, özellikle Apple Silicon'da ciddi iş yükleri çalıştıran geliştiricilerin ilgisini çekiyor; bazı modeller için özel çekirdeklerle iddia edilen belirgin hızlanma da dikkat çekici bir sebep.",
+        "evolve": "Apple Silicon'a özgü olması doğal bir platform kısıtı; birden fazla Mac arasında dağıtık **inference** şu an deneysel aşamada ve üretim ortamlarında olgunlaşması gerekiyor. Ayrıca çok kullanıcılı veya uzaktan erişim senaryoları için kimlik doğrulama ve istek sınırlama (**rate limiting**) gibi kurumsal güvenlik özelliklerinin ne kadar sağlam olduğu henüz netleşmemiş durumda."
+      },
+      "glossary": [
+        {
+          "term": "Inference (çıkarım)",
+          "def": "Eğitilmiş bir yapay zeka modelinin, verilen girdiye karşılık çıktı üretme işlemi."
+        },
+        {
+          "term": "MLX",
+          "def": "Apple'ın kendi çip mimarisi (Apple Silicon) için optimize ettiği, makine öğrenmesi modellerini çalıştırmaya yarayan yazılım kütüphanesi."
+        },
+        {
+          "term": "VLM (Vision-Language Model)",
+          "def": "Hem görüntüyü hem metni anlayıp birlikte işleyebilen yapay zeka modeli türü."
+        },
+        {
+          "term": "Reranker",
+          "def": "Bir arama sonucunda bulunan adayları, gerçek uygunluklarına göre yeniden sıralayan model."
+        },
+        {
+          "term": "Continuous batching",
+          "def": "Farklı zamanlarda gelen birden fazla isteği, GPU/işlemciyi verimli kullanmak için dinamik olarak gruplandırıp aynı anda işleme yöntemi."
+        },
+        {
+          "term": "KV cache",
+          "def": "Bir dil modelinin daha önce işlediği bağlamı tekrar hesaplamak zorunda kalmadan hızlıca kullanabilmesi için sakladığı ara veri."
+        },
+        {
+          "term": "Rate limiting",
+          "def": "Bir sisteme belirli bir sürede yapılabilecek istek sayısını sınırlayarak aşırı yüklenmeyi veya kötüye kullanımı önleme yöntemi."
+        }
+      ]
+    }
+  ]
+}
