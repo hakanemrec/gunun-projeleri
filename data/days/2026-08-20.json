@@ -1,0 +1,137 @@
+{
+  "date": "2026-08-20",
+  "projects": [
+    {
+      "name": "santifer/career-ops",
+      "url": "https://github.com/santifer/career-ops",
+      "stars": "66k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "İş arama sürecini AI destekli bir \"komuta merkezine\" dönüştürüyor. Kullanıcılar iş ilanlarını manuel takip etmek yerine, herhangi bir AI coding CLI'sini (Claude Code, Codex, Gemini gibi) kullanarak başvuruları değerlendiriyor, özgeçmiş üretiyor ve işe alım yöneticilerini buluyor.\n\nÖnemli nokta: bu bir \"oto-başvuru\" botu **değil**, tam tersine bir filtre. Amaç yüzlerce ilan arasından gerçekten değer verilecek birkaç fırsatı bulmak — proje 4.0/5.0 altı puan alan pozisyonlara başvurmamayı öneriyor.",
+        "tech": "Mimari, **Agent Skill Standard** üzerinden çalışan çoklu AI ajan desteğine dayanıyor (Claude Code, Codex, Gemini/Antigravity, OpenCode, Grok, Qwen). Değerlendirme hattı şöyle işliyor:\n\n- **Arketip tespiti**: rol tipini kategorize etme\n- **A–G yapılandırılmış değerlendirme**: eşleşme, maaş araştırması, ilan meşruiyeti kontrolü\n- **Çıktı üretimi**: raporlar, PDF'ler, takip kayıtları\n\nA–F blokları 1.0–5.0 arası bir puan üretirken, G bloğu bu skora dahil olmadan sahte/şüpheli ilanları ayrıca işaretliyor. PDF üretimi için **Playwright** + HTML şablonları, terminal panosu için Go dilinde **Bubble Tea/Lipgloss**, veri katmanı için ise ağır bir veritabanı yerine Markdown tabloları + YAML + TSV kullanılıyor — yani dosya tabanlı, insan tarafından da doğrudan okunup düzenlenebilir bir yapı tercih edilmiş.",
+        "why": "Şirketlerin adayları elemek için AI kullanmasına karşı \"adaylara da AI vermek\" fikri güçlü bir anlatı oluşturuyor — proje sahibinin sözleriyle: *\"Şirketler adayları filtrelemek için AI kullanıyor. Ben de adaylara şirket seçmek için AI verdim.\"*\n\nTamamen yerel çalışması (veri dışarı çıkmıyor) ve ücretsiz/düşük maliyetli modellerle de işlev görebilmesi, abonelik gerektirmeden erişilebilir olmasını sağlıyor. Somut sonuçların paylaşılması (740+ değerlendirme, 100+ özgeçmiş, bir Head of AI pozisyonu) da güven inşa ediyor.",
+        "evolve": "Şu an 100'ün üzerinde şirkete önceden yapılandırılmış portal erişimi var (Ashby, Greenhouse, Lever, Wellfound) — bu listenin topluluk katkısıyla genişlemesi doğal bir yön. Görüşme hazırlığı (STAR+Reflection hikaye bankası) ve teklif analizi (maaş farkı tespiti, sözleşme maddeleri) gibi özellikler zaten var; bunların paylaşımlı bir panoya taşınması, ekip halinde iş arayan kullanıcı grupları için ortak skorlama, ya da işe alım tarafının da (adil ilan yazımı için) bu araçtan yararlanacağı bir \"ayna\" ürün ilginç bir genişleme olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skill Standard",
+          "def": "AI ajanlarının farklı görevler için yeniden kullanılabilir \"beceri\" paketleri yükleyebildiği, birçok AI coding CLI'sinin ortak desteklediği bir dosya/format standardı."
+        },
+        {
+          "term": "TUI (Terminal Kullanıcı Arayüzü)",
+          "def": "Grafik pencere yerine terminal içinde çalışan, genellikle klavyeyle gezinilen kullanıcı arayüzü türü."
+        },
+        {
+          "term": "ATS (Applicant Tracking System)",
+          "def": "İşe alım şirketlerinin gelen özgeçmişleri otomatik olarak tarayıp elediği yazılım sistemi."
+        },
+        {
+          "term": "Headless CLI worker",
+          "def": "Grafik arayüzü olmadan, arka planda komut satırından otomatik olarak çalışan işlem/işçi."
+        }
+      ]
+    },
+    {
+      "name": "genlayerlabs/genlayer-project-boilerplate",
+      "url": "https://github.com/genlayerlabs/genlayer-project-boilerplate",
+      "stars": "16.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "GenLayer adlı \"akıllı blockchain\" protokolü üzerinde uygulama geliştirmek isteyenler için hazır bir başlangıç şablonu (boilerplate). Örnek olarak gerçek bir futbol bahis oyunu üzerinden, internetten veri çekebilen ve bir LLM ile akıl yürütebilen \"akıllı sözleşmelerin\" (intelligent contracts) nasıl yazılacağını gösteriyor.",
+        "tech": "Sözleşmeler **Python 3.12+** ile yazılıyor ve üç katmanlı bir test stratejisi sunuluyor:\n\n- **Direct mode**: milisaniyeler süren, web/LLM çağrıları taklit edilerek (mock) çalışan birim testleri\n- **Entegrasyon testleri**: dakikalar süren, gerçek GenLayer Studio'ya karşı uçtan uca testler\n- **Sözleşme linting**: yasak import'ları ve deterministik olmayan çağrıları yakalayan statik analiz\n\nÖrnek sözleşme, BBC Sport'tan maç sonucunu çekiyor, LLM ile skoru metinden çıkarıyor ve sonucu **\"eşdeğerlik ilkesi\" (equivalence principle)** adı verilen bir konsensüs mekanizmasıyla doğruluyor: birden fazla doğrulayıcı düğüm, aynı LLM görevine yeterince benzer sonuçlar üretirse işlem onaylanıyor. Frontend tarafı Next.js 15, TypeScript, TanStack Query ve Radix UI ile production-ready olarak sunuluyor.",
+        "why": "Blockchain ve LLM'i birleştiren \"akıllı sözleşme + yapay zeka\" fikri hem kripto hem AI ajan geliştirici kitlesinin ilgisini çekiyor. Claude ve Cursor gibi AI kodlama araçlarını doğrudan hedeflemesi, altyapı kurmadan hızlı geri bildirim döngüsü vaat etmesi popülerliğini artırıyor — proje, \"AI ajanların kendi başına blockchain uygulaması yazabilmesi\" senaryosuna somut bir zemin sunuyor.",
+        "evolve": "Deterministik olmayan LLM çağrılarını konsensüs altında güvenilir kılan \"eşdeğerlik ilkesi\" ilginç ama pratikte kanıtlanması gereken bir yaklaşım; farklı LLM sağlayıcıları arasında tutarlılık, maliyet ve gecikme konularında daha fazla şeffaflık faydalı olurdu. Şablonun futbol dışında finans, sigorta ya da tedarik zinciri gibi gerçek dünya veri kaynaklarına bağlanan ek örneklerle zenginleştirilmesi — örneğin bir ERP sisteminden gelen veriyi doğrulayan bir akıllı sözleşme — kurumsal entegrasyon senaryolarını daha erişilebilir kılabilir."
+      },
+      "glossary": [
+        {
+          "term": "Akıllı sözleşme (Smart Contract)",
+          "def": "Blockchain üzerinde otomatik çalışan, önceden tanımlı kurallara göre işlem yürüten kod parçası."
+        },
+        {
+          "term": "Konsensüs (Consensus)",
+          "def": "Dağıtık bir ağdaki düğümlerin, bir işlemin geçerliliği konusunda ortak bir sonuca varmasını sağlayan mekanizma."
+        },
+        {
+          "term": "Eşdeğerlik ilkesi (Equivalence Principle)",
+          "def": "GenLayer'a özgü, deterministik olmayan LLM çıktılarının doğrulayıcı düğümler arasında \"yeterince benzer\" sayılıp sayılmayacağını belirleyen konsensüs kuralı."
+        },
+        {
+          "term": "Linting",
+          "def": "Kodun hatalı, riskli ya da yasak kalıplar içerip içermediğini çalıştırmadan önce otomatik olarak denetleyen statik analiz süreci."
+        },
+        {
+          "term": "Deterministik olmayan çağrı",
+          "def": "Aynı girdiyle her çalıştırıldığında farklı çıktı üretebilen işlem; LLM çağrıları buna tipik bir örnektir."
+        }
+      ]
+    },
+    {
+      "name": "harry0703/MoneyPrinterTurbo",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo",
+      "stars": "111.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bir konu ya da anahtar kelime girildiğinde; senaryo, görsel, altyazı ve seslendirmesiyle komple bir kısa video otomatik üreten açık kaynaklı bir araç. İçerik üreticilerin TikTok, Instagram ve YouTube Shorts için yaptığı manuel video kurgu sürecini büyük ölçüde ortadan kaldırmayı hedefliyor.",
+        "tech": "**Python 3.11** tabanlı, video işleme için **FFmpeg** kullanıyor. LLM tarafında Kimi, OpenAI, Gemini, DeepSeek, Claude gibi birçok sağlayıcıyı destekleyerek tek bir sağlayıcıya bağımlılığı azaltıyor; seslendirme için Edge TTS, Azure Speech, ElevenLabs gibi seçenekler, altyazı için ise Whisper ya da TTS tabanlı üretim sunuyor.\n\nDört farklı arayüz sağlıyor: **AI Agent**, Streamlit tabanlı **WebUI**, FastAPI tabanlı **REST API** ve **CLI** — hepsi controller/service/model şeklinde katmanlı bir mimari üzerine kurulu. Pexels, Pixabay, Coverr gibi ücretsiz stok görsel kaynaklarıyla entegre; yerel medya dosyaları da kullanılabiliyor.",
+        "why": "111 binin üzerindeki yıldızı ve günde 2.200'ün üzerindeki artışıyla bugünün listesinde en hızlı yükselen proje — kısa video içerik ekonomisindeki devasa talebi doğrudan karşılıyor. Birden fazla LLM ve TTS sağlayıcısını desteklemesi, ücretsiz/düşük maliyetli seçeneklerle de çalışabilmesi, hem bireysel içerik üreticilerini hem de otomasyon arayan geliştiricileri kapsayan geniş bir kitleye hitap etmesini sağlıyor.",
+        "evolve": "Şu an script, görsel ve ses üretimi ayrı ayrı sağlayıcılara dayanıyor; bu da farklı videolar arasında tutarlı bir \"stil\" ya da marka kimliği korumayı zorlaştırıyor. Telif hakkı ve stok içerik lisanslaması tarafında daha güçlü otomatik kontroller, platforma özel format/algoritma optimizasyonları (ör. başlık/hashtag A-B testi) ve üretilen videoların gerçek performansını geri besleyen bir analitik katmanı, doğal bir sonraki gelişim yönü olabilir."
+      },
+      "glossary": [
+        {
+          "term": "FFmpeg",
+          "def": "Video ve ses dosyalarını işlemek, dönüştürmek ve düzenlemek için yaygın olarak kullanılan açık kaynaklı komut satırı aracı."
+        },
+        {
+          "term": "TTS (Text-to-Speech)",
+          "def": "Yazılı metni yapay bir sesle seslendirmeye çeviren teknoloji."
+        },
+        {
+          "term": "Whisper",
+          "def": "OpenAI tarafından geliştirilen, konuşmayı otomatik olarak yazıya döken (transkripsiyon) açık kaynaklı yapay zeka modeli."
+        },
+        {
+          "term": "Streamlit",
+          "def": "Python ile hızlıca veri ya da yapay zeka uygulamaları için web arayüzü oluşturmayı sağlayan bir çatı (framework)."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python ile hızlı, modern REST API'ler geliştirmek için kullanılan popüler bir web çatısı."
+        }
+      ]
+    },
+    {
+      "name": "immich-app/immich",
+      "url": "https://github.com/immich-app/immich",
+      "stars": "112k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Google Photos'a kendi sunucunuzda barındırılan (self-hosted), gizlilik odaklı bir alternatif. Kullanıcılar fotoğraf ve videolarını kendi donanımlarında saklarken; otomatik yedekleme, akıllı arama ve paylaşım gibi konularda bulut servislerine yakın bir kullanım deneyimi elde ediyor.",
+        "tech": "Backend **NestJS** (Node.js) ile yazılmış, web arayüzü **Svelte/SvelteKit**, mobil uygulama **Flutter** ile geliştirilmiş. Yapay zeka tarafında yüz tanıma/gruplama ve **CLIP** tabanlı semantik arama öne çıkıyor: \"plajda gün batımı\" gibi doğal dilde bir arama yapıldığında, eşleşme dosya adına ya da etikete değil, görselin içeriğinden çıkarılan sayısal bir temsile (embedding) bakılarak bulunuyor.\n\nBu embedding'lerin hızlı aranabilmesi için, vektör arama desteği eklenmiş bir **PostgreSQL** kurulumuna dayanılıyor — yani klasik ilişkisel veri (albüm, kullanıcı, izin) ile yapay zeka çıktısı olan vektörler aynı veritabanında bir arada tutuluyor.",
+        "why": "Bulut fotoğraf servislerine yönelik artan gizlilik kaygısı ve büyük sağlayıcıların ücretsiz depolama politikalarını daraltması, kullanıcıları kendi verisinin kontrolünü elinde tutan alternatiflere yöneltiyor. Immich'in özellik zenginliği (yüz tanıma, canlı fotoğraf desteği, paylaşımlı albümler) ile bulut servislerine yakın bir deneyim sunması, projenin \"self-hosting\" topluluğunun ötesinde daha geniş bir kitleye ulaşmasını sağlıyor.",
+        "evolve": "Mobil arka plan senkronizasyonu ve çok büyük kütüphanelerde (yüz binlerce fotoğraf) performans, self-hosted projelerde hâlâ en çok şikayet edilen konulardan biri; zayıf donanımlı ev sunucularında (ör. Raspberry Pi) yapay zeka özelliklerinin daha hafif çalışabilmesi için kademeli/opsiyonel model seçimi değerli olur. Ayrıca aileler ya da ekipler arası farklı sunucular arasında paylaşım (federasyon desteği) ve S3 uyumlu harici depolama gibi otomatik yedekleme hedefleri için daha güçlü yerleşik araçlar ilgi görebilir."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted (kendi sunucunda barındırma)",
+          "def": "Bir yazılımı üçüncü taraf bir bulut servisi yerine kendi donanımınızda veya sunucunuzda çalıştırma."
+        },
+        {
+          "term": "CLIP",
+          "def": "Görselleri ve metinleri aynı \"anlam uzayında\" karşılaştırabilen, OpenAI kaynaklı bir yapay zeka model ailesi."
+        },
+        {
+          "term": "Embedding (gömme vektörü)",
+          "def": "Bir görselin, metnin ya da başka bir verinin, benzerlik karşılaştırması yapılabilecek şekilde sayılardan oluşan bir vektöre dönüştürülmüş hali."
+        },
+        {
+          "term": "Vektör arama",
+          "def": "Verileri kelime eşleşmesi yerine anlamsal benzerliklerine (embedding'lerine) göre bulan arama yöntemi."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Açık kaynaklı, güçlü ve genişletilebilir bir ilişkisel veritabanı yönetim sistemi."
+        }
+      ]
+    }
+  ]
+}
