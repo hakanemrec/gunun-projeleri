@@ -1,0 +1,145 @@
+{
+  "date": "2026-08-21",
+  "projects": [
+    {
+      "name": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "stars": "227k",
+      "language": "Shell",
+      "sections": {
+        "serves": "Tanınmış TypeScript eğitmeni Matt Pocock'un yayınladığı bu repo, AI kodlama ajanlarıyla (Claude Code gibi) çalışırken tekrar tekrar karşılaşılan dört sorunu hedefliyor: ajanın isteği yanlış anlaması, gereksiz uzun ve dağınık cevaplar üretmesi, test/tip güvenliği olmadan düşük kaliteli kod yazması ve hızlı geliştirme sürecinde mimarinin zamanla çürümesi. Çözüm olarak birbirine bağlı **komut seti (skill)** sunuyor: kod yazmadan önce isteği netleştiren görüşme komutları, TDD döngüsünü zorunlu kılan komutlar, mimari borç tarayan komutlar ve bir ajan oturumundan diğerine bilgi aktaran 'handoff' komutları. Kısacası, \"ajanla nasıl çalışılır\" sorusuna somut bir metodoloji ve hazır araç seti öneriyor.",
+        "tech": "Proje kod değil, **prompt mühendisliği** ile inşa edilmiş: her skill, Claude Code'un slash komut mekanizması üzerinden çalışan bir markdown talimat dosyası. İki katmanlı bir mimari var — **kullanıcı tarafından çağrılan** komutlar (`/grill-me`, `/to-spec`, `/implement`) iş akışını yönetirken, **model tarafından tetiklenen** komutlar (`/tdd`, `/code-review`, `/diagnosing-bugs`) bu akışın altında sessizce çalışıp disiplini sağlıyor. Bu ayrım bilinçli: kullanıcı komutları birbirini zincirlemiyor (karmaşayı önlüyor), model komutları ise ajan gerektiğinde otomatik çağırabiliyor. Kurulum için iki yol sunuluyor: Claude Code eklentisi olarak otomatik güncellenen bir sürüm, ya da `npx skills@latest add` ile projeye kopyalanıp düzenlenebilen yerel bir sürüm. Her projede bir `CONTEXT.md` sözlük dosyası tutularak ajanın terminolojiyi tutarlı ve kısa kullanması hedefleniyor — bu da doğrudan token tasarrufuna dönüşüyor.",
+        "why": "AI destekli kodlamanın 2026'da artık günlük pratik haline gelmesiyle birlikte, \"ajanla nasıl verimli çalışılır\" sorusu tek başına bir disiplin alanına dönüştü. Matt Pocock'un TypeScript ve yazılım eğitimi alanındaki geniş takipçi kitlesi, projenin ilk günden itibaren büyük bir kullanıcı tabanına ulaşmasını sağladı; yıldız ivmesinin bu denli yüksek olması (bir günde binlerce yıldız) hem topluluğun güvenilir isimlere hızla yönelmesinin hem de \"agentic coding\" konusundaki açık talebin göstergesi. Özellikle ekip halinde Claude Code kullanan, kod kalitesini ve mimari tutarlılığını koruma kaygısı taşıyan orta-üst seviye yazılımcılara hitap ediyor.",
+        "evolve": "Şu an tamamen Claude Code'a (ve dolaylı olarak Anthropic ekosistemine) bağımlı; Cursor, Windsurf gibi diğer ajan araçlarına taşınabilir bir soyutlama katmanı eklenmesi erişimi genişletebilir. Skill'lerin etkinliğini ölçen somut metrikler (token tasarrufu, hata oranı azalması gibi) şu an öznel/anlatısal; bir telemetri veya kıyaslama modülü eklenmesi güveni artırabilir. Ayrıca `CONTEXT.md` sözlüklerinin proje büyüdükçe kendi başına şişip yönetilemez hale gelmesi riski var — otomatik özetleme/budama mekanizması olası bir geliştirme alanı."
+      },
+      "glossary": [
+        {
+          "term": "Slash komut",
+          "def": "Claude Code gibi araçlarda `/isim` yazılarak tetiklenen, önceden tanımlı bir görev şablonunu çalıştıran kısayol."
+        },
+        {
+          "term": "TDD (Test-Driven Development)",
+          "def": "Önce başarısız olacak bir test yazıp sonra o testi geçirecek en az kodu ekleme, ardından temizleme adımlarını tekrar eden geliştirme disiplini."
+        },
+        {
+          "term": "Domain-Driven Design",
+          "def": "Yazılımın, o işin uzmanlarıyla geliştiricilerin ortak kullandığı aynı kavram ve terimler üzerinden tasarlanması yaklaşımı."
+        },
+        {
+          "term": "Architecture Decision Record (ADR)",
+          "def": "Bir projede alınan önemli mimari kararların gerekçesiyle birlikte kayıt altına alındığı kısa doküman."
+        },
+        {
+          "term": "Tracer bullet",
+          "def": "Sistemin uçtan uca çalışan, küçük ama gerçek bir dilimini önce inşa edip sonra genişletme yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "modular/modular",
+      "url": "https://github.com/modular/modular",
+      "stars": "28.2k",
+      "language": "Mojo",
+      "sections": {
+        "serves": "Modular Platform, yapay zeka modellerini geliştirme ile bu modelleri hızlı ve verimli şekilde çalıştırma (inference) arasındaki kopukluğu gidermeyi hedefliyor. Bugün bir model genelde Python'da (PyTorch/TensorFlow) eğitilip, tamamen farklı bir düşük seviye dilde (CUDA/C++) yeniden yazılarak production'a alınıyor — bu da yavaş, hataya açık ve donanım başına ayrı bakım gerektiren bir süreç. Modular, tek bir platform üzerinden hem yüksek performanslı sistem programlama dili **Mojo**'yu hem de bu dille yazılmış optimize çekirdekleri kullanan **MAX** çıkarım (inference) motorunu sunarak bu ayrımı ortadan kaldırmaya çalışıyor.",
+        "tech": "Mimari birkaç katmandan oluşuyor: Mojo dilini derleyen **KGEN** derleyicisi, dilin standart kütüphanesi, donanıma özel optimize çekirdekleri barındıran **MAX hızlandırıcı kütüphanesi**, ve modelleri servis eden, **OpenAI uyumlu uç noktalar** sunan **MAX inference server**. Python entegrasyonu sayesinde model grafikleri Python'dan tanımlanıp Mojo'nun performansıyla çalıştırılabiliyor — yani geliştirici Python'un kolaylığından vazgeçmeden C++/CUDA seviyesinde hıza erişiyor. Derleme altyapısı olarak Google'ın **Bazel** sistemi kullanılıyor; bu da büyük, çok dilli (Mojo/Python/C++) bir kod tabanının tutarlı şekilde derlenip test edilmesini sağlıyor.",
+        "why": "AI çıkarım maliyetlerinin (GPU/TPU saati) şirketler için giderek daha büyük bir gider kalemi haline gelmesi, donanımdan bağımsız ama performanstan ödün vermeyen çözümlere olan talebi artırıyor. Modular'ın hem NVIDIA hem de alternatif hızlandırıcı donanımlarını hedefleyen esnek yaklaşımı, tek bir tedarikçiye bağımlı kalmak istemeyen AI altyapı ekiplerinin ilgisini çekiyor. Ayrıca Mojo'nun \"Python söz dizimi + sistem dili hızı\" vaadi, hem araştırmacıları hem de performans mühendislerini aynı anda hedefliyor — bu da projeye geniş bir kitle kazandırıyor.",
+        "evolve": "Mojo'nun görece genç bir dil olması nedeniyle kütüphane ekosistemi (paket yöneticisi, üçüncü parti kütüphaneler) hâlâ olgunlaşma aşamasında; bu alan büyüdükçe benimseme hızı artabilir. Öğrenme eğrisi de bir engel — Python'a benzese de sahiplik/bellek modeli gibi sistem programlama kavramlarını öğrenmek gerekiyor; daha fazla adım adım eğitim materyali bariyeri düşürebilir. Küçük ekiplerin de kolayca deneyebileceği hafif, tek komutla kurulan bir \"hızlı başlangıç\" deneyimi, kurumsal kullanım dışına da erişimi genişletebilir."
+      },
+      "glossary": [
+        {
+          "term": "Inference (çıkarım)",
+          "def": "Eğitilmiş bir yapay zeka modelinin, yeni bir girdi için tahmin/çıktı üretme aşaması; eğitimden farklı olarak hız ve maliyet burada kritik önem taşır."
+        },
+        {
+          "term": "OpenAI uyumlu uç nokta",
+          "def": "Bir servisin, OpenAI'nin API formatını taklit ederek mevcut OpenAI istemci kodlarıyla doğrudan çalışabilmesini sağlayan arayüz standardı."
+        },
+        {
+          "term": "Derleyici (compiler)",
+          "def": "İnsan tarafından yazılan kaynak kodu, bilgisayarın doğrudan çalıştırabileceği düşük seviye komutlara çeviren yazılım."
+        },
+        {
+          "term": "Bazel",
+          "def": "Google'ın geliştirdiği, çok büyük ve çok dilli kod tabanlarını hızlı ve tekrarlanabilir şekilde derlemek için kullanılan build (derleme) sistemi."
+        },
+        {
+          "term": "Hızlandırıcı (accelerator) donanım",
+          "def": "GPU, TPU gibi yapay zeka hesaplamalarını genel işlemcilerden çok daha hızlı yapmak için özelleşmiş donanım birimleri."
+        }
+      ]
+    },
+    {
+      "name": "RyanCodrai/turbovec",
+      "url": "https://github.com/RyanCodrai/turbovec",
+      "stars": "16k",
+      "language": "Rust",
+      "sections": {
+        "serves": "TurboVec, AI uygulamalarının (RAG, semantik arama, ajan hafızası) temelini oluşturan **vektör veritabanlarının** en büyük iki derdine çözüm arıyor: bellek tüketimi ve arama hızı. Proje, 10 milyon dokümanlık bir vektör koleksiyonunun standart float32 formatında 31 GB RAM tuttuğunu, TurboVec ile bunun 4 GB'a indiğini ve üstüne aramanın popüler **FAISS** kütüphanesinden daha hızlı çalıştığını iddia ediyor. Yani aynı donanımda çok daha büyük koleksiyonları, daha ucuza ve daha hızlı aranabilir hale getirmeyi hedefliyor.",
+        "tech": "Temelde Google Research'ün **TurboQuant** algoritmasını uyguluyor: önce vektörler normalize ediliyor, sonra rastgele bir döndürme uygulanarak koordinat dağılımı öngörülebilir hale getiriliyor, ardından **Lloyd-Max skaler kuantizasyon** ile 1536 boyutlu embedding'ler 16 kat sıkıştırılıyor. Önemli olan, bu sürecin FAISS'teki gibi ayrı bir \"eğitim\" aşaması gerektirmemesi — vektörler eklenir eklenmez aranabilir hale geliyor. Rust ile yazılan proje, ARM'de **NEON SDOT/SMMLA**, x86'da **AVX-512 VNNI** gibi donanıma özel **SIMD** komut setlerini çalışma zamanında (runtime) otomatik seçerek en uygun hızlandırmayı kullanıyor. Kalıcılık tarafında ise tüm veriyi baştan yazmak yerine **fark tabanlı (differential) anlık görüntüler** ile çökme güvenli (crash-safe) kayıt yapılıyor.",
+        "why": "LLM tabanlı uygulamaların (RAG, ajan hafızası, semantik arama) patlaması, vektör veritabanı maliyetlerini birçok şirket için ciddi bir bütçe kalemine dönüştürdü. Bellek maliyetini 8 kata kadar düşürüp aynı zamanda hızı artıran, kurulumu basit (eğitim aşaması yok) bir çözüm; hem büyük ölçekte çalışan şirketlerin altyapı maliyetini düşürmek isteyen mühendislerinin hem de kendi verisini yerelde, bulut servisine bağımlı kalmadan tutmak isteyen gizlilik odaklı geliştiricilerin ilgisini çekiyor. LangChain, LlamaIndex gibi popüler çatılara doğrudan entegre olması da benimsemeyi kolaylaştırıyor.",
+        "evolve": "Şu an odak tek makine (single-node) performansında; büyük ölçekli kurumsal kullanım için dağıtık (sharded/cluster) bir mimariye ihtiyaç duyulabilir. Kuantizasyon doğası gereği bir miktar bilgi kaybına yol açtığından, çok hassas/az boyutlu embedding senaryolarında recall (bulma isabeti) kaybını daha da azaltacak adaptif kalibrasyon seçenekleri değerli olabilir. Ayrıca yönetilen bir bulut sürümü sunulmaması bilinçli bir tercih gibi görünüyor (gizlilik odaklı), ama isteğe bağlı bir hosted seçenek daha az teknik ekipler için erişimi kolaylaştırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metin, görsel gibi verilerin sayısal 'embedding' temsillerini saklayıp, benzerlik araması yapmaya özel olarak optimize edilmiş veritabanı türü."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metin veya görselin anlamını sayılardan oluşan bir vektöre dönüştürülmüş hali; benzer anlamdaki içerikler vektör uzayında birbirine yakın konumlanır."
+        },
+        {
+          "term": "Kuantizasyon (quantization)",
+          "def": "Yüksek hassasiyetli sayıları (örn. 32-bit ondalık) daha az bit kullanan, biraz hassasiyet kaybettiren ama çok daha az yer kaplayan bir forma sıkıştırma işlemi."
+        },
+        {
+          "term": "SIMD",
+          "def": "'Single Instruction, Multiple Data' — işlemcinin tek bir komutla birden çok veriyi aynı anda işleyerek hesaplamayı hızlandırdığı donanım özelliği."
+        },
+        {
+          "term": "Recall",
+          "def": "Bir arama sisteminin, gerçekten alakalı olan sonuçların ne kadarını bulabildiğini gösteren başarı ölçütü."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir yapay zeka modelinin cevap üretmeden önce ilgili belgeleri bir veritabanından çekip bu bilgiyle cevabını zenginleştirdiği yöntem."
+        }
+      ]
+    },
+    {
+      "name": "JuliusBrussee/caveman",
+      "url": "https://github.com/JuliusBrussee/caveman",
+      "stars": "99.8k",
+      "language": "Go",
+      "sections": {
+        "serves": "Caveman, AI kodlama ajanlarının (Claude Code gibi) kullanımını pahalılaştıran iki verimsizliği hedefliyor: ajanların gereğinden uzun cevaplar üretmesi ve gereksiz yere büyük/tekrarlı veriyi (log dosyaları, arama sonuçları, JSON çıktıları) context'e taşıması. Proje sloganı bunu özetliyor: \"az token yeterliyken çok token kullanma\". Hedef kitle, günlük olarak yoğun ajan kullanımı yapıp token/API faturasını düşürmek isteyen geliştiriciler ve ekipler.",
+        "tech": "İki parçalı bir yapı sunuyor. **Caveman Skill**, ajana kısa ve öz \"mağara adamı dili\"yle (caveman-speak) cevap vermesini öğreten bir prompt modülü — kod doğruluğunu koruyarak sadece anlatım uzunluğunu kısaltıyor. **Caveman Proxy** ise sağlayıcıya (Anthropic/OpenAI vb.) giden API trafiğini yerelde yakalayan bir sıkıştırma motoru: JSON'da anahtarları ve hata ağaçlarını koruyup tekrarlayan dizileri kısaltıyor, log dosyalarında hata/stack trace'i tutup INFO seviyeli gürültüyü siliyor, kodda import ve imzaları koruyup fonksiyon gövdelerini kırpıyor. İçerik türünü otomatik tespit edip her birine özel sıkıştırma uygulaması, tek tip bir sıkıştırmadan çok daha fazla bilgi koruyor. Alaka düzeyini belirlemek için **BM25** skorlama ve yenilik (recency) ağırlığı kullanılıyor; sıkıştırılan veri ise SQLite tabanlı bir kayıt defteriyle (Content Cache Registry) geri döndürülebilir tutuluyor — yani hiçbir bilgi kalıcı olarak kaybolmuyor, gerekirse tam haliyle geri çağrılabiliyor.",
+        "why": "AI ajan kullanımı arttıkça token/API maliyeti bireysel geliştiriciler için de kurumlar için de somut bir gider kalemine dönüştü; \"aynı işi %30-60 daha az token ile yap\" vaadi doğrudan cebe dokunan bir fayda sunuyor. Yerel-öncelikli (local-first) mimarisi sayesinde hiçbir veri üçüncü bir sunucuya gitmeden sıkıştırma yapılması, gizlilik konusunda hassas kurumsal kullanıcılar için de ek bir güven unsuru. Sekiz farklı ajanı doğrudan desteklemesi ve yeni sağlayıcıların kod yazmadan, sadece JSON profil ekleyerek entegre edilebilmesi, hızlı yayılmasını kolaylaştırdı.",
+        "evolve": "Motorun **Business Source License** ile lisanslanması (2030'da Apache-2.0'a dönecek), bazı kurumsal kullanıcılar için şimdilik belirsizlik yaratabilir; lisans şartlarının net iletişimi önemli. Sıkıştırma kararlarının (özellikle 'öğrenilen' otomatik optimizasyonların) hangi durumlarda yanlışlıkla kritik bilgiyi kırpabileceğine dair daha görünür bir denetim/geri bildirim paneli güveni artırabilir. Ayrıca şu an sekiz ajanla sınırlı destek kapsamının, topluluk katkılı profillerle daha hızlı genişlemesi benimsenmeyi kolaylaştırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Token",
+          "def": "Bir dil modelinin metni işlerken kullandığı en küçük birim (kabaca bir kelime parçası); API kullanım ücretleri genelde işlenen token sayısına göre hesaplanır."
+        },
+        {
+          "term": "Proxy",
+          "def": "İki taraf arasındaki (burada: geliştirici aracı ile AI sağlayıcısı) trafiği araya girip inceleyen/değiştiren ara sunucu."
+        },
+        {
+          "term": "BM25",
+          "def": "Bir arama sorgusuyla dokümanların ne kadar alakalı olduğunu hesaplayan, kelime sıklığına dayalı klasik bir bilgi getirimi (retrieval) skorlama yöntemi."
+        },
+        {
+          "term": "Business Source License (BSL)",
+          "def": "Kaynağı açık ama belirli ticari kullanımları kısıtlayan, genelde birkaç yıl sonra tam açık kaynak lisansına (örn. Apache-2.0) dönüşen lisans türü."
+        },
+        {
+          "term": "Stack trace",
+          "def": "Bir programda hata oluştuğunda, hatanın hangi fonksiyon çağrı zinciri üzerinden geldiğini gösteren kayıt."
+        }
+      ]
+    }
+  ]
+}
