@@ -1,0 +1,81 @@
+{
+  "date": "2026-08-22",
+  "projects": [
+    {
+      "name": "affaan-m/ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "stars": "242k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "ECC (\"agent harness performance optimization system\"), AI kodlama ajanlarının (Claude Code, Codex, Cursor gibi) kod yazabildiği ama sistematik bir kalite kontrol mekanizmasından yoksun olduğu sorununu hedefliyor. Proje, 68 uzman ajan ve 286 tekrar kullanılabilir **skill** (beceri modülü) ile ajanların plan yapma, test etme, uygulama, inceleme ve öğrenme adımlarını zorunlu bir disipline oturtmayı amaçlıyor — yani \"ajana güvenerek kod yazdırmak\" yerine, ajanın çalışmasını denetleyen bir çerçeve sunuyor.",
+        "tech": "Mimarinin kalbinde **gated TDD** döngüsü var: önce başarısız test yazılıyor (RED), sonra minimum kodla geçiriliyor (GREEN), ardından temizleniyor (REFACTOR) — ve bu sıra atlanamıyor. **Fresh-context code review** özelliği, kodu yazan ajanın kör noktalarını önlemek için incelemeyi tamamen taze, geçmişi bilmeyen bir ajan bağlamında yaptırıyor. **AgentShield** modülü prompt injection, güvensiz hook tanımları ve yanlış yapılandırmalar için güvenlik taraması yapıyor. Node.js/TypeScript çekirdek altyapı, Python tabanlı bir dashboard ve Shell kurulum betikleriyle birden fazla ajan aracına (cross-harness) aynı anda entegre olabiliyor; oturumlar arası bir hafıza katmanı da öğrenilen örüntüleri kalıcı tutuyor.",
+        "why": "Agentic coding'in 2026'da günlük pratik haline gelmesiyle birlikte \"ajanla nasıl güvenli çalışılır\" sorusu tek başına bir mühendislik disiplinine dönüştü. ECC, benzer amaçlı daha küçük skill koleksiyonlarından farklı olarak kapsamı (68 ajan, 286 skill) ve güvenlik odaklı AgentShield katmanıyla kurumsal ölçekte bir \"kalite güvence çerçevesi\" vaat ediyor; bu da ekip halinde ajan kullanan, kod kalitesi ve güvenlik konusunda kaygı taşıyan orta-üst seviye ekiplerin hızla ilgisini çekti.",
+        "evolve": "286 skill'in hangi durumda hangisinin tetiklendiğine dair keşfedilebilirlik (discoverability) şu an belirsiz; kullanıcının doğru skill'i bulmasını kolaylaştıracak bir arama/öneri arayüzü faydalı olabilir. AgentShield'in güvenlik tarama kapsamı bağımsız bir denetimden geçerse güven daha da artar. Ayrıca ücretsiz açık kaynak sürümle Pro/hosted seçenekleri arasındaki sınırın netleşmesi, kurumsal benimsemeyi kolaylaştırabilir."
+      },
+      "glossary": [
+        { "term": "TDD (Test-Driven Development)", "def": "Önce başarısız olacak bir test yazıp sonra o testi geçirecek en az kodu ekleme, ardından temizleme adımlarını tekrar eden geliştirme disiplini." },
+        { "term": "Fresh-context inceleme", "def": "Kodu yazan ajanın önyargılarından etkilenmemek için, kod incelemesinin geçmişi bilmeyen, 'taze' bir ajan bağlamında yaptırılması yaklaşımı." },
+        { "term": "Prompt injection", "def": "Bir AI modeline, geliştiricinin istemediği talimatları gizlice sızdırarak modelin davranışını ele geçirmeye çalışan saldırı türü." },
+        { "term": "Hook", "def": "Claude Code gibi ajan araçlarında, belirli bir olay (ör. dosya kaydetme, komut çalıştırma) gerçekleştiğinde otomatik tetiklenen özel betik." },
+        { "term": "Skill", "def": "Bir AI ajanına belirli bir görevi nasıl yapacağını öğreten, yeniden kullanılabilir talimat/prompt modülü." }
+      ]
+    },
+    {
+      "name": "ruvnet/ruflo",
+      "url": "https://github.com/ruvnet/ruflo",
+      "stars": "68.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Ruflo, Claude Code gibi tekli AI ajanlarının izole ve hafızasız çalışmasının yarattığı sınırı aşmayı hedefliyor: birden fazla ajanın bir \"takım\" gibi koordineli çalışmasını sağlayan bir orkestrasyon katmanı sunuyor. Proje kendini \"orijinal agent meta-harness\" olarak tanımlıyor — yani tek bir ajan yerine, görevleri paylaşan, birbirine bilgi aktaran ve ortak hafızayı kullanan bir ajan ekibi kurmayı amaçlıyor.",
+        "tech": "**Swarm coordination** özelliği, ajanları hiyerarşik (bir yönetici-birçok işçi) veya mesh (herkes herkesle konuşur) topolojilerde organize ediyor. **SONA** adlı nöral örüntü sistemi ve **HNSW** tabanlı vektör veritabanı, ajanların geçmiş görevlerden öğrendiklerini kalıcı hafızada tutup gerektiğinde geri çağırmasını sağlıyor. **Agent federation** özelliği, farklı organizasyonlara ait ajanların zero-trust güvenlik modeliyle güvenle işbirliği yapmasına izin veriyor. Performans-kritik kısımlar Rust ile yazılmış, izolasyon için WebAssembly sandboxing kullanılıyor; ajanlar arası standart iletişim **MCP (Model Context Protocol)** üzerinden yürüyor ve Claude, GPT, Gemini, Ollama gibi birden fazla sağlayıcı arasında yönlendirme (routing) yapılabiliyor.",
+        "why": "Çoklu-ajan orkestrasyonu, 2026'nın en çok konuşulan agentic AI temalarından biri; tek ajanla sınırlı kalmak yerine \"ajan takımları\" kurma fikri hem meraklı bireysel geliştiricileri hem de büyük ölçekli otomasyon arayan şirketleri cezbetti. Organizasyonlar arası güvenli işbirliği (federation) gibi iddialı bir vaat, projeyi sadece bir kişisel araçtan öteye, kurumsal altyapı adayı konumuna taşıyor — bu da yıldız ivmesinin arkasındaki temel itici güç.",
+        "evolve": "Zero-trust federasyon gibi güvenlik-kritik iddiaların bağımsız denetimden geçmesi, kurumsal güveni pekiştirir. Çoklu-provider yönlendirmesinde hangi görevin hangi modele, hangi maliyet/performans gerekçesiyle gönderildiğinin daha şeffaf gösterilmesi kullanıcı kontrolünü artırabilir. Swarm topolojilerinin (hiyerarşik/mesh) kurulumu yeni başlayanlar için karmaşık olabilir; rehberli başlangıç şablonları öğrenme eğrisini düşürebilir."
+      },
+      "glossary": [
+        { "term": "Agent swarm", "def": "Birden fazla AI ajanının, tek bir görevi paylaşarak veya birbirine devrederek birlikte çalıştığı koordinasyon modeli." },
+        { "term": "HNSW", "def": "Vektör veritabanlarında benzer içerikleri çok hızlı bulmak için kullanılan, katmanlı graf yapısına dayalı bir yaklaşık en-yakın-komşu arama algoritması." },
+        { "term": "Zero-trust", "def": "Ağ içindeki hiçbir bileşene otomatik güvenilmeyip her isteğin ayrı ayrı doğrulandığı güvenlik yaklaşımı." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının dış araçlara, verilere ve birbirine standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "WebAssembly sandboxing", "def": "Kodu, ana sistemden izole edilmiş güvenli bir WebAssembly ortamında çalıştırarak olası zararlı etkileri sınırlama tekniği." }
+      ]
+    },
+    {
+      "name": "microsoft/typescript-go",
+      "url": "https://github.com/microsoft/typescript-go",
+      "stars": "26.2k",
+      "language": "Go",
+      "sections": {
+        "serves": "Bu repo, dünyanın en yaygın kullanılan tip sistemlerinden biri olan TypeScript'in derleyicisinin ve dil sunucusunun, orijinal TypeScript/JavaScript yerine **Go** diliyle native olarak yeniden yazılmış halini barındırıyor. Amaç net: milyonlarca projede günlük olarak çalışan tip kontrolü, derleme ve editör otomatik-tamamlama gibi işlemleri önemli ölçüde hızlandırmak.",
+        "tech": "Go tabanlı derleyici; tsconfig.json okuma, modül çözümleme (module resolution) ve proje referansları (project references) gibi TypeScript'in temel derleme özelliklerini destekliyor. Projenin kendi durum tablosuna göre parsing, tip kontrolü ve declaration emit (`.d.ts` üretimi) ile watch modu \"tamamlandı\" olarak işaretlenmiş; buna karşın **language service** (editörlerdeki kod tamamlama, hata gösterimi, refactoring gibi IDE özelliklerini besleyen katman) hâlâ geliştirme aşamasında. Erken erişim için `@typescript/native-preview` adlı bir npm paketi yayınlanıyor.",
+        "why": "TypeScript, gerek büyük şirket kod tabanlarında gerek açık kaynak projelerinde derleme ve tip kontrol süresinin doğrudan geliştirici verimliliğini etkilediği bir dil. Microsoft'un bu native portu resmi olarak \"tamamlandı\" ilan edip ana TypeScript repo'suna taşıma sürecine girdiğini duyurması, milyonlarca geliştiriciyi doğrudan etkileyecek somut bir kilometre taşı — bu da ilginin bir anda patlamasına yol açtı. Özellikle çok büyük monorepo'larda çalışan, derleme sürelerinden doğrudan etkilenen kurumsal ekiplerin yakından takip ettiği bir gelişme.",
+        "evolve": "Language service'in henüz olgunlaşmamış olması, VS Code eklentileri ve JetBrains gibi geniş IDE ekosisteminin tam geçiş yapmasını şimdilik engelliyor. API'lerin \"hazır değil\" olarak işaretlenmesi, üçüncü parti araç geliştiricilerinin erken entegrasyona girişmesini riskli kılıyor; kararlı bir API sözleşmesinin (stable API contract) yayınlanması ekosistemin güvenle adapte olmasını hızlandırabilir. Repo Eylül 2026'da arşivlenip ana repoya taşınacağı için, geçiş sürecinin topluluğa ne kadar şeffaf iletileceği de benimsemeyi etkileyecek."
+      },
+      "glossary": [
+        { "term": "Derleyici (compiler)", "def": "İnsan tarafından yazılan kaynak kodu, bilgisayarın doğrudan çalıştırabileceği veya başka bir dile çevrilmiş forma dönüştüren yazılım." },
+        { "term": "Tip kontrolü (type checking)", "def": "Kodun çalıştırılmadan önce, değişkenlerin ve fonksiyonların beklenen veri tipleriyle tutarlı kullanılıp kullanılmadığının statik olarak denetlenmesi." },
+        { "term": "Language service", "def": "Bir programlama dili için editörlere kod tamamlama, hata gösterimi ve yeniden düzenleme (refactoring) gibi akıllı özellikleri sağlayan arka plan servisi." },
+        { "term": "Monorepo", "def": "Birden fazla proje veya paketin, ayrı depolar yerine tek bir kod deposunda birlikte tutulduğu geliştirme yapısı." },
+        { "term": "tsconfig.json", "def": "Bir TypeScript projesinin derleme ayarlarını (hedef sürüm, modül sistemi, katı tip kontrolü vb.) tanımlayan yapılandırma dosyası." }
+      ]
+    },
+    {
+      "name": "AprilNEA/OpenLogi",
+      "url": "https://github.com/AprilNEA/OpenLogi",
+      "stars": "13.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "OpenLogi, Logitech'in resmi Options+ yazılımına; hesap oluşturma ve telemetri göndermeyi gerektirmeyen, yerel-öncelikli (local-first) bir alternatif sunuyor. Fare/klavye tuş atamaları, DPI ayarları ve SmartShift tekerlek kontrolü gibi özellikleri, üreticinin buluta bağımlı yazılımı olmadan doğrudan cihazla konuşarak sağlıyor.",
+        "tech": "Cihazlarla iletişim, Logitech'in kablosuz alıcı ve USB bağlantılarında kullandığı **HID++ protokolü** üzerinden, resmi olmayan (reverse-engineered) bir uygulamayla kuruluyor. Arayüz, Zed editöründen tanıdık **GPUI** adlı Rust tabanlı GPU-hızlandırmalı framework ile yazılmış; mimaride cihaz giriş/çıkışını (I/O) yöneten ayrı bir arka plan ajanı ile ayrı bir grafik arayüz bileşeni bulunuyor. Ayarlar, cihazlar arasında kolayca senkronize edilebilecek düz metin **TOML** formatında saklanıyor; profil bazlı otomatik uygulama geçişi ve fareyle jest (gesture) tanıma gibi özellikler de destekleniyor.",
+        "why": "Donanım üreticilerinin hesap zorunlu, telemetri toplayan yazılımlarına yönelik kullanıcı güvensizliği büyüyor; gizlilik odaklı, hafif ve açık kaynak alternatiflere olan talep de buna paralel artıyor. Rust ile native performans ve GPUI ile akıcı bir arayüzün birleşimi, Electron tabanlı \"şişkin\" masaüstü yazılımlarına alternatif arayan geliştirici kitlesinin ilgisini çekti; çoklu Logitech cihaz ve webcam desteğinin genişliği de hızlı benimsenmeyi kolaylaştırdı.",
+        "evolve": "HID++ protokolünün resmi olmayan şekilde uygulanması, yeni Logitech cihaz modelleri çıktıkça sürekli güncellenmeyi gerektiriyor; topluluk katkılı, şeffaf bir cihaz uyumluluk listesi güveni artırabilir. Şu an yalnızca Logitech'e odaklanılmış — Razer, SteelSeries gibi diğer üreticilere genişlemek farklı protokollerin öğrenilmesini gerektirir ama pazarı büyük ölçüde genişletebilir. Profilleri telefon üzerinden değiştirme gibi uzaktan yönetim kolaylıkları da eklenebilir."
+      },
+      "glossary": [
+        { "term": "HID++ protokolü", "def": "Logitech'in fare, klavye gibi giriş cihazlarıyla kablosuz alıcı veya USB üzerinden iletişim kurmak için kullandığı, resmi olarak tam belgelenmemiş donanım protokolü." },
+        { "term": "DPI (Dots Per Inch)", "def": "Bir farenin, fiziksel hareketini ekran imleç hareketine çevirirken kullandığı hassasiyet ölçüsü; yüksek DPI daha hızlı imleç hareketi sağlar." },
+        { "term": "SmartShift", "def": "Logitech farelerinde, kaydırma tekerleğinin adım adım (ratchet) ile serbest (free-spin) mod arasında otomatik veya manuel geçiş yapabilen mekanizma." },
+        { "term": "TOML", "def": "İnsan tarafından kolay okunup yazılabilen, yapılandırma dosyalarında sıkça kullanılan basit bir metin veri formatı." },
+        { "term": "Local-first (yerel-öncelikli)", "def": "Bir uygulamanın verileri ve işlevselliği öncelikle kullanıcının kendi cihazında tutup, buluta veya internete bağımlılığı asgariye indiren tasarım yaklaşımı." }
+      ]
+    }
+  ]
+}
