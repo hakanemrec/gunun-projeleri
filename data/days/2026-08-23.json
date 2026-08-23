@@ -1,0 +1,171 @@
+{
+  "date": "2026-08-23",
+  "projects": [
+    {
+      "name": "openai/codex",
+      "url": "https://github.com/openai/codex",
+      "stars": "114k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 OpenAI'nin resmi terminal tabanlı kodlama ajanı **Codex CLI**, bulut tarafında çalışan Codex modelinin gücünü doğrudan geliştiricinin kendi makinesine taşıyor. Bugüne kadar \"AI ile kod yazma\" deneyimi büyük ölçüde tarayıcı sekmesinde bir sohbet penceresine ya da IDE eklentisine hapsolmuştu; Codex CLI bunu terminale, yani geliştiricinin zaten yaşadığı ortama geri getiriyor. Amaç, dosya düzenleme, komut çalıştırma, test koşturma gibi işleri ayrı bir arayüze geçmeden, mevcut iş akışının içinde otomatikleştirmek.\n\n- Mac, Linux ve Windows'ta yerel olarak çalışır\n- Terminal CLI'nin yanı sıra masaüstü uygulaması, VS Code/Cursor/Windsurf eklentileri ve web arayüzü de sunuluyor\n- ChatGPT Plus/Pro/Business/Enterprise aboneliğiyle ya da ayrı bir API anahtarıyla kimlik doğrulama yapılabiliyor — ayrı bir faturalandırmaya gerek kalmıyor",
+        "tech": "🛠️ Depo, **Bazel** build sistemiyle yönetilen çok modüllü bir yapıya sahip; asıl ajan mantığı `codex-rs` adlı **Rust** modülünde yazılmış, dağıtım ve paketleme ise npm/pnpm workspace üzerinden yürütülüyor. Rust tercihi tesadüf değil: bir terminal ajanının kullanıcı makinesinde dosya sistemine erişip komut çalıştırması gerektiği için hem hız hem de bellek güvenliği kritik — Rust'ın **garbage collector**'suz çalışması ve güçlü tip sistemi, böyle bir yerel ajan için Python'a göre çok daha güvenli bir temel sağlıyor. Kurulum curl/PowerShell betiği, npm paketi ya da Homebrew üzerinden yapılabiliyor; farklı işlemci mimarileri (**ARM64**, x86_64) için ayrı ikili dosyalar derleniyor.",
+        "why": "📈 Codex CLI'nin bugün trend olmasının arkasında hem OpenAI'nin marka gücü hem de \"terminal-native ajan\" kategorisinin bu hafta genel olarak ısınması var — aynı kategoriden Claude Code, Caveman, ECC gibi projeler de son günlerde trend listesindeydi. Rust ile yazılmış olması, \"ajanın kendisi de hafif ve hızlı olmalı\" beklentisine denk düşüyor; kullanıcılar arasında hız ve kaynak tüketimi konusunda hassasiyet arttıkça bu, Python tabanlı rakiplere karşı bir farklılaşma noktası oluyor. Mevcut ChatGPT aboneliğini kullanabilmek de ek bir API faturası çıkarmadan \"dene\" kararını kolaylaştırıp yıldız ivmesini büyütüyor.",
+        "evolve": "💡 Şu an güçlü yanı yerellik ve hız; geliştirilebilecek yön ise çoklu-ajan koordinasyonu ve uzun süreli hafıza. Bu hafta trend olan Caveman, Ruflo ve AI-Memory gibi projelerin tam olarak hedeflediği boşluk bu — Codex CLI'nin tek oturumluk, bağlamı oturum bitince unutan yapısı, ekip halinde veya günler süren projelerde tekrar tekrar aynı bağlamı anlatma yükü doğuruyor. Kalıcı bir proje hafızası ya da yerleşik çoklu-ajan orkestrasyonu eklenmesi, kategoriye özgü rakiplerle farkı kapatabilir."
+      },
+      "glossary": [
+        {
+          "term": "Bazel",
+          "def": "Google tarafından geliştirilen, büyük ve çok dilli kod tabanlarını hızlı ve tekrarlanabilir şekilde derlemek için kullanılan build (derleme) aracı."
+        },
+        {
+          "term": "Rust",
+          "def": "Bellek güvenliğini derleme zamanında garanti eden, C/C++ kadar hızlı çalışan sistem programlama dili."
+        },
+        {
+          "term": "Garbage collector (çöp toplayıcı)",
+          "def": "Programın artık kullanmadığı belleği otomatik olarak geri kazanan çalışma zamanı bileşeni; Rust bu bileşen olmadan da bellek güvenliği sağlar."
+        },
+        {
+          "term": "ARM64",
+          "def": "Apple Silicon gibi günümüz mobil ve bazı masaüstü işlemcilerinde kullanılan, x86_64'e alternatif işlemci mimarisi."
+        }
+      ]
+    },
+    {
+      "name": "Wei-Shaw/sub2api",
+      "url": "https://github.com/Wei-Shaw/sub2api",
+      "stars": "38.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 AI aboneliklerinin sayısı hızla arttı: Claude Pro, ChatGPT Plus, Gemini Advanced, Grok — her biri ayrı hesap, ayrı fatura, ayrı API formatı demek. **Sub2API**, bu dağınıklığı tek bir kapıdan geçirilebilir hale getiriyor: kullanıcı tek bir API anahtarıyla istek atıyor, sistem bu isteği arka planda uygun sağlayıcıya ve hesaba yönlendiriyor. Özellikle birden fazla kişinin/ekibin aboneliklerini paylaşarak maliyeti bölüşmesine imkân tanıyan bir model sunuyor.\n\n- Model bazında akıllı yönlendirme, **sticky session** ile hesap tutarlılığı\n- Token bazlı hassas faturalandırma\n- EasyPay/Alipay/WeChat Pay/Stripe entegre ödeme\n- Docker Compose ile tek komutla kurulum",
+        "tech": "🛠️ Backend Go 1.26 ve **Gin** framework üzerine, **Ent ORM** ile PostgreSQL'e bağlanıyor; önbellek ve kuyruk için Redis, arayüz için Vue 3 + Vite + TailwindCSS kullanılmış — klasik ama kanıtlanmış bir SaaS altyapı seçimi. Go tercihi, aynı anda binlerce eşzamanlı API isteğini düşük gecikmeyle yönlendirmesi gereken bir \"gateway\" için mantıklı: **goroutine**'ler sayesinde yüksek eşzamanlılık düşük kaynak maliyetiyle sağlanabiliyor. **Circuit breaker** deseni, bir sağlayıcı hesabı hata vermeye başladığında faturalama tutarlılığını korumak için kullanılmış.",
+        "why": "📈 Bu proje, Çin merkezli geliştirici topluluğunda özellikle yaygın bir ihtiyaca cevap veriyor: yurt dışı AI aboneliklerine erişim ve ödeme zorlukları nedeniyle \"paylaşılan hesap + yerel ödeme yöntemleri\" modeli büyük talep görüyor; Alipay/WeChat Pay desteği bunun açık göstergesi. Global tarafta ise \"tüm modelleri tek API'den yönet\" zaten var olan bir kategori — Sub2API bunu açık kaynak ve kendi sunucunda barındırılabilir şekilde sunarak, üçüncü bir tarafa güvenmeden aynı esnekliği sağlıyor.",
+        "evolve": "💡 Şu an güçlü yanı geniş sağlayıcı desteği ve esnek faturalama; ama bir hesap paylaşım modeli doğası gereği sağlayıcıların hizmet şartlarıyla gerilim taşıyor — bu, projenin en büyük risk alanı. \"Simple Mode\" (bireysel geliştirici, SaaS özellikleri kapalı) bu riski azaltıyor ama proje büyüdükçe sağlayıcı tarafından tespit edilme/hesap askıya alınma senaryolarına karşı daha sağlam bir soyutlama katmanı gerekecek."
+      },
+      "glossary": [
+        {
+          "term": "Ent ORM",
+          "def": "Go dilinde veritabanı tablolarını kod üzerinden tanımlayıp yöneten bir ORM (nesne-ilişkisel eşleyici) kütüphanesi."
+        },
+        {
+          "term": "Gin",
+          "def": "Go dilinde yazılmış, yüksek performanslı bir web/API framework'ü."
+        },
+        {
+          "term": "Goroutine",
+          "def": "Go dilinin çok hafif, binlerce tanesi aynı anda çalıştırılabilen eşzamanlı görev birimi."
+        },
+        {
+          "term": "Circuit breaker (devre kesici)",
+          "def": "Bağımlı olunan bir servis art arda hata verdiğinde istekleri geçici olarak durdurup sistemin geri kalanını koruyan tasarım deseni."
+        },
+        {
+          "term": "Sticky session",
+          "def": "Bir kullanıcının art arda gelen isteklerinin hep aynı arka uç hesabına/sunucuya yönlendirilmesini sağlayan yönlendirme stratejisi."
+        }
+      ]
+    },
+    {
+      "name": "n8n-io/n8n",
+      "url": "https://github.com/n8n-io/n8n",
+      "stars": "202k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 n8n, \"kod yaz ya da yazma\" ikilemini ortadan kaldıran görsel bir otomasyon platformu: kullanıcılar sürükle-bırak node'larla iş akışı kurar, gerektiğinde JavaScript/Python koduyla ya da npm paketleriyle bu akışı derinleştirebilir. Son sürümler bunu bir adım öteye taşıyor: artık sadece \"şu tetiklenince şunu yap\" değil, LLM tabanlı ajanların araç kullanıp onay bekleyerek çok adımlı görevler yürütmesini de aynı canvas üzerinde tasarlamak mümkün.\n\n- 1.500'den fazla hazır entegrasyon, 9.000'in üzerinde şablon\n- OpenAI, Anthropic, Google ve açık kaynak modeller arasında geçiş yapılabiliyor\n- Self-hosted (Docker/Kubernetes) ya da bulut (n8n.cloud) olarak çalıştırılabiliyor\n- Kurumsal sürümde rol tabanlı erişim kontrolü ve denetim kayıtları mevcut",
+        "tech": "🛠️ Proje Node.js/TypeScript temelli, pnpm ve Turborepo ile yönetilen bir **monorepo**. Görsel iş akışı motoru, **LangChain** entegrasyonu üzerinden ajan desenlerini (araç çağırma, çok adımlı planlama) native node'lar olarak canvas'a taşıyor — yani bir geliştirici LangChain kodu yazmadan, görsel node'ları bağlayarak bir ajan zinciri kurabiliyor. Lisans modeli **fair-code**: kaynak açık ama Sustainable Use License ile ticari SaaS olarak yeniden satışı kısıtlanmış; bu, hem topluluk katkısını hem de şirketin gelir modelini korumayı hedefliyor.",
+        "why": "📈 n8n zaten 200 bin yıldızı aşmış, kategorisinde en olgun oyunculardan biri; bugün yine trend listesinde olması \"workflow automation + AI agent\" kesişiminin hâlâ soğumadığını gösteriyor. Zapier/Make gibi kapalı kaynak rakiplere göre self-hosted olması ve **vendor lock-in** olmaması, veri gizliliğine duyarlı kurumsal kullanıcılar için önemli bir tercih sebebi. Bu hafta trend olan diğer ajan orkestrasyonu projeleriyle karşılaştırıldığında n8n'in farkı, kod yazmayan kullanıcılar için de erişilebilir olması.",
+        "evolve": "💡 Geliştirilebilecek en somut alan, LLM ajanlarının canvas içinde ürettiği çok adımlı kararların **gözlemlenebilirliği** — bir ajan neden belirli bir aracı seçti, hangi ara adımları denedi gibi sorular hâlâ log kazma gerektiriyor. Bu hafta trend olan \"ajan maliyeti/token takibi\" araçlarının sunduğu türden bir görselleştirmenin n8n'in kendi arayüzüne entegre edilmesi, ürünü \"otomasyon + gözlemlenebilirlik\" tek platformuna dönüştürebilir."
+      },
+      "glossary": [
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paket/projenin tek bir git deposunda birlikte tutulduğu geliştirme yapısı."
+        },
+        {
+          "term": "LangChain",
+          "def": "LLM tabanlı uygulamalar (ajanlar, RAG zincirleri) kurmak için kullanılan popüler açık kaynak geliştirme çerçevesi."
+        },
+        {
+          "term": "Fair-code",
+          "def": "Kaynak kodu açık ama ticari yeniden satışı sınırlayan, açık kaynak ile ticari lisans arası bir model."
+        },
+        {
+          "term": "Vendor lock-in",
+          "def": "Bir hizmete/sağlayıcıya bağımlı hale gelip başka bir alternatife geçişin maliyetli veya zor hale gelmesi durumu."
+        },
+        {
+          "term": "Gözlemlenebilirlik (observability)",
+          "def": "Bir sistemin iç durumunu loglar, metrikler ve izler (trace) üzerinden dışarıdan anlayabilme yeteneği."
+        }
+      ]
+    },
+    {
+      "name": "mahlernim/google-timeline-visualizer",
+      "url": "https://github.com/mahlernim/google-timeline-visualizer",
+      "stars": "2.6k",
+      "language": "Kotlin",
+      "sections": {
+        "serves": "🎯 Google, 2024 sonrasında Konum Geçmişi (Timeline) verisini buluttan kaldırıp yalnızca cihazda saklamaya başladı — bu da kullanıcıların yıllar süren seyahat verisini görselleştirebileceği eski web araçlarını işlevsiz bıraktı. Bu proje, kullanıcının kendi cihazından dışa aktardığı Timeline JSON dosyasını alıp o yılki gezilerini harita üzerinde akan bir kamera hareketiyle canlandıran bir MP4 video üretiyor — hiçbir veri hiçbir sunucuya yüklenmeden.\n\n- Android uygulaması ve iPhone için web sürümü\n- Tarih aralığı ya da tek tek gezi seçimi\n- 480p'den 1080p'ye, kare ve dikey formatlarda video çıktısı\n- 8 dilde arayüz desteği (Türkçe hariç)",
+        "tech": "🛠️ Üç ayrı bileşenden oluşuyor: Kotlin/Gradle ile yazılmış Android uygulaması, Safari 16.4+ gerektiren bir web sürümü ve FFmpeg tabanlı bir Python masaüstü aracı. Harita render'ı için CARTO'nun OpenStreetMap tabanlı zemin haritaları kullanılıyor — bu, uygulamanın dışarıya yaptığı tek ağ isteği türü (Timeline verisinin kendisi asla dışarı çıkmıyor). Google'ın Timeline export formatı zaman içinde değişmiş (eski `semanticSegments` yapısından yeni düz-dizi formatına, **E7 notasyonu**ndan dereceye); proje bu format karmaşasını tek bir ayrıştırıcı katmanında soyutlayarak kullanıcıyı format detaylarından koruyor. Rota çizimlerinde noktalar seyrek olduğunda, **büyük çember (great-circle) rota**larıyla kamera hareketi yumuşatılıyor.",
+        "why": "📈 Bu, hafta genelinde trend olan \"gizlilik-öncelikli, **local-first** SaaS alternatifi\" temasının güzel bir örneği. Google'ın kendi Timeline özelliğini zayıflatması, boşluğu dolduracak topluluk araçlarına organik talep yarattı; \"yıl sonu özet videosu\" formatının Spotify Wrapped tarzı paylaşılabilir/duygusal bir çekiciliği olması da viralliğe katkı sağlıyor.",
+        "evolve": "💡 Şu an tek kullanıcılık, tek cihazlık bir araç; birden fazla yıl karşılaştırması (\"bu yıl geçen yıldan daha çok mu gezdim\") veya arkadaşlarla ortak seyahat rotalarının birleştirilmesi gibi sosyal bir katman eklenmesi, aracı kişisel arşivden paylaşılabilir hikâyeye taşıyabilir. Şu anki katı gizlilik duruşuyla bunun nasıl dengeleneceği (ör. sunucuya hiç değmeden yerel eşleştirme) ilginç bir tasarım problemi."
+      },
+      "glossary": [
+        {
+          "term": "Local-first (yerel-öncelikli)",
+          "def": "Verinin işlenmesinin uzak bir sunucuya değil, kullanıcının kendi cihazında yapıldığı tasarım yaklaşımı."
+        },
+        {
+          "term": "E7 notasyonu",
+          "def": "Enlem/boylam değerlerinin ondalık kayıp yaşamadan tam sayı olarak saklanması için 10 milyonla çarpılarak ifade edilmesi; Google'ın konum verisi formatlarından biri."
+        },
+        {
+          "term": "FFmpeg",
+          "def": "Video/ses dönüştürme, düzenleme ve render işlemlerinde kullanılan yaygın açık kaynak komut satırı aracı."
+        },
+        {
+          "term": "Büyük çember (great-circle) rota",
+          "def": "Bir küre yüzeyindeki iki nokta arasındaki en kısa yol; harita üzerinde gerçekçi rota/uçuş çizimi için kullanılır."
+        }
+      ]
+    },
+    {
+      "name": "Tencent/AI-Infra-Guard",
+      "url": "https://github.com/Tencent/AI-Infra-Guard",
+      "stars": "5.6k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 Bir şirket AI sistemini üretime almadan önce; kullandığı çıkarım (inference) sunucusunun bilinen bir güvenlik açığı taşıyıp taşımadığını, kurduğu ajanların **prompt injection** ile ele geçirilip geçirilemeyeceğini, MCP sunucularının yetki sınırlarını aşıp aşmadığını tek tek elle kontrol etmek zorunda kalıyordu. AI-Infra-Guard, bu kontrolleri tek bir platformda birleştiren, Tencent'in güvenlik laboratuvarı Zhuque tarafından geliştirilmiş açık kaynaklı bir AI **red teaming** (kırmızı takım) aracı.\n\n- Ollama, vLLM, ComfyUI, Triton gibi çıkarım altyapılarında 2.000'den fazla bilinen **CVE**'yi parmak izinden tespit ediyor\n- Dify, Coze gibi ajan çerçevelerinde otomatik risk taraması\n- **MCP** sunucularında 14 risk kategorisi tespiti\n- Ajan \"skill\" dosyalarını 9 risk kategorisine göre değerlendiren ayrı bir tarayıcı (SkillTrustBench üzerinde 0,9848 F1 skoru)",
+        "tech": "🛠️ Go ile yazılmış bir backend, Docker Compose ile tek komutla ayağa kalkan bir mimari ve Swagger ile belgelenmiş tam bir REST API sunuyor. Tasarımın en dikkat çekici yanı **eklenti tabanlı (plugin-based) mimari** olması: yeni bir zafiyet imzası ya da risk kuralı eklemek için Go kodu değil, YAML tabanlı bir \"fingerprint kuralı\" yazmak yetiyor — bu da güvenlik topluluğunun katkı eşiğini düşürüyor. Araç kasıtlı olarak kimlik doğrulamasız (varsayılan) geliyor çünkü iç ağda, kurumsal güvenlik ekibinin kendi altyapısını taraması için tasarlanmış; internete açık kullanım için önerilmiyor.",
+        "why": "📈 Bu proje, bu hafta trend olan usestrix/strix (pentesting ajanı) ve Anthropic-Cybersecurity-Skills (güvenlik bilgisini ajanlara \"skill\" olarak öğretme) ile aynı damarda: AI ajanları hem saldırı yüzeyi hem de savunma aracı olarak aynı anda öne çıkıyor. Black Hat Europe 2025'te sunulmuş olması ve 19 akademik yayına konu olması akademik/kurumsal güven inşa ederken, DeepSeek ve Tencent gibi büyük oyuncuların kullanması da \"gerçek üretimde test edilmiş\" algısını güçlendiriyor.",
+        "evolve": "💡 Şu anki en büyük sınır, tespitin büyük ölçüde bilinen CVE imzalarına ve önceden tanımlı risk kategorilerine dayanması — **zero-day** ya da projeye özel entegrasyon zafiyetlerini yakalamakta klasik statik tarayıcılarla aynı körlüğü paylaşıyor. Kodun ne yaptığını anlayarak risk çıkaran, imza gerektirmeyen LLM tabanlı bir \"anlamsal\" zafiyet keşif katmanı eklenmesi, aracı imza tabanlı taramanın ötesine taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "CVE",
+          "def": "Bilinen yazılım güvenlik açıklarına verilen standart, herkesçe takip edilebilir kimlik numarası."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Bir AI modelinin talimatlarını, kullanıcı girdisi içine gizlenmiş komutlarla ele geçirmeye çalışan saldırı türü."
+        },
+        {
+          "term": "Red teaming (kırmızı takım)",
+          "def": "Bir sistemin zayıflıklarını gerçek bir saldırgan gibi davranarak proaktif şekilde ortaya çıkarma pratiği."
+        },
+        {
+          "term": "Eklenti tabanlı (plugin-based) mimari",
+          "def": "Yeni özelliklerin çekirdek kodu değiştirmeden, ayrı eklenti/kural dosyalarıyla eklenebildiği yazılım tasarımı."
+        },
+        {
+          "term": "Zero-day (sıfırıncı gün açığı)",
+          "def": "Henüz kamuya açıklanmamış veya yamanmamış, dolayısıyla bilinen imzalarla tespit edilemeyen güvenlik açığı."
+        }
+      ]
+    }
+  ]
+}
