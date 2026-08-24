@@ -1,0 +1,77 @@
+{
+  "date": "2026-08-24",
+  "projects": [
+    {
+      "name": "openai/codex",
+      "url": "https://github.com/openai/codex",
+      "stars": "116k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Terminal içinde çalışan hafif bir kodlama ajanı; geliştiricinin yerel makinesinde dosya okuma/yazma, komut çalıştırma ve kod önerisi sunma gibi işleri otomatik yapan bir CLI aracı. ChatGPT hesabıyla (Plus/Pro/Business/Edu/Enterprise) doğrudan bağlanabiliyor, bu sayede ayrı bir API anahtarı yönetmeye gerek kalmıyor.",
+        "tech": "🛠️ Rust ile yazılmış; macOS (Apple Silicon/x86_64) ve Linux (x86_64/arm64) için native binary olarak dağıtılıyor, npm ve Homebrew üzerinden kurulabiliyor. IDE entegrasyonları (VS Code, Cursor, Windsurf) ve ayrı bir masaüstü uygulama modu (`codex app`) sunuyor. Geliştirme temposu yüksek: aynı gün içinde hem kararlı hem alfa sürümler yayınlanabiliyor, her release'te platforma özel derlemeler (aarch64, x86_64) ayrı ayrı paketleniyor.",
+        "why": "📈 24 Ağustos'ta 0.149.1 kararlı sürümünün yayınlanmasıyla günün en yüksek ivmesini yakaladı (+2.715 yıldız/gün) — bugünün trend listesinde açık ara lider. OpenAI'nin kendi terminal ajanını Anthropic'in Claude Code'una rakip olarak agresif şekilde geliştirmesi, terminal-native kodlama ajanı kategorisindeki rekabetin ne kadar kızıştığını gösteriyor.",
+        "evolve": "💡 README'de hangi dilleri veya framework'leri ne kadar iyi desteklediğine dair somut bir dokümantasyon eksik. API anahtarıyla kurulumun ChatGPT girişine kıyasla 'ek adımlar' gerektirdiği belirtiliyor; onboarding akışının sadeleştirilmesi, ChatGPT hesabı olmayan geliştiriciler için giriş engelini azaltabilir."
+      },
+      "glossary": [
+        { "term": "CLI (komut satırı arayüzü)", "def": "Terminalden metin komutlarıyla kullanılan, grafik arayüzü olmayan program türü." },
+        { "term": "Native binary", "def": "Belirli bir işletim sistemi/işlemci mimarisi için derlenmiş, ek çalışma zamanı gerektirmeden doğrudan çalıştırılabilen dosya." },
+        { "term": "Apple Silicon", "def": "Apple'ın Mac bilgisayarlarında kullandığı, kendi tasarladığı ARM tabanlı işlemci ailesi (M serisi)." },
+        { "term": "Alfa sürüm", "def": "Bir yazılımın henüz test aşamasında olan, kararlılığı garanti edilmeyen erken geliştirme sürümü." }
+      ]
+    },
+    {
+      "name": "basecamp/omarchy",
+      "url": "https://github.com/basecamp/omarchy",
+      "stars": "29.4k",
+      "language": "Shell",
+      "sections": {
+        "serves": "🎯 Arch Linux tabanlı, Hyprland pencere yöneticisiyle gelen, 'kutudan çıktığı gibi hazır' bir geliştirici masaüstü dağıtımı. Amacı, Arch Linux'u elle baştan yapılandırmanın (paket seçimi, tema, klavye kısayolları, güvenlik ayarları) saatler süren zahmetini ortadan kaldırıp yaklaşık 10 dakikada kullanıma hazır, estetik ve tutarlı bir sistem sunmak.",
+        "tech": "🛠️ Temeli Arch Linux'un rolling-release (sürekli güncellenen) paket modeli üzerine kurulu. Pencere yöneticisi olarak Wayland tabanlı, animasyonlarıyla bilinen tiling compositor Hyprland kullanılıyor. Kurulumla birlikte zorunlu LUKS tam disk şifrelemesi, varsayılan açık güvenlik duvarı, Alacritty terminal, Neovim, tmux, Chromium, zsh kabuğu, JetBrainsMono Nerd Font ve Tokyo Night renk teması geliyor. 'Opinionated' (dayatmacı) yaklaşım, sayısız seçenek sunmak yerine tek, iyi düşünülmüş bir varsayılan kurguyu tercih ediyor.",
+        "why": "📈 Basecamp'in kurucusu DHH (David Heinemeier Hansson) tarafından geliştiriliyor olması ciddi bir tanınırlık avantajı sağlıyor; Ruby on Rails çevresinden gelen geniş bir geliştirici kitlesi projeyi yakından takip ediyor. Ocak 2026'daki 3.3.0 güncellemesiyle kararlılık ve donanım uyumluluğu artırılmıştı; bugünkü +750 yıldız/gün ivmesi, bu düzenli ve kaliteli sürüm temposunun sonucu.",
+        "evolve": "💡 Tek kullanıcılı, tam disk şifrelemeli kurulumlara odaklanması esneklik açısından bir sınırlama; çok kullanıcılı veya kurumsal senaryolar için ek yapılandırma gerekebilir. Wayland/Hyprland ekosistemi X11'e göre hâlâ daha genç olduğundan, bazı eski uygulama veya donanım sürücüleriyle uyumluluk sorunları yaşanabiliyor."
+      },
+      "glossary": [
+        { "term": "Wayland", "def": "Linux masaüstü ortamları için geliştirilen, eski X11 sisteminin yerini almayı hedefleyen modern görüntü/pencere protokolü." },
+        { "term": "Tiling window manager (döşemeli pencere yöneticisi)", "def": "Pencereleri üst üste bindirmek yerine ekranı otomatik olarak bölerek yerleştiren pencere yönetim yaklaşımı." },
+        { "term": "LUKS", "def": "Linux'ta disk bölümlerini şifrelemek için kullanılan standart bir tam disk şifreleme yöntemi." },
+        { "term": "Rolling-release", "def": "Belirli sürüm numaralarıyla değil, paketlerin sürekli ve kademeli güncellendiği yazılım dağıtım modeli." }
+      ]
+    },
+    {
+      "name": "Alishahryar1/free-claude-code",
+      "url": "https://github.com/Alishahryar1/free-claude-code",
+      "stars": "48.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Claude Code, Codex, Cline, OpenCode gibi onlarca farklı AI kodlama ajanını, 50'den fazla sağlayıcının sunduğu ücretsiz kotalar (aylık iddia edilen 1,3 milyar+ token) üzerinden tek bir yerel proxy sunucusu ve yönetim panelinden çalıştırmayı sağlayan bir araç. Amacı, her sağlayıcı için ayrı ayrı API anahtarı yönetme ve abonelik takibi yapma külfetini tek arayüzde toplamak.",
+        "tech": "🛠️ Python 3.14 üzerine `uv` paket yöneticisiyle kurulu; kod kalitesi için Ruff (biçimlendirme) ve `ty` (tip kontrolü), testler için Pytest, loglama için Loguru kullanılıyor. Mimarinin merkezinde yerel bir proxy sunucusu ve web tabanlı bir Admin UI var; terminal, VS Code, JetBrains, Discord ve Telegram gibi farklı uçlara entegre olabiliyor. Bir sağlayıcı isteği reddettiğinde otomatik olarak başka bir sağlayıcıya geçen bir failover katmanı bulunuyor; RTK adlı filtreleme ve beş iç optimizasyonla terminal çıktısındaki token sayısını 'yüzde 90'a kadar' azalttığı iddia ediliyor. Opsiyonel olarak yerel Whisper veya NVIDIA NIM ile sesli komutla kod yazma (talk-to-code) desteği de sunuyor.",
+        "why": "📈 AI kodlama araçlarının abonelik/kota maliyetlerinin geliştiriciler arasında önemli bir gündem maddesi olduğu bir dönemde, 'dağınık ücretsiz token havuzlarını birleştirip tek arayüzden kullan' vaadi hızlı ilgi çekti (+1.081 yıldız/gün). Proje, sağlayıcı şartlarına uyduğunu ve izin verilmeyen entegrasyonları kaldırdığını açıkça belirtiyor; bu şeffaflık, benzer 'bedava API' araçlarına kıyasla güven oluşturuyor.",
+        "evolve": "💡 Ücretsiz kotaların sürekliliği tamamen sağlayıcıların insafında olduğundan, kullanıcılar için öngörülemezlik riski taşıyor. Çoklu sağlayıcı hesaplarının hâlâ ayrı ayrı yönetilmesi gerekiyor; sağlayıcı şartlarındaki değişiklikleri otomatik özetleyip kullanıcıyı uyaran bir katman eklenmesi deneyimi iyileştirebilir."
+      },
+      "glossary": [
+        { "term": "Proxy sunucusu", "def": "İstemci ile hedef servis arasına girip istekleri yönlendiren, aracı görevi gören sunucu." },
+        { "term": "Failover", "def": "Bir sistem veya sağlayıcı çalışmadığında isteklerin otomatik olarak yedek bir alternatife yönlendirilmesi." },
+        { "term": "Token", "def": "Yapay zeka dil modellerinin metni işlerken kullandığı, kelime veya kelime parçası büyüklüğündeki temel birim; kullanım genelde token sayısına göre ücretlendirilir." },
+        { "term": "Admin UI", "def": "Bir sistemin ayarlarını, kullanıcılarını veya durumunu yönetmek için sunulan yönetici arayüzü." }
+      ]
+    },
+    {
+      "name": "dani-garcia/vaultwarden",
+      "url": "https://github.com/dani-garcia/vaultwarden",
+      "stars": "66k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Resmi Bitwarden şifre yöneticisi sunucusunun API-uyumlu, hafif bir alternatifi. Resmi Bitwarden sunucusu kaynak tüketimi açısından ağır kaldığından, Vaultwarden bireysel kullanıcılar, aileler ve küçük ekipler için kendi altyapılarında (self-hosted) çalıştırılabilecek, düşük kaynaklı bir seçenek sunuyor — ve resmi Bitwarden istemci uygulamalarıyla (masaüstü, mobil, tarayıcı eklentisi) doğrudan uyumlu.",
+        "tech": "🛠️ Rust dilinde, Rocket web framework'ü üzerine inşa edilmiş; Bitwarden'ın istemci API'sini sıfırdan yeniden implemente ediyor. Docker/Podman ile container olarak dağıtılıyor, imajlar ghcr.io, docker.io ve quay.io üzerinden sunuluyor. HTTPS zorunlu tutuluyor (tarayıcının Web Crypto API'si güvenli bağlam gerektirdiğinden) ve TLS desteği Rocket framework'üne yerleşik geliyor. Web Vault istemcisi hafifletilerek container içine paketlenmiş durumda.",
+        "why": "📈 Bitwarden'da çalışan bir kişinin projeye kişisel zamanında katkı vermesi projeye ayrı bir güven katıyor; marka karışıklığını önlemek için eski 'Bitwarden_RS' isminden bilinçli olarak uzaklaşılmıştı. Son sürümlerde (1.36-1.37) SSRF, CSRF ve organizasyonlar-arası erişim gibi ciddi güvenlik açıklarının kapatılması, self-hosting topluluğunda 'güncel kal' motivasyonunu tetikleyip bugünkü ivmeyi besliyor.",
+        "evolve": "💡 Veri kaybı sorumluluğu açıkça kullanıcıya bırakılmış durumda; entegre, otomatik bir yedekleme mekanizması yok — bu, self-hosting'e yeni başlayanlar için risk taşıyor. HTTPS/TLS zorunluluğu ev kullanıcıları için ek reverse-proxy kurulum karmaşıklığı yaratıyor; basitleştirilmiş, 'tek komutla HTTPS' sağlayan bir kurulum sihirbazı erişilebilirliği artırabilir."
+      },
+      "glossary": [
+        { "term": "Self-hosted", "def": "Bir yazılımın üçüncü taraf bir bulut servisi yerine kullanıcının kendi sunucusunda/altyapısında çalıştırılması." },
+        { "term": "SSRF (Sunucu Taraflı İstek Sahteciliği)", "def": "Saldırganın bir sunucuyu, normalde erişemeyeceği iç ağ kaynaklarına istek göndermeye kandırdığı güvenlik açığı türü." },
+        { "term": "Reverse proxy", "def": "Gelen istekleri arka plandaki gerçek sunuculara yönlendiren, genelde HTTPS sonlandırma ve yük dengeleme için kullanılan ara katman sunucu." },
+        { "term": "Web Crypto API", "def": "Tarayıcıların JavaScript üzerinden şifreleme, hash ve anahtar üretimi gibi kriptografik işlemleri güvenli şekilde yapmasını sağlayan standart arayüz." }
+      ]
+    }
+  ]
+}
