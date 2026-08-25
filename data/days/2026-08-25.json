@@ -1,0 +1,163 @@
+{
+  "date": "2026-08-25",
+  "projects": [
+    {
+      "name": "anthropics/claude-plugins-community",
+      "url": "https://github.com/anthropics/claude-plugins-community",
+      "stars": "1.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Anthropic'in Claude Cowork ve Claude Code için resmi topluluk eklenti (plugin) marketinin salt-okunur aynası. Geliştiricilerin ürettiği eklentileri güvenlik incelemesinden geçirip tek bir merkezi kataloğa taşıyarak, kullanıcıların rastgele bir GitHub reposundan değil, denetlenmiş bir kaynaktan eklenti kurmasını sağlıyor.",
+        "tech": "🛠️ Repo, `.claude-plugin/marketplace.json` adlı tek bir yapılandırma dosyasıyla yönetiliyor; her eklenti kendi klasöründe duruyor. Kritik mimari karar: bu repo'ya doğrudan pull request kabul edilmiyor — eklenti göndermek isteyenler ayrı bir başvuru portalından geçiyor, onaylananlar geceleri otomatik olarak buraya senkronize ediliyor (nightly sync). Bu, \"GitHub'a PR at, direkt yayınla\" modelinden bilinçli bir kopuş; amaç kötü niyetli veya düşük kaliteli eklentilerin filtrelenmesi.",
+        "why": "📈 Claude Code ve Claude Cowork ekosistemi büyüdükçe üçüncü parti eklenti ihtiyacı da büyüyor. Kurumsal kullanıcılar özellikle \"denetlenmemiş kod çalıştırma\" riskinden çekindiği için, Anthropic'in resmi onay sürecinden geçmiş bir marketplace fikri hızla ilgi topluyor.",
+        "evolve": "💡 Şu an tamamen merkezi onay sürecine bağımlı bir yapı var; bu hem kalite güvencesi hem de darboğaz anlamına geliyor. Topluluk büyüdükçe onay süreçlerinin şeffaflaşması, sürüm (versiyon) yönetimi ve otomatik güvenlik taramasının detaylarının açıklanması beklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Eklenti (plugin)",
+          "def": "Bir yazılıma sonradan eklenerek yeni özellik kazandıran, bağımsız geliştirilmiş kod parçası."
+        },
+        {
+          "term": "Marketplace",
+          "def": "Kullanıcıların eklenti/uzantı arayıp kurabildiği, genelde onay sürecinden geçmiş içeriklerin listelendiği merkezi katalog."
+        },
+        {
+          "term": "Pull request (PR)",
+          "def": "Bir geliştiricinin yaptığı kod değişikliğini, projeye dahil edilmek üzere incelemeye sunduğu istek."
+        },
+        {
+          "term": "Nightly sync",
+          "def": "Bir sistemin, her gece otomatik olarak çalışan bir işlemle güncel verilerle senkronize edilmesi."
+        }
+      ]
+    },
+    {
+      "name": "makeplane/plane",
+      "url": "https://github.com/makeplane/plane",
+      "stars": "58.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Jira, Linear, Monday.com gibi ücretli proje yönetimi araçlarına açık kaynaklı bir alternatif. Ekiplerin iş öğelerini (issue), sprint'lerini ve yol haritalarını tek bir yerde takip etmesini sağlıyor; hem bulutta hem kendi sunucunuzda (self-hosted) çalışabiliyor, böylece veri kendi altyapınızda kalabiliyor.",
+        "tech": "🛠️ Frontend React + TypeScript + Vite ile; backend Django (Python) ve destekleyici Node.js servisleriyle kurulu. Veri PostgreSQL'de tutuluyor, Redis ise önbellekleme ve gerçek zamanlı özellikler için kullanılıyor. Monorepo yapısı pnpm workspace ile yönetiliyor; bu da frontend ve backend'in birbirinden bağımsız ölçeklenmesine izin veriyor. Docker Compose ve Kubernetes desteğiyle hem tek sunucuya hem kurumsal kümelere kurulabiliyor.",
+        "why": "📈 58 bin üzeri yıldız ve 5.5 bin fork, veri gizliliği kaygılarının arttığı dönemde self-host edilebilir alternatiflere olan talebi gösteriyor. Cycles (burndown grafikli sprint takibi), Modules (büyük projeleri parçalara ayırma) ve yapay zekâ destekli sayfalar gibi özellikler, pahalı SaaS araçlarıyla özellik paritesi sunuyor.",
+        "evolve": "💡 Aktif geliştirme (277 açık PR, 806 açık issue) sağlıklı bir topluluk gösteriyor ama bu ölçekte bir backlog, öncelik yönetiminin de zorlaştığı anlamına gelebilir. Kurumsal veri taşıma araçları (Jira'dan otomatik göç), daha gelişmiş raporlama ve marketplace tarzı bir eklenti sistemi gelecekte fark yaratabilir."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın, üçüncü parti bir bulut hizmeti yerine kullanıcının kendi sunucusunda çalıştırılması."
+        },
+        {
+          "term": "Sprint",
+          "def": "Bir ekibin belirli bir işi tamamlamak için çalıştığı, genelde 1-4 hafta süren sabit zaman dilimi."
+        },
+        {
+          "term": "Burndown chart",
+          "def": "Bir sprint boyunca kalan işin zamana göre ne hızda azaldığını gösteren grafik."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla projenin veya paketin tek bir git deposunda birlikte tutulduğu geliştirme yapısı."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Yaygın kullanılan, açık kaynaklı ilişkisel veritabanı yönetim sistemi."
+        },
+        {
+          "term": "Redis",
+          "def": "Veriyi bellekte tutarak çok hızlı okuma/yazma sağlayan, önbellekleme ve gerçek zamanlı özellikler için kullanılan bir veri deposu."
+        }
+      ]
+    },
+    {
+      "name": "openclaw/openclaw",
+      "url": "https://github.com/openclaw/openclaw",
+      "stars": "387.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 WhatsApp, Telegram, Slack, Discord, Signal, iMessage gibi bir sürü mesajlaşma platformunda aynı anda çalışan, cihazınızda yerel olarak barınan kişisel bir yapay zekâ asistanı. Amaç, bulut tabanlı asistanlara bağımlı kalmadan verinin kontrolünün kullanıcıda kalacağı, her yerde aynı asistanı kullanabileceğiniz bir sistem kurmak.",
+        "tech": "🛠️ Node.js üzerine kurulu, pnpm workspace ile yönetilen bir monorepo. Mimarinin merkezinde \"Gateway\" var — oturumları, araçları, olayları ve kanal bağlantılarını yerel olarak yöneten kontrol katmanı. Kanal sistemi bu gateway'i farklı mesajlaşma servislerine bağlıyor; model sağlayıcı katmanı ise hem bulut hem yerel modelleri destekliyor. Docker, Nix ve Fly.io/Render gibi platformlara dağıtılabiliyor.",
+        "why": "📈 387 bin üzeri yıldız ve 81 bin fork ile bugünün en hızlı büyüyen projesi. Veri gizliliği hassasiyeti, \"tek asistan çoklu platform\" pratikliği ve OpenAI, GitHub, NVIDIA gibi büyük sponsorların desteği bir araya gelince viral bir büyüme yakalamış. Yapay zekâ tarafından üretilen pull request'lere açık olması da katkı sürecini hızlandırıyor.",
+        "evolve": "💡 Bu kadar hızlı büyüyen, çok sayıda dış kanala bağlanan bir sistemde güvenlik yüzeyi geniş — eşleştirme (pairing) onayı gibi önlemler var ama kanal sayısı arttıkça saldırı yüzeyi de büyüyor. Sandbox izolasyonunun olgunlaşması ve bağımsız güvenlik denetimleri, projenin kurumsal kullanıma açılması için kritik olacak."
+      },
+      "glossary": [
+        {
+          "term": "Gateway",
+          "def": "Farklı sistemleri veya servisleri birbirine bağlayan, trafiği yöneten merkezi kontrol katmanı."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Bir programın, ana sistemden izole edilmiş güvenli bir alanda çalıştırılması yöntemi."
+        },
+        {
+          "term": "Eşleştirme (pairing)",
+          "def": "İki cihaz veya hesabın, güvenli bir bağlantı kurmak için birbirini onaylaması işlemi."
+        },
+        {
+          "term": "Model sağlayıcı",
+          "def": "Yapay zekâ modelini çalıştıran ve erişim sunan servis (örneğin bir bulut API'si veya yerel model)."
+        }
+      ]
+    },
+    {
+      "name": "apache/maka",
+      "url": "https://github.com/apache/maka",
+      "stars": "3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Yapay zekâ ajanlarının (agent) yaptığı işlemleri bulut sunucusuna göndermeden, tamamen kendi bilgisayarınızda tutan bir çalışma alanı. Masaüstü uygulaması, terminal arayüzü ve değerlendirme (evaluation) aracı aynı \"Runtime Host\" üzerinden çalışıyor; amaç veri egemenliği ve her adımın denetlenebilir olması.",
+        "tech": "🛠️ Electron + React ile masaüstü arayüzü, Node.js 22+ runtime, npm workspace ile monorepo. En dikkat çekici mimari karar \"append-only event log\": model mesajları, araç çağrıları ve sonuçları SQLite'a (`runtime.sqlite`) kalıcı ve değiştirilemez bir defter gibi yazılıyor. Arayüz ve sonraki model çağrıları anlık bellekten değil bu kayıttan besleniyor; bu da çökme sonrası kaldığı yerden devam etme ve konuşmanın herhangi bir noktasından dallanma (branching) gibi özellikleri mümkün kılıyor.",
+        "why": "📈 Apache Software Foundation çatısı altında kuluçka (incubating) aşamasında olması, girişim sermayesi destekli rakiplerine kıyasla uzun vadeli ve tarafsız bir yönetişim vaadi sunuyor. Ajanların demo aşamasından üretim iş akışlarına geçtiği bu dönemde, dayanıklılık ve denetlenebilirlik geliştiriciler için giderek daha kritik hale geliyor.",
+        "evolve": "💡 Henüz 3 bin yıldız civarında, yani erken aşamada bir proje. Event-sourcing mimarisi güçlü bir temel ama büyük oturum geçmişlerinde SQLite performansı ve şu an tamamen yerel olan çoklu cihaz senkronizasyonu ileride ele alınması gereken konular olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Ajan (agent)",
+          "def": "Kullanıcı adına araçlar çağırarak çok adımlı görevleri kendi başına tamamlayabilen yapay zekâ sistemi."
+        },
+        {
+          "term": "Event sourcing / append-only log",
+          "def": "Verinin sadece son halinin değil, olan her değişikliğin sırayla ve değiştirilemez şekilde kaydedildiği mimari yaklaşım."
+        },
+        {
+          "term": "SQLite",
+          "def": "Sunucu gerektirmeyen, tek bir dosyada çalışan hafif bir veritabanı motoru."
+        },
+        {
+          "term": "Incubating (ASF kuluçkası)",
+          "def": "Bir yazılım projesinin Apache Software Foundation'a resmen katılmadan önce geçtiği, topluluk ve süreçlerinin olgunlaştığı deneme aşaması."
+        }
+      ]
+    },
+    {
+      "name": "multica-ai/andrej-karpathy-skills",
+      "url": "https://github.com/multica-ai/andrej-karpathy-skills",
+      "stars": "206.7k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "🎯 Tek bir `CLAUDE.md` dosyasından ibaret bu repo, Claude Code gibi yapay zekâ kodlama asistanlarının daha az hata yapmasını sağlayan bir davranış kılavuzu. Andrej Karpathy'nin gözlemlediği dört tipik LLM kodlama hatasını — sessiz varsayımlar, gereksiz karmaşıklaştırma, alakasız değişiklikler, doğrulama eksikliği — düzeltmeyi hedefliyor.",
+        "tech": "🛠️ Teknik olarak \"kod\" değil, bir talimat/prompt dosyası — ama etkisi gerçek: dosya dört ilkeyi kodluyor (önce düşün, önce sadelik, cerrahi değişiklikler, hedef odaklı yürütme) ve bunları Claude Code'un okuyabileceği bir formatta sunuyor. Hem Claude Code eklenti marketinden (`/plugin install`) hem doğrudan projeye ekleyerek, hem de Cursor IDE'nin proje kuralları (`.cursor/rules`) üzerinden kullanılabiliyor.",
+        "why": "📈 206 bin üzeri yıldız, bugünkü listenin en yüksek rakamlarından biri — çünkü çözdüğü problem evrensel: AI destekli kodlamada en sık şikayet edilen \"asistan sormadan varsayımda bulunuyor\" ve \"gereksiz kod ekliyor\" sorunlarına, tanınmış bir ismin (Karpathy) gözlemlerine dayanan, kopyala-yapıştır kadar basit bir çözüm sunuyor.",
+        "evolve": "💡 İçerik statik bir metin dosyası olduğu için farklı proje türlerine (örneğin büyük monorepo'lar, düşük seviye sistem programlama) özel varyantlar faydalı olabilir. Topluluğun bu ilkeleri genişletip belirli dillere veya framework'lere özel ek kurallar önermesi, olası bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Metin üretmek ve anlamak için devasa veriyle eğitilmiş yapay zekâ modeli türü."
+        },
+        {
+          "term": "Prompt",
+          "def": "Bir yapay zekâ modeline verilen, ne yapması gerektiğini tarif eden metin talimatı."
+        },
+        {
+          "term": "CLAUDE.md",
+          "def": "Claude Code'un bir projede nasıl davranması gerektiğini tarif eden, proje köküne konan yapılandırma/talimat dosyası."
+        },
+        {
+          "term": "IDE",
+          "def": "Kod yazma, çalıştırma ve hata ayıklamayı tek bir programda birleştiren entegre geliştirme ortamı."
+        }
+      ]
+    }
+  ]
+}
