@@ -1,0 +1,161 @@
+{
+  "date": "2026-08-26",
+  "projects": [
+    {
+      "name": "anthropics/claude-plugins-official",
+      "url": "https://github.com/anthropics/claude-plugins-official",
+      "stars": "34.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Claude Code'un eklenti (plugin) ekosistemi hızla büyüdükçe ortaya çıkan güven sorununu çözüyor: hangi eklentiye güvenebilirim, hangisi kaliteli, hangisi güvenlik açısından incelendi? Bu repo, Anthropic'in kendi geliştirdiği iç eklentilerle ortak/topluluk kaynaklı eklentileri **tek, resmi ve küratörlü bir dizinde** topluyor. Amaç, kullanıcının rastgele GitHub repolarından eklenti kurmak yerine, kalite ve güvenlik standardından geçmiş bir kaynaktan seçim yapabilmesi.",
+        "tech": "🛠️ Her eklenti standart bir klasör yapısı izliyor: `.claude-plugin/plugin.json` (zorunlu meta veri), isteğe bağlı `.mcp.json` (**MCP** sunucu ayarları), `commands/` (slash komutları), `agents/` (agent tanımları) ve `skills/` (**SKILL.md** dosyaları). İlginç bir tasarım kararı: eklenti `name` alanı yayınlandıktan sonra **değiştirilemez** (immutable) — bunun yerine arayüzde görünen ismi değiştirmek için ayrı bir `displayName` alanı ve eski isimden yeniye yönlendirme yapan bir `renames` haritası kullanılıyor. Bu, kurulu eklentilerin kopmadan güncellenebilmesini sağlıyor. Ayrıca `strict: false` modu sayesinde, kendi `plugin.json` dosyası olmayan dış repolardaki beceri (skill) koleksiyonları da bir \"skill-bundle\" olarak pakete dahil edilebiliyor — yani her üçüncü taraf projenin Claude'un formatına göre yeniden yapılandırılması gerekmiyor.",
+        "why": "📈 Bir gün önce topluluk kaynaklı eklenti pazarı (`claude-plugins-community`) trend listesindeydi; bu repo onun resmi/küratörlü kardeşi ve aynı ivmeyi sürdürüyor. Zamanlama manidar: Claude Code eklenti ekosistemi patlama yaşarken, Anthropic'in bunu merkezi ve denetimli bir dizine taşıması hem geliştiricilere (kendi eklentilerini yayınlamak isteyenler) hem de son kullanıcılara (güvenilir kaynaktan kurulum yapmak isteyenler) hitap ediyor. Resmi Anthropic damgası taşıması da yıldız ivmesini hızlandıran önemli bir faktör.",
+        "evolve": "💡 Şu an için sistem, üçüncü taraf eklentilerin içindeki MCP sunucularını veya kodu doğrudan denetlemediğini açıkça belirtiyor — kullanıcı yine de kurduğu eklentiye güvenmek zorunda. Otomatik güvenlik taraması, eklentiler arası bağımlılık/versiyon yönetimi (semver), kullanıcı puanlama-yorum sistemi ve kurulum sonrası izleme (telemetri/izin denetimi) gibi eklemeler dizinin güvenilirliğini daha da artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara, veri kaynaklarına ve sunuculara standart bir protokolle bağlanmasını sağlayan açık standart."
+        },
+        {
+          "term": "Plugin marketplace (eklenti pazarı)",
+          "def": "Geliştiricilerin ürettiği eklentilerin tek bir yerden keşfedilip kurulabildiği dizin/mağaza."
+        },
+        {
+          "term": "Manifest dosyası",
+          "def": "Bir yazılım paketinin adı, sürümü ve içeriği gibi temel bilgilerini tanımlayan yapılandırma dosyası (örn. plugin.json)."
+        },
+        {
+          "term": "Slug",
+          "def": "Bir kaynağı benzersiz şekilde tanımlayan, boşluksuz ve genelde küçük harfli kısa metinsel kimlik (örn. bir eklentinin sistem içi adı)."
+        },
+        {
+          "term": "Skill (Claude Skill)",
+          "def": "Claude'a belirli bir görevi nasıl yapacağını öğreten, talimat ve isteğe bağlı kod içeren yeniden kullanılabilir yetenek paketi."
+        }
+      ]
+    },
+    {
+      "name": "tinyhumansai/openhuman",
+      "url": "https://github.com/tinyhumansai/openhuman",
+      "stars": "37.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Çoğu AI asistanı haftalarca yapılandırma gerektirir; OpenHuman bu \"soğuk başlangıç\" (cold start) sorununu çözmeyi hedefliyor. Fikir şu: agent'a dijital hayatınız hakkında baştan itibaren kapsamlı bir bağlam vermek — e-postalar, dokümanlar, sohbetler otomatik toplanıp anlamlı bir hafızaya dönüştürülüyor, böylece her konuşmaya sıfırdan başlamak gerekmiyor. Masaüstü uygulaması olarak kişisel AI, agent orkestrasyonu ve derin araştırma aracını tek çatı altında sunuyor.",
+        "tech": "🛠️ Çekirdek performans ve güvenlik-kritik işlemler (örn. yerel şifreleme) için **Rust** ile yazılmış; masaüstü kabuğu Electron'a göre daha hafif olan **Tauri** ile kurulu. Hafıza mimarisi klasik vektör veritabanı/embedding \"kara kutusuna\" güvenmek yerine, verileri puanlanmış bir **Markdown ağacına** (\"Memory Tree\") sıkıştırıp yerel **SQLite**'ta saklıyor ve bunu düzenlenebilir bir Obsidian kasası olarak yansıtıyor. 100'den fazla OAuth entegrasyonundan veriler 20 dakikada bir otomatik çekiliyor. Kendi \"tinyagents\" framework'ü üzerinde çalışan **kontrol noktalı (checkpointed) graf** yürütmesi sayesinde agent'lar insandan girdi beklerken duraklayabiliyor, yeniden başlatmaya dayanıklı. \"TokenJuice\" adlı bileşen ise araç çıktısını modele göndermeden önce %80'e varan oranda sıkıştırıyor — büyük bir bilgi grafiğini ekonomik hale getiren asıl detay burada. Agent'lar arası iletişim Signal protokolüyle uçtan uca şifreli, hatta x402 mikro-ödeme desteğiyle.",
+        "why": "📈 Lansmandan bir hafta sonra GitHub'ın #1 trend projesi olarak dokuz gün üst üste kalması, \"config dosyasız, terminal gerektirmeyen, birkaç tıkla çalışan agent\" vaadinin ne kadar güçlü bir talebe karşılık geldiğini gösteriyor. Kişisel AI / \"ikinci beyin\" dalgasının tam ortasında konumlanıyor; hedef kitle, Claude Code veya OpenClaw gibi kod-odaklı araçların kurulum yükünden bunalan, gizlilik bilinci yüksek verimlilik meraklıları.",
+        "evolve": "💡 Proje henüz \"Early Beta\" etiketi taşıyor ve 200'den fazla açık issue var. Yüz OAuth entegrasyonuyla sürekli senkronize olan kalıcı bir hafıza deposu, ciddi bir gizlilik/güvenlik yüzeyi anlamına geliyor — bu alanda denetim ve şeffaflık kritik olacak. Kripto tabanlı \"agent ekonomisi\" (x402 ödemeler, tiny.place) gibi spekülatif özellikler, çekirdek hafıza/orkestrasyon değerinden dikkat dağıtma riski taşıyor. Çok katmanlı agent mimarisinin karmaşıklığı da güvenilirlik açısından olgunlaşmayı bekliyor."
+      },
+      "glossary": [
+        {
+          "term": "Tauri",
+          "def": "Masaüstü uygulamaları geliştirmek için kullanılan, Electron'a göre daha küçük ve hızlı bir çatı; arayüz web teknolojileriyle, çekirdek Rust ile yazılır."
+        },
+        {
+          "term": "SQLite",
+          "def": "Sunucu gerektirmeyen, tek bir dosyada çalışan hafif veritabanı motoru; yerel uygulamalarda sık kullanılır."
+        },
+        {
+          "term": "OAuth",
+          "def": "Kullanıcıların şifrelerini paylaşmadan bir uygulamaya başka bir servisteki (e-posta, takvim vb.) verilerine erişim izni vermesini sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "Vektör veritabanı / embedding",
+          "def": "Metinlerin anlamsal içeriğini sayısal vektörlere dönüştürüp bu vektörler üzerinden benzerlik araması yapan sistem; genelde 'kara kutu' olarak eleştirilir çünkü sonuçların nedeni izlenemez."
+        },
+        {
+          "term": "Checkpointed graph (kontrol noktalı iş akışı)",
+          "def": "Bir sürecin adımlarının kayıt altına alınıp, kesintiye uğradığında kaldığı yerden devam edebildiği yürütme modeli."
+        },
+        {
+          "term": "Signal protokolü",
+          "def": "Uçtan uca şifreli mesajlaşmada kullanılan, mesajların yalnızca gönderen ve alıcı tarafından okunabilmesini garanti eden şifreleme standardı."
+        },
+        {
+          "term": "x402",
+          "def": "HTTP üzerinden anlık, küçük tutarlı otomatik ödemeleri (mikro-ödeme) mümkün kılmayı amaçlayan bir açık protokol."
+        },
+        {
+          "term": "Cold start problemi",
+          "def": "Bir sistemin (burada bir AI asistanının) yeterli bağlam veya veri birikimi olmadan işe başladığında yaşadığı düşük verimlilik sorunu."
+        }
+      ]
+    },
+    {
+      "name": "asciimoo/hister",
+      "url": "https://github.com/asciimoo/hister",
+      "stars": "2.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 Hister, kendi tarama geçmişiniz ve dokümanlarınız için kişisel, kendi kendine barındırılan (self-hosted) bir arama motoru. Fikir basit ama etkili: bulut tabanlı arama ve yer imi servislerine veri vermeden, ziyaret ettiğiniz sayfaların **tam metnini** indeksleyip daha sonra web arayüzünden, terminalden ya da bir AI asistanından tekrar bulabilmek.",
+        "tech": "🛠️ Sunucu tarafı **Go** ile yazılmış, arayüz **npm/Vite** tabanlı bir web uygulaması; CGO bağımlılıkları nedeniyle bir C derleyicisi gerekiyor. Firefox/Chrome tarayıcı eklentileri yeni ziyaret edilen sayfaları otomatik olarak indekse ekliyor, mevcut tarayıcı geçmişi de içe aktarılabiliyor. Arama sadece başlık/URL değil, sayfa içeriğinin tamamı üzerinden çalışıyor ve alan filtreleri, tam ifade arama, joker karakter, hariç tutma gibi gelişmiş sorgu sözdizimini destekliyor. İsteğe bağlı bir **anlamsal arama** (semantic search) özelliği de var — ancak bunun için kullanıcı kendi embedding servisini bağlamak zorunda, yani üçüncü taraf bir bulut servisine bağımlılık yok. **MCP** desteği sayesinde bir AI asistanı da bu kişisel indeksi sorgulayabiliyor.",
+        "why": "📈 Büyük arama ve yapay zeka şirketlerinin kişisel veriyi ne kadar topladığına dair artan farkındalık, geliştiricilerin kendi web geçmişinin sahibi olmak istemesini tetikliyor. Aynı zamanda AI asistanlarının MCP gibi protokollerle kişisel bilgi kaynaklarına bağlanabilmesi, böyle bir kişisel arama motorunu daha değerli kılıyor — cevapları kendi verinizle temellendirebiliyorsunuz. 2.9k yıldızla listedeki en küçük proje olsa da, günlük ivmesi onu taze ve hızla büyüyen bir trend olarak öne çıkarıyor.",
+        "evolve": "💡 Şu an tek makineye kurulum odaklı; mobil istemci veya cihazlar arası senkronizasyon eksik. Anlamsal arama varsayılan olarak gelmiyor, kullanıcının kendi embedding uç noktasını kurması gerekiyor — bu, teknik olmayan kullanıcılar için bir engel. AI asistanlarının kişisel verilere dayanarak cevap üretmesi (grounding) trendiyle birleştiğinde, hazır/entegre bir anlamsal arama seçeneği projeyi çok daha erişilebilir kılabilir."
+      },
+      "glossary": [
+        {
+          "term": "Tam metin indeksleme (full-text search)",
+          "def": "Sadece başlık veya etiketleri değil, bir belgenin/sayfanın tüm metin içeriğini aranabilir hale getiren indeksleme yöntemi."
+        },
+        {
+          "term": "CGO",
+          "def": "Go programlama dilinde C kütüphanelerini çağırabilmeyi sağlayan mekanizma; kullanan projelerin derlenmesi için bir C derleyicisi gerektirir."
+        },
+        {
+          "term": "Anlamsal arama (semantic search)",
+          "def": "Kelimelerin birebir eşleşmesi yerine anlam benzerliğine göre arama yapan yöntem; genelde embedding modelleri kullanır."
+        },
+        {
+          "term": "AGPLv3",
+          "def": "Açık kaynak bir lisans; yazılımı değiştirip bir sunucu üzerinden ağ hizmeti olarak sunanların da kaynak kodu paylaşmasını zorunlu kılar."
+        }
+      ]
+    },
+    {
+      "name": "AgriciDaniel/claude-obsidian",
+      "url": "https://github.com/AgriciDaniel/claude-obsidian",
+      "stars": "12.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Çoğu AI destekli not alma aracı bilgiyi yakalar ama kalıcı, birbirine bağlı bir bilgiye dönüştürmez. Bu proje, ham kaynakları yapılandırılmış, birbirine bağlı ve **kanıta dayalı** notlara çeviren bir Claude Code eklentisi: kaynaklar saklanıyor, iddialar kanıtla temellendiriliyor, her konuşma sıfırdan başlamak yerine önceki bilginin üzerine inşa ediliyor — sahip olduğunuz düz Markdown dosyalarından oluşan tek bir bağlantılı bilgi grafiği.",
+        "tech": "🛠️ Taşınabilir komut satırı motoru **Python 3.11+** ile yazılmış, kurulum ve uzantılar için **Bash** kullanılıyor; kasa (vault) verisi Markdown + JSON olarak saklanıyor. En dikkat çekici tasarım kararı: her değişiklik **atomik bir işlem** (transaction) olarak yapılıyor — önce SHA-256 karma değeriyle doğrulanmış bir \"plan\" üretiliyor, kullanıcı bu planın tam JSON farkını (diff) inceleyip onaylıyor, ardından uygulanıyor; yarıda kalan işlemler önceki duruma geri alınabiliyor. Kaynak ve iddia \"defterleri\" (ledger) her bilginin güvenilirliğini, güncelliğini, destekleyen/çelişen kanıtları ve inceleme durumunu takip ediyor. Dört farklı metodoloji modu (Generic, **LYT**, **PARA**, **Zettelkasten**) yeni notları mevcut yapıyı bozmadan doğru yere yönlendiriyor. Embedding'lere güvenilemeyen durumlarda sistem deterministik **BM25** aramasına geri dönüyor.",
+        "why": "📈 Aynı gün resmi Claude Code eklenti dizininin de trend olması tesadüf değil — Claude Code eklenti ekosistemi büyürken bu proje o dalgadan faydalanıyor. Ayrıca Obsidian ve kişisel bilgi yönetimi (PKM) topluluğunun uzun süredir beklediği bir şeyi sunuyor: verisinin sahipliğini ve kontrolünü kaybetmeden AI destekli organizasyon. Araştırmacılar, yazarlar ve bilgi işçileri için hem güven (kaynak takibi) hem de otomasyon vaat etmesi, iki ayrı kitleyi (AI-agent meraklıları ve PKM/Obsidian kullanıcıları) aynı anda çekiyor.",
+        "evolve": "💡 PDF ve EPUB desteği şu an sadece meta veriyle sınırlı, anlamsal içerik çıkarımı yok; Windows'ta yerel olarak çalışmıyor, WSL gerekiyor. Vektör tabanlı aramayı BM25 yedeğiyle birlikte daha akıllı biçimde birleştirmek, PDF/EPUB için anlamsal çıkarım eklemek ve Obsidian dışı kullanıcılara daha geniş açılmak (şu an Obsidian isteğe bağlı olsa da ürün dili büyük ölçüde Obsidian'a göre kurulu) projeyi büyütebilecek doğal adımlar."
+      },
+      "glossary": [
+        {
+          "term": "Vault (kasa)",
+          "def": "Obsidian'da notların ve dosyaların saklandığı, kullanıcının kendi bilgisayarında tuttuğu klasör."
+        },
+        {
+          "term": "PARA yöntemi",
+          "def": "Notları Projeler, Alanlar, Kaynaklar ve Arşiv olarak dört kategoriye ayırarak organize eden kişisel bilgi yönetimi metodolojisi."
+        },
+        {
+          "term": "Zettelkasten",
+          "def": "Küçük, birbirine bağlantılı notlar üzerinden bilgi biriktirmeyi ve yeni fikirler üretmeyi amaçlayan, Almanca kökenli bir not alma yöntemi."
+        },
+        {
+          "term": "LYT (Linking Your Thinking)",
+          "def": "Notlar arasında anlamlı bağlantılar kurmaya odaklanan, esnek bir kişisel bilgi yönetimi yaklaşımı."
+        },
+        {
+          "term": "BM25",
+          "def": "Bir arama sorgusuyla belgeler arasındaki alaka düzeyini, kelime sıklığı istatistiklerine dayanarak hesaplayan, yapay zeka gerektirmeyen klasik bir arama algoritması."
+        },
+        {
+          "term": "Provenance (köken/izlenebilirlik)",
+          "def": "Bir bilginin nereden geldiğinin, hangi kaynağa dayandığının kayıt altına alınması ve izlenebilir olması."
+        },
+        {
+          "term": "SHA-256",
+          "def": "Bir veriyi sabit uzunlukta benzersiz bir imzaya (özet) dönüştüren, verinin değişip değişmediğini doğrulamak için kullanılan kriptografik fonksiyon."
+        },
+        {
+          "term": "Atomik işlem (transaction)",
+          "def": "Ya tamamen gerçekleşen ya da hiç gerçekleşmeyen, yarım kalamayan işlem; sistemin tutarlı bir durumda kalmasını garanti eder."
+        }
+      ]
+    }
+  ]
+}
