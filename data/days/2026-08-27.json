@@ -1,0 +1,145 @@
+{
+  "date": "2026-08-27",
+  "projects": [
+    {
+      "name": "browser-use/browser-use",
+      "url": "https://github.com/browser-use/browser-use",
+      "stars": "111k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Web'in büyük kısmı hâlâ API sunmuyor — randevu almak, form doldurmak, bir ürünü sepete atmak için insan gibi tarayıcıda gezinmek gerekiyor. Browser Use, bir yapay zeka ajanının **herhangi bir web sitesini** tıpkı bir insan gibi kullanabilmesini sağlıyor: tıklama, yazma, kaydırma, veri çekme. Amaç, her site için özel entegrasyon yazma zorunluluğunu ortadan kaldırıp \"doğal dilde görev tanımla, ajan tarayıcıda halletsin\" deneyimini standart hale getirmek.",
+        "tech": "🛠️ Çekirdek **Python 3.11+** ile yazılmış; tarayıcı kontrolü için endüstri standardı **Playwright** kullanılıyor. Model bağımsızlığı önemli bir tasarım kararı: `ChatBrowserUse` soyutlaması sayesinde Claude, GPT, Gemini veya projenin kendi optimize ettiği `bu-*` modelleri takılıp çıkarılabiliyor. Döngü basit ama etkili — ajan her adımda ekran görüntüsü ve DOM yapısını (sayfanın mevcut durumunu) alıyor, LLM bir sonraki eylemi (tıkla, yaz, kaydır) seçiyor, Playwright bunu gerçekleştiriyor, sonuç tekrar modele dönüyor. Python dekoratörleriyle özel araçlar eklenebiliyor, gerçek tarayıcı profilleri (kayıtlı oturumlar/çerezler) yeniden kullanılabiliyor. Ücretsiz açık kaynak kütüphanenin yanında, kurumsal ölçek için gizli parmak izi (stealth fingerprinting), proxy rotasyonu ve paralel çalıştırma sunan bir bulut API'si de mevcut — yani proje hem geliştirici hem de kurumsal müşteri kitlesine aynı anda hitap ediyor.",
+        "why": "📈 111k yıldız ve 12k+ fork, web otomasyonunda \"ajan tabanlı\" yaklaşımın klasik kazıma (scraping) ve RPA araçlarının yerini almaya başladığının somut göstergesi. Odysseys liderlik tablosunda 200 görev üzerinden %87,4 başarı oranıyla birinci sırada olması — OpenAI, Anthropic ve Google'ın kendi çözümlerinin önünde — projenin ivmesini doğrudan besliyor. Zamanlama da elverişli: LLM'lerin görsel/DOM anlama yeteneği son bir yılda ciddi sıçrama yaptı ve bu, önceden kırılgan olan tarayıcı otomasyonunu artık pratik hale getiriyor.",
+        "evolve": "💡 Doğal dil tabanlı tarayıcı kontrolü hâlâ maliyetli (her adımda LLM çağrısı) ve dinamik/karmaşık arayüzlerde güvenilirlik sorunları yaşanabiliyor. CAPTCHA ve bot-tespit sistemlerine karşı \"stealth\" özellikler şu an sadece ücretli bulutta sunuluyor — açık kaynak tarafında bu boşluk kötüye kullanım tartışmalarını da beraberinde getirebilir. Görev planlamasını önceden simüle edip adım sayısını azaltan bir \"plan-then-act\" modu, maliyeti ve hata oranını daha da düşürebilir."
+      },
+      "glossary": [
+        {
+          "term": "Playwright",
+          "def": "Web tarayıcılarını (Chrome, Firefox, Safari) otomatik kontrol etmek için kullanılan, Microsoft tarafından geliştirilen açık kaynak bir otomasyon kütüphanesi."
+        },
+        {
+          "term": "DOM (Document Object Model)",
+          "def": "Bir web sayfasının HTML yapısının, programların okuyup değiştirebileceği ağaç biçimindeki temsili."
+        },
+        {
+          "term": "RPA (Robotic Process Automation)",
+          "def": "Tekrarlayan bilgisayar görevlerini, önceden tanımlanmış kurallarla otomatikleştiren yazılım yaklaşımı."
+        },
+        {
+          "term": "Stealth fingerprinting",
+          "def": "Otomatik bir tarayıcının, bot tespit sistemleri tarafından fark edilmemesi için gerçek bir insan tarayıcısının dijital izlerini taklit etmesi."
+        },
+        {
+          "term": "Proxy rotasyonu",
+          "def": "İstekleri farklı IP adresleri üzerinden göndererek engellenmeyi zorlaştıran ve ölçeklenebilirliği artıran teknik."
+        }
+      ]
+    },
+    {
+      "name": "tt-a1i/archify",
+      "url": "https://github.com/tt-a1i/archify",
+      "stars": "19.1k",
+      "language": "HTML",
+      "sections": {
+        "serves": "🎯 Yapay zeka ajanları artık koda dokunduğunda, o kodun mimarisini açıklayan diyagramların da doğru ve güncel kalması gerekiyor — ama serbest metin veya elle çizilmiş diyagramlar hızla yalana dönüşebiliyor. Archify, bir kod tabanını **mimari, iş akışı, sıralama (sequence), veri akışı ve yaşam döngüsü** diyagramlarına dönüştüren, doğrulanabilir ve uydurmayan bir ajan becerisi (skill). Yani \"bu bileşen şuraya bağlanıyor\" iddiasının gerçekten kaynak kodda karşılığı var mı, bunu garanti etmeye çalışıyor.",
+        "tech": "🛠️ Archify; Claude Code, Cursor, Codex CLI ve OpenCode gibi farklı ajan ortamlarında çalışabilen bir **beceri (skill)** olarak tasarlanmış. Merkezi tasarım kararı, diyagramları doğrudan görsel formatta değil, önce **tipli bir JSON ara temsiline (typed intermediate representation)** dönüştürmek: ajan önce bu şemaya uyan JSON'u üretiyor, ardından paketle gelen doğrulayıcılar (validator) şema kurallarına ve deterministik yerleşim (layout) kurallarına göre bunu kontrol ediyor, ancak bu kontrolden geçtikten sonra kendi kendine yeten bir HTML çıktısı (isteğe bağlı SVG/PNG/WebM ve paylaşım kartı ile) üretiliyor. \"Delivery\" adımı atomik — yani doğrulanmamış bir diyagram asla eski geçerli diyagramın yerine geçmiyor. En dikkat çekici özellik **Architecture Delta**: iki kod tabanı anlık görüntüsünü (before/after) karşılaştırıp makine tarafından okunabilir bir \"değişiklik makbuzu\" (change receipt) üretiyor. Düğümler, gerçek Git commit'lerine ve satır aralıklarına bağlanarak kanıt temelli hale getiriliyor; sistem yazılı olmayan bir ilişkiyi asla \"var\" diye uydurmuyor.",
+        "why": "📈 Ajan destekli geliştirmenin (agentic coding) yaygınlaşmasıyla birlikte ekipler artık kod incelemesini de büyük ölçüde ajanlara bırakıyor; ama bir ajanın ürettiği mimari açıklamasına güvenip güvenmeyeceğiniz belirsizse bu işe yaramaz. Archify tam bu güven boşluğunu dolduruyor: \"doğrulanabilir\" vurgusu, mühendislik ekiplerinin bir PR'ı birleştirmeden önce diyagramı gözle kontrol edebilmesini sağlıyor. 19,1k yıldız ve günde 1000'in üzerinde yıldız artışı, geliştirici araçları (dev tools) kategorisinde beceri/eklenti ekosisteminin ne kadar hızlı büyüdüğünü gösteriyor.",
+        "evolve": "💡 Şu an odak, kodda **yazılı** olan ilişkileri görselleştirmek — çalışma zamanı (runtime) davranışını (örneğin bir mikroservisin gerçek trafik desenini) yansıtmıyor ve proje bunu açıkça iddia etmiyor. Büyük, çok dilli monorepo'larda JSON ara temsilinin doğruluğu ölçeklendikçe zorlaşabilir. CI'a entegre olup her PR'da otomatik \"mimari fark\" raporu üreten bir mod, ya da diyagramları canlı gözlemlenebilirlik (observability) verisiyle çapraz doğrulayan bir katman, projeyi statik koddan gerçek sistem davranışına köprüleyebilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent skill (ajan becerisi)",
+          "def": "Bir yapay zeka ajanına belirli bir görevi güvenilir şekilde nasıl yapacağını öğreten, talimat ve isteğe bağlı araçlardan oluşan yeniden kullanılabilir paket."
+        },
+        {
+          "term": "Typed intermediate representation (tipli ara temsil)",
+          "def": "Bir sistemin doğrudan nihai çıktıyı üretmek yerine, önce kurallara uygunluğu doğrulanabilen yapılandırılmış bir ara veri formatı üretmesi."
+        },
+        {
+          "term": "Sequence diagram (sıralama diyagramı)",
+          "def": "Sistemdeki bileşenler arasındaki mesaj/çağrı akışını zaman sırasına göre gösteren diyagram türü."
+        },
+        {
+          "term": "Change receipt (değişiklik makbuzu)",
+          "def": "İki durum arasındaki farkı, makinelerin okuyup işleyebileceği yapılandırılmış biçimde özetleyen kayıt."
+        },
+        {
+          "term": "Observability (gözlemlenebilirlik)",
+          "def": "Bir sistemin iç durumunu, ürettiği loglar, metrikler ve izlerden (trace) anlayabilme yeteneği."
+        }
+      ]
+    },
+    {
+      "name": "MadsLorentzen/ai-job-search",
+      "url": "https://github.com/MadsLorentzen/ai-job-search",
+      "stars": "36.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 İş başvurusu süreci genelde tekrarlayan, yorucu bir iş: her ilana özel CV/ön yazı uyarlamak, uygunluğu değerlendirmek, mülakata hazırlanmak. Bu proje, tüm bu süreci Claude Code üzerinde çalışan yapılandırılmış bir iş akışına dönüştürüyor — kullanıcı kendi bilgisayarında, kendi verisi üzerinde çalışan bir sistemle ilan tarıyor, uygunluğunu puanlıyor, CV/ön yazı üretip eleştiriyor ve sonuçları takip ediyor.",
+        "tech": "🛠️ Sistem birden çok bileşeni bir araya getiriyor: **Python** arka planda profil yönetimi ve orkestrasyonu yapıyor; CV ve ön yazılar **LaTeX** ile (moderncv ve özel bir `cover.cls` şablonuyla) üretiliyor; Danimarka iş ilanı sitelerini (Jobindex, Jobnet vb.) eş zamanlı taramak için **Bun/TypeScript** tabanlı CLI araçları kullanılıyor. En özgün tasarım kararı **drafter-reviewer** (taslakçı-eleştirmen) ayrımı: bir ajan CV/ön yazı taslağı üretirken, tazeden başlayan **ayrı bağlamlı** ikinci bir ajan bunu jenerik ifadeler ve eksik anahtar kelimeler için eleştiriyor, geri bildirime göre taslak yeniden düzenleniyor. PDF derlemesi sonrası metin katmanı çıkarılıp **ATS (Applicant Tracking System)** parser'ların temiz, anahtar kelime yoğun içerik görüp görmediği otomatik doğrulanıyor; sayfa taşması olursa satırlar rastgele değil, ilanla alaka düzeyine göre puanlanarak kesiliyor. Tüm kişisel veri, iş akışının kod tabanından ayrı, kullanıcının kendi (özel) fork'unda tutuluyor; sistem iş ilanı metinlerindeki talimatları asla otomatik olarak takip etmiyor — bu, prompt injection'a karşı bilinçli bir savunma.",
+        "why": "📈 36,7k yıldızın arkasındaki en güçlü etken, projenin \"teorik\" değil, gerçek bir hikayeye dayanması: geliştirici bu sistemi kendi 2025-2026 iş aramasında kullanmış, 69 başvuru ve 20 mülakat sonrasında işe girmiş. Bu somut kanıt, AI otomasyonu alanında sık görülen abartılı vaatlerden ayrışıyor. Claude Code'un giderek yaygınlaşması ve \"forklayıp kendine mal et, SaaS'a bağımlı kalma\" felsefesi de düşük sürtünmeli benimsemeyi kolaylaştırıyor; modüler beceri sistemi sayesinde başka ülkelerin iş ilanı sitelerine uyarlamak da (teorik olarak) mümkün.",
+        "evolve": "💡 Şu an iş ilanı kazıma (scraping) araçları Danimarka pazarına özel; küresel kullanım için her ülke/dil için yeni \"portal\" eklentileri yazılması gerekiyor ve bu iş topluluğa bırakılmış durumda. LaTeX tabanlı CV üretimi görsel olarak profesyonel ama tasarım esnekliği kısıtlı — bir HTML/CSS tabanlı şablon motoru daha geniş bir kitleye hitap edebilir. Mülakat sonrası geri bildirimlerin (`/outcome`) sistematik olarak bir sonraki başvurunun stratejisine (hangi anahtar kelimeler işe yaradı, hangi CV formatı geri dönüş almadı) otomatik geri beslenmesi, projeyi statik bir araçtan öğrenen bir sisteme dönüştürebilir."
+      },
+      "glossary": [
+        {
+          "term": "ATS (Applicant Tracking System)",
+          "def": "Şirketlerin iş başvurularını topladığı, CV'leri anahtar kelimelere göre otomatik filtreleyip sıraladığı yazılım sistemi."
+        },
+        {
+          "term": "LaTeX",
+          "def": "Özellikle akademik belgeler ve profesyonel dokümanlar için kullanılan, düzen ve tipografi üzerinde hassas kontrol sağlayan bir belge hazırlama sistemi."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Bir yapay zeka ajanına, işlediği veri (örn. bir web sayfası veya belge) içine gizlenmiş talimatlarla asıl görevinin dışına çıkacak eylemler yaptırma saldırı türü."
+        },
+        {
+          "term": "Drafter-reviewer deseni",
+          "def": "Bir ajanın içerik üretip başka, bağımsız bir ajanın bu içeriği eleştirip geri bildirim verdiği, kalite artırmayı hedefleyen iki aşamalı iş akışı."
+        },
+        {
+          "term": "Fork",
+          "def": "Bir açık kaynak projenin kopyasını alıp kendi hesabınızda bağımsız olarak geliştirmeye devam etme işlemi."
+        }
+      ]
+    },
+    {
+      "name": "marin-community/marin",
+      "url": "https://github.com/marin-community/marin",
+      "stars": "2.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Büyük dil modellerinin nasıl eğitildiği çoğunlukla büyük şirketlerin kapalı kapılar ardında tuttuğu bir bilgi. Marin, ham veriden nihai model değerlendirmesine kadar **tüm temel model geliştirme sürecini** — veri işleme, tokenizasyon, eğitim tarifleri, kontrol noktaları (checkpoint) — açık ve yeniden üretilebilir şekilde paylaşarak bu şeffaflık eksikliğini gidermeyi hedefliyor. Stanford CRFM ve Open Athena iş birliğiyle yürütülen proje, \"foundation model araştırması sadece büyük teknoloji şirketlerinin elinde olmasın\" fikrine dayanıyor.",
+        "tech": "🛠️ Sistem **Python** üzerine kurulu; sayısal hesaplama ve eğitim için Google'ın **JAX** kütüphanesini, eğitim orkestrasyonu için **Levanter** kütüphanesini ve dağıtık yürütme için **Fray** küme yönetimini kullanıyor. Mimarideki en özgün karar, deneyleri klasik bir betik olarak değil, **Makefile'a benzer bir bağımlılık grafiği** (dependency graph) olarak modellemek: veri tokenizasyonu, model mimarisi, eğitim parametreleri ve kaynak tahsisi (CPU/GPU/TPU) birbirine bağlı adımlar olarak tanımlanıyor ve topolojik sırayla, yeniden üretilebilir şekilde çalıştırılıyor. Bu yaklaşım tek makineden büyük TPU kümelerine ve \"multislice\" sistemlere kadar aynı deney tanımının farklı donanımlarda çalışmasını sağlıyor. **Delphi Scaling Suite** kapsamında 3×10¹⁸'den 1×10²³ FLOP'a kadar farklı ölçeklerde eğitilmiş modellerin kontrol noktaları herkese açık şekilde yayınlanmış; ayrıca ses-metin, DNA ve protein modelleri gibi metin dışı alanlara da modüler destek var.",
+        "why": "📈 Açık temel model (open foundation model) hareketi son dönemde ivme kazanıyor; araştırmacılar ve daha küçük laboratuvarlar, kapalı modellerin \"nasıl eğitildiği\" sorusuna somut, yeniden üretilebilir cevaplar arıyor. Marin'in Google TPU Research Cloud gibi büyük altyapı ortaklıklarıyla desteklenmesi, projeye akademik meraktan öteye geçen ciddi bir hesaplama gücü kazandırıyor. 2,5k yıldız mutlak olarak listenin en küçük rakamı olsa da, günlük 441 yıldızlık artış oranı projenin araştırma çevrelerinde yeni keşfedildiğini ve hızla paylaşıldığını gösteriyor.",
+        "evolve": "💡 Şu an için sistem büyük ölçüde TPU/JAX ekosistemine (dolayısıyla Google altyapısına) bağımlı; GPU-öncelikli araştırma grupları için Levanter/Fray dışı bir yürütme katmanı erişilebilirliği artırabilir. Bağımlılık-grafiği modeli güçlü bir reprodüksiyon garantisi verse de, yeni gelen araştırmacılar için öğrenme eğrisi (Makefile benzeri deney tanımlama) klasik bir eğitim betiğinden daha dik olabilir. Metin dışı modaliteler (ses, DNA, protein) için modüler destek yeni eklenmiş görünüyor — bu alanlarda hazır tarifler (recipe) ve karşılaştırmalı sonuçların çoğalması, projeyi salt bir metin-modeli çatısından çok modaliteli bir araştırma platformuna taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "Foundation model (temel model)",
+          "def": "Geniş, çeşitli veriyle eğitilip daha sonra birçok farklı göreve uyarlanabilen büyük ölçekli yapay zeka modeli."
+        },
+        {
+          "term": "JAX",
+          "def": "Google tarafından geliştirilen, yüksek performanslı sayısal hesaplama ve makine öğrenmesi araştırması için kullanılan Python kütüphanesi."
+        },
+        {
+          "term": "TPU (Tensor Processing Unit)",
+          "def": "Google tarafından geliştirilen, yapay zeka model eğitimi ve çıkarımı için özel olarak tasarlanmış işlemci türü."
+        },
+        {
+          "term": "Bağımlılık grafiği (dependency graph)",
+          "def": "Bir işin adımlarının birbirine olan bağımlılıklarını gösteren, hangi adımın hangisinden önce çalışması gerektiğini belirleyen yapı."
+        },
+        {
+          "term": "Checkpoint (kontrol noktası)",
+          "def": "Bir modelin eğitim sürecindeki belirli bir andaki tüm parametrelerinin kaydedilmiş hâli; eğitimin oradan devam etmesini veya modelin doğrudan kullanılmasını sağlar."
+        },
+        {
+          "term": "FLOP (Floating Point Operation)",
+          "def": "Bir bilgisayarın gerçekleştirdiği kayan noktalı sayı işlemi; büyük model eğitimlerinde toplam hesaplama miktarını ölçmek için kullanılır."
+        }
+      ]
+    }
+  ]
+}
