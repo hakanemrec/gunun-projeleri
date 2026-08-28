@@ -1,0 +1,91 @@
+{
+  "date": "2026-08-28",
+  "projects": [
+    {
+      "name": "thedotmack/claude-mem",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "stars": "92.4k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "🎯 AI kodlama ajanlarının en büyük pratik sorunu hafıza: her yeni oturum, bir önceki oturumda anlatılan bağlamı bilmeden sıfırdan başlıyor. Claude-mem, ajanın araç kullanımını (dosya okuma, komut çalıştırma, arama) arka planda kaydedip özetleyen ve bir sonraki oturumda ilgili geçmişi otomatik olarak geri getiren bir hafıza sıkıştırma sistemi. Kullanıcı \"geçen hafta şu API'yi nasıl bağlamıştık\" diye tekrar anlatmak zorunda kalmıyor; ajan kendi geçmiş gözlemlerine referans ID'leriyle atıf yapabiliyor.\n\n- Session start/stop, prompt gönderimi gibi 6 farklı yaşam döngüsü noktasında otomatik kayıt\n- `<private>` etiketiyle hassas içeriği hafızadan hariç tutma\n- Claude Code, OpenCode, Codex ve OpenClaw gateway'leriyle uyumlu\n- Sunucusuz (daemon'suz) bulut senkronizasyonu (cmem.ai)",
+        "tech": "🛠️ Bun ile yönetilen bir Node.js/TypeScript projesi; depolama katmanında tam metin aramalı **FTS5** özellikli SQLite kullanılıyor, anlamsal arama için ise **Chroma** vektör veritabanı devrede — yani sistem hem birebir kelime eşleşmesi aramalarını hem de anlamca ilgili sonuçları aynı anda destekleyen bir hibrit arama mimarisine sahip. Altı adet hook script'i (SessionStart, PostToolUse, Stop vb.) ajanın her adımını yakalayıp yerel bir HTTP API üzerinde çalışan bir worker servisine iletiyor; bu servis özetleri **MCP (Model Context Protocol)** araçları olarak ajana geri sunuyor. \"Progressive disclosure\" (kademeli açığa çıkarma) deseniyle ajan önce ucuz bir özet katmanını görüyor, ihtiyaç duyarsa daha detaylı katmana iniyor — bu, her sorguda tüm geçmişi bağlama tıkıştırıp token israfı yapmak yerine token maliyetini görünür ve kontrollü tutuyor.",
+        "why": "📈 92 bin yıldız ve Vercel Open Source Program'a dahil olması, ajan hafızası probleminin ne kadar yaygın hissedildiğinin göstergesi — bu ihtiyaca farklı açılardan cevap veren başka projeler de son haftalarda trend listesindeydi. Claude-mem'i öne çıkaran, tek bir arama yöntemine (sadece anahtar kelime ya da sadece vektör) bağlı kalmayıp ikisini birleştirmesi ve kurulumun `npx claude-mem install` kadar basit olması; bu düşük giriş bariyeri viral büyümeyi hızlandırıyor.",
+        "evolve": "💡 Şu anki mimari tek kullanıcı/tek makine varsayımıyla çalışıyor gibi görünüyor; bir ekibin paylaşılan bir proje hafızasında ortaklaşa katkıda bulunması (kimin hangi gözlemi eklediği, çakışan bilgilerin nasıl uzlaştırılacağı) henüz çözülmüş değil. Ayrıca hafızanın zamanla bayatlaması — artık geçerli olmayan eski bir kararın yanlışlıkla güncel bağlam gibi sunulması — risk taşıyor; gözlemlere bir güven/tazelik skoru eklenmesi bu riski azaltabilir."
+      },
+      "glossary": [
+        { "term": "FTS5", "def": "SQLite veritabanının, metin içinde hızlı tam metin (kelime bazlı) arama yapmasını sağlayan uzantısı." },
+        { "term": "Vektör veritabanı", "def": "Metinleri anlam benzerliğine göre karşılaştırabilmek için sayısal vektörler (embedding) olarak saklayan ve arayan özel veritabanı türü." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI ajanlarının dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Progressive disclosure (kademeli açığa çıkarma)", "def": "Bilginin tamamını bir kerede değil, ihtiyaç arttıkça katman katman gösterme yaklaşımı." }
+      ]
+    },
+    {
+      "name": "JetBrains/go-modern-guidelines",
+      "url": "https://github.com/JetBrains/go-modern-guidelines",
+      "stars": "2.3k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 AI kodlama ajanları bir dilde eğitildiği veri kümesinin ortalamasını yansıtır — ve bu ortalama genelde birkaç yıl geride kalır. JetBrains'in bu projesi tam olarak bu sorunu Go dili özelinde çözüyor: ajanlara \"bu proje Go 1.26 kullanıyorsa `errors.AsType[T]` gibi yeni bir stdlib fonksiyonunu tercih et, eski if-else yerine `max(a, b)` yaz\" gibi somut, versiyona duyarlı kurallar öğretiyor. Bir kod tabanının `go.mod` dosyasından hangi Go sürümünü hedeflediğini tespit edip, sadece o sürümde gerçekten var olan modern deyimleri önermesi projenin temel değeri.\n\n- Go 1.0'dan 1.27'ye kadar sürüm bazlı özellik rehberi\n- Junie CLI, Claude Code, Codex, Cursor gibi birden fazla ajanla uyumlu\n- skills.sh üzerinden başka ajanlara da entegre edilebiliyor\n- `go install` ile kurulan hafif bir CLI",
+        "tech": "🛠️ Projenin kendisi basit bir Go CLI'sı ama asıl değeri kod değil, ajanlara sunulan yapılandırılmış bilgi kümesinde. JetBrains bunu bir agent skill / eklenti tabanlı dağıtım modeliyle sunuyor — pazaryeri entegrasyonu sayesinde bir geliştirici bunu tek satırlık bir kurulumla kendi ajanına ekleyebiliyor. Yaklaşımın arkasındaki teknik problem iki katmanlı: eğitim verisi gecikmesi (modeller yeni dil özelliklerini yeterince görmemiş olabilir) ve **sıklık yanlılığı (frequency bias)** — eski desenler eğitim verisinde o kadar baskın ki model yeni özelliği bilse bile istatistiksel olarak eskisini tercih ediyor. Rehber bu ikinci sorunu, modelin olasılıksal tercihini açık, zorlayıcı bir kural setiyle ezerek çözüyor.",
+        "why": "📈 Bu proje, \"AI ajanlarına dil/araç uzmanlığı enjekte etme\" kategorisinin JetBrains gibi köklü bir dil aracı üreticisinden gelen versiyonu — bugünkü listede yer alan diğer \"agent skill\" projeleriyle aynı örüntünün (uzmanlık alanını paketleyip ajana takma) bir parçası. JetBrains'in Go ekibiyle uyumlu modernizasyon çabasına resmî destek vermesi kurumsal geliştiricilerin güvenini kolayca kazanıyor; \"AI eski kod yazdırıyor\" şikayeti pratikte çok geliştiricinin yaşadığı somut bir sorun olduğu için ilgi hızla yayılıyor.",
+        "evolve": "💡 Yaklaşım şu an Go'ya özel ama aynı sürüme duyarlı modern deyim rehberi deseni, prensipte her hızlı evrilen dile (Python, TypeScript, Rust) uygulanabilir — JetBrains'in bunu bir ürün ailesi haline getirmesi olası bir sonraki adım. Ayrıca rehberin şu an statik/elle küratörlü olması, yeni bir Go sürümü çıktığında güncellemenin manuel emek gerektirdiği anlamına geliyor; dil değişiklik günlüklerini otomatik tarayıp kural taslağı öneren bir üretim hattı bakım yükünü azaltabilir."
+      },
+      "glossary": [
+        { "term": "Sıklık yanlılığı (frequency bias)", "def": "Bir modelin, eğitim verisinde daha sık görülen deseni; daha doğru ya da güncel bir alternatif olsa bile istatistiksel olarak tercih etme eğilimi." },
+        { "term": "Stdlib (standart kütüphane)", "def": "Bir programlama diliyle birlikte gelen, ayrıca kurulum gerektirmeyen hazır fonksiyon ve modüller kümesi." },
+        { "term": "go.mod", "def": "Bir Go projesinin bağımlılıklarını ve hedeflediği Go dil sürümünü tanımlayan yapılandırma dosyası." }
+      ]
+    },
+    {
+      "name": "DietrichGebert/ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "stars": "114k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "🎯 AI kodlama ajanlarının en yaygın eleştirisi \"gereğinden fazla kod yazması\": basit bir işi çözerken gereksiz soyutlamalar, fazladan dosyalar, kullanılmayan yardımcı fonksiyonlar üretiyor. Ponytail, bir ajana kod yazmadan önce sırayla sorması gereken yedi soruluk bir \"karar merdiveni\" dayatan bir eklenti: Bu gerçekten gerekli mi? Kod tabanında zaten var mı? Standart kütüphanede mi çözülür? Tek satırla mı olur? Sadece bunların hepsine hayır dendiğinde minimal bir uygulamaya izin veriyor.\n\n- Claude Code, Codex, GitHub Copilot CLI, Cursor, Windsurf dahil 15'ten fazla platformla uyumlu\n- lite/full/ultra/off gibi yoğunluk modları\n- `/ponytail-review`, `/ponytail-audit` gibi komutlarla kod incelemesi ve etki ölçümü\n- Gerçek açık kaynak projeler üzerinde koşulan bir benchmark seti ile ölçülebilir sonuçlar",
+        "tech": "🛠️ Node.js tabanlı yaşam döngüsü **hook**'ları ve \"skill\" dosyalarından oluşan bir eklenti sistemi; her platforma özgü taşınabilir talimat dosyaları (AGENTS.md, .cursor/rules, .windsurf/rules) üretip enjekte ediyor. Mimarinin özü aslında modeli değiştirmek değil, ajana verilen sistem talimatına sıkı bir karar ağacı ekleyerek modelin varsayılan \"daha fazla kod = daha güvenli\" eğilimini bastırmak. FastAPI + React şablon projesi üzerinde koşturulan **benchmark** seti, satır sayısı, token tüketimi, maliyet ve çalışma süresi gibi metrikleri ölçüp somut sayılara döküyor — bu, çoğu \"prompt mühendisliği\" aracının nadiren yaptığı bir şey.",
+        "why": "📈 +1.613 yıldız/gün ve zaten 114 bin yıldıza ulaşmış olması, \"ajanlar çok fazla kod üretiyor\" şikayetinin ne kadar yaygın ve acil hissedildiğini gösteriyor — bugünkü listede yer alan diğer \"agent skill\" projeleriyle aynı kategoride ama onlardan farklı olarak yetenek eklemek yerine kısıtlama/disiplin eklemeye odaklanıyor. Ölçülebilir sonuçlar (%54 daha az satır, %20 maliyet tasarrufu) sunması, \"bu gerçekten işe yarıyor mu\" sorusuna soyut vaatler yerine sayısal kanıtla cevap verdiği için güven kazanıyor.",
+        "evolve": "💡 Şu anki karar merdiveni evrensel kurallara dayanıyor; proje büyüdükçe ekiplerin kendi mimari tercihlerini (ör. \"bizde her zaman şu desen kullanılır\") merdivene ek bir katman olarak enjekte edebilmesi, aracı genel bir felsefe olmaktan çıkarıp ekibe özel bir standart uygulayıcısına dönüştürebilir. Ayrıca \"minimal kod\" ile \"gelecekte genişletilebilir kod\" arasındaki gerilim henüz net değil — çok agresif bir minimalizmin, ileride basit bir özellik eklemeyi zorlaştırma riski var."
+      },
+      "glossary": [
+        { "term": "YAGNI (You Aren't Gonna Need It)", "def": "\"Buna ihtiyacın olmayacak\" anlamına gelen, gerçekten gerekmeyen özellik veya soyutlamayı önceden yazmamayı savunan yazılım geliştirme ilkesi." },
+        { "term": "Lifecycle hook (yaşam döngüsü kancası)", "def": "Bir sürecin belirli aşamalarında (başlangıç, bitiş, hata anı gibi) otomatik olarak devreye giren, ek kod çalıştırmayı sağlayan bağlantı noktası." },
+        { "term": "Benchmark", "def": "Farklı araç ya da yaklaşımların performansını aynı koşullar altında ölçüp karşılaştırmak için kullanılan standart test seti." }
+      ]
+    },
+    {
+      "name": "K-Dense-AI/scientific-agent-skills",
+      "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "stars": "35.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bir AI ajanına \"şu ilacın etkileşimlerini kontrol et\" ya da \"bu genomik veriyi analiz et\" dediğinizde, ajan çoğu zaman doğru veritabanını bilmiyor, API'yi yanlış çağırıyor ya da sonucu yanlış yorumluyor — çünkü ham model bilgisi, uzman bir araştırmacının yıllar içinde edindiği pratik iş akışı bilgisinin yerini tutmuyor. Bu proje, biyoloji, kimya, tıp ve hesaplamalı bilim alanlarında 163 doğrulanmış \"yetenek\" (skill) paketleyerek ajanları güvenilir bir araştırma asistanına dönüştürüyor.\n\n- PubChem, ChEMBL, UniProt, PDB, ClinicalTrials.gov gibi 100'den fazla bilimsel veritabanına erişim\n- İlaç keşfi, genomik analiz, çoklu-omik entegrasyon gibi uzmanlaşmış iş akışları\n- Her yetenek için test paketi ve otomatik güvenlik taraması (haftalık)\n- 78 ayrı veritabanı erişimini tek bir \"database-lookup\" yeteneğinde birleştirerek bağlam yükünü ~14 kat azaltıyor",
+        "tech": "🛠️ Python 3.13+ üzerine kurulu, paket yönetimi için modern **uv** aracı kullanılıyor; RDKit, Scanpy, PyTorch Lightning, BioPython gibi 60'tan fazla bilimsel Python kütüphanesiyle entegre. Her yetenek, YAML ön bilgili bir `SKILL.md` dosyası, kod örnekleri ve test paketinden oluşan standart bir kalıba oturtulmuş — bu, ajan tarafında \"yeni bir yetenek nasıl kullanılır\" belirsizliğini ortadan kaldırıyor. Mimarideki en akıllıca karar, 78 farklı veritabanı için 78 ayrı yetenek yazmak yerine tek bir deterministik **REST API** erişim katmanı (`database-lookup`) kurmak — bu, hem bakım yükünü hem de ajanın bağlamına yüklenen gereksiz talimat miktarını büyük ölçüde azaltıyor.",
+        "why": "📈 Bugünkü listede yer alan diğer \"agent skill\" projeleriyle (Ponytail, JetBrains'in Go rehberi) aynı büyük trendin parçası — uzmanlık bilgisini model ağırlıklarına değil, ayrı ve güncellenebilir yetenek paketlerine taşımak. Bu projeyi özellikle öne çıkaran, iddiasının soyut kalmaması: \"175.000'den fazla bilim insanı\" tarafından kullanıldığını belirtmesi ve doğrulanabilirliği (kaynak, kod, ara çıktı) generasyonun önüne koyması, yanlış cevabın bedelinin yüksek olduğu araştırma bağlamında güven inşa ediyor.",
+        "evolve": "💡 163 yetenek zaten geniş bir yelpaze ama biyomedikal alanın dışına (malzeme bilimi, iklim modellemesi gibi) henüz uzanmıyor; topluluk katkılı yetenek gönderimi süreci olgunlaştıkça bu alanların organik olarak eklenmesi beklenebilir. Ayrıca yetenekler şu an bağımsız çalışıyor gibi görünüyor — bir ilaç keşfi iş akışının otomatik olarak birden fazla yeteneği (ör. önce hedef protein arama, sonra bileşik tarama) zincirleme çağırdığı üst düzey bir \"orkestrasyon\" katmanı eklenmesi, projeyi tek tek araçlar kümesinden uçtan uca araştırma otomasyonuna taşıyabilir."
+      },
+      "glossary": [
+        { "term": "uv (paket yöneticisi)", "def": "Python projelerinde bağımlılıkları klasik araçlara göre çok daha hızlı kuran ve yöneten modern paket yönetim aracı." },
+        { "term": "REST API", "def": "Sistemlerin birbirine HTTP üzerinden standart, öngörülebilir isteklerle veri alışverişi yapmasını sağlayan yaygın web servis mimarisi." },
+        { "term": "Frontmatter (YAML ön bilgi)", "def": "Bir dosyanın en başına eklenen, o dosyayla ilgili yapılandırılmış meta bilgiyi (başlık, etiket, sürüm gibi) taşıyan kısa YAML bloğu." }
+      ]
+    },
+    {
+      "name": "ConardLi/garden-skills",
+      "url": "https://github.com/ConardLi/garden-skills",
+      "stars": "11.4k",
+      "language": "CSS",
+      "sections": {
+        "serves": "🎯 Bir AI ajanından \"bana bir tanıtım sayfası tasarla\" ya da \"bu senaryoyu bir sunuma çevir\" istemek genelde işlevsel ama estetik açıdan sıradan bir sonuç veriyor — çünkü model, tasarım kararlarını (renk paleti, tipografi, kompozisyon) rastgele seçiyor. Garden Skills, web tasarımı, görsel üretim ve içerik oluşturma için beş üretime hazır \"yetenek\" paketleyerek ajanların daha profesyonel, tutarlı çıktı üretmesini sağlıyor.\n\n- `web-design-engineer`: 25 stil reçetesiyle cilalı ön yüz tasarımı üretiyor\n- `gpt-image-2`: 79 prompt şablonu ve 18 görsel kategorisiyle görsel üretim/düzenleme\n- `web-video-presentation`: senaryoyu 23 temalı, sinematik 16:9 web sunumuna çeviriyor\n- `kb-retriever`: Markdown/PDF/Excel dosyalarında kademeli, halüsinasyonu azaltan bilgi tabanı araması",
+        "tech": "🛠️ React, TypeScript ve Vite üzerine kurulu bir üretim hattı; görsel üretim tarafı OpenAI'nin GPT Image 2 API'siyle, metin çıkarımı ise pdftotext/pdfplumber ve pandas gibi araçlarla entegre. Her yetenek modüler bir yapı izliyor — yani ajan hangi yeteneği çağıracağını, o yeteneğin hangi şablonları/reçeteleri desteklediğini yapılandırılmış bir şekilde okuyor, serbest metin yorumlamaya güvenmiyor. `kb-retriever` yeteneğindeki \"learn-before-process\" (işlemeden önce öğren) yaklaşımı özellikle dikkat çekici: ajan bir dosyayı doğrudan ayrıştırmadan önce yapısını/dizinini tarayıp haritalıyor, bu da yanlış bölümden bilgi çekip **halüsinasyon** üretme riskini azaltıyor.",
+        "why": "📈 Bu proje, agent skill kategorisinin \"estetik/yaratıcı üretim\" ucundaki temsilcisi — bugün listede yer alan diğer skill projeleri (Ponytail: kod disiplini, K-Dense: bilimsel doğruluk) teknik doğruluğa odaklanırken, Garden Skills görsel/tasarımsal kaliteye odaklanıyor. Bu çeşitlilik, \"agent skill\" formatının tek bir nişe değil, kod yazmaktan tasarıma kadar çok farklı uzmanlık alanına genelleşebilen bir dağıtım biçimi haline geldiğini gösteriyor; 25 stil reçetesi gibi somut, hazır kullanılabilir varlıklar sunması da benimsemeyi kolaylaştırıyor.",
+        "evolve": "💡 Şu an beş yetenek birbirinden bağımsız çalışıyor; bir kullanıcı senaryosunu önce `web-video-presentation` ile sunuma çevirip sonra `gpt-image-2` ile görselleri otomatik ürettiren bir zincirleme iş akışı henüz yerleşik değil gibi görünüyor. Stil reçetelerinin ve prompt şablonlarının topluluk tarafından paylaşılıp derecelendirildiği bir \"pazar yeri\" katmanı, projeyi statik bir şablon kümesinden sürekli büyüyen bir tasarım kütüphanesine dönüştürebilir."
+      },
+      "glossary": [
+        { "term": "Halüsinasyon (yapay zeka)", "def": "Bir AI modelinin, kaynağında olmayan ya da yanlış bilgiyi kendinden emin bir şekilde doğruymuş gibi üretmesi durumu." },
+        { "term": "Learn-before-process (işlemeden önce öğrenme)", "def": "Bir kaynağın (dosya, veri) doğrudan detaylı işlenmesinden önce genel yapısının taranıp haritalanması yaklaşımı." },
+        { "term": "Prompt şablonu", "def": "Bir AI modeline tekrar tekrar benzer nitelikte çıktı ürettirmek için önceden hazırlanmış, doldurulabilir talimat kalıbı." }
+      ]
+    }
+  ]
+}
