@@ -1,0 +1,145 @@
+{
+  "date": "2026-08-29",
+  "projects": [
+    {
+      "name": "abhigyanpatwari/GitNexus",
+      "url": "https://github.com/abhigyanpatwari/GitNexus",
+      "stars": "46.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI kod asistanlarının en büyük zaafı: kod tabanını satır satır okuyabiliyor ama \"bu fonksiyonu değiştirirsem nereler bozulur?\" sorusuna cevap veremiyor. **GitNexus**, bir repoyu tarayıp fonksiyonlar, sınıflar, çağrı zincirleri ve bağımlılıklar arasındaki ilişkileri temsil eden bir **bilgi grafiğine** dönüştürüyor. Bu grafik sayesinde bir AI ajanı, kod tabanını anahtar kelime aramasıyla değil, gerçek mimari ilişkilerle anlıyor — projenin sloganıyla \"ajan bağlamı için sinir sistemi\".",
+        "tech": "Kod ayrıştırma için **Tree-sitter** kullanılıyor (hem native hem WASM), böylece 14 farklı dil (TypeScript, Python, Java, Go, Rust, PHP vb.) destekleniyor. Çıkarılan ilişkiler **LadybugDB** adlı gömülü, vektör destekli bir graf veritabanında saklanıyor — yani sunucu kurmaya gerek yok, her şey yerelde çalışıyor. Arama tarafında **BM25** ile **semantik gömme (embedding)** aramasını \"reciprocal rank fusion\" denen bir teknikle birleştiriyorlar; bu da hem tam eşleşmeleri hem anlamca yakın sonuçları yakalıyor. Web arayüzü React 18 ve WebGL tabanlı Sigma.js ile grafiği görselleştiriyor. Ajanlara erişim ise 17 farklı **MCP** aracıyla sağlanıyor — Claude Code, Cursor, Codex gibi editörlere otomatik kurulum yapılabiliyor.",
+        "why": "AI destekli kodlamanın artık sıradanlaştığı bir dönemde, \"ajan bir değişiklik yapınca neyi kırdığını bilmiyor\" şikayeti geliştiriciler arasında çok yaygın. GitNexus bu somut acıyı hedef alıyor ve **zero-server mimarisi** + çoklu editör desteğiyle kurulumu kolaylaştırıyor. PolyForm Noncommercial lisansı ile açık kaynak kalırken kurumsal müşteriler için ayrı bir gelir modeli bırakması da projenin sürdürülebilirlik hesabı yaptığını gösteriyor.",
+        "evolve": "Şu an dil desteği \"değişen derinlikte\" — yani bazı dillerde analiz yüzeysel kalabilir; bu dillerin ayrıştırma kurallarının olgunlaştırılması önemli bir yol haritası maddesi olur. Ayrıca çoklu repo desteği var ama gerçek bir monorepo/mikroservis ortamında grafiğin ne kadar doğru kaldığı (özellikle çapraz repo çağrıları) belirsiz; bu konuda daha fazla vaka çalışması paylaşılması güven artırır. Son olarak, grafiğin büyük kod tabanlarında güncel kalması için artımlı (incremental) indeksleme performansının şeffaf biçimde ölçülüp paylaşılması faydalı olur."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının dış araçlara (dosya sistemi, API, veritabanı gibi) standart bir protokolle bağlanmasını sağlayan açık standart."
+        },
+        {
+          "term": "Tree-sitter",
+          "def": "Kaynak kodu hızlıca ayrıştırıp söz dizimi ağacına (syntax tree) çeviren, birçok dili destekleyen bir kütüphane."
+        },
+        {
+          "term": "BM25",
+          "def": "Arama motorlarında belge ile sorgu arasındaki kelime örtüşmesine göre skor hesaplayan klasik bir sıralama algoritması."
+        },
+        {
+          "term": "Embedding (gömme)",
+          "def": "Metni, anlamca yakın ifadelerin birbirine yakın konumlandığı sayısal bir vektöre dönüştürme yöntemi."
+        },
+        {
+          "term": "Graf veritabanı",
+          "def": "Verileri tablolar yerine düğüm (node) ve aralarındaki ilişkiler (edge) olarak saklayan veritabanı türü."
+        },
+        {
+          "term": "WASM (WebAssembly)",
+          "def": "Tarayıcıda veya sunucusuz ortamlarda neredeyse yerel hızda çalışan, derlenmiş bir bayt kodu formatı."
+        }
+      ]
+    },
+    {
+      "name": "calesthio/OpenMontage",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "stars": "53.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "Video prodüksiyonu geleneksel olarak senaryo yazma, görsel/ses üretimi, kurgu gibi birçok ayrı beceri gerektirir. **OpenMontage**, Claude, Cursor gibi AI kodlama asistanlarını uçtan uca bir video stüdyosuna dönüştürüyor: kullanıcı sade bir cümleyle ne istediğini yazıyor, ajan araştırma yapıyor, senaryo kuruyor, görsel/ses varlıklarını üretiyor ve kurguluyor.",
+        "tech": "Orkestrasyon katmanı Python (3.10+) ile yazılmış; kurgu/kompozisyon tarafında **Remotion** (React tabanlı video oluşturma) ve son işleme için **FFmpeg** kullanılıyor. Transkripsiyon **WhisperX** ile yapılıyor. Proje kendi başına video/görsel/ses üretmiyor; bunun yerine 60'tan fazla sağlayıcıyı (Runway, Google Veo, FLUX, ElevenLabs, Suno AI gibi) 7 farklı kritere göre puanlayıp en uygununu seçen bir \"sağlayıcı yönlendirme\" katmanı sunuyor — hatta hiç API anahtarı olmadan da (yerel **Piper TTS** + ücretsiz stok görüntü) çalışabiliyor. Kalite kontrolü için render öncesi doğrulama kapıları ve render sonrası ffprobe ile kare/ses analizi yapan bir kendi kendini gözden geçirme mekanizması var.",
+        "why": "Trend sıralamasında günün #1'i olması tesadüf değil: proje \"tek seferlik ipucu\"ndan gerçek videoya giden ilk olgun ajan-tabanlı sistemlerden biri olarak konumlanıyor. Rakiplerinin çoğu \"durağan görseli hareketlendirme\"yle sınırlıyken, OpenMontage gerçek arşiv görüntüsü (Archive.org, NASA, Wikimedia) kullanabilmesiyle ayrışıyor. Maliyet tahmini, harcama tavanı ve onay eşikleri gibi \"insan gözetimli otonomi\" özellikleri de kurumsal kullanım isteyenlere güven veriyor.",
+        "evolve": "Proje 100'den fazla aracı ve 20+ JSON şemasını bir araya getiren karmaşık bir orkestrasyon sistemi; bu karmaşıklık hem güç hem de kırılganlık kaynağı olabilir — sağlayıcılardan biri API'sini değiştirdiğinde kaç entegrasyonun etkileneceği önemli bir bakım yükü. **AGPL-3.0** lisansı, ticari SaaS'a dönüştürmek isteyenler için bir sürtünme noktası olabilir; bunun netleştirilmesi büyümeyi hızlandırabilir. Ayrıca üretilen videoların telif/kaynak doğrulama tarafı (özellikle gerçek arşiv görüntüsü kullanımında) daha görünür hale getirilebilir."
+      },
+      "glossary": [
+        {
+          "term": "Remotion",
+          "def": "Web geliştirme bilgisiyle (React) programatik video oluşturmayı sağlayan bir çerçeve (framework)."
+        },
+        {
+          "term": "FFmpeg",
+          "def": "Video ve ses dosyalarını işlemek, dönüştürmek ve birleştirmek için kullanılan açık kaynak komut satırı aracı."
+        },
+        {
+          "term": "WhisperX",
+          "def": "Konuşmayı yazıya döken (transkripsiyon) ve kelime bazında zaman damgası çıkarabilen bir ses tanıma aracı."
+        },
+        {
+          "term": "Piper TTS",
+          "def": "Cihaz üzerinde, internete bağlanmadan çalışan açık kaynak bir metinden-sese (text-to-speech) motoru."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılımı ağ üzerinden bir servis olarak sunanları da kaynak kodu paylaşmaya zorlayan, güçlü \"copyleft\" lisans türü."
+        }
+      ]
+    },
+    {
+      "name": "tailscale/tailcat",
+      "url": "https://github.com/tailscale/tailcat",
+      "stars": "2.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Tailcat**, klasik \"netcat\" aracının mantığını alıp Tailscale'in şifreli ağ altyapısı üzerine taşıyor — ama Tailscale hesabı, kontrol sunucusu ya da giriş yapma zorunluluğu olmadan. İki makine arasında uçtan uca şifreli, NAT arkasından bile çalışan bir bağlantı kurmak için tasarlanmış; port yönlendirme uğraşı olmadan bir SSH sunucusuna DNS üzerinden erişmek gibi pratik senaryoları hedefliyor.",
+        "tech": "Tailscale'in kendi açık kaynak bileşenlerini yeniden kullanıyor: şifreleme için kullanıcı alanında (root yetkisi gerektirmeden) çalışan **WireGuard**, bağlantıyı UDP ve **DERP röleleri** arasında yönlendiren \"magicsock\" katmanı ve TCP/IP yığınını taklit eden **gVisor Netstack**. Bağlantı jetonları (token) base64 ile kodlanmış **CBOR** formatında taşınıyor; sunucu adresleri DNS TXT kayıtları üzerinden yayınlanabiliyor. Go dilinde yazılmış ve bir WebAssembly demosu tarayıcıda da çalışabiliyor.",
+        "why": "\"Tailscale'i Tailscale olmadan\" isteyen geliştiriciler için can alıcı bir boşluğu dolduruyor: hesap bağımlılığı olmadan, gizlilik odaklı, uçtan uca şifreli bağlantı. Kimlik doğrulamasız SSH sunucusu gibi kullanım örnekleri, ev laboratuvarı (homelab) ve küçük ekip senaryolarında hızla ilgi görüyor; kendi DERP rölesini barındırma imkanı da self-hosted topluluğunun ilgisini çekiyor.",
+        "evolve": "\"Kimlik doğrulamasız\" yaklaşımın güvenlik tarafı dikkatli ele alınmalı — token'ın ele geçirilmesi durumunda erişim kontrolü nasıl sağlanacağı netleştirilmeli. Ayrıca merkezi Tailscale kontrol sunucusunun sağladığı cihaz yönetimi, erişim politikaları gibi kolaylıklardan feragat edildiği için, büyüyen kullanıcı tabanları için basit bir yetkilendirme/erişim listesi mekanizması eklenmesi projeyi kurumsal kullanıma da açabilir."
+      },
+      "glossary": [
+        {
+          "term": "WireGuard",
+          "def": "Modern, hafif ve hızlı bir VPN/şifreleme protokolü."
+        },
+        {
+          "term": "NAT (Network Address Translation)",
+          "def": "Birden fazla cihazın tek bir genel IP adresini paylaşmasını sağlayan ağ tekniği; genellikle dışarıdan doğrudan bağlantıyı zorlaştırır."
+        },
+        {
+          "term": "DERP relay",
+          "def": "Doğrudan bağlantı kurulamadığında trafiği taraflar arasında ileten, Tailscale'in geliştirdiği röle sunucusu."
+        },
+        {
+          "term": "gVisor Netstack",
+          "def": "Çekirdek (kernel) düzeyinde değil, uygulama düzeyinde çalışan bir TCP/IP ağ yığını uygulaması."
+        },
+        {
+          "term": "CBOR",
+          "def": "JSON'a benzer ama daha kompakt, ikili (binary) bir veri serileştirme formatı."
+        }
+      ]
+    },
+    {
+      "name": "swoole/typephp",
+      "url": "https://github.com/swoole/typephp",
+      "stars": "840",
+      "language": "PHP",
+      "sections": {
+        "serves": "PHP, yıllardır \"yorumlanan, bu yüzden yavaş\" etiketiyle anılıyor. **TypePHP** bu algıyı doğrudan hedef alıyor: PHP kodunu önce C++'a, sonra da doğrudan makine koduna derleyen bir **AOT (ahead-of-time)** derleyici sunuyor. Sonuç, çalışma anında yorumlama katmanı olmayan, doğrudan CPU'da çalışan native bir ikili dosya.",
+        "tech": "Derleme hattı PHP kodunu ayrıştırıyor, tip bildirimlerini doğruluyor, fonksiyon gövdelerini C++17'ye indirgeyip mevcut bir C++ derleyicisiyle native koda çeviriyor. İlginç bir tasarım kararı: derleyicinin kendisi PHP ile yazılmış ve kendi kendini derleyerek (**self-hosting**) çalışıyor. Tip sistemi, `int`/`float`/`bool` gibi temel türleri doğrudan C++ karşılıklarına eşliyor; büyük sayı işlemleri için **GMP** (bigInt), yüksek hassasiyetli ondalık için libmpdec ve MPFR kullanılıyor. Dizi yerine `std::vector`/`std::map` gibi güçlü tipli C++ konteynerleri kullanıldığında yaklaşık 10 kat hızlanma iddia ediliyor. Derleme zamanında kod üretmek için `#[Getter]`, `#[Constructor]` gibi öznitelikler (attribute) destekleniyor.",
+        "why": "PHP ekosisteminde performans kritik iş yükleri (yüksek trafikli API'ler, veri işleme) için genellikle başka dillere kaçılıyordu; TypePHP bu ihtiyacı PHP söz dizimini büyük ölçüde koruyarak karşılamayı vaat ediyor — dilini değiştirmeden ~6.5-8 kat hızlanma iddiası dikkat çekici. Ayrıca native ikili dağıtımın kaynak kodunu gizleme avantajı da ticari PHP ürünleri için cazip bir yan fayda.",
+        "evolve": "Proje henüz erken ve toplam yıldız sayısı (840) diğer adaylara göre düşük — bu da \"PHP'nin tamamını mı yoksa bir alt kümesini mi destekliyor\" sorusunun netleşmesini bekleyen, olgunlaşma aşamasında bir araç olduğunu gösteriyor. Dinamik özellik ağırlıklı gerçek dünya Laravel/Symfony gibi çerçevelerle uyumluluk, projenin asıl sınavı olacak; ayrıca hata ayıklama (debugging) deneyiminin native derlenmiş kodda ne kadar korunduğu da netleştirilmeli."
+      },
+      "glossary": [
+        {
+          "term": "AOT derleme (Ahead-of-Time)",
+          "def": "Programı çalıştırılmadan önce, tamamen makine koduna çeviren derleme yöntemi (JIT'in aksine)."
+        },
+        {
+          "term": "Self-hosting (kendi kendini barındırma)",
+          "def": "Bir derleyicinin kendi kaynak kodunu kendisiyle derleyebilmesi."
+        },
+        {
+          "term": "GMP",
+          "def": "Çok büyük sayılarla hassas aritmetik işlemler yapmayı sağlayan bir kütüphane."
+        },
+        {
+          "term": "Attribute (öznitelik)",
+          "def": "Koda ekstra meta bilgi ekleyip derleme zamanında otomatik kod üretimi tetiklemek için kullanılan işaretleme sözdizimi."
+        },
+        {
+          "term": "std::vector / std::map",
+          "def": "C++'ın standart kütüphanesinde yer alan, tip güvenli dinamik dizi ve anahtar-değer eşleme veri yapıları."
+        }
+      ]
+    }
+  ]
+}
