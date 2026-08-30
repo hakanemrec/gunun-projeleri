@@ -1,0 +1,141 @@
+{
+  "date": "2026-08-30",
+  "projects": [
+    {
+      "name": "workweave/router",
+      "url": "https://github.com/workweave/router",
+      "stars": "2.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "Agent tabanlı sistemler artık tek bir LLM'e değil, onlarca farklı modele (Claude, GPT, Gemini, açık kaynak modeller) istek atıyor. Sorun şu: hangi isteği hangi modele göndereceğine kim karar verecek? Sabit bir model seçmek ya çok pahalıya mal oluyor (her şeyi en güçlü modelle çözmek) ya da kaliteyi düşürüyor (her şeyi ucuz modelle çözmeye çalışmak). **workweave/router**, bu kararı otomatikleştiren bir proxy katmanı: gelen her isteği (konuşmanın tamamını değil, tek bir eylemi) analiz edip en uygun sağlayıcı/modele yönlendiriyor ve bunu \"tek bir endpoint değişikliğiyle %40-70 maliyet tasarrufu\" iddiasıyla sunuyor.",
+        "tech": "Router, Go ile yazılmış bir proxy sunucusu olarak çalışıyor ve varsayılan yönlendirme stratejisi olarak process içinde çalışan bir **ONNX embedder** kullanıyor: gelen istek anlamsal olarak vektöre çevrilip modellerin yetenek profilleriyle 50 milisaniyenin altında karşılaştırılıyor. Bu yaklaşım, \"Beyond GPT-5: Making LLMs Cheaper and Better via Performance-Efficiency Optimized Routing\" makalesindeki küme skorlayıcıdan (cluster scorer) esinleniyor — yani prompt'un \"havasına\" bakan sezgisel yönlendirme değil, ölçülebilir bir karar mekanizması. Kurulum ve durum bilgisi (kurulumlar, API anahtarları, kullanım metrikleri) **PostgreSQL**'de tutuluyor; sağlayıcı anahtarları şifrelenerek yerelde saklanıyor ve prompt'lar router'dan doğrudan sağlayıcıya gidiyor, aradan geçmiyor. Daha gelişmiş yönlendirme kararları için opsiyonel bir **HMM (Gizli Markov Modeli) policy sidecar** eklenebiliyor, gözlemlenebilirlik için **OTLP** (OpenTelemetry) desteği var. Router; Anthropic Messages, OpenAI Chat Completions ve Gemini native API formatlarının hepsini konuşabiliyor, yani istemci tarafında hiçbir şey değişmeden arka planda model değiştirilebiliyor.",
+        "why": "İlgi görmesinin sebebi, agent araçlarının (Claude Code, Cursor, opencode gibi) günlük kullanımda ciddi token maliyeti yaratmaya başlaması ve ekiplerin bunu kontrol altına almak istemesi. Robinhood ve PostHog gibi isimlerin kullanıcı listesinde geçmesi, projenin sadece bir hobi aracı değil üretim ortamında ciddiye alınan bir altyapı parçası olduğu izlenimini güçlendiriyor. Ayrıca \"model router\" kategorisi şu anda agent ekosisteminde hızla olgunlaşan bir alan; bu proje somut bir araştırma makalesine dayanan yöntemiyle rakiplerinden ayrışıyor.",
+        "evolve": "README'de \"<50ms\" gibi iddialar var ama karşılaştırmalı, bağımsız benchmark eksik — bu, projenin güvenilirlik algısını zayıflatan bir nokta. Lisans da dikkat edilmesi gereken bir detay: **Elastic License v2**, tam anlamıyla açık kaynak değil, belirli kullanım kısıtlamaları getiriyor. Projenin 0.1.0 sürüm numarası hâlâ taşıması, aktif geliştirme aşamasında olduğunu ama üretim ortamında \"kırılma\" riskinin de göz ardı edilmemesi gerektiğini gösteriyor. İlerleyen sürümlerde açık, tekrarlanabilir benchmark sonuçları ve daha esnek bir lisans, benimsenmeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Proxy",
+          "def": "İstemci ile hedef sunucu arasına girip trafiği yöneten, gerekirse değiştiren ara katman."
+        },
+        {
+          "term": "ONNX",
+          "def": "Farklı makine öğrenmesi çerçevelerinde eğitilmiş modelleri ortak bir formatta çalıştırmayı sağlayan açık bir standart."
+        },
+        {
+          "term": "Embedding (anlamsal vektör)",
+          "def": "Bir metnin anlamını sayılardan oluşan bir vektöre dönüştürme; benzer anlamlı metinler vektör uzayında birbirine yakın çıkar."
+        },
+        {
+          "term": "OTLP (OpenTelemetry Protocol)",
+          "def": "Uygulamalardan performans ve izleme (tracing) verisi toplamak için kullanılan endüstri standardı protokol."
+        },
+        {
+          "term": "Gizli Markov Modeli (HMM)",
+          "def": "Bir sistemin doğrudan gözlemlenemeyen iç durumlarını, gözlemlenebilir çıktılardan tahmin etmeye yarayan istatistiksel model."
+        }
+      ]
+    },
+    {
+      "name": "p-e-w/heretic",
+      "url": "https://github.com/p-e-w/heretic",
+      "stars": "28.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Açık kaynak dil modelleri genellikle \"hizalama\" (alignment) adı verilen bir eğitim aşamasından geçirilerek belirli konularda cevap vermeyi reddedecek şekilde ayarlanır. Bu güvenlik açısından mantıklı olsa da araştırmacılar, güvenlik ekipleri ve modeli farklı amaçlarla (ör. kurgu yazımı, güvenlik testi, sansürsüz yerel asistan) kullanmak isteyenler için bazen bir engel hâline geliyor. **Heretic**, bu reddetme davranışını modelin genel zekâsına zarar vermeden, yeniden eğitime gerek kalmadan otomatik olarak kaldıran bir araç.",
+        "tech": "Heretic, literatürde **\"abliteration\" (yönsel budama)** olarak bilinen bir teknik kullanıyor. Önce \"zararlı\" ve \"zararsız\" örnek istemler modelden geçirilip her transformer katmanındaki gizli durumların (hidden state) ortalama farkı hesaplanarak reddetme davranışına karşılık gelen bir yön (residual direction) bulunuyor. Ardından dikkat (attention) çıkış matrisleri ve MLP alçaltma (down-projection) matrisleri bu yöne dik hâle getirilerek (**orthogonalization**) reddetmeyle ilgili bilginin katmanlar arasında yayılması engelleniyor. Heretic'in asıl farkı, bu budama yoğunluğunu katman katman elle ayarlamak yerine **Optuna** kütüphanesiyle **TPE tabanlı Bayes optimizasyonu** kullanarak otomatik bulması: sistem aynı anda hem reddetme oranını minimize etmeye hem de orijinal modelden sapmayı (**KL diverjansı**) olabildiğince küçük tutmaya çalışıyor. Ayrıca katman indekslerini tam sayı yerine ondalıklı seçerek (\"floating-point direction indices\") iki katman arasında enterpolasyon yapabiliyor, bu da arama uzayını genişletiyor. PyTorch ve Hugging Face Transformers üzerine kurulu, bağımlılıklar `uv` ile yönetiliyor, BitsandBytes ile 4-bit **kuantizasyon** desteği VRAM ihtiyacını düşürüyor.",
+        "why": "Model yorumlanabilirliği (interpretability) ve hizalama araştırmalarına olan ilgi arttıkça, \"modelin içine dokunmadan\" güvenlik katmanını kaldırabilen araçlar da dikkat çekmeye başladı. Heretic'i öne çıkaran, işin tamamen otomatik olması: daha önce transformer iç mimarisini bilen kişilerin elle yaptığı bir işi, herkesin komut satırından çalıştırabileceği bir araca dönüştürüyor. Gemma 3 12B üzerinde \"100 zararlı istemden sadece 3'ünü reddetme\" ve rakip yöntemlere göre çok daha düşük KL diverjansı gibi somut sonuçlar paylaşması, iddiayı ölçülebilir kılıyor; topluluğun bugüne kadar 5000'den fazla model üretmiş olması da bunun niş bir deney değil, yaygın kullanılan bir araç olduğunu gösteriyor.",
+        "evolve": "Proje kendi de kabul ediyor: sayısal metrikler (KL diverjansı, reddetme oranı) \"her şeyi anlatmıyor\", insan değerlendirmesi hâlâ gerekli. Saf durum-uzayı (state-space) mimarileri gibi bazı model ailelerinde destek eksik, görselleştirme (PaCMAP) büyük modellerde saatler sürebiliyor. **AGPL-3.0** lisansı, türev çalışmaların açık kalmasını zorunlu kılıyor — bu hem şeffaflığı koruyor hem de bazı ticari kullanım senaryolarını zorlaştırıyor. Aracın kötüye kullanım potansiyeli de gözden kaçırılmaması gereken bir gerçek: aynı teknik, meşru araştırma kadar zararlı içerik üretimini kolaylaştırmak için de kullanılabilir; projenin ileride kullanım amacına dair daha net bir çerçeve (rehber, sorumluluk reddi ötesinde) sunması beklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Alignment (hizalama)",
+          "def": "Bir dil modelinin zararlı, yanıltıcı veya istenmeyen çıktılar üretmemesi için ek eğitimle yönlendirilmesi."
+        },
+        {
+          "term": "Abliteration (yönsel budama)",
+          "def": "Bir modelin belirli bir davranışına (ör. reddetme) karşılık gelen iç yönü matematiksel olarak bularak o davranışı bastırma tekniği."
+        },
+        {
+          "term": "Residual stream / gizli durum",
+          "def": "Bir transformer modelinde bilginin katmandan katmana taşındığı iç temsil; modelin 'düşünce akışı' gibi düşünülebilir."
+        },
+        {
+          "term": "Orthogonalization (dikleştirme)",
+          "def": "Bir matrisi, belirli bir yöne matematiksel olarak dik hâle getirerek o yöndeki bilgiyi etkisiz kılma işlemi."
+        },
+        {
+          "term": "KL diverjansı",
+          "def": "İki olasılık dağılımının (burada: orijinal model ile değiştirilmiş model çıktılarının) birbirinden ne kadar farklılaştığını ölçen istatistiksel bir değer."
+        },
+        {
+          "term": "Bayes optimizasyonu / TPE",
+          "def": "Deneme sayısını azaltmak için bir önceki denemelerin sonucuna bakarak bir sonraki en umut verici parametre setini tahmin eden, otomatik parametre arama yöntemi."
+        },
+        {
+          "term": "Kuantizasyon",
+          "def": "Bir modelin sayısal ağırlıklarını daha az bit ile temsil ederek bellek ve hesaplama ihtiyacını azaltma tekniği."
+        }
+      ]
+    },
+    {
+      "name": "abi/screenshot-to-code",
+      "url": "https://github.com/abi/screenshot-to-code",
+      "stars": "76.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bir tasarımı (ekran görüntüsü, Figma çıktısı ya da ekran kaydı) elle koda dökmek zaman alıcı ve tekrarlayan bir iş. **screenshot-to-code**, bu adımı ortadan kaldırıp bir görseli doğrudan çalışan, temiz bir arayüz koduna çeviriyor — geliştiricinin sıfırdan HTML/CSS yazmak yerine üretileni düzenlemesini sağlıyor.",
+        "tech": "Sistem klasik bir istemci-sunucu mimarisinde çalışıyor: **React + Vite** tabanlı bir ön yüz, görseli **FastAPI** ile yazılmış Python arka ucuna gönderiyor; ilerleme durumu **WebSocket** üzerinden anlık olarak istemciye akıtılıyor. Asıl iş, birden fazla sağlayıcının görsel-dil modellerine yaptırılıyor: Google Gemini 3 Flash/3.1 Pro, OpenAI GPT-5.5/5.4 Mini ve Anthropic Claude Opus 4.6/4.8 arasından seçim yapılabiliyor; görsel üretimi/arka plan temizleme gibi işler için Replicate üzerinden z-image-turbo kullanılıyor. Proje, kaynak tasarımdaki logo ve görselleri olduğu gibi yeniden kullanan bir \"gerçek varlık çıkarma\" (asset extraction) özelliğiyle öne çıkıyor — yani çıktı, placeholder görsellerle dolu değil. Çıktı formatı olarak HTML+Tailwind, HTML+CSS, React+Tailwind, Vue+Tailwind, Bootstrap ve Ionic+Tailwind seçenekleri sunuluyor; Chromium kurulursa üretilen kodun canlı önizlemesi de alınabiliyor.",
+        "why": "Görsel-dil modellerinin (Gemini 3, GPT-5.5, Claude Opus 4.x) kalitesi son dönemde belirgin şekilde arttı ve bu proje tam olarak bu ilerlemenin somut, günlük kullanılabilir bir uygulaması. \"Tasarımdan koda\" akışı, hem hızlı prototipleme yapan girişimciler hem de tasarım-geliştirme arasındaki el değiştirmeyi kısaltmak isteyen ekipler için doğrudan zaman kazandırıyor; 76 binin üzerindeki yıldız sayısı da projenin niş değil, geniş bir kitleye hitap ettiğini gösteriyor.",
+        "evolve": "Aracın kalitesi tamamen seçilen modele bağlı, bu da tutarlılığı zorlaştıran bir nokta — aynı ekran görüntüsü farklı modellerle çok farklı sonuçlar verebiliyor. Kendi API anahtarını getirme zorunluluğu (BYOK), maliyeti kullanıcıya yıkıyor ve giriş engelini artırıyor. İlerleyen sürümlerde model kalitesi karşılaştırmalı bir şekilde raporlanabilir, çoklu ekran/bileşen tutarlılığı (ör. bir tasarım sisteminin birden fazla ekranında aynı buton stilini koruma) geliştirilebilir ve tamamen barındırılan (self-key gerektirmeyen) bir kullanım seçeneği eklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Görsel-dil modeli (VLM)",
+          "def": "Hem görsel hem metin girdisini anlayıp metin çıktısı üretebilen yapay zekâ modeli türü."
+        },
+        {
+          "term": "WebSocket",
+          "def": "İstemci ve sunucu arasında sürekli açık kalan, iki yönlü anlık veri akışı sağlayan iletişim protokolü."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python ile hızlı ve tip güvenli API sunucuları yazmak için kullanılan modern bir web çerçevesi (framework)."
+        },
+        {
+          "term": "BYOK (Bring Your Own Key)",
+          "def": "Kullanıcının hizmeti çalıştırmak için kendi API anahtarını (ve dolayısıyla faturasını) sağlaması gereken kullanım modeli."
+        }
+      ]
+    },
+    {
+      "name": "bigskysoftware/htmx",
+      "url": "https://github.com/bigskysoftware/htmx",
+      "stars": "49.2k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "Modern web geliştirme, dinamik bir arayüz için genellikle ağır bir JavaScript çerçevesi (React, Vue, Angular vb.) gerektirir gibi algılanıyor. **htmx**, bu varsayımı sorguluyor: \"Neden sadece `<a>` ve `<form>` HTTP isteği atabilsin, neden sadece GET ve POST kullanılabilsin?\" sorusundan yola çıkarak, herhangi bir HTML elemanının herhangi bir HTTP isteğini tetikleyip sayfanın herhangi bir parçasını güncelleyebilmesini sağlıyor — hem de tek satır JavaScript yazmadan.",
+        "tech": "htmx'in temelinde **hipermedya odaklı geliştirme** (hypermedia-driven development) felsefesi yatıyor: HTML'i statik bir şablon katmanı olarak değil, gerçek bir hiper-metin sistemi olarak ele alıyor. `hx-get`, `hx-post` gibi HTML özniteliklerini (attribute) kullanarak herhangi bir elemana sunucuya istek atma yeteneği kazandırıyor; `hx-swap` ile de gelen HTML parçasının sayfanın neresine, nasıl yerleştirileceği (değiştir, ekle, öne ekle vb.) kontrol ediliyor. WebSocket ve Server-Sent Events entegrasyonu sayesinde sunucudan anlık güncelleme almak da mümkün. Kütüphanenin kendisi yaklaşık 14kb (minify + gzip), hiçbir bağımlılığı yok ve eklenti (extension) mimarisiyle genişletilebiliyor. Bu yaklaşım, iş mantığının büyük kısmını istemciye taşımak yerine sunucuda tutmayı, sunucunun HTML parçaları döndürmesini teşvik ediyor — REST prensiplerine daha sadık bir mimari.",
+        "why": "\"JavaScript yorgunluğu\" (javascript fatigue) — her yeni proje için build araçları, state yönetimi ve bileşen kütüphaneleri kurmanın getirdiği karmaşıklık — geliştiriciler arasında giderek daha çok dile getiriliyor. htmx, özellikle sunucu tarafı ağırlıklı çerçevelerle (Django, Rails, Laravel, FastAPI) çalışan ekipler için \"tek sayfa uygulaması kurmadan da zengin etkileşim mümkün\" mesajını veriyor. Intercooler.js'in halefi olarak olgunlaşmış bir geçmişe sahip olması ve JetBrains gibi araçlarda editör desteği alması, projenin bir moda değil kalıcı bir yaklaşım olarak görüldüğünü destekliyor.",
+        "evolve": "htmx'in gücü aynı zamanda sınırı: karmaşık, tamamen istemci tarafında yönetilmesi gereken durum (state) senaryolarında (ör. çevrimdışı çalışan, karmaşık form akışlı uygulamalar) React/Vue gibi çerçevelerin sunduğu araçlar hâlâ daha güçlü. Büyük ekiplerde \"sunucu HTML döndürüyor\" modelinin API-first mimarilerle (mobil istemci, üçüncü taraf entegrasyon) nasıl bir arada yaşayacağı da net bir soru. İlerleyen dönemde daha olgun bir eklenti ekosistemi, tip güvenliği (TypeScript tanımları) ve büyük ölçekli uygulamalar için resmi mimari örüntüler (patterns) projenin kurumsal benimsenmesini hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Hipermedya (hypermedia)",
+          "def": "Bağlantılar ve etkileşimler aracılığıyla gezinilebilen, birbirine bağlı içerik yapısı; web'in temel HTML+link fikri buna dayanır."
+        },
+        {
+          "term": "Server-Sent Events (SSE)",
+          "def": "Sunucunun, açık bir bağlantı üzerinden istemciye tek yönlü ve sürekli veri gönderebildiği bir web standardı."
+        },
+        {
+          "term": "REST",
+          "def": "Web servislerinin kaynaklar (resource) ve standart HTTP metotları (GET, POST, PUT, DELETE) üzerinden tasarlanmasını öneren mimari yaklaşım."
+        },
+        {
+          "term": "Tek sayfa uygulama (SPA)",
+          "def": "Sayfa yenilenmeden, içeriğin JavaScript ile dinamik olarak güncellendiği web uygulaması türü."
+        }
+      ]
+    }
+  ]
+}
