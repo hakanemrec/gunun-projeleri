@@ -1,0 +1,145 @@
+{
+  "date": "2026-08-31",
+  "projects": [
+    {
+      "name": "THU-MAIC/OpenMAIC",
+      "url": "https://github.com/THU-MAIC/OpenMAIC",
+      "stars": "24.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Klasik MOOC videoları tek yönlü ve pasiftir. **OpenMAIC**, bir konu başlığı ya da belge yükleyerek tek tıkla \"canlı\" bir sınıf deneyimi üretiyor: AI öğretmen ve AI sınıf arkadaşları gerçek zamanlı olarak ders anlatıyor, tartışıyor, soru soruyor. Çıktı; slaytlar, quizler, etkileşimli simülasyonlar ve proje tabanlı öğrenme aktiviteleri — tahta ve sesli anlatımla birlikte.\n\n- Ağustos 2026'da 1.0.0 sürümü yayınlandı\n- OpenAI, Anthropic, Gemini, Bedrock dahil 15'ten fazla LLM sağlayıcısını destekliyor\n- Feishu, Slack, Discord gibi mesajlaşma platformlarından da sınıf oluşturulabiliyor\n- Offline/air-gapped oynatma için tüm varlıklar (font, görsel, KaTeX, Three.js) tek dosyaya gömülüyor",
+        "tech": "🛠️ İki aşamalı bir üretim hattı var: önce ders akışı (outline) oluşturuluyor, ardından sahne içerikleri üretiliyor. Öğretmen ve öğrenci ajanlarının konuşma sırasını yöneten çoklu-ajan orkestrasyonu **LangGraph** ile bir **durum makinesi** (state machine) olarak kurulmuş; bir \"playback engine\" dersi oynatırken ayrı bir \"action engine\" konuşma sentezi, tahta çizimi, spot ışığı gibi 28'den fazla etkileşim türünü yürütüyor. Depolama katmanı değiştirilebilir (tarayıcı, HTTP, PostgreSQL, S3); oturumlar veritabanında **lease/heartbeat** mekanizmalarıyla izlenerek çökme sonrası kaldığı yerden devam edebiliyor.",
+        "why": "📈 1.0.0 sürümünün bu ay yayınlanmış olması, bu haftaki yıldız patlamasının doğrudan tetikleyicisi. \"AI ajanlarının canlı, etkileşimli bir sınıf ortamını simüle etmesi\" fikri hem eğitim teknolojisi hem çoklu-ajan orkestrasyon trendleriyle örtüşüyor; çoklu LLM sağlayıcı desteği ve mesajlaşma platformu entegrasyonu, projeyi tek bir ekosisteme bağımlı olmaktan çıkararak geniş bir kullanıcı kitlesine hitap etmesini sağlıyor.",
+        "evolve": "💡 Güçlü yanı sağlayıcı-tarafsız mimarisi ve dayanıklı (durable) oturum tasarımı; geliştirilebilecek yön ise içerik doğruluğu denetimi — AI öğretmenin anlattıklarının doğruluğunu kontrol eden bir kaynak gösterme/fact-checking mekanizması henüz öne çıkmıyor, eğitim içeriğinde bu kritik bir eksik. Farklı ülkelerin müfredat standartlarına uyum katmanı eklenmesi de küresel benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "LangGraph",
+          "def": "Birden fazla AI ajanının birbiriyle koordineli çalışmasını, adım adım bir durum akışı olarak tanımlamayı sağlayan açık kaynak orkestrasyon kütüphanesi."
+        },
+        {
+          "term": "Durum makinesi (state machine)",
+          "def": "Bir sistemin belirli durumlar arasında, tanımlı kurallara göre geçiş yaptığı soyut hesaplama modeli."
+        },
+        {
+          "term": "Lease/heartbeat mekanizması",
+          "def": "Bir sürecin hâlâ çalıştığını düzenli sinyallerle (heartbeat) bildirmesi ve bu sinyal kesilirse kaynağın (lease) başka bir sürece devredilmesini sağlayan güvenilirlik tekniği."
+        },
+        {
+          "term": "Air-gapped (hava boşluklu) sistem",
+          "def": "İnternete veya diğer ağlara hiç bağlı olmayan, tamamen izole çalışan bilgisayar sistemi."
+        },
+        {
+          "term": "TTS / ASR",
+          "def": "TTS (Text-to-Speech) metni sese çeviren, ASR (Automatic Speech Recognition) ise sesi metne çeviren teknolojilerdir."
+        }
+      ]
+    },
+    {
+      "name": "colinhacks/zod",
+      "url": "https://github.com/colinhacks/zod",
+      "stars": "43.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 TypeScript'te bir API'den gelen veri ya da form girdisinin gerçekten \"doğru tipte\" olup olmadığını kontrol etmek, tip sistemi çalışma zamanında (runtime) var olmadığı için ayrı bir efor gerektirir. **Zod**, bir şema tanımlayıp veriyi bu şemaya göre doğrulamayı sağlıyor; doğrulama başarılıysa TypeScript tarafında da otomatik olarak doğru tipi veriyor — şemayı hem tip hem doğrulama için iki kez yazma zorunluluğunu ortadan kaldırıyor.\n\n- Sıfır harici bağımlılık, gzip sonrası yaklaşık 2kb çekirdek boyut\n- Hem tarayıcıda hem Node.js'te çalışıyor\n- `.parse()` (hata fırlatır) ve `.safeParse()` (hata fırlatmadan sonucu döner) iki doğrulama modu\n- React Hook Form, tRPC, Next.js gibi araçlarla yıllardır birlikte kullanılan bir ekosistem temel taşı",
+        "tech": "🛠️ Zod'un temel tekniği, `z.infer<>` gibi generic yardımcı tiplerle bir doğrulama şemasından TypeScript'in **statik tip çıkarımını** (static type inference) otomatik türetmesi — yani şema tek bir yerde tanımlanır, hem çalışma zamanı kontrolü hem derleme zamanı tipi aynı kaynaktan gelir. Yakın zamanda eklenen `z.compile()` özelliği, bir şemanın **AOT (ahead-of-time) derlenmiş** bir \"hızlı yol\" klonunu üretiyor ve 55 şemalık bir karşılaştırmada medyan 2.4 kat hızlanma sağlıyor; bu derleme, dinamik kod üretimini engelleyen **Content Security Policy** (CSP) kısıtlı ortamlarda otomatik devre dışı kalıyor. API tasarımı **immutable** (değişmez) — her metot mevcut şemayı değiştirmek yerine yeni bir örnek döndürüyor.",
+        "why": "📈 Zod zaten TypeScript ekosisteminin temel taşlarından biri; bugünkü ivmesi büyük olasılıkla yeni `z.compile()` performans özelliğinin duyurulmasıyla ilgili — mevcut, devasa kullanıcı tabanına sahip olgun bir kütüphanenin somut bir hız iyileştirmesi getirmesi, topluluğun hızlı ilgisini çekiyor ve yaygın paylaşılmasına yol açıyor.",
+        "evolve": "💡 Güçlü yanı zaten olgun bir API'ye geriye dönük uyumluluğu koruyarak performans eklemesi — zor bir mühendislik dengesi ve başarılıysa büyük etki yaratıyor. Async doğrulama kurallarının (refinement) AOT derlemesine şu an dahil edilememesi mevcut bir sınır; ileride bu tür asenkron kuralları da kapsayacak bir derleme stratejisi geliştirilmesi kütüphaneyi daha da tamamlayabilir."
+      },
+      "glossary": [
+        {
+          "term": "Statik tip çıkarımı (static type inference)",
+          "def": "Bir değişkenin veya yapının tipinin, ayrıca belirtilmeden kod içindeki kullanımından derleyici tarafından otomatik olarak tespit edilmesi."
+        },
+        {
+          "term": "AOT (Ahead-of-Time) derleme",
+          "def": "Kodun çalıştırılmadan önce, geliştirme veya derleme aşamasında optimize edilmiş bir forma dönüştürülmesi; çalışma zamanında tekrar tekrar yorumlanmasını önler."
+        },
+        {
+          "term": "Content Security Policy (CSP)",
+          "def": "Web sayfalarında hangi kaynaklardan kod/kaynak yüklenebileceğini kısıtlayarak zararlı script çalıştırmayı engelleyen bir tarayıcı güvenlik mekanizması."
+        },
+        {
+          "term": "Immutable (değişmez) API",
+          "def": "Bir nesnenin oluşturulduktan sonra değiştirilemediği, her değişiklik isteğinde onun yerine yeni bir nesne üretildiği tasarım yaklaşımı."
+        },
+        {
+          "term": "gzip",
+          "def": "Dosyaları daha küçük boyuta sıkıştırmak için kullanılan, web'de dosya transferini hızlandırmak amacıyla yaygın kullanılan bir sıkıştırma yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "NationalSecurityAgency/ghidra",
+      "url": "https://github.com/NationalSecurityAgency/ghidra",
+      "stars": "74k",
+      "language": "Java",
+      "sections": {
+        "serves": "🎯 Bir programın kaynak kodu olmadan (örneğin yalnızca derlenmiş bir .exe dosyasından) nasıl çalıştığını anlamak — kötü amaçlı yazılım analizi, güvenlik açığı araştırması ya da eski/dokümansız yazılımları inceleme gibi işler için — **tersine mühendislik** (reverse engineering) gerektirir. **Ghidra**, NSA Araştırma Direktörlüğü tarafından geliştirilen, bu süreci ölçeklenebilir ve ekip halinde yürütülebilir hale getiren ücretsiz, açık kaynaklı bir çerçeve.\n\n- Windows, macOS ve Linux'ta derlenmiş kodu inceleyebiliyor\n- Disassembly, decompilation, grafikleme ve scripting dahil yüzlerce özellik içeriyor\n- Hem GUI hem otomatik/komut satırı modunda çalışıyor\n- Java veya Python (PyGhidra) ile genişletilebiliyor",
+        "tech": "🛠️ Ghidra mimarisinin kalbinde **P-code** adlı, işlemciden bağımsız bir ara temsil (intermediate representation) yer alıyor: her farklı işlemci mimarisinin makine kodu önce bu ortak P-code diline çevriliyor, decompiler ve analiz motorları da doğrudan donanımla değil bu ortak temsille çalışıyor. Bu sayede yeni bir işlemci mimarisini desteklemek için tüm decompiler'ı yeniden yazmaya gerek kalmıyor; yalnızca o mimariye özel bir **Sleigh** tanımı (işlemcinin komut setini ve anlamını tarif eden bir spesifikasyon dili) yazmak yeterli oluyor — bu, aracı yüzlerce farklı mimariye **retargetable** (yeniden hedeflenebilir) kılan temel tasarım kararı. Java üzerine kurulu olması, büyük kod tabanında modülerlik ve zengin bir eklenti (extension) ekosistemi için pratik bir tercih.",
+        "why": "📈 2019'da açık kaynaklanmasından beri Ghidra zaten güvenlik/tersine mühendislik camiasının standart araçlarından biri; yeniden trend olması muhtemelen güncel bir sürüm/arayüz iyileştirmesiyle (PyGhidra gibi) ya da güncel bir güvenlik analizinde kullanılmasıyla ilişkili. Ücretsiz olması ve ticari alternatiflere kıyasla erişilebilirliği, öğrenciler ve bağımsız güvenlik araştırmacıları arasında sürekli bir ilgi kaynağı.",
+        "evolve": "💡 Güçlü yanı P-code/Sleigh mimarisinin sağladığı mimari-bağımsız genişletilebilirlik; geliştirilebilecek yön ise büyük ikili dosyalarda decompiler performansı ve öğrenme eğrisinin hâlâ dik olması — GUI güçlü ama yeni başlayanlar için ticari alternatiflere kıyasla daha az kılavuzlu. PyGhidra gibi script arayüzlerinin olgunlaşması ve otomatik fonksiyon isimlendirme/açıklama gibi yardımcı özelliklerin çekirdeğe entegre edilmesi, aracı daha erişilebilir kılabilir."
+      },
+      "glossary": [
+        {
+          "term": "Tersine mühendislik (reverse engineering)",
+          "def": "Bir yazılımın veya donanımın kaynak koduna ya da tasarım belgelerine erişim olmadan, çalışma mantığını analiz ederek anlamaya çalışma süreci."
+        },
+        {
+          "term": "P-code",
+          "def": "Ghidra'nın farklı işlemci mimarilerini ortak bir dilde analiz edebilmesini sağlayan, donanımdan bağımsız ara temsil (intermediate representation) formatı."
+        },
+        {
+          "term": "Sleigh",
+          "def": "Bir işlemcinin komut setini ve her komutun anlamını tarif etmek için kullanılan, Ghidra'ya özgü bir spesifikasyon dili."
+        },
+        {
+          "term": "Retargetable (yeniden hedeflenebilir) araç",
+          "def": "Farklı donanım/işlemci mimarilerine, çekirdek mantığı yeniden yazmadan, sadece yeni bir tanım dosyası ekleyerek uyarlanabilen yazılım aracı."
+        },
+        {
+          "term": "Decompiler",
+          "def": "Derlenmiş makine kodunu, insanların okuyup anlayabileceği yüksek seviyeli bir programlama diline (genelde C benzeri pseudo-koda) geri çeviren araç."
+        }
+      ]
+    },
+    {
+      "name": "every-app/open-seo",
+      "url": "https://github.com/every-app/open-seo",
+      "stars": "15.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Semrush ve Ahrefs gibi kurumsal SEO araçları ayda yüzlerce dolara mal oluyor. **OpenSEO**, kullanıcının kendi DataForSEO API anahtarını bağlayıp yalnızca gerçek kullanımı kadar ödediği, açık kaynak bir alternatif sunuyor.\n\n- Anahtar kelime araştırması, sıralama (rank) takibi, rakip analizi\n- Backlink incelemesi, site denetimi, AI görünürlük analizi\n- Docker ile kişisel self-host veya Cloudflare üzerinden takım dağıtımı\n- Hazır barındırılan sürümü aylık $10'dan başlıyor",
+        "tech": "🛠️ TypeScript ve Vite üzerine kurulu, pnpm **workspaces** ile yönetilen bir **monorepo**; veritabanı katmanı **Drizzle ORM** ile hem SQLite hem PostgreSQL'i destekliyor ve **Cloudflare Workers** üzerinde sunucusuz (serverless) çalışabiliyor. En dikkat çekici mimari kararı, kendi web kazıma (scraping) altyapısını kurmak yerine veriyi doğrudan **DataForSEO** API'sinden çekmesi — böylece proxy yönetimi, kazıma engelleri ve veri güncelliği gibi ağır operasyonel yükü dışarıya devrederek geliştirmeye odaklanabiliyor. Bir **MCP sunucusu** ile Claude Code gibi AI ajanlarının SEO verisine doğrudan erişmesi de sağlanmış.",
+        "why": "📈 SEO araçlarının pahalı abonelik modeline duyulan tepki ile \"AI ajanlarına doğrudan veri erişimi ver\" trendinin (MCP, Agent Skills) pazarlama/SEO alanına sıçraması bu projeyi öne çıkarıyor. \"Kullandıkça öde\" modeli, Semrush'un aylık 100$+ bariyerini kaldırarak özellikle bağımsız geliştiriciler ve küçük ekipler arasında hızlı ilgi görüyor.",
+        "evolve": "💡 Güçlü yanı maliyet şeffaflığı ve MCP entegrasyonu ile AI ajanlarına açık olması; zayıf yanı ise DataForSEO'ya doğrudan bağımlılık — bu, projeyi tek bir üçüncü taraf sağlayıcının fiyat ve limit politikasına bağımlı kılıyor. Kendi veri toplama katmanı ya da çoklu-sağlayıcı desteği eklenmesi, hem maliyeti hem de bu tekel riskini azaltabilir."
+      },
+      "glossary": [
+        {
+          "term": "DataForSEO",
+          "def": "Arama motoru sıralaması, anahtar kelime ve backlink gibi SEO verilerini API üzerinden sağlayan üçüncü taraf veri servisi."
+        },
+        {
+          "term": "Drizzle ORM",
+          "def": "Veritabanı tablolarıyla kod üzerinden (SQL yazmadan) etkileşim kurmayı sağlayan, TypeScript tabanlı hafif bir ORM kütüphanesi."
+        },
+        {
+          "term": "Cloudflare Workers",
+          "def": "Kodun geleneksel bir sunucu yerine Cloudflare'in dünya genelindeki uç (edge) noktalarında çalıştığı sunucusuz (serverless) çalıştırma ortamı."
+        },
+        {
+          "term": "Monorepo (pnpm workspaces)",
+          "def": "Birden fazla bağımsız paketin/uygulamanın tek bir git deposunda birlikte yönetildiği proje yapısı."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "AI ajanlarının harici veri kaynaklarına ve araçlara standart bir protokolle (Model Context Protocol) bağlanmasını sağlayan sunucu bileşeni."
+        },
+        {
+          "term": "Backlink",
+          "def": "Başka bir web sitesinden kendi sitene verilen bağlantı; arama motoru sıralamasını etkileyen önemli bir faktördür."
+        }
+      ]
+    }
+  ]
+}
