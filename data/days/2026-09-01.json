@@ -1,0 +1,99 @@
+{
+  "date": "2026-09-01",
+  "projects": [
+    {
+      "name": "browser-use/video-use",
+      "url": "https://github.com/browser-use/video-use",
+      "stars": "22.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Video düzenleme geleneksel olarak zaman çizelgesi (timeline) tabanlı editörlerde kare kare çalışmayı gerektirir. Video-Use bunun yerine bir yapay zeka ajanıyla sohbet ederek video düzenleme imkanı sunuyor: \"dolgu kelimelerini ve sessizlikleri temizle\", \"kesim noktalarına ses geçişi ekle\", \"altyazı yak\" gibi doğal dil komutlarıyla iş görülüyor.",
+        "tech": "🛠️ Projenin en akıllıca kararı, LLM'e ham video karelerini değil, videonun **metinsel bir temsilini** vermesi. ElevenLabs Scribe ile konuşmacı ayrımı yapılmış, kelime seviyesinde zaman damgalı bir transkript çıkarılıyor; bu da yaklaşık 12KB'lık kompakt bir metne sığıyor. Model bu metni ve gerektiğinde film şeridi (filmstrip), dalga formu (waveform) gibi görsel kompozitleri okuyarak kararlar veriyor. Gerçek render işlemi FFmpeg'e devrediliyor; animasyon katmanları için Remotion, Manim, PIL gibi opsiyonel araçlar kullanılabiliyor. Proje durumu (session memory) proje dosyalarında saklanarak oturumlar arası süreklilik sağlanıyor.\n\n- Transkript-öncelikli mimari: kare işleme yerine metin muhakemesi\n- FFmpeg tabanlı render, opsiyonel animasyon araçları\n- UV ile paketlenen Python tabanı",
+        "why": "📈 \"Agentic video editing\" kategorisi hızla olgunlaşan bir alan; video-use bunu kare-tabanlı değil transkript-tabanlı yaklaşımla çözerek hem hesaplama maliyetini düşürüyor hem de LLM'lerin doğal olarak iyi olduğu metin muhakemesini kullanıyor. browser-use ekibinin tarayıcı otomasyonundaki tecrübesini video düzenleme gibi başka bir \"ajanla kullanılabilir arayüz\" alanına taşıması ilgi çekiyor; içerik üreticileri ve geliştiriciler için \"konuşarak video düzenleme\" vaadi geniş bir kitleye hitap ediyor.",
+        "evolve": "💡 Şu anki transkript-merkezli yaklaşım konuşma ağırlıklı videolarda (podcast, vlog) güçlü, ancak sahne kompozisyonu ve renk tutarlılığı gibi tamamen görsel kararlar gerektiren saf b-roll düzenlemede sınırlı kalabilir. Görsel kompozitlerin daha sık ve yüksek çözünürlükte kullanılması, çoklu görsel LLM entegrasyonu ile daha karmaşık senaryoları kapsayabilir. Gerçek zamanlı önizleme ve geri-alma (undo) mekanizmaları eklenmesi kullanıcı güvenini artırır."
+      },
+      "glossary": [
+        { "term": "diarization", "def": "Bir ses kaydında \"kim ne zaman konuştu\" bilgisini otomatik olarak belirleme işlemi." },
+        { "term": "FFmpeg", "def": "Video ve ses dosyalarını işlemek, dönüştürmek ve render etmek için kullanılan açık kaynak bir araç ve kütüphane." },
+        { "term": "transkript", "def": "Bir ses veya video kaydının yazıya dökülmüş hali." },
+        { "term": "filmstrip", "def": "Bir videonun belirli aralıklarla alınmış kare görüntülerinin art arda dizilmiş hali; videoya hızlı göz atmayı sağlar." }
+      ]
+    },
+    {
+      "name": "mukul975/cve-mcp-server",
+      "url": "https://github.com/mukul975/cve-mcp-server",
+      "stars": "1.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bir güvenlik uzmanının güvenlik açığı (CVE) araştırması yaparken NVD, EPSS, CISA KEV, Shodan, VirusTotal gibi düzinelerce farklı siteyi tek tek gezmesi gerekir. Bu proje, Claude'a 21 farklı güvenlik istihbaratı kaynağına tek bir arayüzden erişim sağlayan bir MCP sunucusu kurarak, \"bu CVE ne kadar tehlikeli, aktif olarak istismar ediliyor mu?\" gibi soruları tek seferde, birleşik bir yanıtla cevaplamayı mümkün kılıyor.",
+        "tech": "🛠️ Kalbinde `triage_cve` adlı bir orkestratör var: NVD, EPSS ve CISA KEV'e paralel sorgular atıp bunlardan birleşik bir risk skoru hesaplıyor. Python 3.10+ ve FastMCP çatısı üzerine kurulu; async istekler için httpx, önbellekleme için aiosqlite, veri doğrulama için Pydantic v2 kullanılıyor. Güvenlik odaklı olduğu için kendi güvenliğine de önem vermiş: özel (private) IP aralıklarına dışa dönük sorgu atılmasını engelliyor, API anahtarlarını ve hassas yanıtları asla loglamıyor, rate limiting ve denetim izi (audit trail) tutuyor.\n\n- `triage_cve` orkestratörü ile paralel çoklu-kaynak sorgu\n- FastMCP + httpx + aiosqlite + Pydantic v2\n- Docker desteği ile kolay dağıtım",
+        "why": "📈 MCP (Model Context Protocol) ekosistemi büyüdükçe, LLM'leri gerçek dünya araçlarıyla donatan sunucular en çok ilgi gören kategorilerden biri haline geldi. Güvenlik analistleri için tekrarlayan manuel işi otomatikleştiren bu tür araçlar hem bireysel araştırmacılar hem SOC ekipleri için pratik değer sunuyor; \"Claude'u bir güvenlik analistine dönüştür\" vaadi net ve somut olduğundan hızlı benimseniyor.",
+        "evolve": "💡 Şu an odak CVE triyajında; MITRE ATT&CK teknik eşlemesiyle saldırı zincirini (attack chain) otomatik çıkarma veya bulunan zafiyetleri otomatik olarak bir ticketing sistemine (Jira gibi) açma gibi entegrasyonlar eklenirse iş akışına daha derin girebilir. Çoklu kaynak sonuçlarının çelişmesi durumunda (bir CVE'nin farklı kaynaklarda farklı önem derecesi alması gibi) bunun nasıl uzlaştırıldığının şeffaflaştırılması güven artırır."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "CVE", "def": "Bilinen bir yazılım güvenlik açığına verilen benzersiz kimlik numarası (Common Vulnerabilities and Exposures)." },
+        { "term": "EPSS", "def": "Bir güvenlik açığının yakın gelecekte istismar edilme olasılığını tahmin eden puanlama sistemi." },
+        { "term": "CISA KEV", "def": "ABD hükümetinin, aktif olarak istismar edildiği bilinen güvenlik açıklarının resmi listesi (Known Exploited Vulnerabilities)." },
+        { "term": "rate limiting", "def": "Bir sisteme belirli sürede yapılabilecek istek sayısını sınırlayarak aşırı yüklenmeyi önleme yöntemi." },
+        { "term": "audit trail", "def": "Bir sistemde kimin ne zaman ne yaptığını kaydeden denetim izi." }
+      ]
+    },
+    {
+      "name": "securo-finance/securo",
+      "url": "https://github.com/securo-finance/securo",
+      "stars": "2.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Ücretsiz veya ücretli birçok kişisel finans uygulaması, kullanıcı verilerini kendi sunucularında tutar; bu da banka hesabı ve harcama alışkanlığı gibi hassas bilgilerin üçüncü bir tarafa emanet edilmesi demektir. Securo, aynı işlevselliği (hesap takibi, bütçeleme, raporlama) tamamen kendi sunucunuzda (self-hosted) çalıştırmanızı sağlayarak bu veriyi sizin kontrolünüzde tutuyor.",
+        "tech": "🛠️ Backend FastAPI ve SQLAlchemy üzerine, arka plan işleri (senkronizasyon, rapor üretimi gibi) için Celery ile kurulu; veri PostgreSQL'de, kuyruk işlemleri Redis üzerinden yönetiliyor. Frontend React + TypeScript + Vite + Tailwind CSS ile modern bir SPA olarak yazılmış. Banka senkronizasyonu bölgesel sağlayıcılar (Brezilya için Pluggy, Avrupa için Enable Banking, ABD/uluslararası için SimpleFIN) üzerinden opsiyonel bağlanıyor — tek bir global API yerine bölgesel entegrasyon katmanları kullanma kararı, ülkelerin farklı bankacılık regülasyonlarına uyum ihtiyacından kaynaklanıyor.\n\n- FastAPI + SQLAlchemy + Celery + PostgreSQL + Redis\n- React/TypeScript/Vite/Tailwind frontend\n- Bölgesel banka senkronizasyon sağlayıcıları",
+        "why": "📈 Kişisel finans verisi, kullanıcıların en hassas hissettiği veri kategorilerinden biri; \"privacy-first\" ve \"self-hosted\" vurgusu, bulut tabanlı finans uygulamalarına güvenmeyen, verisi üzerinde tam kontrol isteyen teknik kullanıcı kitlesine doğrudan hitap ediyor. AGPL-3.0 lisansı ve açık kaynak oluşu, self-hosting topluluğunda (Home Assistant, Immich gibi projelerle aynı ekosistemde) hızlı benimsenmeyi kolaylaştırıyor.",
+        "evolve": "💡 Şu an bölgesel banka entegrasyonları sınırlı (üç sağlayıcı); daha fazla ülke ve banka için ek entegrasyonlar veya kullanıcı tanımlı CSV/OFX içe aktarma şablonları eklenmesi kapsamı genişletir. \"Opsiyonel AI ajanları\" özelliğinin ne kadar derin olduğu belirsiz; harcama örüntülerini analiz edip öngörüde bulunan (\"bu ay bütçeni aşacaksın\" gibi) proaktif bir asistan katmanı projeyi rakiplerinden ayırabilir."
+      },
+      "glossary": [
+        { "term": "self-hosted", "def": "Bir yazılımın üçüncü parti bir bulut hizmeti yerine kullanıcının kendi sunucusunda çalıştırılması." },
+        { "term": "FastAPI", "def": "Python ile hızlı API geliştirmeye yarayan modern bir web çatısı (framework)." },
+        { "term": "SQLAlchemy", "def": "Python için veritabanı işlemlerini kolaylaştıran ORM (nesne-ilişkisel eşleme) kütüphanesi." },
+        { "term": "Celery", "def": "Arka planda zaman alan görevleri (ör. banka senkronizasyonu) sırayla veya paralel işleyen görev kuyruğu sistemi." },
+        { "term": "AGPL-3.0", "def": "Değiştirilmiş yazılımın bir sunucu üzerinden sunulması durumunda bile kaynak kodun paylaşılmasını zorunlu kılan güçlü bir açık kaynak lisansı." },
+        { "term": "OIDC (OpenID Connect)", "def": "Kullanıcıların tek bir kimlik sağlayıcı (Google, Microsoft vb.) ile birden fazla uygulamaya giriş yapmasını sağlayan kimlik doğrulama standardı." }
+      ]
+    },
+    {
+      "name": "checkstyle/checkstyle",
+      "url": "https://github.com/checkstyle/checkstyle",
+      "stars": "9.5k",
+      "language": "Java",
+      "sections": {
+        "serves": "🎯 Büyük bir yazılım ekibinde herkesin farklı bir kod stiliyle yazması, kod okumayı ve bakımı zorlaştırır. Checkstyle, Java kodunun önceden tanımlanmış bir stil rehberine (Google Java Style, Sun Code Conventions vb.) uyup uymadığını otomatik olarak denetleyerek bu tutarsızlığı ortadan kaldıran, 20 yılı aşkın süredir kullanılan köklü bir statik analiz aracı.",
+        "tech": "🛠️ Java kaynak kodunu ANTLR ile ayrıştırıp (parse) bir söz dizim ağacı (syntax tree) çıkarıyor, sonra bu ağaç üzerinde kullanıcı tanımlı kurallara göre gezinip ihlalleri raporluyor. Kurallar XML konfigürasyon dosyalarıyla tanımlanıyor, bu da ekiplerin kendi stil setlerini kolayca özelleştirmesine imkan veriyor. Komut satırından, ANT görevleri olarak veya Maven/Gradle eklentileriyle entegre çalışabiliyor; komut satırı arayüzü için Picocli, yardımcı veri yapıları için Guava ve Apache Commons kullanılıyor.\n\n- ANTLR tabanlı ayrıştırma, XML kural tanımları\n- Maven/Gradle/ANT entegrasyonu\n- Picocli, Guava, Apache Commons bağımlılıkları",
+        "why": "📈 Checkstyle yeni bir proje değil, ama \"bugün trend\" listesine girmesi ilginç: statik analiz ve kod kalitesi araçları, AI destekli kod üretiminin yaygınlaşmasıyla birlikte yeniden önem kazanıyor — üretilen kodun insan yazdığı koddan ayırt edilemeyecek şekilde standartlara uyması ihtiyacı büyüyor. Ayrıca köklü, istikrarlı Java araçlarının bakımı ve modernizasyonu (yeni dil özelliklerine destek gibi) düzenli olarak geliştirici ilgisini canlı tutuyor.",
+        "evolve": "💡 Modern Java özelliklerine (record'lar, pattern matching, sealed sınıflar gibi) tam destek genişletilmesi ve AI destekli otomatik düzeltme (auto-fix) önerileri sunulması, aracı \"sadece uyarı veren\" bir denetleyiciden \"aktif yardımcı\"ya dönüştürebilir. IDE entegrasyonlarının (özellikle gerçek zamanlı geri bildirim) daha sorunsuz hale gelmesi geliştirici deneyimini iyileştirir."
+      },
+      "glossary": [
+        { "term": "statik analiz", "def": "Bir programı çalıştırmadan, kaynak kodunu inceleyerek hata veya stil sorunlarını tespit etme yöntemi." },
+        { "term": "ANTLR", "def": "Metin veya kodu ayrıştırıp yapılandırılmış bir ağaca dönüştürmek için kullanılan bir parser üretici araç." },
+        { "term": "syntax tree (söz dizim ağacı)", "def": "Kaynak kodunun yapısını hiyerarşik olarak temsil eden ağaç veri yapısı." },
+        { "term": "Maven/Gradle", "def": "Java projelerinde bağımlılık yönetimi ve derleme sürecini otomatikleştiren araçlar." }
+      ]
+    },
+    {
+      "name": "Osmantic/ODS",
+      "url": "https://github.com/Osmantic/ODS",
+      "stars": "5.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Yerel bir yapay zeka sunucusu kurmak istemek, genelde onlarca farklı bileşeni (model çalıştırma motoru, arayüz, ses, görsel üretim) tek tek kurup birbirine bağlamak anlamına gelir. ODS, tüm bunları tek bir kurulum komutuyla bir araya getirerek herhangi bir bilgisayarı; bulut servislerine muhtaç kalmadan çalışan özel bir AI sunucusuna dönüştürüyor.",
+        "tech": "🛠️ Kurulumcu önce donanımı (NVIDIA, AMD, Intel Arc GPU'ları dahil) otomatik tespit ediyor, sonra buna uygun bir model seçip önceden yapılandırılmış Docker servislerini başlatıyor. Model çalıştırma için llama-server, sohbet arayüzü için Open WebUI, iş akışı otomasyonu için n8n, RAG için vektör veritabanı Qdrant, görsel üretim için ComfyUI, ses için Whisper ve Kokoro kullanılıyor — yani proje kendi motorunu yazmak yerine, ekosistemdeki olgun açık kaynak bileşenlerini birleştiren bir entegrasyon katmanı olarak konumlanıyor. \"Bootstrap modu\" küçük bir modelle iki dakika içinde sohbeti başlatıp büyük modeli arka planda indirerek bekleme süresini gizliyor.\n\n- Otomatik GPU tespiti (NVIDIA/AMD/Intel Arc)\n- llama-server, Open WebUI, n8n, Qdrant, ComfyUI, Whisper/Kokoro entegrasyonu\n- Docker tabanlı, tek komutla kurulum",
+        "why": "📈 Yerel/self-hosted AI çalıştırma talebi arttıkça, \"tek komutla kur ve çalıştır\" vaadi kurulum karmaşıklığından bıkan geniş bir kullanıcı kitlesine (hem meraklı bireysel kullanıcılar hem küçük ekipler) hitap ediyor. Farklı GPU üreticilerine (sadece NVIDIA değil AMD ve Intel Arc'a da) otomatik destek vermesi, ekosistemdeki benzer araçların çoğunlukla gözden kaçırdığı bir kitleyi kapsıyor ve ilgiyi artıran ayırt edici bir özellik oluşturuyor.",
+        "evolve": "💡 Bu kadar çok bileşeni Docker servisleri olarak bir arada çalıştırmak kaynak tüketimini artırır; düşük donanımlı makineler için \"hafif mod\" veya bileşen bazlı seçmeli kurulum (sadece sohbet, ses olmadan gibi) eklenmesi erişilebilirliği genişletebilir. Çoklu kullanıcı/çoklu cihaz senaryolarında merkezi bir sunucu olarak kullanılabilmesi (ev/ofis içi paylaşımlı AI sunucusu) için kimlik doğrulama ve kaynak izolasyonu gibi özellikler doğal bir sonraki adım olur."
+      },
+      "glossary": [
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir dil modelinin yanıt üretirken harici bir bilgi kaynağından ilgili belgeleri getirip bu bilgiyle desteklenmiş cevap vermesi yöntemi." },
+        { "term": "vektör veritabanı", "def": "Metin veya görsellerin sayısal temsillerini (embedding) saklayıp anlamsal benzerlik araması yapmaya yarayan veritabanı türü." },
+        { "term": "Docker", "def": "Uygulamaları izole, taşınabilir \"konteyner\"lar içinde paketleyip çalıştırmaya yarayan platform." },
+        { "term": "inference (çıkarım)", "def": "Eğitilmiş bir yapay zeka modelinin yeni bir girdi için tahmin/çıktı üretme işlemi." }
+      ]
+    }
+  ]
+}
