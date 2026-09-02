@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-02",
+  "projects": [
+    {
+      "name": "jingyaogong/minimind",
+      "url": "https://github.com/jingyaogong/minimind",
+      "stars": "57.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Büyük dil modellerini (LLM) eğitmek genelde dev GPU kümeleri ve altı haneli bütçeler gerektiren, bireysel geliştiricinin ulaşamayacağı bir alan gibi görünür. MiniMind bu algıyı yıkıyor: tek bir tüketici GPU'sunda, yaklaşık 2 saatte ve 3 dolardan az maliyetle, 64 milyon parametreli gerçek bir dil modelini sıfırdan eğitmeyi mümkün kılıyor — LLM'in içini gerçekten görmek isteyen herkes için.",
+        "tech": "🛠️ Mimari, decoder-only Transformer üzerine RMSNorm ön-normalizasyon, SwiGLU aktivasyonu ve RoPE konum kodlaması gibi modern tercihlerle kurulu; 6.400 token'lık küçük, özel bir tokenizer parametre bütçesini verimli kullanıyor. Projenin bilinçli tasarım kararı, HuggingFace Trainer gibi kara kutu soyutlamalar yerine tüm algoritmaları saf PyTorch ile yazmak — bu da kodun eğitim amaçlı okunabilir kalmasını sağlıyor. Kapsam sadece ön-eğitimle sınırlı değil: SFT, LoRA, DPO tercih optimizasyonu, PPO/GRPO/CISPO pekiştirmeli öğrenme, MoE (uzman karışımı) varyantı, araç çağırma ve çok-modlu görsel uzantılar da dahil edilmiş; çıktı llama.cpp, vLLM ve Ollama ile uyumlu.\n\n- RMSNorm + SwiGLU + RoPE tabanlı decoder-only Transformer\n- Saf PyTorch, üçüncü parti eğitim çatısı yok\n- Ön-eğitimden RLHF'e tüm hattı kapsıyor (SFT, LoRA, DPO, PPO/GRPO/CISPO)",
+        "why": "📈 LLM'lerin çoğunlukla kapalı API'ler arkasında bir \"kara kutu\" haline gelmesi, tam tersi yönde bir merak dalgası doğuruyor: nasıl çalıştığını uçtan uca, elle görmek isteyen geliştirici ve öğrenci kitlesi büyüyor. Karpathy'nin nanoGPT'siyle başlayan \"kendi LLM'ini kur\" akımının doğal bir devamı olarak konumlanan MiniMind, düşük maliyet ve kısa eğitim süresi vaadiyle bu kitleye doğrudan hitap ediyor.",
+        "evolve": "💡 64M-198M parametre aralığı eğitim amaçlı harika ama pratikte kullanılabilir bir asistan için yetersiz; aynı şeffaf kod tabanını koruyarak 1-3 milyar parametreye ölçeklenen bir \"orta boy\" varyant, projeyi salt eğitimden gerçek kullanılabilirliğe taşıyabilir. Farklı eğitim adımlarındaki model kalitesini karşılaştıran standart bir değerlendirme (benchmark) paneli de iddiaların doğrulanmasını kolaylaştırır."
+      },
+      "glossary": [
+        { "term": "RMSNorm", "def": "Transformer katmanlarındaki aktivasyonları kararlı tutmak için kullanılan, hesaplaması hafif bir normalizasyon yöntemi." },
+        { "term": "SwiGLU", "def": "Transformer modellerinde yaygın kullanılan, doğrusal olmayan bir aktivasyon fonksiyonu türü." },
+        { "term": "RoPE (Rotary Position Embedding)", "def": "Bir dil modelinin kelimelerin cümle içindeki sırasını anlamasını sağlayan dönme tabanlı konum kodlama yöntemi." },
+        { "term": "tokenizer", "def": "Metni modelin işleyebileceği küçük parçalara (token) bölen bileşen." },
+        { "term": "MoE (Mixture of Experts)", "def": "Bir modelin her girdi için tüm parametreleri değil, uzmanlaşmış alt ağların yalnızca bir kısmını aktive ettiği mimari yaklaşım." },
+        { "term": "LoRA", "def": "Büyük bir modeli, tüm parametreleri değil küçük ek katmanları eğiterek ucuza özelleştirme yöntemi." },
+        { "term": "DPO (Direct Preference Optimization)", "def": "Bir modeli, insan tercihlerini doğrudan kullanarak ödül modeli kurmadan hizalayan eğitim yöntemi." }
+      ]
+    },
+    {
+      "name": "iv-org/invidious",
+      "url": "https://github.com/iv-org/invidious",
+      "stars": "23.8k",
+      "language": "Crystal",
+      "sections": {
+        "serves": "🎯 YouTube'u izlemek reklamlar, izleme (tracking), zorunlu JavaScript ve çoğu zaman bir Google hesabı bağımlılığıyla gelir. Invidious, aynı videolara reklamsız, gizlilik odaklı ve hafif bir alternatif ön yüz üzerinden erişim sağlayarak bu bağımlılığı ortadan kaldırıyor — kendi sunucunuzda barındırabilir ya da topluluğun işlettiği genel örneklerden (instance) birini kullanabilirsiniz.",
+        "tech": "🛠️ Proje, Ruby'ye benzer sözdizimine sahip ama derlenip yerel performans veren Crystal diliyle yazılmış; YouTube'un resmi API'lerine bağımlı olmadan içeriğe erişiyor. NewPipe ve FreeTube gibi diğer alternatif istemcilerden abonelik verisi içe/dışa aktarımı destekleniyor, kendi geliştirici API'si sunuluyor. Docker ve Kubernetes ile kendi sunucunuzda barındırma (self-hosting) birinci sınıf bir senaryo; AGPL-3.0 lisansı, türetilen her sürümün de açık kalmasını zorunlu kılıyor.\n\n- Crystal ile yazılmış, resmi YouTube API'sine bağımlı olmayan mimari\n- NewPipe/FreeTube veri içe-dışa aktarımı\n- Docker/Kubernetes ile self-hosting, AGPL-3.0 lisans",
+        "why": "📈 Gizlilik bilinci ve reklam yorgunluğu arttıkça kullanıcılar alternatif ön yüzlere yöneliyor; Invidious yıllardır olgunlaşan köklü bir proje olduğundan, bugün yeniden trend olması genelde YouTube tarafında yapılan bir değişikliğe (API kısıtlaması, istemci doğrulama güncellemesi) topluluğun hızla tepki verip yama geçmesiyle açıklanabiliyor. Dijital özerklik ve self-hosting camiasında geniş, sadık bir kitleye hitap ediyor.",
+        "evolve": "💡 Resmi olmayan bir API'ye dayanması, projeyi YouTube'un taraf değişiklikleriyle sürekli bir \"kedi-fare\" oyununa sokuyor; instance'lar sık sık geçici olarak bozuluyor. Çekirdek veri çekme katmanını daha izole ve hızlı yama alabilir bir modüle ayırmak, ya da topluluk instance'ları arasında sağlık durumu paylaşan bir mekanizma kurmak, kullanıcı deneyimindeki kesintileri azaltabilir."
+      },
+      "glossary": [
+        { "term": "ön yüz (front-end)", "def": "Kullanıcının doğrudan etkileşime girdiği, bir servisin arkasındaki asıl sistemden bağımsız çalışabilen arayüz katmanı." },
+        { "term": "self-hosting", "def": "Bir yazılımı üçüncü parti bir bulut hizmeti yerine kendi sunucunuzda çalıştırma." },
+        { "term": "instance (örnek)", "def": "Aynı yazılımın farklı kişi veya kuruluşlar tarafından bağımsız olarak çalıştırılan bir kopyası." },
+        { "term": "AGPL-3.0", "def": "Değiştirilmiş bir yazılımın sunucu üzerinden sunulması durumunda bile kaynak kodun paylaşılmasını zorunlu kılan açık kaynak lisansı." }
+      ]
+    },
+    {
+      "name": "Gitlawb/openclaude",
+      "url": "https://github.com/Gitlawb/openclaude",
+      "stars": "31.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Farklı LLM sağlayıcılarının (OpenAI, Gemini, Ollama, GitHub Models vb.) her biri genelde kendi CLI aracını ve iş akışını dayatır; bir geliştirici sağlayıcı değiştirmek istediğinde alışkanlıklarını baştan kurmak zorunda kalır. OpenClaude, dosya düzenleme, komut çalıştırma, arama ve görev yönetimi gibi kodlama ajanı deneyimini tek bir terminal arayüzünde standartlaştırıp altta hangi modelin çalıştığını değiştirilebilir bir ayrıntı haline getiriyor.",
+        "tech": "🛠️ Sağlayıcıdan bağımsız ortak bir \"araç çağırma döngüsü\" üzerine kurulu: bash, dosya işlemleri, grep, glob, alt-ajan (subagent) ve MCP entegrasyonu gibi araçlar hangi model çalışırsa çalışsın aynı şekilde davranıyor. Öne çıkan özelliği depo haritası (repo-map): PageRank benzeri bir önem sıralamasıyla kod tabanının yapısal bir özetini bağlama enjekte ederek modelin büyük depolarda daha isabetli gezinmesini sağlıyor. Node.js 22+ gerektiriyor, geliştirme derlemeleri için Bun kullanılıyor; gömülü bir VS Code eklentisi ve arka planda ayrık (detached) oturumlarla uzun süren görevleri arka planda takip etme desteği de var.\n\n- Sağlayıcıdan bağımsız ortak araç çağırma döngüsü\n- PageRank tabanlı repo-map ile bağlam enjeksiyonu\n- Node.js 22+ / Bun, gömülü VS Code eklentisi, ayrık arka plan oturumları",
+        "why": "📈 Kodlama ajanları hızla çoğalırken (Claude Code, Codex, Cursor, Aider gibi), geliştiricilerin tek bir sağlayıcıya kilitlenmek istememesi \"provider-agnostic\" araçlara olan talebi büyütüyor. Proje özellikle maliyet optimizasyonu isteyen (ucuz/yerel model ile pahalı bulut modeli arasında geçiş yapmak isteyen) ve kurumsal ortamda belirli bir sağlayıcı zorunluluğu olan geliştiriciler için somut bir esneklik vaadi sunuyor.",
+        "evolve": "💡 Çok sayıda sağlayıcıyı tek bir arayüz altında desteklemek, her birinin araç çağırma formatındaki küçük farkları soyutlamayı gerektiriyor; bu soyutlama bazı sağlayıcılara özgü ileri seviye yetenekleri (ör. modele özel bağlam önbellekleme optimizasyonları) kısıtlama riski taşıyor. Sağlayıcılar arası tutarlı bir kalite/performans karşılaştırması sunulması, kullanıcıların hangi modeli ne zaman seçeceğine karar vermesine yardımcı olabilir."
+      },
+      "glossary": [
+        { "term": "araç çağırma (tool calling)", "def": "Bir dil modelinin, kendi başına yapamadığı işlemleri (dosya okuma, kod çalıştırma gibi) harici araçları çağırarak gerçekleştirmesi." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "repo-map", "def": "Bir kod deposunun dosya ve fonksiyon yapısının özetlenerek modele bağlam olarak verilmesi." },
+        { "term": "PageRank", "def": "Bir ağdaki düğümlerin (burada kod dosyalarının) birbirine bağlanma yoğunluğuna göre önem sırasını hesaplayan algoritma." },
+        { "term": "subagent (alt-ajan)", "def": "Ana yapay zeka ajanının, belirli bir alt görevi yürütmesi için başlattığı bağımsız bir yardımcı ajan." }
+      ]
+    },
+    {
+      "name": "Imbad0202/academic-research-skills",
+      "url": "https://github.com/Imbad0202/academic-research-skills",
+      "stars": "45.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Akademik araştırma süreci — literatür taraması, yazma, hakem değerlendirmesi, atıf doğrulama — çok adımlı ve hataya açık bir iştir; özellikle yapay zekanın var olmayan kaynaklara \"halüsinasyon\" atıf yapması akademik bütünlüğü tehdit ediyor. Bu proje, Claude Code üzerine kurulu bir beceri (skill) paketiyle literatür taramasından yazıma, hakem değerlendirmesinden bütünlük doğrulamasına kadar tüm akademik yayın hattını, insan denetimini koruyarak otomatikleştiriyor.",
+        "tech": "🛠️ Dört ana modülden oluşuyor: 13 ajanlı derin araştırma ekibi (sistematik derleme/PRISMA metodolojisiyle), 12 ajanlı akademik yazım hattı (stil kalibrasyonu, atıf yönetimi, LaTeX/PDF çıktısı), 7 ajanlı çoklu-perspektifli hakem değerlendirme sistemi ve bunları birbirine bağlayan 10 aşamalı orkestratör. En dikkat çekici tasarım kararı, atıfların Semantic Scholar, OpenAlex, Crossref ve arXiv gibi dört bibliyografik indeksle çapraz doğrulanması ve \"zamansal doğrulama\"yla bir makalenin henüz yayınlanmamış bir kaynağa atıf yapması gibi anakronistik hataları yakalaması; süreç ortasında (Aşama 2.5 ve 4.5) insan onayı gerektiren yedi modlu bir kontrol listesi bulunuyor.\n\n- 13+12+7 ajanlı üç modül, 10 aşamalı orkestratör\n- Dört bibliyografik indeksle çapraz atıf doğrulama\n- İki aşamada zorunlu insan onayı (human-in-the-loop)",
+        "why": "📈 Yapay zeka destekli akademik yazımın yaygınlaşmasıyla birlikte \"AI halüsinasyonu\" ve sahte atıflar akademik camianın en büyük güven sorunlarından biri haline geldi; bu proje tam olarak bu endişeye doğrudan cevap vererek doğrulanabilir, denetlenebilir bir otomasyon sunuyor. \"Tam otomasyon değil, insan-döngüde\" vurgusu, akademisyenlerin AI araçlarına duyduğu güvensizliği azaltmayı hedefleyen bir konumlandırma ve hem öğrenciler hem araştırmacılar için geniş bir kitleye hitap ediyor.",
+        "evolve": "💡 13+12+7 ajanlı çok katmanlı bir orkestrasyon hem maliyet (çok sayıda LLM çağrısı) hem hata ayıklama açısından karmaşıklık getirir; hangi aşamada bir sorunun kaynaklandığını izlemek için şeffaf bir iz kaydı (trace) arayüzü faydalı olur. Şu an desteklenen şablonlar genel akademik yazıma odaklanıyor gibi görünüyor; disipline özgü (tıp, hukuk, mühendislik) şablonların ve değerlendirme kriterlerinin eklenmesi kapsamı genişletebilir."
+      },
+      "glossary": [
+        { "term": "PRISMA", "def": "Sistematik literatür derlemelerinin şeffaf ve tekrarlanabilir şekilde raporlanması için kullanılan uluslararası bir metodoloji standardı." },
+        { "term": "anakronistik atıf", "def": "Bir makalenin, henüz yayınlanmamış veya kronolojik olarak imkansız bir kaynağa atıf yapması hatası." },
+        { "term": "human-in-the-loop (insan-döngüde)", "def": "Bir otomasyon sürecinde kritik kararların nihai onayının insana bırakıldığı tasarım yaklaşımı." },
+        { "term": "orkestratör", "def": "Birden fazla alt bileşeni veya ajanı belirli bir sırayla koordine eden yönetici bileşen." },
+        { "term": "bibliyografik indeks", "def": "Akademik yayınların meta verilerini (yazar, atıf, dergi gibi) tarayıp sorgulanabilir hale getiren veri tabanı (ör. Semantic Scholar, Crossref)." }
+      ]
+    },
+    {
+      "name": "averygan/reclip",
+      "url": "https://github.com/averygan/reclip",
+      "stars": "7.9k",
+      "language": "HTML",
+      "sections": {
+        "serves": "🎯 Sosyal medyada (TikTok, Instagram, Twitter/X) veya 1000'den fazla sitede paylaşılan bir videoyu ya da sesi indirmek çoğu zaman tarayıcı uzantılarına, reklamla dolu üçüncü parti sitelere veya karmaşık komut satırı araçlarına başvurmayı gerektirir. ReClip, bunu kendi sunucunuzda barındırdığınız, tek bir URL yapıştırıp indirebileceğiniz sade bir web arayüzüne indirgiyor.",
+        "tech": "🛠️ Mimari kasıtlı olarak minimal tutulmuş: yaklaşık 150 satırlık bir Flask backend'i ve derleme (build) adımı gerektirmeyen saf HTML/CSS/JavaScript bir ön yüz. İndirme motoru olarak yt-dlp, medya dönüştürme için ffmpeg kullanılıyor — proje kendi indirme mantığını yazmak yerine bu iki olgun aracı bir web arayüzünün arkasına sarmalıyor. Toplu URL işleme, otomatik yinelenen (duplicate) temizleme ve çözünürlük/kalite seçici gibi pratik özellikler var; Docker ile veya doğrudan kurulumla dağıtılabiliyor.\n\n- ~150 satırlık minimal Flask backend, build'siz vanilya ön yüz\n- yt-dlp + ffmpeg sarmalayıcısı\n- Toplu URL işleme, Docker ile dağıtım",
+        "why": "📈 Sosyal medya platformlarının video indirmeyi giderek zorlaştırması (uygulama içi kısıtlamalar, üçüncü parti indirme sitelerinin reklam/kötü amaçlı yazılım doluluğu) kullanıcıları kendi kontrollerinde, temiz bir alternatif aramaya itiyor. Projenin \"150 satır kod\" gibi aşırı basitliği vurgulaması, self-hosting camiasında \"şişkin değil, anlaşılır\" araçlara duyulan ilgiyle örtüşüyor ve düşük katkı bariyeri sayesinde hızlı yıldız topluyor.",
+        "evolve": "💡 yt-dlp'ye tam bağımlılık, platformların indirme karşıtı önlemler aldığı dönemlerde (imza/şifreleme değişiklikleri) projeyi kırılgan kılabilir; yt-dlp güncellemelerini otomatik takip eden bir mekanizma dayanıklılığı artırır. Kimlik doğrulama/çoklu kullanıcı desteği ve indirme geçmişi/kuyruk yönetimi gibi özellikler eklenmesi, projeyi yalnızca kişisel kullanımdan küçük ekip/topluluk senaryolarına da taşıyabilir."
+      },
+      "glossary": [
+        { "term": "yt-dlp", "def": "YouTube ve yüzlerce başka siteden video/ses indirmeye yarayan açık kaynak komut satırı aracı." },
+        { "term": "ffmpeg", "def": "Video ve ses dosyalarını işlemek, dönüştürmek ve render etmek için kullanılan açık kaynak bir araç ve kütüphane." },
+        { "term": "Flask", "def": "Python ile hafif web uygulamaları ve API'ler geliştirmeye yarayan mikro çatı (framework)." },
+        { "term": "sarmalama (wrapping)", "def": "Var olan bir aracı yeniden yazmak yerine, ona kolay kullanılabilir bir arayüz/katman ekleyerek kullanma yöntemi." }
+      ]
+    }
+  ]
+}
