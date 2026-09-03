@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-03",
+  "projects": [
+    {
+      "name": "google-research/timesfm",
+      "url": "https://github.com/google-research/timesfm",
+      "stars": "30.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Zaman serisi tahmini (talep, envanter, trafik, sensör verisi) geleneksel olarak her yeni problem için sıfırdan model kurup eğitmeyi gerektirir; bu da veri bilimi ekibi olmayan şirketler için pahalı ve yavaş bir süreçtir. TimesFM, dil modellerinin metne yaptığını zaman serisine yapıyor: önceden eğitilmiş tek bir \"temel model\" (foundation model) ile hiç eğitim yapmadan (zero-shot), farklı alanlardaki serileri tahmin edebiliyor.",
+        "tech": "🛠️ Mimari, decoder-only bir Transformer üzerine kurulu ve ICML 2024'te yayımlanmış bir Google Research çalışmasına dayanıyor. Ağustos 2026'da duyurulan TimesFM 3.0, önceki 500M parametrelik sürümü 200M'ye indirirken bağlam uzunluğunu 2048'den 16 bin token'a çıkarıyor ve asıl yeniliği getiriyor: ek görev-bazlı ince ayar (fine-tuning) gerektirmeden geçmiş-ve-gelecek yardımcı değişkenleri (covariate) doğrudan işleyebilen yerel çoklu-değişkenli (multivariate) tahmin desteği. Model, fev-bench, TIME Benchmark ve GIFT-Eval gibi üç büyük zaman serisi kıyaslamasında birinci sırada yer aldığını iddia ediyor; BigQuery ML, Google Sheets ve Vertex AI Model Garden üzerinden kurumsal kullanıma da açık.\n\n- Decoder-only Transformer, ICML 2024 kökenli\n- v3.0: 200M parametre, 16k bağlam, yerel çoklu-değişkenli tahmin\n- fev-bench / TIME Benchmark / GIFT-Eval'de iddialı sonuçlar",
+        "why": "📈 NLP dünyasında GPT tarzı temel modellerin yarattığı \"tek modeli önceden eğit, her göreve zero-shot uygula\" dalgası şimdi zaman serisi alanına taşınıyor; TimesFM bu akımın öncülerinden. Google'ın Ağustos 2026'da duyurduğu 3.0 sürümü — daha küçük model, daha uzun bağlam, çoklu-değişken desteği — projeyi yeniden gündeme taşıyan somut tetikleyici. Finans, operasyon, IoT/anomali tespiti gibi zaman serisiyle çalışan ama kendi modelini eğitecek kaynağı olmayan ekipler için doğrudan bir çözüm sunuyor.",
+        "evolve": "💡 Kaynak kod Apache-2.0 olsa da TimesFM 3.0'ın model ağırlıkları ticari kullanımı kısıtlayan ayrı bir lisansla dağıtılıyor; bu durum üretim ortamında kullanmak isteyen şirketler için asıl engel — tam açık bir ağırlık lisansı benimseme çok daha geniş bir kitleye ulaşabilir. Ayrıca standart kıyaslama setleri dışında, gerçekten sıra dışı/nadir örüntülere sahip veri setlerinde performansı gösteren bağımsız değerlendirmeler, iddiaların pratikteki güvenilirliğini netleştirebilir."
+      },
+      "glossary": [
+        { "term": "temel model (foundation model)", "def": "Belirli bir göreve özel eğitilmeden önce, geniş ve çeşitli veriyle önceden eğitilmiş; sonradan birçok farklı göreve uyarlanabilen büyük model." },
+        { "term": "zero-shot", "def": "Bir modelin, o göreve özel hiç örnekle eğitilmeden doğrudan tahmin/çıktı üretebilmesi." },
+        { "term": "decoder-only Transformer", "def": "Yalnızca çıktı üreten (kod çözücü) bloklardan oluşan, büyük dil modellerinde de yaygın kullanılan Transformer mimarisi türü." },
+        { "term": "covariate (yardımcı değişken)", "def": "Asıl tahmin edilen zaman serisiyle birlikte modele verilen, tahmini etkileyebilecek ek bilgi (ör. hava durumu, tatil günleri)." },
+        { "term": "çoklu-değişkenli (multivariate) tahmin", "def": "Tek bir zaman serisi yerine, birbiriyle ilişkili birden fazla seriyi aynı anda modelleyip tahmin etme." }
+      ]
+    },
+    {
+      "name": "pacifio/atlas",
+      "url": "https://github.com/pacifio/atlas",
+      "stars": "3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Claude Code, Codex, Cursor gibi kodlama ajanları artık kodun büyük bir kısmını yazıyor ama her oturum sıfırdan başlıyor ve o kodun \"neden\" öyle yazıldığına dair akıl yürütme kayboluyor; bir ajandan diğerine geçildiğinde bağlam tamamen sıfırlanıyor. Atlas, birden fazla kodlama ajanını aynı masaüstü uygulamasından çalıştırıp her oturumu prompt, araç çağrısı ve dokunulan dosyalarıyla birlikte commit'lere bağlayan bir \"kaynak kontrolü\" katmanı sunuyor.",
+        "tech": "🛠️ Uygulama, Rust tabanlı hafif bir masaüstü çatısı olan Tauri üzerine kurulu; React/CodeMirror ön yüzü, SQLite ile oturum geçmişini (`.atlas/sessions.db`) tutan bir Rust arka ucuyla konuşuyor. Farklı ajanları tek bir arayüzde birleştirmenin anahtarı, Agent Client Protocol (ACP) adlı standart bir arayüz: Claude Code, Codex, OpenCode, Kilo Code gibi kayıtlı herhangi bir ajan aynı gönderme (send) yoluyla çalıştırılabiliyor. Öne çıkan tasarım kararı \"checkpoint\" sistemi — her ajan oturumu ürettiği commit'lere prompt ve akıl yürütmesiyle bağlanıyor ve bu bağlantı, patch-ID eşleştirmesi sayesinde rebase/amend sonrasında bile kopmuyor; dosya/sembol arama ise cihaz-üstü HNSW tabanlı semantik indeksleme ile yapılıyor.\n\n- Tauri (Rust) masaüstü uygulaması, React/CodeMirror + SQLite\n- ACP üzerinden çoklu ajan desteği (Claude Code, Codex, OpenCode…)\n- Patch-ID ile rebase'e dayanıklı checkpoint sistemi, cihaz-üstü HNSW arama",
+        "why": "📈 Kodlama ajanlarının sayısı ve çeşitliliği hızla artarken, geliştiricilerin tek bir araca bağlı kalmayıp görev türüne göre ajan değiştirmesi yaygınlaşıyor — Atlas tam olarak bu geçişlerde kaybolan bağlamı somut bir sorun olarak hedefliyor. \"Kod, notlar ve oturumlar makinenizde kalır\" vurgusuyla local-first bir gizlilik modeli sunması, kodunu bulut günlüklerine göndermek istemeyen ileri düzey geliştiricilere ayrı bir çekim noktası oluşturuyor.",
+        "evolve": "💡 Şu an yalnızca macOS için hazır kurulum paketi var; Linux/Windows desteği kodda mevcut ama test edilmemiş durumda — bu platformlarda olgunlaştırma projenin erişimini önemli ölçüde genişletir. Checkpoint eşleştirmesinin git patch-ID'sine dayanması, agresif squash/rebase senaryolarında kırılgan kalabilir; içerik tabanlı (diff benzerliğine dayanan) bir yedek eşleştirme mekanizması dayanıklılığı artırabilir. Bugün tek geliştiricinin yerel belleği olan mimari, ekip içinde paylaşılan bir ajan hafızasına evrilirse kurumsal kullanım için çok daha güçlü bir teklif haline gelir."
+      },
+      "glossary": [
+        { "term": "Tauri", "def": "Web teknolojileriyle arayüz, Rust ile arka uç kullanarak hafif masaüstü uygulamaları geliştirmeye yarayan açık kaynak çatı." },
+        { "term": "ACP (Agent Client Protocol)", "def": "Farklı kodlama ajanlarının aynı standart arayüz üzerinden bir uygulamaya bağlanabilmesini sağlayan protokol." },
+        { "term": "checkpoint", "def": "Bir yapay zeka ajanının belirli bir andaki oturumunu (prompt, araç çağrıları, ürettiği değişiklikler) kaydeden anlık görüntü." },
+        { "term": "HNSW", "def": "Büyük miktardaki vektör (embedding) verisi içinde en yakın benzerleri hızlıca bulmaya yarayan bir arama algoritması." },
+        { "term": "patch-ID", "def": "Bir git commit'inin içerdiği değişikliğin kendisine göre hesaplanan, commit rebase edilse veya yeniden yazılsa bile aynı kalabilen kimlik." }
+      ]
+    },
+    {
+      "name": "vercel-labs/portless",
+      "url": "https://github.com/vercel-labs/portless",
+      "stars": "11.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Yerel geliştirme ortamında `localhost:3000`, `localhost:5173` gibi port numaraları hem akılda tutulması zor hem de tarayıcıda HTTPS olmadan çalışır; birden fazla proje veya git branch'i aynı anda çalıştığında bu numaralar sürekli çakışır. Portless, port numaralarının yerine `myapp.localhost` gibi sabit, insan-okunur adresler koyarak bu sürtünmeyi ortadan kaldırıyor — kendi ifadesiyle \"insanlar ve ajanlar için\".",
+        "tech": "🛠️ Araç, adlandırılmış `.localhost` alan adlarına gelen istekleri yakalayıp uygulamanın gerçekte çalıştığı rastgele porta (4000-4999 aralığı) yönlendiren bir ters proxy olarak çalışıyor; `PORT` ortam değişkenini yok sayan Vite/Astro gibi araçlar için doğru `--port`/`--host` bayraklarını otomatik enjekte ediyor. İlk çalıştırmada yerel bir sertifika otoritesi (CA) oluşturup sistem güven deposuna ekleyerek varsayılan olarak HTTP/2 destekli HTTPS sağlıyor. En dikkat çekici tasarım kararı git worktree entegrasyonu: her branch'in adı otomatik olarak alt alan adı (subdomain) olarak öne ekleniyor, böylece paralel çalışan worktree'ler hiç yapılandırma gerekmeden izole URL'ler alıyor; Tailscale/ngrok entegrasyonu ve mDNS tabanlı LAN modu ile paylaşım da destekleniyor.\n\n- Ters proxy: `.localhost` alan adı → rastgele port yönlendirmesi\n- Otomatik yerel CA ile varsayılan HTTPS/HTTP2\n- Git worktree'ye göre otomatik alt alan adı, Tailscale/ngrok ile paylaşım",
+        "why": "📈 Yapay zeka ajanlarının aynı depoda birden fazla branch/worktree üzerinde paralel çalışması giderek yaygınlaşıyor ve bu senaryoda \"hangi port hangi branch'e ait\" karmaşası büyük bir sürtünme kaynağı; Portless'in worktree-farkında tasarımı doğrudan bu ihtiyaca cevap veriyor. Projenin Vercel Labs tarafından yayımlanması ve \"insanlar ve ajanlar için\" konumlandırması, hem geleneksel frontend geliştiricilerine hem de agent-tabanlı iş akışı kuran ekiplere aynı anda hitap ediyor.",
+        "evolve": "💡 Araç Node.js 24+ gerektiriyor; Node çalışma zamanına bağımlı olmayan, tek dosyalık yerel bir ikili (binary) sürüm, JS ekosistemi dışındaki (Python, Go, Ruby) yerel sunucularla çalışan ekiplere de kapı açabilir. Yerel bir sertifika otoritesinin sistem güven deposuna otomatik eklenmesi güçlü bir kullanıcı deneyimi sağlasa da güvenlik açısından hassas bir adım — bu sertifikanın nasıl döndürüleceği/iptal edileceğine dair daha görünür bir rehber, daha az deneyimli kullanıcılar için faydalı olur."
+      },
+      "glossary": [
+        { "term": "ters proxy (reverse proxy)", "def": "Gelen istekleri, arkasındaki gerçek sunucuya yönlendiren ve istemciden bu yönlendirmeyi gizleyen ara sunucu." },
+        { "term": ".localhost alan adı", "def": "Tarayıcıların otomatik olarak kendi bilgisayarınıza (127.0.0.1) yönlendirdiği, herhangi bir DNS ayarı gerektirmeyen özel alan adı uzantısı." },
+        { "term": "mDNS", "def": "Yerel ağdaki cihazların merkezi bir DNS sunucusuna ihtiyaç duymadan birbirini isimle bulabilmesini sağlayan protokol." },
+        { "term": "git worktree", "def": "Aynı git deposunun birden fazla branch'ini, ayrı klasörlerde aynı anda çalışır halde tutmayı sağlayan git özelliği." },
+        { "term": "sertifika otoritesi (CA)", "def": "Dijital sertifikaları imzalayarak bir bağlantının güvenli/doğrulanmış olduğunu onaylayan kurum veya bileşen." }
+      ]
+    },
+    {
+      "name": "debpalash/VoiceStudio",
+      "url": "https://github.com/debpalash/VoiceStudio",
+      "stars": "15.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 ElevenLabs gibi ses klonlama, dublaj ve transkripsiyon hizmetleri sesinizi buluta gönderir, dakika başına ücretlendirir ve internet bağlantısı gerektirir. VoiceStudio, ses klonlama, ses tasarımı, video dublajı, dikte ve sesli kitap üretimini tamamen yerel makinenizde, 646 dilde ve ücretsiz olarak sunan bir \"tam yerel ElevenLabs alternatifi\" olarak konumlanıyor.",
+        "tech": "🛠️ Mimari katmanlı ve yerel-öncelikli: Tauri v2 (Rust) masaüstü kabuğu pencere/sistem tepsisi yönetimini üstleniyor, React+Vite ön yüzü IPC üzerinden `localhost:3900`'de çalışan bir FastAPI arka ucuyla konuşuyor ve tüm veriler varsayılan olarak yerelde (`omnivoice_data/`) tutuluyor. Sistem, değiştirilebilir motor mantığıyla kurulmuş: varsayılan OmniVoice dahil 16 farklı metin-sese (TTS) motoru (CosyVoice 3, GPT-SoVITS, VoxCPM2 gibi) ve varsayılan WhisperX dahil 11 konuşma tanıma (ASR) motoru arasında Ctrl/Cmd+E ile anında geçiş yapılabiliyor; Demucs ile vokal ayrıştırma, Pyannote+WhisperX ile konuşmacı ayrıştırma (diarization) da dahil. Backend, `localhost:3900/v1` üzerinden OpenAI-uyumlu bir API sunduğundan başka uygulamalar VoiceStudio'yu uzak bir bulut servisi gibi çağırabiliyor; ayrıca MCP sunucusu desteğiyle yapay zeka ajanları da doğrudan sentez/transkripsiyon isteyebiliyor.\n\n- Tauri (Rust) + React/Vite + yerel FastAPI backend (localhost:3900)\n- 16 TTS + 11 ASR motoru arasında değiştirilebilir mimari\n- OpenAI-uyumlu yerel API ve MCP sunucusu entegrasyonu",
+        "why": "📈 Bulut ses AI servislerine artan gizlilik kaygısı (ses biyometrik bir veridir) ve abonelik maliyetleri, yerel açık modellerin (OmniVoice, CosyVoice gibi) kaliteyi ticari servislere yaklaştırmasıyla birleşince gerçekten kullanılabilir bir yerel alternatifi mümkün kılıyor. İçerik üreticileri, podcast'çiler ve gizlilik odaklı geliştiriciler gibi geniş bir kitleye hitap ederken, MCP sunucusu desteğiyle \"her araca bir MCP sunucusu ekleme\" akımına da doğrudan bağlanıyor.",
+        "evolve": "💡 16 TTS + 11 ASR motorunu bir arada tutmak, bu motorların üst kaynaklarında (upstream) değişiklik/bozulma oldukça bakım yükünü hızla artırabilir; küçük ve iyi seçilmiş bir varsayılan motor kümesiyle geri kalanı eklenti (plugin) olarak sunmak uzun vadeli bakımı kolaylaştırabilir. Platform desteği şu an Apple Silicon, belirli Windows/Linux sürümleriyle sınırlı — daha eski GPU'lar ve donanımlar için de yol haritası netleştirilirse erişilebilirlik genişler."
+      },
+      "glossary": [
+        { "term": "TTS (metinden sese)", "def": "Yazılı metni yapay olarak üretilmiş konuşma sesine dönüştüren teknoloji." },
+        { "term": "ASR (konuşma tanıma)", "def": "Sesli konuşmayı otomatik olarak yazılı metne dönüştüren teknoloji." },
+        { "term": "diarization (konuşmacı ayrıştırma)", "def": "Bir ses kaydında \"kim ne zaman konuştu\" sorusunu otomatik olarak ayırt etme işlemi." },
+        { "term": "vokal ayrıştırma", "def": "Bir ses kaydındaki insan sesini, arka plan müziği/gürültüsünden ayırma işlemi." },
+        { "term": "loopback (geri döngü)", "def": "Bir servisin yalnızca kendi bilgisayarından gelen isteklere yanıt vermesi, dış ağa açık olmaması." }
+      ]
+    },
+    {
+      "name": "superlinked/sie",
+      "url": "https://github.com/superlinked/sie",
+      "stars": "3.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bugün bir yapay zeka ajanı kurmak, aramadan (embedding) belge işlemeye (OCR), içerik güvenliğinden ana dil modeline kadar her görev için ayrı bir model sunucusu kurup ayrı ayrı ölçeklendirmeyi gerektiriyor. SIE (Superlinked Inference Engine), bu dağınık yapıyı OpenAI-uyumlu tek bir API ve tek bir self-hosted küme arkasında birleştiriyor.",
+        "tech": "🛠️ SIE, `/v1/embeddings`, `/v1/chat/completions`, `/v1/completions`, `/v1/responses` gibi OpenAI-uyumlu uç noktalarla beş temel ajan görevini kapsıyor: arama (BGE-M3, SPLADE-V3, ColBERT ile embedding/reranking), belge işleme (LightOnOCR, GLM-OCR, MinerU ile PDF/Office'ten markdown'a dönüşüm), yapılandırılmış çıktı (GLiNER2, NuNER, Qwen3.6 ile şemaya uygun JSON üretimi), içerik güvenliği (Granite Guardian 2B) ve ajan döngüsü (Qwen3.6-27B ile planlama/araç çağırma). Öne çıkan mimari kararı, 100'den fazla modeli sürekli belleğe yüklü tutmak yerine talep üzerine yükleyip LRU (en az kullanılanı çıkarma) politikasıyla tahliye etmesi; üretimde Kubernetes + Helm + KEDA ile sıfıra ölçeklenebilen (scale-to-zero) dağıtım ve AWS/Azure/GCP/Alibaba için hazır Terraform modülleri sunuluyor, LangChain/LlamaIndex/CrewAI gibi popüler ajan çatılarıyla da doğrudan entegre.\n\n- OpenAI-uyumlu tek API, beş görev kategorisi (arama, OCR, yapılandırılmış çıktı, güvenlik, ajan döngüsü)\n- 100+ model, talep-üzerine yükleme + LRU tahliye\n- Kubernetes/Helm/KEDA ile scale-to-zero, çoklu bulut Terraform desteği",
+        "why": "📈 Ajan tabanlı yapay zeka sistemleri tek bir LLM çağrısından, arama+belge işleme+güvenlik filtresi içeren tam üretim hatlarına evrildikçe \"her görev için ayrı model sunucusu\" karmaşası şirketler için gerçek bir operasyonel sorun haline geliyor; SIE tam bu geçiş anında konumlanıyor. Maliyet veya veri egemenliği (data residency) nedeniyle kendi altyapısında barındırmak isteyen platform/altyapı ekiplerine, birçok ayrı SaaS API'sine bağımlı olmadan tek bir self-hosted çözüm vaat ediyor.",
+        "evolve": "💡 Talep-üzerine yükleme + LRU tahliye maliyet açısından verimli olsa da soğuk model değişimlerinde gecikme (cold-start latency) yaratabilir; gecikmeye duyarlı modeller için yapılandırılabilir bir \"sabitleme\" (pinning) seçeneği ya da trafik örüntüsüne göre öngörülü ön-yükleme bu gecikmeyi azaltabilir. Bu kadar geniş bir görev/model yelpazesiyle, hangi modelin hangi senaryoda (ör. hangi belge türü için hangi OCR motoru) daha iyi sonuç verdiğini gösteren yerleşik bir kıyaslama/değerlendirme paneli, kullanıcıların varsayılanlara güvenerek karar vermesini kolaylaştırabilir."
+      },
+      "glossary": [
+        { "term": "OpenAI-uyumlu API", "def": "OpenAI'nin API biçimini taklit eden, böylece o API için yazılmış istemcilerin başka bir sunucuya değiştirilerek çalışabildiği arayüz standardı." },
+        { "term": "reranking", "def": "Bir arama sisteminin ilk bulduğu sonuç listesini, daha güçlü bir modelle yeniden sıralayarak isabet oranını artırma adımı." },
+        { "term": "OCR (optik karakter tanıma)", "def": "Görüntü veya taranmış belgedeki yazıyı otomatik olarak düzenlenebilir metne dönüştürme teknolojisi." },
+        { "term": "LRU (en az kullanılanı çıkarma)", "def": "Bellek doluğunda, en uzun süredir kullanılmayan öğeyi otomatik olarak bellekten çıkaran önbellek yönetim stratejisi." },
+        { "term": "scale-to-zero", "def": "Bir servisin, hiç istek almadığı dönemlerde tüm kaynaklarını serbest bırakıp sıfıra inmesi ve talep gelince yeniden ölçeklenmesi." },
+        { "term": "Terraform modülü", "def": "Bulut altyapısını kod olarak tanımlayıp otomatik kurmaya yarayan, yeniden kullanılabilir yapılandırma paketi." }
+      ]
+    }
+  ]
+}
