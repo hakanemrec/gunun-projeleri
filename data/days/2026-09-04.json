@@ -1,0 +1,159 @@
+{
+  "date": "2026-09-04",
+  "projects": [
+    {
+      "name": "fmtlib/fmt",
+      "url": "https://github.com/fmtlib/fmt",
+      "stars": "25.2k",
+      "language": "C++",
+      "sections": {
+        "serves": "🎯 C++'ta metin biçimlendirme onlarca yıldır ağrılı bir konu: klasik `printf` tip güvenliği sunmuyor ve yanlış format string'i kolayca çökmeye ya da güvenlik açığına yol açabiliyor; `iostream` ise hem hantal hem de performans açısından yetersiz kalabiliyor. **{fmt}**, bu ikisinin yerine geçen, Python'un `str.format` sözdizimine benzer, güvenli ve hızlı bir biçimlendirme kütüphanesi sunuyor. Artık C++ standardının bir parçası olan `std::format` ve `std::print` de doğrudan bu kütüphaneden doğdu — yani {fmt}, bugün milyonlarca satır kodun temelini oluşturan bir referans implementasyon.",
+        "tech": "🛠️ Kütüphanenin can alıcı noktası **derleme zamanı doğrulama**: C++20 ile birlikte geçersiz bir format specifier'ı (`{:d}` yerine yanlışlıkla `{:z}` yazmak gibi) artık çalışma zamanında değil, derleme sırasında hata veriyor. Ondalıklı sayı dönüşümlerinde **Dragonbox algoritması** kullanılıyor; bu, IEEE 754 kayan noktalı sayıları en kısa ve kesin ondalık gösterime çeviren, `printf`'e göre yaklaşık %50 daha hızlı çalışan bir yöntem. Kütüphane sadece üç dosyadan oluşan **header-only** bir moda da sahip, böylece derleme süresini ve binary boyutunu artırmadan projeye eklenebiliyor. Kullanıcı tanımlı tipler için formatter uzantı noktaları, Unicode desteği ve terminalde renkli çıktı gibi özellikler de mimarinin üstüne inşa edilmiş.",
+        "why": "📈 {fmt}, yeni çıkmış bir proje değil; asıl hikâye, MongoDB, PyTorch ve Windows Terminal gibi büyük projelerin onu üretimde kullanması ve C++23 standardına `std::print` olarak resmen girmesiyle ilgili. Bu tür \"standarda dönüşen\" altyapı kütüphaneleri, topluluk yeni derleyici sürümlerini benimsedikçe periyodik olarak tekrar gündeme geliyor — geliştiriciler `std::format` performansını gerçek dünyada test etmek için doğrudan kaynağına, yani {fmt}'e bakıyor.",
+        "evolve": "💡 Kütüphane olgunlaştıkça asıl potansiyel, derleyicilerin `std::format`'i yerleşik olarak ne kadar hızlı optimize edebildiğinde saklı. Gömülü sistemler için daha da küçültülmüş bir çekirdek, WebAssembly hedeflerinde daha iyi binary boyutu ve daha fazla dilde (özellikle C ABI üzerinden) kullanılabilir bağlayıcılar, kütüphanenin etki alanını daha da genişletebilir."
+      },
+      "glossary": [
+        {
+          "term": "Header-only kütüphane",
+          "def": "Ayrı bir derleme adımı gerektirmeyen, sadece başlık dosyalarını projene dahil ederek kullanabildiğin kütüphane türü."
+        },
+        {
+          "term": "Derleme zamanı doğrulama",
+          "def": "Bir hatanın program çalışırken değil, kod derlenirken tespit edilip engellenmesi; hataları çok daha erken yakalamayı sağlar."
+        },
+        {
+          "term": "IEEE 754",
+          "def": "Bilgisayarların ondalıklı (kayan noktalı) sayıları nasıl saklayıp işleyeceğini tanımlayan uluslararası standart."
+        },
+        {
+          "term": "Dragonbox algoritması",
+          "def": "Kayan noktalı bir sayıyı, okunabilir en kısa ondalık metne dönüştürmek için kullanılan hızlı ve kesin bir algoritma."
+        },
+        {
+          "term": "std::format",
+          "def": "C++20 ile standart kütüphaneye eklenen, {fmt} projesinden esinlenilen resmi metin biçimlendirme fonksiyonu."
+        }
+      ]
+    },
+    {
+      "name": "NousResearch/hermes-agent",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "stars": "241k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Bugüne kadarki AI agent'ların en büyük eksiği, her sohbetin sıfırdan başlaması ve her platformda (Telegram, Discord, Slack, WhatsApp...) ayrı bir kimlikle var olmasıydı. **Hermes**, tek bir gateway süreci üzerinden tüm bu platformlarda çalışan, oturumlar arasında hafızasını koruyan ve zamanla kullanıcıyı daha iyi tanıyan kalıcı bir asistan sunuyor. Yani \"her seferinde yeniden tanışılan bot\" yerine, kullanıcıyla birlikte gelişen bir dijital yardımcı hedefleniyor.",
+        "tech": "🛠️ Mimarinin kalbinde **prosedürel bellek** sistemi var: agent, karmaşık görevleri tamamladıktan sonra kendi kendine yeni \"skill\"ler (beceri tanımları) oluşturuyor ve bunları kullandıkça iyileştiriyor. Oturum geçmişi FTS5 tam metin arama ile indeksleniyor ve LLM tabanlı özetlemeyle geçmiş konuşmalara geri dönebiliyor. Dağıtım tarafında yedi farklı \"terminal backend\" (yerel, Docker, SSH, Modal, Daytona, Vercel Sandbox gibi) destekleniyor; Daytona ve Modal gibi sunucusuz seçenekler agent boştayken kaynak tüketmeden \"uyku\"ya geçebiliyor. Model tarafında herhangi bir sağlayıcıya kilitlenme yok — **MCP (Model Context Protocol)** üzerinden 300'den fazla model ve `hermes model` komutuyla anlık model değişimi destekleniyor.",
+        "why": "📈 Sohbet arayüzlerinin ötesine geçip kalıcı, öğrenen agent'lara doğru genel bir kayma yaşanıyor; Hermes bu akımın en iddialı örneklerinden biri olarak öne çıkıyor. Sunucusuz hibernasyon sayesinde düşük maliyetli çalışabilmesi, tek bir modele bağımlı olmaması ve rakip projelerden (OpenClaw gibi) otomatik geçiş desteği sunması, hem bireysel geliştiricileri hem de araştırma odaklı ekipleri (Nous Research'ün kendisi gibi) çekiyor.",
+        "evolve": "💡 Kendi kendine skill üretme fikri güçlü, ama bu üretilen becerilerin güvenilirliğini ve kalitesini denetleyecek bir doğrulama/inceleme katmanı eklenmesi kritik olacaktır. Ayrıca çoklu platform ve çoklu model desteğinin karmaşıklığı arttıkça, kurulum ve operasyon deneyimini basitleştirecek daha iyi bir \"tek tık\" dağıtım aracı, projenin erişilebilirliğini ciddi şekilde artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Prosedürel bellek",
+          "def": "Bir sistemin \"nasıl yapılır\" bilgisini (adım adım beceriyi) saklayıp zamanla geliştirdiği hafıza türü."
+        },
+        {
+          "term": "Sunucusuz (serverless)",
+          "def": "Sunucuların kullanıcı tarafından yönetilmediği, sadece kullanılan kaynak kadar ücretlendirilen ve boşta kalınca otomatik kapanan bulut çalıştırma modeli."
+        },
+        {
+          "term": "TUI",
+          "def": "Terminal tabanlı, metinle çalışan ama düğme ve menü gibi etkileşimli öğeler içeren kullanıcı arayüzü türü."
+        },
+        {
+          "term": "FTS5 tam metin arama",
+          "def": "Büyük metin veritabanlarında kelime bazlı hızlı arama yapılmasını sağlayan bir SQLite arama motoru bileşeni."
+        }
+      ]
+    },
+    {
+      "name": "magnitudedev/magnitude",
+      "url": "https://github.com/magnitudedev/magnitude",
+      "stars": "2.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI agent'ları çalıştırmanın en büyük gizli maliyeti, bulut API'lerine ödenen token ücretleri. **Magnitude**, agent'ları kendi bilgisayarınızda, tamamen yerel ve ücretsiz açık kaynak modellerle çalıştırmayı kolaylaştırıyor — hem gizlilik hem de maliyet açısından bulut bağımlılığını ortadan kaldırıyor.",
+        "tech": "🛠️ Araç önce bilgisayarınızın donanımını (RAM, GPU, VRAM) profilliyor ve hangi modellerin makul hızda çalışacağını öneriyor. Modeller **just-in-time** yükleniyor ve bellek baskısı ya da boşta kalma durumunda otomatik olarak bellekten kaldırılıyor. Performans için speculative decoding gibi çıkarım (inference) optimizasyonları ve eşzamanlılık ayarları kullanılıyor. **GGUF** formatındaki modeller desteklendiğinden, önerilen katalogla sınırlı kalmadan istenilen açık model eklenebiliyor. Bun ve Turbo ile kurulmuş bir monorepo içinde CLI, masaüstü uygulaması ve çıkarım sunucusu bir arada; Claude Code, Cursor benzeri araçlar, OpenCode, Hermes gibi pek çok agent ile entegre çalışıyor.",
+        "why": "📈 Yerel-öncelikli (local-first) AI'a olan ilgi arttıkça, \"agent'ımı bulutsuz çalıştırayım\" arayışındaki geliştiriciler için Magnitude'un tek komutla kurulum vaadi (agent'a bir prompt yapıştırıp otomatik kurulum başlatmak) öne çıkıyor. Düşük yıldız sayısına (2,1k) rağmen günlük artış oranı yüksek — bu, projenin yeni keşfedilip hızla ilgi topladığının işareti.",
+        "evolve": "💡 Donanım profilleme ve model önerisi doğru yapılırsa, proje zamanla \"herkesin makinesinde çalışan bir AI ekosistem yöneticisi\"ne dönüşebilir. Zayıf donanımlı kullanıcılar için bulut-yerel hibrit bir mod (küçük görevler yerelde, ağır olanlar buluta düşerek) ve model kalite/performans karşılaştırmalarını şeffaf gösteren bir kıyaslama paneli, kullanıcı güvenini artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "GGUF",
+          "def": "Büyük dil modellerini yerel bilgisayarlarda verimli çalıştırmak için kullanılan, sıkıştırılmış bir model dosya formatı."
+        },
+        {
+          "term": "Just-in-time yükleme",
+          "def": "Bir kaynağın (burada bir yapay zeka modelinin) önceden değil, tam ihtiyaç duyulduğu anda belleğe yüklenmesi."
+        },
+        {
+          "term": "Speculative decoding",
+          "def": "Büyük bir modelin çıktısını hızlandırmak için önce küçük bir modelin tahmin üretmesi, büyük modelin ise bunu sadece doğrulaması yöntemi."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla bağımsız paketin veya uygulamanın aynı tek kod deposunda birlikte tutulduğu proje yapısı."
+        }
+      ]
+    },
+    {
+      "name": "blader/humanizer",
+      "url": "https://github.com/blader/humanizer",
+      "stars": "41.8k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "🎯 Yapay zekanın yazdığı metinler genelde belli kalıplara giriyor: aşırı kullanılan kelimeler, sahte samimi girişler, zorlama üçlü listeler... **Humanizer**, bu \"yapay zeka kokan\" metinleri, anlamı ve doğruluğu bozmadan daha doğal, insan sesine yakın hale getiren bir agent skill'i (Claude ve uyumlu agent'lar için bir talimat/beceri paketi).",
+        "tech": "🛠️ İlginç noktası, bir makine öğrenmesi modeli değil, **kural tabanlı örüntü eşleştirme** kullanması: Wikipedia'nın \"Signs of AI writing\" (yapay zeka yazımının belirtileri) veritabanından derlenmiş 35 dilsel örüntüyü tanıyor. Süreç iki aşamalı — önce metin yeniden yazılıyor, sonra bu 35 örüntüye karşı denetleniyor ve son bir cilalama yapılıyor. Kullanıcı isterse kendi yazı örneklerini vererek kendi üslubunu taklit ettirebiliyor; kod bloklarını, verileri ve alıntıları ise hiç dokunmadan koruyor. En kritik tasarım kararı: sistem **asla yeni bir bilgi/gerçek uydurmuyor**, sadece kaynaktaki veya yazarın kendi ifadelerini yeniden biçimlendiriyor.",
+        "why": "📈 AI ile üretilen içeriğin internette gittikçe daha fazla yer kaplaması ve okuyucuların/editörlerin bunu fark etmeye başlaması, \"otantik sese dönme\" ihtiyacını doğurdu. Skill'in kaynağının, topluluk tarafından derlenmiş bir Wikipedia veritabanı olması ona bir tür kolektif meşruiyet kazandırıyor; ayrıca herhangi bir skill destekli agent'ta çalışabilmesi (sadece Claude'a özel olmaması) benimsenmesini kolaylaştırıyor.",
+        "evolve": "💡 35 örüntülük liste zamanla eskiyebilir, çünkü modeller yeni \"tikler\" geliştirdikçe listenin de güncellenmesi gerekecek — topluluk katkılı bir güncelleme mekanizması kritik olacak. Ayrıca farklı dillere (şu an ağırlıklı İngilizce örüntülere) uyarlanmış sürümler, projenin küresel etkisini büyük ölçüde artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent skill",
+          "def": "Bir yapay zeka agent'ına belirli bir görevi nasıl yapacağını öğreten, talimat ve örneklerden oluşan taşınabilir beceri paketi."
+        },
+        {
+          "term": "Halüsinasyon",
+          "def": "Bir yapay zeka modelinin, gerçekte var olmayan bilgiyi kendinden emin bir şekilde uydurup sunması."
+        },
+        {
+          "term": "Örüntü eşleştirme (pattern matching)",
+          "def": "Bir metinde önceden tanımlanmış belirli kalıpları arayıp bulma yöntemi; burada makine öğrenmesi yerine sabit kurallarla çalışır."
+        }
+      ]
+    },
+    {
+      "name": "JuliusBrussee/caveman",
+      "url": "https://github.com/JuliusBrussee/caveman",
+      "stars": "103k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 AI kodlama agent'larının faturası genelde konuştukları kelime sayısına göre kesiliyor. **Caveman**, agent'ların hem verdiği hem de aldığı metni sıkıştırarak token maliyetini düşürmeyi hedefliyor — sloganı gayet açık: \"neden çok token kullanasın ki, az token de işi görür.\"",
+        "tech": "🛠️ Proje iki parçadan oluşuyor. **Skill** kısmı (MIT lisanslı), Claude ve 30'dan fazla uyumlu agent'a \"mağara adamı gibi\" kısa ve öz konuşmasını söyleyen bir kural dosyası; kod, komut, dosya yolu ve hata mesajlarına dokunmadan sadece açıklama metnini kısaltıyor, `lite`'tan `ultra`'ya kadar yoğunluk seviyeleri sunuyor. **Proxy** kısmı (BSL-1.1 lisanslı) ise agent ile sağlayıcı arasındaki trafiği yakalayıp loglar, JSON ve diff gibi hacimli girdileri agent okumadan önce sıkıştıran yerel bir süreç; orijinal veri SQLite'ta geri döndürülebilir şekilde saklanıyor. İlginç bir detay da \"pixel mode\": skill talimatlarını PNG görsele çevirerek ek bir yaklaşık %61 tasarruf sağlıyor. `caveman learn` komutu ise geçmiş oturumları analiz edip token'ı en çok tüketen noktaları tespit ediyor.",
+        "why": "📈 AI destekli kodlama yaygınlaştıkça token maliyetleri geliştirici bütçelerinde ciddi bir kalem haline geldi. Caveman'ın hem eğlenceli \"mağara adamı\" markalaşması hem de ölçülebilir, somut tasarruf rakamları (%65 çıktı, %33 girdi) sunması, onu hem paylaşılabilir hem de pratik kılıyor — 30'dan fazla agent'la uyumluluğu da benimsenmesini kolaylaştırıyor.",
+        "evolve": "💡 Agresif sıkıştırmanın, nüanslı açıklamalar gerektiren karmaşık görevlerde yanlış anlaşılmaya yol açma riski var; bu yüzden görev karmaşıklığına göre otomatik yoğunluk ayarı (basit görevlerde `ultra`, kritik kararlarda daha az agresif) ilginç bir geliştirme alanı olabilir. Ayrıca çekirdek proxy'nin ticari lisansı (BSL-1.1), topluluk katkısını bir miktar sınırlıyor; 2030'da Apache-2.0'a geçiş planı olsa da bu uzun bir bekleyiş."
+      },
+      "glossary": [
+        {
+          "term": "Token",
+          "def": "Yapay zeka dil modellerinin metni işlerken kullandığı, kelime veya kelime parçası büyüklüğündeki temel birim; API kullanım ücreti genelde token sayısına göre hesaplanır."
+        },
+        {
+          "term": "Proxy",
+          "def": "İki taraf arasındaki iletişimi araya girip yöneten, gerekirse veriyi değiştiren ara sunucu/süreç."
+        },
+        {
+          "term": "BSL-1.1 (Business Source License)",
+          "def": "Kaynak kodun görülüp değiştirilebildiği ama belirli bir süre ticari kullanımının kısıtlandığı, zamanla tam açık kaynağa dönüşen bir lisans türü."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, tek bir dosya üzerinde çalışan hafif bir veritabanı motoru."
+        }
+      ]
+    }
+  ]
+}
