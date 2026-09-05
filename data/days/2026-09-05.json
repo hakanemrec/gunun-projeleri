@@ -1,0 +1,159 @@
+{
+  "date": "2026-09-05",
+  "projects": [
+    {
+      "name": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "stars": "250.8k",
+      "language": "Shell",
+      "sections": {
+        "serves": "🎯 Total TypeScript eğitmeni Matt Pocock'un günlük mühendislik işlerinde kullandığı **agent skill**'lerini (yeniden kullanılabilir AI ajan iş akışlarını) bir araya getiren bir koleksiyon. Amaç \"vibe coding\" değil, gerçek mühendislik disiplinini AI ajanlarına öğretmek: düşün, planla, test et, refactor et gibi adımları atlamadan kod ürettirmek.\n\nRepo dört temel soruna çözüm arıyor: geliştirici niyeti ile ajan çıktısı arasındaki **uyumsuzluk**, proje jargonunu görmezden gelen **gereksiz ayrıntı**, zayıf geri bildirim döngüsünden kaynaklanan **çalışmayan kod**, ve hızlı AI kodlamanın yol açtığı **mimari çürüme** (\"çamur yumağı\" kod tabanları).",
+        "tech": "🛠️ Skiller, Claude Code'un resmi plugin marketplace'i üzerinden (`/plugin install mattpocock-skills`) ya da `npx skills@latest add` komutuyla Codex gibi başka ajanlara da kurulabiliyor. Her skill, markdown talimat dosyası + opsiyonel scriptlerden oluşan küçük, **kompozisyonlanabilir** birimler halinde tasarlanmış.\n\nİki kategori var: kullanıcı tarafından çağrılanlar (`/grill-me` — kodlamadan önce mülakat tarzı planlama, `/triage`, `/wayfinder`) ve model tarafından otomatik tetiklenenler (`/tdd` — red-green-refactor döngüsü, `/code-review`, `/diagnosing-bugs`). Ortak bir `CONTEXT.md` dosyasıyla proje-özel terminoloji ajanlara öğretiliyor; bu da \"uyumsuzluk\" sorununu doğrudan hedefliyor.",
+        "why": "📈 Repo bugün GitHub Trending'in zirvesinde (~2.750 yıldız/gün). Claude Code ve benzeri kod ajanlarının yaygınlaşmasıyla \"ajanları nasıl daha güvenilir çalıştırırım\" sorusu geliştirici gündeminin merkezine oturdu. Tanınmış bir eğitmenin kendi günlük iş akışını açık kaynak yapması, kitleye hazır ve test edilmiş bir \"en iyi pratikler\" seti sunuyor — bu da kopyala-yapıştır kolaylığıyla hızlı benimsenmeyi tetikliyor.",
+        "evolve": "💡 Skiller şu an ağırlıklı olarak Claude Code merkezli tasarlanmış; farklı ajan/editörlere (Cursor, Windsurf vb.) resmi destek ve skill güncellemelerini takip eden bir versiyonlama mekanizması doğal bir sonraki adım olurdu. Takımlar arası paylaşılan `CONTEXT.md` şablonları ve her skill'in gerçek dünyada ne kadar işe yaradığını ölçen bir başarı-oranı/feedback sistemi de projeye değer katar."
+      },
+      "glossary": [
+        {
+          "term": "Agent skill",
+          "def": "Bir AI ajanına belirli bir görevi (kod inceleme, test yazma, planlama gibi) tutarlı şekilde nasıl yapacağını öğreten, yeniden kullanılabilir talimat dosyası."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Geliştiricinin AI'ın ürettiği kodu derinlemesine anlamadan, sezgiyle \"iyi görünüyor\" diyerek ilerlediği, disiplinsiz AI destekli kodlama tarzı."
+        },
+        {
+          "term": "Plugin marketplace",
+          "def": "Bir uygulamaya (burada Claude Code) eklenti/uzantı yüklemek için kullanılan, topluluk katkılı merkezi mağaza."
+        },
+        {
+          "term": "TDD (test-driven development)",
+          "def": "Önce başarısız olan bir test yazıp, sonra o testi geçirecek minimum kodu yazma, ardından kodu iyileştirme döngüsüne dayanan geliştirme yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "NousResearch/hermes-agent",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "stars": "241.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Nous Research'ün \"seninle birlikte büyüyen ajan\" sloganıyla çıkardığı bu proje, tek seferlik oturumlarla sınırlı kalmayan, zamanla öğrenen ve kalıcı hafızaya sahip genel amaçlı bir AI ajanı sunuyor. CLI, Telegram, Discord, Slack, WhatsApp ve Signal gibi birçok platformdan aynı ajana ulaşılabiliyor — hepsi tek bir arka planda çalışıyor.",
+        "tech": "🛠️ Python çekirdek + Node.js tabanlı web arayüzünden oluşuyor. OpenAI, Anthropic, OpenRouter ve Nous'un kendi portalı dahil birden fazla **LLM** sağlayıcısını destekliyor; Docker, SSH, Modal, Vercel Sandbox gibi farklı ortamlarda çalışabiliyor. Mimarinin can alıcı noktaları: **MCP** ile dış araç entegrasyonu, **cron** ile zamanlanmış otomasyon, ve **FTS5** tam metin arama motoruyla geçmiş oturumları hatırlayan bir hafıza sistemi. Sistem \"kapalı öğrenme döngüsü\" içinde deneyimden skill üretip bunları kullanarak kendini geliştiriyor.",
+        "why": "📈 Ajan altyapısının parçalı (fragmented) olması geliştiriciler için büyük bir sürtünme kaynağı; Hermes tek bir **gateway** süreciyle çoklu platform + çoklu LLM sağlayıcısı + kalıcı hafızayı bir araya getirerek **vendor lock-in**'i azaltıyor. 5 dolarlık bir **VPS**'te bile çalışabilmesi, büyük bulut bütçesi olmayan bireysel geliştiricilerin de kendi kişisel ajanlarını barındırabilmesini sağlıyor — bu erişilebilirlik ilgiyi patlattı.",
+        "evolve": "💡 Çoklu platform desteği güçlü, ama özellikle Telegram/WhatsApp gibi kişisel mesajlaşma kanallarında ajana verilen yetkilerin sınırlandırılması kritik bir sonraki adım. Ayrıca ajanın kendi kendine ürettiği skillerin ne kadar güvenilir olduğunu gösteren şeffaf bir değerlendirme/benchmark seti eklenmesi kullanıcı güvenini artırır."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "İnsan diline benzer metinler üretebilen, devasa veri kümeleriyle eğitilmiş yapay zeka modeli (GPT, Claude gibi)."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının harici araçlara, veritabanlarına ve servislere standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Cron",
+          "def": "Belirli aralıklarla (her gün saat 09:00 gibi) otomatik olarak görev çalıştırmaya yarayan, Unix kökenli zamanlama sistemi."
+        },
+        {
+          "term": "FTS5 (Full-Text Search 5)",
+          "def": "SQLite veritabanının, büyük metinler içinde hızlı anahtar kelime araması yapmasını sağlayan yerleşik tam metin arama motoru."
+        },
+        {
+          "term": "Vendor lock-in",
+          "def": "Bir ürünü tek bir sağlayıcının altyapısına o kadar bağımlı hale getirmek ki başka bir sağlayıcıya geçmek zorlaşır."
+        },
+        {
+          "term": "Gateway (ağ geçidi)",
+          "def": "Farklı istemcilerden gelen istekleri tek bir merkezi noktadan karşılayıp yönlendiren yazılım bileşeni."
+        },
+        {
+          "term": "VPS (Sanal Özel Sunucu)",
+          "def": "Fiziksel bir sunucunun bölünerek oluşturduğu, düşük maliyetli, bağımsız çalışan sanal bilgisayar."
+        }
+      ]
+    },
+    {
+      "name": "anomalyco/opencode",
+      "url": "https://github.com/anomalyco/opencode",
+      "stars": "204.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Terminalde çalışan, açık kaynak bir AI kodlama ajanı. Geliştiricinin kod tabanını keşfetmesine, değiştirmesine ve yeni özellik eklemesine yardımcı olarak, kapalı kaynak \"Copilot tarzı\" araçlara şeffaf ve yerel kontrol sağlayan bir alternatif sunmayı hedefliyor.",
+        "tech": "🛠️ **Bun** paket yöneticisi, **Turbo** ile yönetilen bir **monorepo** ve **SST (Serverless Stack)** altyapısı üzerine kurulu bir TypeScript/JavaScript projesi. Console, web ve VS Code SDK bileşenleri ayrı paketler halinde tutuluyor. İki yerleşik ajan modu var: tam geliştirme yetkisine sahip \"build\" ajanı ve sadece okuma/analiz yapan \"plan\" ajanı — bu ayrım, ajana ne kadar yetki verileceğini kullanıcının kontrolüne bırakıyor.",
+        "why": "📈 Binlerce commit, 4.2k açık issue ve 1.5k açık pull request ile son derece aktif bir topluluğa sahip. Kapalı kaynak kodlama asistanlarına duyulan güvensizlik, veri gizliliği kaygıları ve API maliyetleri, açık kaynak alternatiflere olan ilgiyi sürekli yüksek tutan temel etkenler.",
+        "evolve": "💡 \"build\" ve \"plan\" ajanları arasındaki yetki ayrımı iyi bir başlangıç noktası; bunun üzerine proje bazlı, hangi dizinlere/komutlara erişilebileceğini tanımlayan daha ince taneli bir izin sistemi eklenebilir. VS Code SDK'sının deneyimini native bir uzantı seviyesine taşımak da editör içi kullanımı güçlendirir."
+      },
+      "glossary": [
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla bağımsız paket veya projenin tek bir git deposunda birlikte tutulduğu proje organizasyon yöntemi."
+        },
+        {
+          "term": "Bun",
+          "def": "Node.js'e alternatif olarak geliştirilen, kurulum ve çalıştırma hızına odaklanan modern bir JavaScript çalışma zamanı (runtime)."
+        },
+        {
+          "term": "SST (Serverless Stack)",
+          "def": "Bulut üzerinde sunucusuz (serverless) uygulamaları tanımlamayı ve dağıtmayı kolaylaştıran bir altyapı-kod (infrastructure-as-code) aracı."
+        }
+      ]
+    },
+    {
+      "name": "magnitudedev/magnitude",
+      "url": "https://github.com/magnitudedev/magnitude",
+      "stars": "2.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Kodlama ajanlarını (Claude Code, Cline, Pi gibi) buluta değil, kendi bilgisayarınızda çalışan yerel modellere bağlayan bir **inference** (çıkarım) sunucusu. Donanımınızı profilleyip hangi modelin sığacağını ve ne performans vereceğini öneriyor, ardından modeli indirip optimize ediyor.",
+        "tech": "🛠️ TypeScript/Node.js, **Bun** çalışma zamanı ve Turbo tabanlı bir monorepo üzerine kurulu; CLI, masaüstü uygulaması ve inference motoru ayrı paketler halinde geliyor. **GGUF** model formatını destekliyor; **spekülatif çözümleme (speculative decoding)** ve eşzamanlılık optimizasyonlarıyla yerel donanımdan maksimum verim almayı hedefliyor. Modeller kullanılmadığında bellekten otomatik olarak boşaltılıyor.",
+        "why": "📈 API maliyetleri, hız sınırlamaları (**rate limit**) ve gizlilik kaygıları geliştiricileri yerel modellere yöneltiyor. Projenin \"hangi modeli hangi donanımda çalıştırabilirim\" sorusunu otomatik hale getirmesi, bu alanda sıkça yaşanan deneme-yanılma sürtünmesini ortadan kaldırdığı için ilgi görüyor.",
+        "evolve": "💡 Şu anda desteklenen ajan listesi (Pi, Cline, Claude Code) sınırlı; daha fazla ajan/editör entegrasyonu ve çoklu-GPU ya da dağıtık yerel kümeler için destek doğal bir genişleme alanı. Model kalitesi ile donanım önerisi arasındaki dengeyi kullanıcıya açıkça gösteren bir karşılaştırma paneli de faydalı olurdu."
+      },
+      "glossary": [
+        {
+          "term": "Inference (çıkarım)",
+          "def": "Eğitilmiş bir yapay zeka modelinin, verilen bir girdiye karşılık gerçek zamanlı olarak çıktı üretme işlemi."
+        },
+        {
+          "term": "GGUF",
+          "def": "Büyük dil modellerini sıkıştırılmış ve düşük donanımlarda çalıştırılabilir hale getiren, yaygın kullanılan bir dosya formatı."
+        },
+        {
+          "term": "Speculative decoding (spekülatif çözümleme)",
+          "def": "Küçük bir modelin olası kelimeleri önceden tahmin edip büyük modelin bunları sadece doğrulamasını sağlayarak metin üretimini hızlandıran teknik."
+        },
+        {
+          "term": "Rate limit",
+          "def": "Bir API'nin belirli bir zaman aralığında kabul ettiği istek sayısını sınırlayan mekanizma."
+        }
+      ]
+    },
+    {
+      "name": "fmtlib/fmt",
+      "url": "https://github.com/fmtlib/fmt",
+      "stars": "25.5k",
+      "language": "C++",
+      "sections": {
+        "serves": "🎯 C/C++ dünyasının en temel ihtiyaçlarından biri olan metin biçimlendirmeyi (string formatting), klasik `printf`/`iostream` ikilisine göre çok daha hızlı ve tip-güvenli şekilde çözen bir kütüphane.",
+        "tech": "🛠️ Modern C++ ile yazılmış, sadece üç header dosyasından oluşan minimal bir yapı sunuyor; hem **header-only** hem derlenmiş kullanım destekleniyor. C++20'nin `std::format` ve C++23'ün `std::print` standartları aslında bu kütüphaneden türetildi. **Dragonbox algoritması** ile **IEEE 754** uyumlu doğru ondalık yuvarlama, derleme zamanında format string doğrulama ve Unicode desteği öne çıkan teknik ayrıntılar.",
+        "why": "📈 MongoDB, PyTorch, Windows Terminal gibi büyük projelerde kullanılması kütüphaneye sürekli bir temel talep sağlıyor. Bugünkü ivmesi muhtemelen C++ standardizasyon gündemindeki bir gelişme, popüler bir teknik yazı ya da konferans sunumuyla tetiklenmiş görünüyor — mühendislerin \"sprintf'ten 20-30 kat hızlı\" iddiasını yeniden keşfetmesi de olası bir sebep.",
+        "evolve": "💡 Kütüphane zaten oldukça olgun; asıl ilginç yön derleyicilerin `std::format`'ı ne kadar hızlı ve eksiksiz uyguladığı. fmt'nin gelecekte kendi API'sini korumaktan çok, geliştiricileri standart kütüphaneye taşıyan bir \"köprü\" rolüne evrilmesi olası bir yön."
+      },
+      "glossary": [
+        {
+          "term": "Header-only kütüphane",
+          "def": "Ayrı bir derlenmiş dosyaya ihtiyaç duymadan, sadece başlık (header) dosyalarını projeye dahil ederek kullanılabilen kütüphane türü."
+        },
+        {
+          "term": "IEEE 754",
+          "def": "Bilgisayarlarda ondalıklı (kayan noktalı) sayıların nasıl saklanacağını ve yuvarlanacağını tanımlayan uluslararası standart."
+        },
+        {
+          "term": "Dragonbox algoritması",
+          "def": "Kayan noktalı bir sayıyı, olabildiğince kısa ama tam olarak doğru bir ondalık metne dönüştüren hızlı bir algoritma."
+        }
+      ]
+    }
+  ]
+}
