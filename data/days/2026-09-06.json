@@ -1,0 +1,99 @@
+{
+  "date": "2026-09-06",
+  "projects": [
+    {
+      "name": "sgl-project/sglang",
+      "url": "https://github.com/sgl-project/sglang",
+      "stars": "35.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Büyük bir dil modelini eğitmek bir şey, onu üretimde binlerce kullanıcıya aynı anda, düşük gecikmeyle ve makul maliyetle sunmak (serving) bambaşka bir mühendislik problemi. SGLang, LLM ve çok-modlu modelleri tek bir GPU'dan devasa kümelere kadar her ölçekte verimli çalıştırmayı hedefleyen, üretim seviyesinde bir çıkarım (inference) motoru.",
+        "tech": "🛠️ Çekirdekte **RadixAttention** var: farklı isteklerin ortak önek (prefix) kısımlarını bir radix ağacında paylaşarak tekrar hesaplamayı önleyen bir önbellekleme tekniği. Bunun üzerine sürekli gruplama (**continuous batching**), sayfalanmış dikkat (**paged attention**), spekülatif çözümleme, parçalı ön-doldurma (chunked prefill) ve FP4/FP8/INT4/AWQ/GPTQ gibi nicemleme (quantization) yöntemleri ekleniyor. Tensor, pipeline, expert ve data paralelliğini birleştirerek NVIDIA, AMD, Intel Xeon, Google TPU ve Ascend NPU dahil geniş bir donanım yelpazesinde 400'den fazla Hugging Face modelini (DeepSeek, Qwen, Kimi, GLM dahil) çalıştırabiliyor.\n\n- RadixAttention ile prefix önbellekleme + paged attention + sürekli gruplama\n- Tensor/pipeline/expert/data paralelliği, çoklu-donanım desteği\n- 400+ modelde gün-0 desteği, çoklu-LoRA batch işleme",
+        "why": "📈 Proje günde trilyonlarca token'ı, dünya genelinde 400.000 GPU üzerinde production'da işlediğini belirtiyor; bu ölçek tek başına güçlü bir sinyal. Ayrıca DeepSeek-V3/R1, Kimi K3, GLM 5.2 gibi frontier modellere \"gün 0\"da destek vermesi ve son dönemde yalnızca çıkarım değil, pekiştirmeli öğrenme (RL) sonrası eğitim (post-training) süreçlerinde de \"backbone\" olarak kullanılmaya başlanması, projeyi salt bir serving aracından AI altyapısının omurgasına dönüştürüyor.",
+        "evolve": "💡 Çoklu-küme (multi-cluster) senaryolarda hata devri (failover) stratejileri konusunda dokümantasyon zayıf; büyük ölçekte kendi altyapısını kuran ekipler için bu konuda daha net kılavuzlar faydalı olur. Maliyet optimizasyonuna dair kurumsal rehberlik de sınırlı — hangi donanımda hangi nicemleme/paralellik kombinasyonunun en uygun maliyet/performans oranını verdiğini gösteren resmi bir karşılaştırma paneli eklenebilir."
+      },
+      "glossary": [
+        { "term": "RadixAttention", "def": "Farklı isteklerin ortak metin öneklerini bir ağaç yapısında paylaşarak, aynı hesaplamanın tekrar tekrar yapılmasını önleyen önbellekleme tekniği." },
+        { "term": "Paged attention", "def": "Bir dil modelinin dikkat mekanizmasının bellek kullanımını, işletim sistemlerindeki sayfalama mantığına benzer şekilde küçük bloklara bölerek verimli yöneten teknik." },
+        { "term": "Continuous batching (sürekli gruplama)", "def": "Gelen istekleri sabit gruplar halinde beklemek yerine, bitenlerin yerine yenilerini anında ekleyerek GPU'yu sürekli dolu tutan sunum stratejisi." },
+        { "term": "Nicemleme (quantization)", "def": "Bir modelin sayısal ağırlıklarını daha az bit ile temsil ederek bellek ve hesaplama ihtiyacını azaltma tekniği." },
+        { "term": "Tensor/pipeline/expert paralelliği", "def": "Büyük bir modeli tek bir işlemciye sığdıramayınca, hesaplamayı farklı eksenlerde (katman parçaları, aşamalar veya uzman alt ağlar) birden fazla işlemciye bölerek çalıştırma yöntemleri." }
+      ]
+    },
+    {
+      "name": "github/github-mcp-server",
+      "url": "https://github.com/github/github-mcp-server",
+      "stars": "32.7k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 GitHub'ın kendisinin yayımladığı resmi köprü: bir AI ajanının repo okuma, issue/PR yönetme, CI/CD durumunu izleme, kod analizi gibi işleri doğal dille yapabilmesi için GitHub API'sini standart bir arayüzden sunuyor. Amaç, geliştiricinin araçlar arasında sürekli bağlam değiştirmesini ortadan kaldırıp bu işleri doğrudan ajana devretmek.",
+        "tech": "🛠️ **MCP (Model Context Protocol)** standardı üzerine Go ile yazılmış. İki dağıtım seçeneği var: kurulum gerektirmeyen uzak sunucu (`api.githubcopilot.com/mcp`) ya da Docker/binary ile kendi altyapınızda barındırma. OAuth veya kişisel erişim token'ıyla kimlik doğrulanıyor; ~70 aracı repository, issues, PR, Actions, güvenlik taraması, projeler ve discussions gibi modüler \"toolset\"lere ayıran bir yapı, kullanıcının ajana yalnızca ihtiyacı olan GitHub yeteneklerini açmasını sağlıyor.",
+        "why": "📈 GitHub'ın Copilot ve ajan tabanlı geliştirme stratejisini agresif şekilde büyütmesiyle doğrudan örtüşen bir proje; kurumların AI destekli geliştirme akışlarına duyduğu talep ve resmi/güvenilir bir kaynaktan gelmesi hızlı benimsenmeyi tetikliyor. 32.7k yıldız, geliştiricilerin \"kod tabanımı anlayan ajan\" isteğinin ne kadar yaygın olduğunu gösteriyor.",
+        "evolve": "💡 Uzun süren işlemler (büyük PR analizleri gibi) için asenkron destek sınırlı; salt-okunur mod mevcut ama daha ince taneli izin seçenekleri token/bağlam israfını azaltabilir. GitHub Enterprise Server kullanıcıları için uzak (remote) bir SaaS seçeneğinin olmaması, bu kullanıcıları yerel dağıtıma mahkum ediyor; rate limit ve kimlik doğrulama hatalarına dair dokümantasyonun da genişletilmesi faydalı olur."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin harici araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "Toolset", "def": "Bir MCP sunucusundaki araçları, belirli bir işlevsel alana (ör. issue yönetimi) göre gruplayan modüler paket." },
+        { "term": "OAuth", "def": "Bir kullanıcının şifresini paylaşmadan, bir uygulamaya başka bir servisteki hesabına sınırlı erişim izni vermesini sağlayan kimlik doğrulama standardı." },
+        { "term": "CI/CD", "def": "Kod değişikliklerinin otomatik olarak test edilip (Continuous Integration) üretime alınmasını (Continuous Deployment) sağlayan yazılım geliştirme pratiği." }
+      ]
+    },
+    {
+      "name": "GreptimeTeam/greptimedb",
+      "url": "https://github.com/GreptimeTeam/greptimedb",
+      "stars": "6.6k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Bir sistemi izlemek (observability) genelde metrikler için Prometheus, loglar için Loki/Elasticsearch, izler (trace) için Jaeger gibi üç ayrı veritabanı kurup işletmek anlamına gelir. GreptimeDB, bu üç sinyal türünü tek bir sütun tabanlı veritabanında birleştirerek, verinin farklı sistemler arasında taşınmasına gerek kalmadan tek bir SQL ile sorgulanmasını sağlıyor.",
+        "tech": "🛠️ Rust ile yazılmış, sorgu motoru olarak Apache DataFusion kullanılıyor; veriler Parquet/Arrow formatında S3, GCS veya Azure Blob gibi nesne depolama üzerinde tutuluyor — hesaplama ve depolama birbirinden ayrılmış (disaggregated) bir mimari. Sistem dört bileşenden oluşuyor: istekleri karşılayan durumsuz Frontend, WAL ile veriyi yazan Datanode, metadata/yönlendirmeyi yöneten Metasrv ve sürekli agregasyon/materialized view üreten opsiyonel Flownode. SQL, PromQL ve Jaeger trace sorgularının hepsi aynı motor üzerinden çalışıyor.",
+        "why": "📈 GenAI/LLM sistemlerinin gözlemlenebilirliğinde servis, host ve trace kimliklerinin birbiriyle ilişkilendirilmesi ihtiyacı arttıkça, ayrı sinyal tipleri arasında veri taşımadan sorgu yapabilen birleşik modeller ilgi görüyor. OceanBase Cloud'un 80'den fazla kümede 300TB log yönetip Grafana Loki'den geçişle \"%60'tan fazla maliyet düşüşü\" bildirmesi gibi somut production örnekleri ve projenin genel kullanıma açık (GA) v1.0 kararlılığına ulaşması güveni artırıyor.",
+        "evolve": "💡 LogQL ve QueryDSL uyumluluğu henüz tam değil, PromQL desteğinde de belgelenmiş boşluklar var. Okuma replikaları, iş yükü izolasyonu ve otomatik yeniden bölümleme (repartitioning) gibi kritik operasyonel özellikler açık kaynak sürümde değil, yalnızca kurumsal lisansta sunuluyor — bu, açık kaynak kullanıcıları için manuel operasyon yükünü artıran bir sınır."
+      },
+      "glossary": [
+        { "term": "Gözlemlenebilirlik (observability)", "def": "Bir sistemin iç durumunu, ürettiği metrik, log ve trace gibi çıktılardan anlayabilme yeteneği." },
+        { "term": "Sütun tabanlı depolama (columnar storage)", "def": "Verinin satır satır değil, sütun sütun diskte tutulduğu; analitik sorguları hızlandıran depolama yöntemi." },
+        { "term": "Nesne depolama (object storage)", "def": "Dosyaları klasör hiyerarşisi yerine düz bir isim-uzayında, S3 gibi API'lerle erişilen depolama biçimi." },
+        { "term": "WAL (write-ahead log)", "def": "Bir veritabanının, veriyi kalıcı hale getirmeden önce tüm değişiklikleri sırayla yazdığı, çökme sonrası kurtarmayı sağlayan günlük dosyası." },
+        { "term": "Materialized view", "def": "Bir sorgunun sonucunun önceden hesaplanıp saklandığı, her seferinde yeniden hesaplamak yerine hızlıca okunabilen tablo." }
+      ]
+    },
+    {
+      "name": "hatchet-dev/hatchet",
+      "url": "https://github.com/hatchet-dev/hatchet",
+      "stars": "7.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 Arka plan görevlerini (bildirim gönderme, rapor üretme, AI ajan adımları gibi) çalıştırmak için basit bir kuyruk (Redis/RabbitMQ) yetersiz kalır, Airflow gibi devasa DAG platformları ise çoğu ekip için fazla ağırdır. Hatchet, bu ikisi arasındaki boşluğu dolduran, arka plan görevlerini ve dayanıklı (durable) iş akışlarını ölçeklenebilir şekilde yürüten bir orkestrasyon motoru.",
+        "tech": "🛠️ Go ile yazılmış bir backend'e TypeScript, Python ve Ruby SDK'ları bağlanıyor. Ayırt edici mimari kararı, dayanıklılık katmanı için PostgreSQL kullanması: klasik kuyruklar görev bitince onu siler, Hatchet ise tüm yürütme geçmişini kalıcı tutarak yeniden oynatma (replay) ve hata ayıklamayı mümkün kılıyor. DAG desteği, olay-tetiklemeli tetikleyiciler, cron zamanlama, öncelik kuyrukları, rate limiting ve eşzamanlılık politikaları ile OpenTelemetry/Prometheus tabanlı gözlemlenebilirlik üzerine kurulu.",
+        "why": "📈 AI ajanlarının çok adımlı, uzun süren ve arada başarısız olabilen görevler yürütmesi yaygınlaştıkça, \"görev yarıda kesilirse ne olur\" sorusuna production-seviyesinde bir cevap veren dayanıklı yürütme (durable execution) sistemlerine talep artıyor. Temporal gibi köklü alternatiflere kıyasla çok daha basit kendi sunucunuzda barındırma (self-hosting) deneyimi sunması, karmaşık altyapı kurmak istemeyen ekipler için çekici.",
+        "evolve": "💡 PostgreSQL tabanlı dayanıklılık, saf Redis kuyruklarına kıyasla daha düşük ham verim (throughput, ~10k görev/saniye) anlamına geliyor — bu bilinçli bir mühendislik ödünleşimi. Airflow/Prefect'e kıyasla ekosistem entegrasyonları (hazır konektörler, topluluk eklentileri) hâlâ sınırlı; dört SDK dilinin ötesine genişleme de projeyi daha geniş bir geliştirici kitlesine ulaştırabilir."
+      },
+      "glossary": [
+        { "term": "Orkestrasyon motoru", "def": "Birden fazla görev veya iş akışının hangi sırayla, ne zaman ve nasıl çalıştırılacağını yöneten yazılım sistemi." },
+        { "term": "DAG (Yönlü Döngüsüz Çizge)", "def": "Görevler arasındaki bağımlılıkları, geriye dönüş olmadan bir yönde ilerleyen bağlantılarla gösteren grafik yapısı." },
+        { "term": "Durable execution (dayanıklı yürütme)", "def": "Bir iş akışının, çalıştığı sunucu çökse veya yeniden başlasa bile kaldığı yerden devam edebilmesini sağlayan yürütme modeli." },
+        { "term": "Concurrency policy / Rate limiting", "def": "Bir sistemin aynı anda kaç görevi paralel çalıştıracağını ya da belirli sürede kaç isteği kabul edeceğini sınırlayan kurallar." }
+      ]
+    },
+    {
+      "name": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "stars": "16.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Claude Code, Codex gibi araçlar için üçüncü taraf \"agent skill\"lerin sayısı hızla artıyor ama bunları kurmadan önce güvenli olup olmadığını kontrol eden standart bir yol yok. NVIDIA'nın kendi taramasına göre incelenen skillerin **%26.1'inde** güvenlik açığı, **%5.2'sinde** ise muhtemel kötü niyetli davranış bulunmuş; SkillSpector, \"bu skill'i kurmak güvenli mi?\" sorusuna kurulum öncesi yanıt veren bir tarayıcı.",
+        "tech": "🛠️ İki aşamalı bir tespit hattı kullanıyor: önce statik analiz — Python **AST** ayrıştırma, 17 kategoride 71 güvenlik açığı imzasıyla regex eşleştirme ve OSV.dev üzerinden canlı **CVE** sorgulama; ardından opsiyonel olarak Claude/GPT gibi modellerle bağlam-duyarlı **LLM semantik analizi** çalıştırılıp yanlış pozitifler süzülüyor. Python 3.12+ üzerine LangGraph ile orkestre edilmiş, **YARA** kurallarıyla kötü amaçlı yazılım tespiti de entegre edilmiş; JSON/SARIF/Markdown çıktılarıyla CI/CD'ye, MCP sunucu moduyla da çalışma zamanı korumasına bağlanabiliyor.",
+        "why": "📈 AI ajan benimsenmesi patlarken, üçüncü taraf skill/eklenti ekosistemi büyük ölçüde denetimsiz kalıyor; NVIDIA gibi büyük bir oyuncunun bu soruna resmi bir araçla eğilmesi, prompt injection ve tedarik zinciri (supply chain) saldırılarından endişe eden kurumsal kullanıcılarda güçlü karşılık buluyor.",
+        "evolve": "💡 İngilizce dışı dillerdeki zararlı örüntüleri kaçırma riski var; ayrıca araç yalnızca riskli örüntüleri işaretliyor, çalışma zamanında kötü niyetli kodu izole edecek bir dinamik **sandbox** sunmuyor. Opsiyonel LLM analizi harici API çağrısı ve kimlik bilgisi yönetimi gerektiriyor; çevrimdışı modda tedarik zinciri kontrolleri de küçük, statik bir listeye düşüyor."
+      },
+      "glossary": [
+        { "term": "AST (Soyut Sözdizimi Ağacı)", "def": "Bir programın kaynak kodunun, yapısını hiyerarşik olarak temsil eden ağaç biçimindeki içsel gösterimi." },
+        { "term": "CVE", "def": "Bilinen bir yazılım güvenlik açığına verilen benzersiz kimlik numarası (Common Vulnerabilities and Exposures)." },
+        { "term": "YARA kuralları", "def": "Dosyalarda kötü amaçlı yazılıma özgü örüntüleri tanımlayıp otomatik tespit etmeye yarayan kural tabanlı bir dil." },
+        { "term": "SARIF", "def": "Statik analiz araçlarının bulgularını ortak bir formatta raporlayıp CI/CD sistemlerine entegre etmesini sağlayan standart." },
+        { "term": "Prompt injection", "def": "Bir yapay zeka modeline, işlediği veri içine gizlenmiş talimatlarla asıl amacının dışında davranış yaptırma saldırı tekniği." },
+        { "term": "Sandbox", "def": "Bir programın, sistemin geri kalanına zarar veremeyecek şekilde izole bir ortamda çalıştırılması." }
+      ]
+    }
+  ]
+}
