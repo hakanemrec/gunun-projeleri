@@ -1,0 +1,169 @@
+{
+  "date": "2026-09-07",
+  "projects": [
+    {
+      "name": "aipoch/open-science",
+      "url": "https://github.com/aipoch/open-science",
+      "stars": "3.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Araştırmacılar bir projeyi ilerletmek için genelde beşe yakın farklı araç arasında geçiş yapar: bir sohbet penceresi, bir Jupyter defteri, birkaç betik, bir dosya gezgini ve ayrı bir veri tabanı. Her geçişte bağlam kaybolur — hangi kodun hangi sonucu ürettiği, hangi veri setinin kullanıldığı unutulur. Open Science, görevleri, kod çalıştırmayı, dosyaları ve kanıtları (evidence) tek bir yerel çalışma alanında birleştiren masaüstü bir uygulama. PubMed, bioRxiv, ChEMBL ve klinik deney veri tabanları gibi 24 kaynağa doğrudan bağlanıyor; protein katlanması ve AlphaFold2 gibi biyoenformatik işler için 22 hazır \"araştırma becerisi\" sunuyor.",
+        "tech": "🛠️ Electron üzerine kurulu bir masaüstü uygulaması; arayüz React ve TypeScript ile yazılmış, yerel veri Prisma + SQLite ile saklanıyor. Ajan tarafı **ACP** (Agent Communication Protocol) tabanlı bir çalışma zamanına dayanıyor ve Claude Code, OpenCode, Codex, CodeBuddy gibi birden fazla ajan altyapısını değiştirilebilir şekilde destekliyor — yani kullanıcı hangi modeli/aracı kullanacağına kendisi karar veriyor. Python ve R not defteri (notebook) çalıştırma desteği var. Kurumsal/akademik kullanım için headless bir CLI ve Node.js SDK'sı otomasyona izin veriyor; ayrıca uzak süper bilgisayar kümelerine **Slurm** üzerinden iş gönderip asenkron olarak takip edebiliyor. Her sonucun hangi kodla, hangi girdiyle ve hangi ortamda üretildiğini kaydeden değişmez (immutable) bir sürümleme sistemi, bilimsel yeniden üretilebilirliği mimarinin merkezine koyuyor.",
+        "why": "📈 Proje, halka açık bir biyoenformatik yapay zeka **benchmark**'ı olan BiomniBench-DA'da 50 katılımcı arasında 79.05 puanla birinci sıraya yerleşti — bu da \"iddia\" değil ölçülmüş bir sonuç olduğu için dikkat çekti. Ayrıca \"AI for science\" alanı 2026'da hızla büyüyor; akademik laboratuvarlar ve biyoteknoloji şirketleri, denetlenebilir ve tekrarlanabilir iş akışları arıyor, bulut tabanlı kapalı araçların veri gizliliği ve lisans maliyeti sorunlarından kaçınmak istiyorlar. Apache 2.0 lisansı ve koltuk başına ücret olmaması, sınırlı bütçeli araştırma ekiplerini doğrudan hedefliyor. v0.26.0 sürümüyle gelen HPC/Slurm desteği de yakın zamanda eklenen ve ilgiyi tetikleyen özelliklerden biri.",
+        "evolve": "💡 Şu an saf çevrimdışı çalışma mümkün değil: model çağrıları için hâlâ harici bir sağlayıcıya (OpenAI, Anthropic, yerel gateway) ihtiyaç var, tam yerel çıkarım seçeneği eksik. İlk kurulum beş zorunlu adımdan geçiyor (ortam kontrolü, çalışma zamanı kurulumu, sağlayıcı yapılandırması gibi), bu da yeni kullanıcı için giriş bariyeri oluşturuyor. Özel beceri (skill) ve konektörler onay kapılı çalışsa da kod çalıştırdığı için hatalı ya da kötü niyetli bir eklenti risk taşıyor. Arayüz optimizasyonları şu an macOS'u önceliyor; Windows ve Linux'ta kimlik bilgisi saklama gibi noktalarda platform eşitliği eksik. Bunlar giderilirse proje, akademik laboratuvarların varsayılan \"araştırma işletim sistemi\"ne dönüşebilir."
+      },
+      "glossary": [
+        {
+          "term": "ACP (Agent Communication Protocol)",
+          "def": "Farklı yapay zeka ajanlarının/araçlarının ortak bir arayüz üzerinden birbirleriyle veya bir uygulamayla konuşmasını sağlayan iletişim protokolü."
+        },
+        {
+          "term": "Prisma",
+          "def": "Veritabanı işlemlerini kod üzerinden tip güvenli biçimde yönetmeyi sağlayan popüler bir ORM (nesne-veritabanı eşleyici) aracı."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, tek bir dosyada çalışan hafif bir ilişkisel veritabanı motoru."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML/CSS/JS) masaüstü uygulaması geliştirmeyi sağlayan bir çatı (framework)."
+        },
+        {
+          "term": "Slurm",
+          "def": "Süper bilgisayar kümelerinde (HPC) iş sıraya koyup kaynak dağıtımını yöneten açık kaynak bir iş zamanlayıcısı."
+        },
+        {
+          "term": "HPC (High Performance Computing)",
+          "def": "Çok sayıda işlemcinin bir araya gelerek büyük hesaplama işlerini paralel yürüttüğü yüksek performanslı bilgi işlem altyapısı."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Farklı araç ya da modellerin performansını aynı koşullarda ölçüp karşılaştırmak için kullanılan standart test seti."
+        },
+        {
+          "term": "Provenance (köken/izlenebilirlik)",
+          "def": "Bir sonucun hangi veri, kod ve ortamdan üretildiğinin kayıt altına alınmasını ifade eden, bilimsel tekrarlanabilirlik için kritik kavram."
+        }
+      ]
+    },
+    {
+      "name": "OpenWhispr/openwhispr",
+      "url": "https://github.com/OpenWhispr/openwhispr",
+      "stars": "7.6k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "🎯 Sesli not alma ve toplantı deşifresi (transcription) artık popüler bir kategori, ama piyasadaki WisprFlow, Granola gibi araçların çoğu ses verinizi buluta gönderiyor. OpenWhispr, bu araçlara \"açık kaynak ve ücretsiz\" bir alternatif olarak, konuşmayı tamamen cihaz üzerinde metne çeviriyor — hiçbir ses kaydı sunucuya gitmiyor. Toplantı deşifresi, konuşmacı ayrıştırma (**diarization**), notlar içinde anlamsal arama ve masaüstünde yerleşik yapay zeka ajanları sunuyor; macOS, Windows ve Linux'ta çalışıyor.",
+        "tech": "🛠️ Arayüz React 19, TypeScript, Tailwind CSS v4 ve shadcn/ui ile; masaüstü paketlemesi Electron 41 üzerinden yapılıyor. Ses tanıma tamamen yerelde: whisper.cpp ve sherpa-onnx (NVIDIA Parakeet modeliyle) kullanılıyor, böylece internet olmadan da çalışabiliyor. Notların özetlenmesi ve sohbet gibi işler için llama.cpp ile yerel büyük dil modeli çalıştırma desteği var — yani hem konuşma tanıma hem dil modeli isteğe bağlı olarak tamamen cihazda kalabiliyor. Veriler better-sqlite3 ile yerel olarak saklanıyor; isteyen kullanıcı bulut işlemeye de geçebiliyor. Kurumsal kullanım için SSO ve SCIM gibi merkezi kimlik yönetimi özellikleri eklenmiş.",
+        "why": "📈 2026'da büyük SaaS şirketlerinin kullanıcı verisini nasıl işlediğine dair artan tepki, \"yerel öncelikli\" (local-first) yapay zeka araçlarına olan ilgiyi körüklüyor. OpenWhispr, ücretli rakiplerinin sunduğu özelliklerin çoğunu (toplantı deşifresi, konuşmacı ayrıştırma, anlamsal arama) ücretsiz ve gizlilik garantili biçimde sunarak doğrudan bu talebe cevap veriyor. 938 fork ve 161 açık pull request, projenin sadece kullanıcı değil geliştirici ilgisi de topladığını gösteriyor. Ayrıca whisper.cpp ve llama.cpp gibi yerel çıkarım araçlarının son dönemde olgunlaşması, bu tarz \"tamamen yerel AI masaüstü uygulaması\" kategorisinin teknik olarak artık pratik hale gelmesini sağladı.",
+        "evolve": "💡 Intel tabanlı Mac'lerde, ONNX Runtime'ın bu mimari için ikili dağıtımı durdurulduğu için anlamsal arama özelliği çalışmıyor — bu, eski donanımlı kullanıcılar için önemli bir eksik. Node.js 24 ve üzeri gerekliliği, bazı kullanıcılar için kurulum bariyeri oluşturuyor. 174 açık issue, projenin hâlâ stabilite çalışması gerektirdiğine işaret ediyor. Masaüstüne bu kadar odaklanmışken mobil bir sürümün olmaması da dikkat çekici bir boşluk — sesle not almanın en doğal kullanım alanlarından biri telefon. Bu boşluklar kapatılırsa proje, gizlilik odaklı kullanıcılar için varsayılan dikte aracı haline gelebilir."
+      },
+      "glossary": [
+        {
+          "term": "Whisper.cpp",
+          "def": "OpenAI'nin Whisper konuşma tanıma modelini, sunucuya ihtiyaç duymadan cihaz üzerinde hızlıca çalıştırmayı sağlayan C/C++ ile yazılmış hafifletilmiş sürüm."
+        },
+        {
+          "term": "sherpa-onnx",
+          "def": "Konuşma tanıma ve sentezleme gibi ses modellerini ONNX formatında, çeşitli platformlarda yerel olarak çalıştırmaya yarayan açık kaynak bir kütüphane."
+        },
+        {
+          "term": "llama.cpp",
+          "def": "Büyük dil modellerini bulut sunucusu olmadan, kişisel bilgisayarın işlemci/ekran kartında verimli çalıştırmayı sağlayan popüler bir açık kaynak proje."
+        },
+        {
+          "term": "Diarization (konuşmacı ayrıştırma)",
+          "def": "Bir ses kaydında \"kim ne zaman konuştu\" sorusunu otomatik olarak tespit edip konuşmacılara ayıran işlem."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması geliştirmeyi sağlayan bir çatı."
+        },
+        {
+          "term": "SSO (Single Sign-On)",
+          "def": "Kullanıcının tek bir kimlik doğrulamayla birden fazla uygulamaya erişebilmesini sağlayan tek oturum açma sistemi."
+        },
+        {
+          "term": "SCIM",
+          "def": "Kurumların çalışan hesaplarını farklı yazılımlar arasında otomatik olarak oluşturup senkronize etmesini sağlayan bir kimlik yönetimi standardı."
+        },
+        {
+          "term": "ONNX Runtime",
+          "def": "Farklı yapay zeka çatılarında eğitilmiş modelleri ortak bir formatta (ONNX) çalıştırmaya yarayan performans odaklı çalışma zamanı."
+        }
+      ]
+    },
+    {
+      "name": "BraveOPotato/FckSignups",
+      "url": "https://github.com/BraveOPotato/FckSignups",
+      "stars": "3.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Basit bir hesap makinesi ya da dosya dönüştürücü kullanmak için bile e-posta ile kayıt olmaya zorlanmak, giderek daha çok kullanıcıyı rahatsız eden bir \"karanlık tasarım\" (dark pattern) örneği. FckSignups (yeni adıyla NoSignups), hiçbir kayıt, takip ya da e-posta gerektirmeyen, tarayıcı üzerinde doğrudan çalışan 200'den fazla açık kaynak aracı; üretkenlik, tasarım, geliştirme, gizlilik ve medya gibi dokuz kategoride küratörlüğünü yaparak tek bir yerden erişilebilir hâle getiren bir dizin (directory) projesi.",
+        "tech": "🛠️ Arayüz React ve TypeScript ile yazılmış, Vite ile derleniyor. Her araç kaydı; id, isim, açıklama, url, kategori, etiketler, GitHub bağlantısı ve lisans gibi standart alanlardan oluşan basit bir JSON şemasına göre tanımlanıyor. Bu tasarım, yeni bir araç eklemeyi neredeyse sadece bir JSON girdisi açmak kadar kolaylaştırıyor ve topluluğun pull request ile hızlıca katkı vermesine izin veriyor. Projenin kendisi hiçbir analiz (analytics) ya da izleme kodu içermiyor — bu, \"takip yok\" vaadini teknik olarak da destekliyor.",
+        "why": "📈 SaaS şirketlerinin \"önce ücretsiz dene\" görünümü altında zorunlu kayıt, kredi kartı isteme gibi büyüme taktiklerine (growth hacking) karşı büyüyen bir tepki var; proje bu ruh haline doğrudan hitap ediyor. Katkı vermenin teknik bariyerinin çok düşük olması (tek bir JSON satırı eklemek), yıldız ve pull request sayısının hızlı artmasını kolaylaştırıyor. r/fucksignups gibi bir subreddit topluluğunun projeyle organik olarak örtüşmesi de viral yayılımı hızlandıran bir başka etken.",
+        "evolve": "💡 470 açık issue, bu ölçekte bir küratörlü listenin kalite kontrolünü (hangi araç gerçekten \"kayıtsız\" kalıyor, hangi araç politika değiştirdi) zorlaştırıyor — otomatik bir bağlantı/politika kontrolü (link checker) olmadan liste zamanla güncelliğini yitirebilir. Şu an sadece statik bir web sitesi olarak var; bir tarayıcı eklentisi eklenip kullanıcı gezindiği sitede zorunlu kayıt duvarına takıldığında otomatik alternatif önermesi, projeyi pasif bir dizinden aktif bir asistana dönüştürebilir."
+      },
+      "glossary": [
+        {
+          "term": "Dark pattern (karanlık tasarım deseni)",
+          "def": "Kullanıcıyı normalde yapmayacağı bir şeye (ör. zorunlu kayıt, gizli ücret) yönlendirmek için bilinçli olarak tasarlanmış arayüz hilesi."
+        },
+        {
+          "term": "Vite",
+          "def": "Modern web projelerini çok hızlı başlatıp derleyen, geliştirici deneyimine odaklanan bir derleme (build) aracı."
+        },
+        {
+          "term": "JSON şema",
+          "def": "Bir JSON verisinin hangi alanları, hangi tipte içermesi gerektiğini tanımlayan yapı/şablon."
+        },
+        {
+          "term": "Pull request (PR)",
+          "def": "Bir katkıcının yaptığı kod değişikliğini, projeye eklenmek üzere incelemeye sunduğu istek."
+        },
+        {
+          "term": "Growth hacking",
+          "def": "Ürünün kullanıcı sayısını hızla artırmak için uygulanan, bazen agresif pazarlama/tasarım taktikleri."
+        }
+      ]
+    },
+    {
+      "name": "humanlayer/skills",
+      "url": "https://github.com/humanlayer/skills",
+      "stars": "3.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Claude Code'a \"skill\" (beceri) olarak eklenen, somut geliştirici sıkıntılarını hedefleyen küçük ama üretime hazır beş araç sunuyor: CLAUDE.md dokümantasyonunu daha iyi talimat bloklarıyla yeniden yazan, React bileşen tiplerini daraltan, GitHub Actions ile tekrarlayan bir ajan döngüsü iskeleti kuran, kod tabanı için bir kontrol döngüsü tasarlayan ve görsel açıklama/diyagram üreten beceriler. Amaç, \"ajan bir şeyler yapabilir\" vaadini somut, tekrar kullanılabilir iş akışlarına dönüştürmek.",
+        "tech": "🛠️ Kurulum `npx skills add` komutuyla yapılıyor ve beceriler `.claude-plugin` dizin yapısında saklanarak Claude'un resmi eklenti (plugin) ekosistemine entegre oluyor. Araç zinciri Node.js tabanlı; her beceri, Claude'a verilecek talimatları, yardımcı betikleri ve gerekirse harici entegrasyonları (ör. GitHub Actions tanımları) bir arada paketliyor. Bu yapı, bir beceriyi tek bir komutla kurup projeye \"takmayı\" mümkün kılıyor.",
+        "why": "📈 Claude Code'un \"Skills\" özelliği 2026'nın ikinci yarısında hızla yaygınlaştı ve bu listede neredeyse her gün yeni bir \"agent skill\" koleksiyonu görülüyor. HumanLayer ekibinin insan-onaylı (**human-in-the-loop**) ajan tasarımıyla tanınıyor olması, bu küçük ama \"gerçekten işe yarayan\" beceri setine ekstra güven kazandırıyor. Özellikle `build-iterated-agentic-loop` gibi CI/CD'ye bağlanan bir beceri, ajan otomasyonunu soyut bir demo olmaktan çıkarıp gerçek geliştirici iş akışına sokan nadir örneklerden biri olduğu için dikkat çekiyor.",
+        "evolve": "💡 Repo şu an sadece beş beceri içeriyor ve dokümantasyon oldukça minimal — bir kullanıcı bir beceriyi ne zaman/nasıl tetikleyeceğini anlamak için kaynağı okumak zorunda kalabiliyor. Bakım durumu ve sürüm uyumluluğu netleşmemiş. Topluluk katkısı için standart bir şablon ve katkı rehberi eklenmesi, projenin küçük bir \"resmi\" beceri seti olmaktan çıkıp topluluk destekli geniş bir kütüphaneye dönüşmesini sağlayabilir. Ayrıca becerilerin otomatik test/CI ile doğrulanmaması, kalite garantisi konusunda bir boşluk bırakıyor."
+      },
+      "glossary": [
+        {
+          "term": "Skill (beceri)",
+          "def": "Bir yapay zeka ajanına belirli bir görevi tekrar tekrar aynı şekilde yapabilmesi için verilen, talimat ve yardımcı dosyalardan oluşan paket."
+        },
+        {
+          "term": ".claude-plugin",
+          "def": "Claude Code'un eklentileri (skill, komut, ayar gibi) tanımlamak için kullandığı standart dizin yapısı."
+        },
+        {
+          "term": "Agentic loop (ajan döngüsü)",
+          "def": "Bir yapay zeka ajanının planla-uygula-kontrol et adımlarını insan müdahalesi olmadan veya sınırlı müdahaleyle tekrar tekrar çalıştırdığı otomasyon döngüsü."
+        },
+        {
+          "term": "Human-in-the-loop",
+          "def": "Otomasyonun kritik adımlarında bir insanın onay verdiği veya müdahale edebildiği tasarım yaklaşımı."
+        },
+        {
+          "term": "npx",
+          "def": "Node.js paket yöneticisine (npm) ait, bir paketi kalıcı olarak kurmadan tek seferlik çalıştırmayı sağlayan komut."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak test edilip (Sürekli Entegrasyon) yayına alındığı (Sürekli Dağıtım) yazılım geliştirme pratiği."
+        }
+      ]
+    }
+  ]
+}
