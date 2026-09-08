@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-08",
+  "projects": [
+    {
+      "name": "microsoft/markitdown",
+      "url": "https://github.com/microsoft/markitdown",
+      "stars": "180k",
+      "language": "Python",
+      "sections": {
+        "serves": "RAG (retrieval-augmented generation) veya agent tabanlı bir sistem kurarken karşılaşılan en sıkıcı problemlerden biri şudur: kullanıcı bir PDF, Word belgesi, Excel tablosu, ses kaydı ya da bir YouTube linki verir; siz bunu LLM'in anlayabileceği bir metne çevirmek zorunda kalırsınız. MarkItDown tam olarak bunu yapıyor: PDF, PowerPoint, Word, Excel, resim (OCR + EXIF), ses (transkripsiyon), HTML, CSV/JSON/XML, EPub ve hatta ZIP arşivlerini **Markdown**'a çeviriyor.\n\nÖnemli olan nokta şu: çıktı \"insan için güzel görünen\" bir metin değil, **başlıkları, listeleri, tabloları ve linkleri koruyan** yapılandırılmış bir Markdown. Çünkü modern LLM'ler eğitim verisinin büyük kısmında Markdown görmüş durumda ve bu format hem daha az token harcıyor hem de modelin belge yapısını (\"bu bir başlık\", \"bu bir tablo hücresi\") daha iyi kavramasını sağlıyor.",
+        "tech": "Mimari kararı bilinçli: tek bir dev parser yazmak yerine **her format için ayrı bir converter** olan modüler bir yapı kurulmuş. Bağımlılıklar \"optional\" (extras) olarak tanımlanmış — yani sadece PDF işleyecekseniz ses işleme kütüphanelerini kurmanıza gerek yok. Bunun üstüne bir **plugin sistemi** eklenmiş; topluluk, çekirdek kodu değiştirmeden `markitdown-ocr` gibi eklentilerle görüntü tabanlı metin çıkarma gibi yetenekler ekleyebiliyor.\n\nBulut tarafında Azure Document Intelligence ve Azure Content Understanding entegrasyonları var — karmaşık taranmış belgeler veya çok modlu (multimodal) alan çıkarımı gerektiğinde bu servislere devrediliyor. Görsellerin metinsel açıklamasını üretmek içinse OpenAI-uyumlu herhangi bir LLM istemcisi bağlanabiliyor. Hem CLI hem Python API sunuyor, Docker imajı da mevcut. README açıkça \"bu araç işlem düzeyinde yetkiyle çalışır, güvenilmeyen girdilere dikkat edin\" uyarısı yapıyor — yani sandbox'lama kullanıcıya bırakılmış.",
+        "why": "Microsoft'un resmi desteğiyle çıkması ve LLM ekosisteminin neredeyse evrensel bir \"belgeyi metne çevirme\" ihtiyacına cevap vermesi, projeyi RAG/agent altyapısının standart bir bileşeni haline getirdi. 13 binin üzerinde fork ve günde 886 yeni yıldız, projenin artık \"keşfedilen yeni bir şey\" değil, **herkesin bir noktada ihtiyaç duyup bulduğu bir altyapı parçası** olduğunu gösteriyor. AI destekli doküman analizi, kurumsal asistanlar ve agent tabanlı otomasyonun yaygınlaşması bu talebi sürekli besliyor.",
+        "evolve": "Karmaşık iç içe tabloların Markdown'a çevrilirken bozulması hâlâ bilinen bir sınırlama — daha akıllı tablo yeniden yapılandırma büyük fayda sağlar. Bulut bağımlılığını azaltmak isteyenler için yerel (on-device) OCR ve konuşma tanıma modelleriyle çalışan bir mod eklenebilir. Güvenlik tarafında ise şu an kullanıcının sorumluluğuna bırakılan \"güvenilmeyen girdi\" riskini, resmi bir sandbox/izin modeliyle projenin kendisinin çözmesi mantıklı bir sonraki adım olurdu."
+      },
+      "glossary": [
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir LLM'e soruyu cevaplamadan önce ilgili belgelerden bilgi getirip bağlam olarak sunma yöntemi." },
+        { "term": "Token", "def": "LLM'lerin metni işlerken kullandığı en küçük birim; kelimenin bir parçası olabilir. Az token, daha ucuz ve hızlı işlem demek." },
+        { "term": "OCR (Optical Character Recognition)", "def": "Görüntü içindeki yazıyı otomatik olarak tanıyıp düzenlenebilir metne çeviren teknoloji." },
+        { "term": "Plugin (eklenti)", "def": "Bir yazılımın çekirdek kodu değiştirilmeden, dışarıdan eklenerek yeni özellik kazandıran bağımsız modül." },
+        { "term": "Multimodal", "def": "Metin, görsel, ses gibi birden fazla veri türünü aynı anda işleyebilen sistemler için kullanılan terim." }
+      ]
+    },
+    {
+      "name": "heygen-com/hyperframes",
+      "url": "https://github.com/heygen-com/hyperframes",
+      "stars": "46.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Video prodüksiyonu geleneksel olarak timeline tabanlı editörlerle (Premiere, After Effects vb.) yapılır — bu araçlar hem insan operatöre bağımlıdır hem de AI ajanlarının doğrudan kullanabileceği bir arayüz sunmaz. HyperFrames bu modeli tersine çeviriyor: video, **düz bir HTML dosyası** olarak tanımlanıyor. Slogan tam olarak bunu özetliyor: \"HTML yaz, video render et — ajanlar için inşa edildi.\"\n\nBunun pratik faydası şu: kod yazan bir AI ajanı zaten HTML/CSS/JS biliyor, dolayısıyla video üretimini de otomatik iş akışının doğal bir parçası haline getirebiliyor — ürün lansmanı videosu, PR'daki bir değişikliği anlatan animasyonlu bir kod-diff videosu ya da bir veri görselleştirmesi gibi.",
+        "tech": "Render hattı beş adımdan oluşuyor: (1) zamanlama metadata'sı içeren HTML kompozisyonu parse edilir, (2) headless Chrome (Puppeteer ile yönetilen) her video karesini render eder, (3) her kare için sayfa **deterministik** biçimde tam o zaman noktasına \"seek\" edilir — yani rastgelelik yok, aynı HTML her zaman aynı videoyu üretir, (4) kareler FFmpeg ile video olarak encode edilir, (5) ses parçaları mixlenir.\n\nAnimasyon tarafında GSAP, CSS animasyonları, Lottie, Three.js ve Anime.js gibi tanıdık web kütüphaneleri kullanılabiliyor. Ajanlara özel bir \"skills\" sistemi var — planlama, HTML yazma, animasyon ekleme, lint, önizleme ve render adımlarını adım adım öğreten talimat paketleri (20 farklı beceri). Docker ile yerel dağıtım, AWS Lambda ile ölçeklenebilir/dağıtık render desteği de mevcut.",
+        "why": "HeyGen (AI video/avatar alanında tanınan bir şirket) bu aracı kendi üretim ortamında kullanıyor ve tldraw, TanStack gibi bilinen açık kaynak ekipleri de benimsemiş durumda — bu, projeye ciddi bir güvenilirlik kazandırıyor. Zamanlaması da isabetli: kod yazan AI ajanlarının artık sadece kod değil, pazarlama/dokümantasyon içeriği de üretmesi bekleniyor ve HTML, ajanların zaten en rahat olduğu format. \"Built for agents\" vurgusu, klasik video editörlerinin ajan iş akışlarına hiç uymamasından doğan gerçek bir boşluğu dolduruyor.",
+        "evolve": "Şu an render motoru olarak tam bir headless Chrome kullanılıyor; bugünün trendinde de öne çıkan Lightpanda gibi çok daha hafif bir tarayıcı motoruyla entegrasyon, büyük ölçekli/paralel render maliyetini ciddi oranda düşürebilir. WebGPU tabanlı native render desteği ve gerçek zamanlı önizleme hızının artırılması da mantıklı bir sonraki adım. Çoklu dilde otomatik altyazı/dublaj üretimi, içerik pipeline'ını uçtan uca tamamlayabilir."
+      },
+      "glossary": [
+        { "term": "Headless browser", "def": "Görsel arayüzü olmadan arka planda çalışan, web sayfalarını programatik olarak açıp işleyebilen tarayıcı." },
+        { "term": "Deterministik render", "def": "Aynı girdi her çalıştırıldığında birebir aynı çıktıyı üreten, rastgelelik içermeyen işlem süreci." },
+        { "term": "FFmpeg", "def": "Video ve sesi kodlamak, dönüştürmek ve düzenlemek için kullanılan açık kaynak bir komut satırı aracı." },
+        { "term": "Puppeteer", "def": "Chrome tarayıcısını kod aracılığıyla otomatik olarak kontrol etmeyi sağlayan bir Node.js kütüphanesi." },
+        { "term": "AWS Lambda", "def": "Sunucu yönetmeden, ihtiyaç anında otomatik ölçeklenen kod çalıştırma servisi (serverless bilişim)." }
+      ]
+    },
+    {
+      "name": "mksglu/context-mode",
+      "url": "https://github.com/mksglu/context-mode",
+      "stars": "21k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI kodlama ajanlarıyla (Claude Code, Cursor, Copilot vb.) uzun süre çalışanların bildiği bir sorun var: bir Playwright ekran görüntüsü çıktısı 56KB, bir GitHub issue listesi 59KB tutabiliyor ve bu devasa metinler context penceresini hızla dolduruyor. Pencere dolunca sistem konuşmayı \"compact\" edip özetliyor — ama bu sırada hangi dosyaların düzenlendiği, hangi görevin yarım kaldığı gibi kritik bilgiler kayboluyor ve ajan sanki hafızasını kaybetmiş gibi davranmaya başlıyor. Context Mode bu \"unutkanlık\" problemini doğrudan hedef alıyor.",
+        "tech": "Çekirdek fikir, araç (tool) çalıştırmalarını bir **subprocess sandbox**'ında izole etmek: `ctx_execute` bir kod çalıştırdığında sadece stdout konuşma bağlamına giriyor, ham veri hiç görünmüyor — bu sayede 315KB'lık bir çıktı 5.4KB'a, yani **%98 oranında** küçülüyor. Çıktı 5KB'ı aşarsa ve bir \"intent\" (niyet) parametresi verilmişse, sistem tüm çıktıyı bir bilgi tabanına indeksliyor ve sadece o niyetle eşleşen kısmı geri döndürüyor.\n\nOturum hafızası için proje başına bir **SQLite** veritabanı tutuluyor: dosya okuma/yazma, git işlemleri, görevler, hatalar ve kullanıcı kararları buraya kaydediliyor. Bu akışı beş farklı hook yönetiyor (PreToolUse, PostToolUse, UserPromptSubmit, PreCompact, SessionStart); PreCompact anlık bir öncelik-katmanlı XML \"snapshot\" oluşturuyor, SessionStart ise bu özeti conversation compact olduktan sonra modele geri veriyor. Arama tarafında **FTS5 (Full-Text Search)** + BM25 sıralama + Porter kök bulma + trigram eşleştirme + Levenshtein mesafesiyle yazım hatası düzeltme bir arada kullanılıyor. Toplam 18 platforma (Claude Code, Cursor, Gemini CLI, VS Code/JetBrains Copilot, Codex CLI vb.) entegre olabiliyor, bazılarında tam hook desteğiyle, bazılarında sadece MCP üzerinden.",
+        "why": "AI destekli kodlama günlük iş akışının merkezine yerleştikçe, \"context yönetimi\" soyut bir kavram olmaktan çıkıp gerçek bir mühendislik problemi haline geldi — uzun oturumlarda ajanın önceki kararları unutması geliştiricilerin en sık şikayet ettiği konulardan biri. Context Mode bu somut acı noktasına doğrudan cevap veriyor ve neredeyse piyasadaki tüm büyük kodlama ajanlarını **tek bir eklenti** ile destekleyerek geniş bir kullanıcı tabanına aynı anda ulaşıyor; bu platform genişliği hızlı büyümesinin ana sebeplerinden biri.",
+        "evolve": "Zed ve Antigravity IDE gibi \"hook'suz\" platformlarda şu an sadece prompt tabanlı rehberlik var ve uyum oranı yaklaşık %60'ta kalıyor — bunun programatik hale getirilmesi büyük fark yaratır. Tek proje/oturum sınırının ötesine geçip bir ekibin ortak \"kolektif hafızası\" haline gelecek paylaşımlı bir katman, ya da cihazlar arası bulut senkronizasyonu, aracı bireysel bir yardımcıdan takım altyapısına dönüştürebilir."
+      },
+      "glossary": [
+        { "term": "Context window (bağlam penceresi)", "def": "Bir LLM'in tek seferde \"görebildiği\" ve hatırlayabildiği metin miktarının sınırı." },
+        { "term": "Hook", "def": "Bir sistemde belirli bir olay (örneğin bir araç çalıştırılmadan önce/sonra) gerçekleştiğinde otomatik tetiklenen özel kod parçası." },
+        { "term": "Subprocess", "def": "Bir programın içinden başlatılan, kendi ayrı belleğinde ve izole ortamında çalışan alt işlem." },
+        { "term": "SQLite", "def": "Ayrı bir sunucu gerektirmeyen, tek bir dosya üzerinde çalışan hafif bir veritabanı motoru." },
+        { "term": "BM25", "def": "Arama motorlarında bir belgenin bir sorguyla ne kadar alakalı olduğunu puanlayan yaygın bir sıralama algoritması." },
+        { "term": "Levenshtein mesafesi", "def": "İki metin arasındaki farkı, bir metni diğerine çevirmek için gereken minimum düzenleme (ekleme/silme/değiştirme) sayısıyla ölçen yöntem." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." }
+      ]
+    },
+    {
+      "name": "lightpanda-io/browser",
+      "url": "https://github.com/lightpanda-io/browser",
+      "stars": "35k",
+      "language": "Zig",
+      "sections": {
+        "serves": "Büyük ölçekli web otomasyonu, scraping veya AI ajanlarının web'de gezinmesi gerektiğinde standart araç headless Chrome'dur — ama Chrome, tek bir sekme için bile yüzlerce megabayt bellek harcayan, masaüstü tarayıcısının neredeyse birebir aynısı ağır bir motordur. Binlerce paralel örnek çalıştırmak isteyen bir şirket için bu maliyet hızla patlar. Lightpanda, sadece otomasyon için tasarlanmış, gereksiz her şeyden arındırılmış bir tarayıcı sunarak bu sorunu çözüyor: 100 sayfa işlerken Chrome'a göre **~16 kat daha az bellek** ve **~9 kat daha hızlı**.",
+        "tech": "Ekip, Chromium ya da WebKit'i fork'lamak yerine motoru sıfırdan **Zig** dilinde yazmayı tercih etmiş — gerekçe, gerçek performans için mevcut devasa kod tabanlarının üzerine inşa etmenin mümkün olmadığı. Zig'in düşük seviyeli, açık bellek yönetimi; render motoru, masaüstü entegrasyonu gibi Chrome'un taşıdığı gereksiz katmanlar hiç eklenmeden agresif optimizasyon yapılmasına imkân veriyor. Somut bir AWS testinde 933 gerçek web sayfası için tepe bellek kullanımı Chrome'da 2GB iken Lightpanda'da 123MB, toplam süre Chrome'da 46 saniyeyken Lightpanda'da 5 saniye çıkmış.\n\nTemel web standartları (XHR/Fetch API, DOM API, cookie, form input) destekleniyor; hem **CDP (Chrome DevTools Protocol)** hem **WebDriver BiDi** uyumluluğu sayesinde mevcut Puppeteer/Playwright kodları büyük ölçüde değiştirilmeden çalışabiliyor. Reklam engelleyici ve robots.txt uyumu yerleşik olarak geliyor. AI ajanlar için ayrıca yerleşik bir \"agent mode\" var: düz İngilizce talimatı alıp sayfada gezinen, veri çıkaran ve ürettiği eylemleri \"PandaScript\" adlı saf JavaScript koduna döken bir katman; MCP entegrasyonuyla Anthropic, OpenAI ve Gemini modelleriyle doğrudan çalışabiliyor.",
+        "why": "AI ajan tabanlı web otomasyonunun (browser-use gibi araçların da aynı gün trend olması tesadüf değil) hızla yaygınlaşması, ölçekte çalışan ucuz bir tarayıcı altyapısına olan talebi patlattı. Somut ve çarpıcı benchmark sayıları (16x az bellek, 9x hız) teknik topluluklarda hızla paylaşılan türden bulgular ve doğrudan \"bunu kullanırsam ne kadar tasarruf ederim\" sorusuna cevap veriyor — bu da günlük yıldız artışını açıklıyor.",
+        "evolve": "En büyük açık, native bir render motorunun olmaması ve sınırlı CSS desteği — canvas, WebGL ve karmaşık CSS düzenleri gerektiren siteler için proje henüz olgun değil; tam web platformu uyumluluğuna ulaşmak uzun bir yol. AGPL-3.0 lisansı, kodlarını kapalı tutmak isteyen bazı şirketler için ticari kullanımda tereddüt yaratabilir; ikili (dual) lisans modeli bu engeli kaldırabilir. Playwright/Puppeteer test paketlerinin sorunsuz taşınabilmesi için protokol uyumluluğunun derinleştirilmesi de önemli bir sonraki adım."
+      },
+      "glossary": [
+        { "term": "Headless browser", "def": "Görsel arayüzü olmadan arka planda çalışan, web sayfalarını programatik olarak açıp işleyebilen tarayıcı." },
+        { "term": "Zig", "def": "C'ye alternatif olarak tasarlanmış, düşük seviyeli bellek kontrolü ve performans odaklı sistem programlama dili." },
+        { "term": "CDP (Chrome DevTools Protocol)", "def": "Chrome tarayıcısını dışarıdan kod ile kontrol etmeyi ve içini incelemeyi sağlayan standart iletişim protokolü." },
+        { "term": "WebDriver BiDi", "def": "Tarayıcı otomasyonu için geliştirilen, iki yönlü (bidirectional) iletişime dayanan yeni nesil standart protokol." },
+        { "term": "AGPL-3.0", "def": "Yazılımı sunucu üzerinden bir hizmet olarak sunanları bile kaynak kodu paylaşmaya zorlayan, güçlü bir copyleft açık kaynak lisansı." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." }
+      ]
+    }
+  ]
+}
