@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-09",
+  "projects": [
+    {
+      "name": "jo-inc/camofox-browser",
+      "url": "https://github.com/jo-inc/camofox-browser",
+      "stars": "10.7k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "AI ajanlarına web'de \"gözlerini açan\" araçlar (Playwright, Puppeteer) artık ciddi bir sorunla karşı karşıya: Cloudflare, Google ve benzeri bot-koruma sistemleri bu araçları saniyeler içinde tespit edip engelliyor. Çünkü bu araçlar JavaScript seviyesinde \"ben bir insanım\" numarası yapıyor, ama tarayıcının kendi C++ katmanında bıraktığı iz (WebGL bilgisi, ses donanımı parmak izi, CPU çekirdek sayısı gibi) hâlâ ele veriyor. Camofox-Browser, ajanlara **tespit edilmeyen** bir tarayıcı vererek bu açığı kapatıyor.\n\nProjenin özünde bir Firefox fork'u olan Camoufox motoru var; üstüne ajanların kolayca konuşabileceği bir REST API ve Playwright uyumlu bir katman eklenmiş. Yani mevcut otomasyon kodunuzu büyük ölçüde değiştirmeden, altındaki tarayıcıyı \"görünmez\" bir versiyonla değiştirebiliyorsunuz.",
+        "tech": "Fark yaratan mimari kararı, sahte kimlik bilgilerinin JavaScript'e hiç ulaşmadan **C++ implementasyon seviyesinde** enjekte edilmesi: `navigator.hardwareConcurrency`, WebGL renderer bilgisi, AudioContext parmak izi ve ekran geometrisi gibi değerler tarayıcı motorunun kendisinde yamanıyor. Bu, JavaScript'i override ederek sahtecilik yapan klasik yöntemlere göre çok daha zor tespit ediliyor çünkü kontrol scriptleri motorun \"gerçek\" cevabını okuyor.\n\nAjan tarafındaki maliyeti düşürmek için ilginç bir seçim yapılmış: sayfa LLM'e ham HTML olarak değil, **erişilebilirlik (accessibility) anlık görüntüsü** olarak veriliyor — bu da token tüketimini yaklaşık %90 azaltıyor. Sistem port 9377'de bir REST sunucusu olarak çalışıyor; tarayıcı → kullanıcı oturumu → sekme grubu → sekme hiyerarşisiyle izole `BrowserContext`'ler yönetiliyor, oturumlar 30 dakika işlem görmeyince otomatik kapanıyor. Docker imajı, Fly.io/Railway dağıtımı, VNC ile interaktif giriş ve `@google_search`, `@reddit_subreddit` gibi hazır arama makroları da paket içinde geliyor.",
+        "why": "Aynı hafta browser-use ve Lightpanda gibi projelerin de trend olması tesadüf değil: AI ajanlarının web'de otonom gezinmesi artık niş bir deney değil, üretim ortamlarının bir parçası haline geldi ve bu da \"ajan tespit edilmeden nasıl gezinir\" sorusunu ciddi bir mühendislik problemine dönüştürdü. Camofox-Browser'ı öne çıkaran, sorunu JavaScript hileleriyle değil motorun kendisini değiştirerek çözmesi — bu, güvenlik ve scraping topluluklarında \"gerçekten çalışıyor\" izlenimi bırakan, nadir görülen bir yaklaşım.",
+        "evolve": "Telemetri varsayılan olarak açık gelmesi (anonim ve opt-out edilebilir olsa da) kurumsal kullanıcılar için bir güven engeli oluşturabilir; varsayılanın kapalı olması daha sağlıklı olurdu. Oturum başına 50 eşzamanlı ajan / 10 sekme sınırı büyük ölçekli scraping operasyonları için darboğaz yaratıyor — yatay ölçeklenebilir bir cluster modu mantıklı bir sonraki adım. Kurulumda ~300MB'lık Camoufox ikili dosyasının indirilmesi gerekmesi de hafif/serverless dağıtım senaryolarını zorlaştırıyor."
+      },
+      "glossary": [
+        { "term": "Headless browser", "def": "Görsel arayüzü olmadan arka planda çalışan, web sayfalarını programatik olarak açıp işleyebilen tarayıcı." },
+        { "term": "Fingerprint (parmak izi)", "def": "Bir tarayıcının donanım ve yazılım özelliklerinden (ekran, CPU, ses kartı vb.) oluşan, o oturumu diğerlerinden ayırt etmeye yarayan benzersiz imza." },
+        { "term": "WebGL", "def": "Tarayıcıda donanım hızlandırmalı 3B/2B grafik çizmeyi sağlayan bir web API'si; bot tespitinde parmak izi kaynağı olarak da kullanılır." },
+        { "term": "REST API", "def": "Sistemler arasında HTTP üzerinden standart istek/yanıt biçimiyle veri alışverişi yapılmasını sağlayan mimari yaklaşım." },
+        { "term": "Docker", "def": "Bir uygulamayı bağımlılıklarıyla birlikte taşınabilir, izole bir \"konteyner\" içine paketleyen sanallaştırma teknolojisi." }
+      ]
+    },
+    {
+      "name": "The-Swarm-Corporation/AutoHedge",
+      "url": "https://github.com/The-Swarm-Corporation/AutoHedge",
+      "stars": "5.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Aktif yatırım yönetimi geleneksel olarak bir analistin piyasayı izlemesi, bir stratejist'in karar vermesi ve bir işlemci'nin emri girmesiyle yürür — bu zincirin her halkası insan zamanı ve dikkati gerektirir. AutoHedge, bu zinciri uçtan uca otomatikleştirilmiş bir **yapay zeka ajanları ekibine** devrediyor: piyasa analizinden emir icrasına kadar tüm süreç insan müdahalesi olmadan işliyor.",
+        "tech": "Mimari, **Swarms** adlı çoklu-ajan çatısı üzerine kurulu, dört uzman ajandan oluşan bir boru hattı (pipeline) şeklinde tasarlanmış: **Director Agent** genel stratejiyi belirliyor, **Quant Agent** teknik/istatistiksel analiz yapıyor, **Risk Management Agent** işleme girmeden önce pozisyon büyüklüğünü hesaplıyor, **Execution Agent** ise nihai emri gönderiyor. Projenin vurguladığı tasarım ilkesi net: \"risk-first design\" — yani hiçbir emir, risk kontrolünden geçmeden icraya gitmiyor.\n\nŞu an tam destek Solana ağı üzerinde ve piyasa verisi için Jupiter API kullanılıyor; deneysel ajan mantığı hem OpenAI hem Anthropic modelleriyle çalışabiliyor. Sistem çıktısını insanın okuyacağı bir rapor yerine **JSON formatında**, yani başka sistemlerin (dashboard, alarm, otomatik defter tutma) doğrudan tüketebileceği yapılandırılmış veri olarak üretiyor — bu da onu bağımsız bir ürün değil, daha büyük bir otomasyon zincirinin bir bileşeni olarak konumlandırıyor.",
+        "why": "AI ajanlarının finans dünyasına girişi ve kripto piyasalarındaki otomasyon iştahı aynı anda büyüyor; AutoHedge tam da bu iki trendin kesişiminde duruyor. \"Risk-first\" vurgusu, çoğu otonom trading projesinin gözden kaçırdığı bir güven sorununa (kontrolsüz bir botun sermayeyi nasıl koruyacağı) doğrudan cevap vermeye çalışması nedeniyle dikkat çekiyor; bu da onu sıradan bir \"trading bot\" tekrarından ayırıyor.",
+        "evolve": "Şu anki tam destek yalnızca Solana ile sınırlı — README'de Coinbase entegrasyonu ve ek borsalara genişleme yol haritada duruyor, bu genişleme gerçekleşirse kullanıcı tabanı ciddi büyüyebilir. Gerçek sermaye ile geçmiş performansa dair şeffaf, bağımsız denetlenmiş bir kayıt (backtest ötesinde canlı sonuçlar) eksik; bu tür bir izlenebilirlik projeye kurumsal güven kazandırır. Ayrıca çoklu-ajan kararlarının nasıl denetlenip geri alınacağına dair (insan onayı gerektiren bir \"kill switch\" gibi) daha güçlü bir güvenlik katmanı, tam otonom sermaye yönetimi iddiası için kritik bir sonraki adım."
+      },
+      "glossary": [
+        { "term": "Multi-agent sistem (çoklu ajan)", "def": "Her biri farklı bir görevde uzmanlaşmış, birbiriyle işbirliği yaparak ortak bir hedefe ulaşan birden fazla yapay zeka ajanından oluşan sistem." },
+        { "term": "Pipeline (boru hattı)", "def": "Bir işin, her biri bir öncekinin çıktısını girdi olarak alan sıralı adımlar halinde işlendiği süreç akışı." },
+        { "term": "API (Application Programming Interface)", "def": "Bir yazılımın işlevlerine, başka bir programın standart bir arayüz üzerinden erişmesini sağlayan sözleşme." },
+        { "term": "Backtest", "def": "Bir yatırım stratejisinin geçmiş piyasa verileri üzerinde simüle edilerek performansının test edilmesi yöntemi." },
+        { "term": "Pozisyon boyutlandırma (position sizing)", "def": "Bir yatırımda ne kadar sermaye riske atılacağını, kabul edilebilir risk seviyesine göre belirleme süreci." }
+      ]
+    },
+    {
+      "name": "openai/plugins",
+      "url": "https://github.com/openai/plugins",
+      "stars": "5.9k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "Codex gibi kod yazan AI ajanlarının gerçek değeri, sadece kod üretmeleri değil, dış dünyayla (Figma, Notion, App Store, deployment servisleri) konuşabilmeleridir — ama bunu her geliştiricinin sıfırdan entegre etmesi zaman kaybı. openai/plugins, bu entegrasyonları **standart, paylaşılabilir paketler** haline getirerek \"bir kere yaz, her yerde kullan\" ilkesini Codex ekosistemine taşıyor; eski ChatGPT eklenti sisteminin ajan çağına uyarlanmış hali gibi düşünülebilir.",
+        "tech": "Her eklenti, zorunlu bir `.codex-plugin/plugin.json` manifest dosyasıyla tanımlanıyor; bunun yanına isteğe bağlı olarak **skills** (beceri talimatları), **MCP** yapılandırmaları, özel **agent**'lar ve **command**'lar eklenebiliyor — yani bir eklenti tek bir yetenek değil, birden fazla entegrasyon yüzeyinin bir arada paketlenmesi anlamına geliyor. Keşif tarafında iki ayrı market dosyası var: standart kullanıcılar için `.agents/plugins/marketplace.json`, kendi API anahtarını kullananlar için ayrı bir `api_marketplace.json` — bu ayrım, farklı kullanım/faturalama modellerine göre farklı eklenti setleri sunulabilmesine imkân veriyor.\n\nDepoda hazır örnekler arasında Figma (tasarım entegrasyonu), Notion (planlama/bilgi yakalama), iOS/macOS ve web uygulaması geliştirme, Expo/React Native, Netlify dağıtımı, Remotion (video) ve Google Slides bulunuyor — bu da eklenti formatının hem tasarım hem geliştirme hem dağıtım adımlarını kapsayacak kadar genel olduğunu gösteriyor.",
+        "why": "Doğrudan OpenAI'nin resmi hesabından gelmesi, projeye anında bir güvenilirlik ve \"bu, Codex'in resmi eklenti standardı olacak\" beklentisi kazandırıyor — Claude Code'un skill/plugin ekosisteminin büyümesiyle aynı döneme denk gelmesi de rekabetin AI kodlama araçlarında \"ekosistem savaşına\" evrildiğini gösteriyor. Geliştiricilerin zaten alıştığı Figma/Notion/Netlify gibi araçlarla hazır örnekler sunulması, projeyi soyut bir spesifikasyondan çok pratik bir başlangıç kiti haline getiriyor.",
+        "evolve": "README'de net bir lisans bilgisinin bulunmaması, kurumsal kullanıcıların eklenti geliştirmeye başlamadan önce netleştirmek isteyeceği bir boşluk. Daha kritik bir açık ise güven modeli: bir eklenti marketplace'i büyüdükçe, kötü niyetli veya güvenlik açığı barındıran bir eklentinin nasıl tespit edilip engelleneceğine dair resmi bir inceleme/imzalama süreci şart olacak. Uzun vadede, topluluğun kendi eklentilerini gönderebileceği ve derecelendirebileceği açık bir gönderim/inceleme akışı, projeyi statik bir örnek deposundan gerçek bir ekosisteme dönüştürebilir."
+      },
+      "glossary": [
+        { "term": "Plugin (eklenti)", "def": "Bir yazılımın çekirdek kodu değiştirilmeden, dışarıdan eklenerek yeni özellik kazandıran bağımsız modül." },
+        { "term": "Manifest dosyası", "def": "Bir yazılım paketinin ne olduğunu, hangi izinleri istediğini ve nasıl çalıştığını tanımlayan yapılandırma dosyası." },
+        { "term": "MCP (Model Context Protocol)", "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "Marketplace (pazar yeri)", "def": "Üçüncü taraf geliştiricilerin ürettiği eklenti/uygulamaların keşfedilip kurulabildiği merkezi dizin." },
+        { "term": "Codex", "def": "OpenAI'nin, doğal dil talimatlarından kod yazabilen ve terminal/IDE içinde çalışan yapay zeka kodlama ajanı." }
+      ]
+    },
+    {
+      "name": "viarotel-org/escrcpy",
+      "url": "https://github.com/viarotel-org/escrcpy",
+      "stars": "11.5k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "scrcpy, Android cihazları bilgisayardan görüntülemek ve kontrol etmek için geliştiricilerin yıllardır güvendiği bir araç — ama saf komut satırından çalışır ve tek seferde tek cihazla sınırlıdır. Escrcpy, bu güçlü çekirdeğin üzerine kullanıcı dostu bir **grafik arayüz** inşa ederek, birden fazla Android cihazı aynı pencereden yönetmeyi, klavye eşlemesi yapmayı ve otomasyon akışları kurmayı erişilebilir hale getiriyor.",
+        "tech": "Uygulama **Vue.js** arayüzü ile **Electron** masaüstü çatısı üzerine kurulu; ekran yansıtmanın \"düşük gecikmeli, yüksek performanslı\" çekirdek motoru olarak doğrudan scrcpy'yi kullanıyor. Cihaz iletişimi için `adbkit` ve `yadb` ile ADB (Android Debug Bridge) protokolüne bağlanılıyor, tersine tünelleme (reverse tethering) içinse `gnirehtet` entegre edilmiş. Proje `pnpm` workspace ve `Turbo` ile yönetilen bir **monorepo** olarak organize edilmiş; desktop ve packages dizinlerine ayrılmış modüler bir yapısı var.\n\nÖne çıkan özellikler arasında birden fazla cihazı tek pencerede eşzamanlı kontrol etmek, ekran çözünürlüğüne otomatik uyum sağlayan gömülü pencereler, kablosuz ADB için LAN üzerinden otomatik cihaz keşfi ve **ekran görüntüsü tanımaya dayalı görsel otomasyon** senaryoları (belirli bir ekran öğesini tanıyıp otomatik tıklama gibi) bulunuyor. Ayrıca MCP protokolü üzerinden çalışan bir \"AI Copilot\" asistanı da eklenmiş — yani cihaz otomasyonuna doğal dilden komut verme kapısı açılmış.",
+        "why": "Proje, komut satırı aracının gücünü kaybetmeden ona modern bir GUI, çoklu cihaz desteği ve AI destekli otomasyon eklemesiyle gerçek bir boşluğu dolduruyor — özellikle mobil geliştiriciler, test mühendisleri ve cihaz filosu yöneten ekipler için scrcpy'nin komut satırı sürtünmesini ortadan kaldırıyor. AI Copilot ve görsel otomasyon gibi eklemeler, projeyi salt bir \"ekran yansıtıcı\"dan bir mobil test/otomasyon platformuna doğru evriltiyor, bu da onu güncel AI araçları dalgasıyla da uyumlu hale getiriyor.",
+        "evolve": "README'nin kendisi \"topluluk destekli, güncellemeler düzensiz olabilir\" diyerek bakım sürekliliği konusunda dürüst bir uyarı yapıyor — kurumsal kullanım düşünenler için bu bir risk faktörü. Gelişmiş özelliklerin ayrı, ücretli bir eklenti deposu (EscrcpyX) arkasında tutulması, açık kaynak/ticari sınırının nasıl çizileceği konusunda toplulukta tartışma yaratabilir; bu ayrımın net bir şekilde iletişilmesi güven açısından önemli. Uzun vadede CI/CD'ye entegre edilebilecek headless bir otomasyon modu, projeyi manuel kullanımın ötesine, otomatik test pipeline'larına taşıyabilir."
+      },
+      "glossary": [
+        { "term": "ADB (Android Debug Bridge)", "def": "Bir bilgisayardan Android cihazlara komut göndermeyi, dosya aktarmayı ve hata ayıklamayı sağlayan komut satırı aracı ve protokolü." },
+        { "term": "Electron", "def": "Web teknolojileriyle (HTML/CSS/JS) yazılmış uygulamaları Windows, macOS ve Linux'ta çalışan masaüstü programlarına dönüştüren bir çatı (framework)." },
+        { "term": "Monorepo", "def": "Birden fazla bağımsız paket veya projenin tek bir git deposunda birlikte tutulduğu kod organizasyon yöntemi." },
+        { "term": "Reverse tethering", "def": "Normalde telefonun bilgisayara internet paylaştığı bağlantı yönünü tersine çevirerek, bilgisayarın internetini telefona aktarma yöntemi." },
+        { "term": "CI/CD", "def": "Kod değişikliklerinin otomatik olarak test edilip (Continuous Integration) canlıya alınmasını (Continuous Deployment) sağlayan yazılım geliştirme pratiği." }
+      ]
+    }
+  ]
+}
