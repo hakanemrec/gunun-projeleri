@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-10",
+  "projects": [
+    {
+      "name": "vastsa/PI-Desktop",
+      "url": "https://github.com/vastsa/PI-Desktop",
+      "stars": "1.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI kodlama ajanlarını kullanmanın bugünkü yolları ya bir terminale ya da bir editör eklentisine hapsolmuş durumda — çoklu proje yönetimi, oturum geçmişi, gizlilik ve model seçimi gibi konularda kullanıcı genelde sağlayıcının kurallarına bağımlı kalıyor. PI-Desktop, aynı ajan deneyimini **bağımsız bir masaüstü uygulamasına** taşıyarak bu bağımlılığı kırıyor: hesap açmadan, verinizi bir sunucuya \"relay\" etmeden, hangi modeli kullanacağınıza siz karar vererek çalışan yerel-öncelikli (local-first) bir çalışma alanı sunuyor.",
+        "tech": "Mimari üç katmana bölünmüş: **Electron** ana süreci arayüzü ve pencere yönetimini üstleniyor, ayrı bir **Rust \"Host Core\"** izinleri, dosya sistemi erişimini, SQLite'ı ve gizli anahtarları (secrets) yönetiyor, üçüncü katman olan **\"pi Agent Sidecar\"** ise ajan döngüsünü, model çağrılarını ve streaming'i kendi sürecinde izole çalıştırıyor. Bu ayrım bilinçli bir güvenlik tercihi: arayüz çöksün ya da bir eklenti kötü davransın, dosya sistemine ve gizli bilgilere erişim ayrı, Rust ile yazılmış bir \"izin katmanı\"ndan geçmek zorunda.\n\nGenişletilebilirlik dört ayrı mekanizmayla sağlanıyor — yeniden kullanılabilir talimat setleri olan **Skills**, dış araçlara bağlanan **MCP sunucuları**, paralel görev devri için **Subagent**'lar ve `.piplug` uzantılı bağımsız **Plugin**'ler. Konuşma geçmişi JSONL dosyaları olarak tutulup SQLite ile indeksleniyor, kimlik bilgileri ise işletim sisteminin kendi keychain'inde saklanıyor; oturumları Claude Code, Codex, OpenCode gibi rakip araçlardan içe aktarma desteği de var.",
+        "why": "\"Hesap yok, zorunlu relay yok, editöre kilitlenme yok\" vurgusu, ajan araçları pazarının hızla bulut-merkezli, abonelik tabanlı ürünlere kaydığı bir dönemde net bir karşı konumlanma. OpenAI, Anthropic, Ollama ve LM Studio dahil neredeyse her sağlayıcıyla çalışabilmesi, kullanıcıyı tek bir modele bağımlı bırakmıyor; ayrıca her ayrıcalıklı işlemin (dosya silme, komut çalıştırma gibi) açıkça onay istemesi, tam otonom ajanlardan çekinen geliştiriciler için bir güven kancası oluşturuyor.",
+        "evolve": "Proje henüz \"early preview\" (0.14.x) aşamasında ve kendi yol haritası bunu itiraf ediyor: macOS için imzalı sürüm süreci, kurulum/geri alma (rollback) sağlamlaştırması ve uçtan uca test kapsamının genişletilmesi öncelikli maddeler arasında. En kritik açık ise güvenlik tarafında — eklenti süreçleri \"izin kapılı ve izole\" olsa da README bunun \"tam bir işletim sistemi sandbox'ı değil, kullanıcıya güvenilen kod\" seviyesinde kaldığını açıkça belirtiyor; imzalı eklenti/yayıncı doğrulaması olgunlaşmadan kurumsal ortamlarda üçüncü parti plugin kullanımı temkinli olmalı."
+      },
+      "glossary": [
+        { "term": "Local-first", "def": "Verinin ve işlemenin öncelikle kullanıcının kendi cihazında tutulduğu, buluta bağımlılığın zorunlu olmadığı yazılım tasarım yaklaşımı." },
+        { "term": "Sidecar (yan süreç)", "def": "Ana uygulamadan ayrı, kendi başına çalışan ve ana uygulamaya yardımcı işlevler sağlayan bağımsız bir yazılım süreci." },
+        { "term": "SQLite", "def": "Ayrı bir sunucu gerektirmeyen, tek bir dosya üzerinde çalışan hafif bir veritabanı motoru." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." },
+        { "term": "Sandbox (kum havuzu)", "def": "Bir programın sistemin geri kalanına zarar veremeyecek şekilde izole edilmiş, kontrollü bir ortamda çalıştırılması." }
+      ]
+    },
+    {
+      "name": "Tencent/teamai-cli",
+      "url": "https://github.com/Tencent/teamai-cli",
+      "stars": "3.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bir ekip Claude Code, Cursor, Codex gibi birden fazla AI kodlama aracını aynı anda kullandığında, ortak kodlama kurallarını, güvenlik politikalarını ve biriken bilgiyi her araca ayrı ayrı, elle dağıtmak gerekiyor — bu da zamanla araçlar arasında tutarsız davranışlara yol açıyor. Tencent'in geliştirdiği TeamAI-CLI, bu dağınıklığı tek bir merkezi kaynaktan çözmeyi hedefliyor: \"her ekibi AI-native yap\" sloganıyla, kuralları ve bilgiyi bir git deposu üzerinden tüm araçlara eşitliyor.",
+        "tech": "Dağıtım mantığı bilinçli olarak geliştiricilere tanıdık geliyor: kurallar/skill'ler bir git deposuna **push → review & merge → pull** akışıyla giriyor ve GitHub, GitLab, GitCode gibi platformlarla, rol ve etiket bazlı filtrelemeyle senkronize ediliyor. Beta aşamasındaki \"Team Context\" katmanı ise daha iddialı: kod tabanını **tree-sitter tabanlı bir WASM ayrıştırıcıyla** AST seviyesinde tarayıp bir bilgi grafiği çıkarıyor, TypeScript/JavaScript/Python/Go için gerçek ayrıştırma, diğer diller için sezgisel (heuristic) geri düşüş uyguluyor; arama tarafında ise klasik **BM25** algoritmasını graf tabanlı yeniden sıralamayla birleştiriyor.\n\nYine beta'daki \"Team Improvement\" katmanı, ajan oturumlarını gizlilik açısından temizlenmiş özetler halinde takip edip haftalık kullanım/maliyet/düzeltme trendlerini bir web panelinde gösteriyor — yani araç sadece kural dağıtmıyor, ekibin AI araçlarını nasıl kullandığına dair de görünürlük sağlıyor.",
+        "why": "Kurumların tek bir AI kodlama aracına değil, aynı anda birkaçına (listede on farklı araç sayılıyor) yatırım yapması, standartlaştırma ihtiyacını organizasyonel bir soruna dönüştürdü; TeamAI-CLI tam bu boşluğa, üstelik Tencent gibi büyük bir şirketin resmi desteğiyle giriyor. \"Sürtünme puanlaması\" (friction-scoring) ile ajan oturumlarından otomatik ders çıkarma fikri, çoğu rakibin sadece statik kural dosyası dağıtımıyla sınırlı kaldığı bir noktada öne çıkıyor.",
+        "evolve": "Team Context ve Team Improvement katmanlarının ikisi de hâlâ beta — bilgi grafiği çıkarımı şu an yalnızca dört dil için gerçek ayrıştırma sunuyor, geri kalanı sezgisel yöntemlere dayanıyor ki bu büyük, çok dilli kod tabanlarında doğruluğu düşürebilir. Kurulumun bir ekip deposu ve üye izin yönetimi gerektirmesi, küçük ekipler için giriş engelini yükseltiyor; tek komutla başlatılabilen daha hafif bir \"solo mode\" benimsemeyi hızlandırabilir. Model ve sağlayıcı desteğinin bazı noktalarda hâlâ eksik olması da kurumsal benimsemede bir risk."
+      },
+      "glossary": [
+        { "term": "AST (Abstract Syntax Tree)", "def": "Bir kaynak kodun yapısını ağaç biçiminde temsil eden, derleyici ve analiz araçlarının kodu \"anlamak\" için kullandığı ara gösterim." },
+        { "term": "Tree-sitter", "def": "Kaynak kodu hızlıca ayrıştırıp bir sözdizimi ağacına dönüştüren, çok sayıda programlama dilini destekleyen bir ayrıştırıcı kütüphanesi." },
+        { "term": "BM25", "def": "Bir arama sorgusuyla belgeler arasındaki alaka düzeyini hesaplamak için kullanılan, klasik ve yaygın bir metin arama algoritması." },
+        { "term": "Bilgi grafiği (knowledge graph)", "def": "Kavramlar ve aralarındaki ilişkilerin düğüm ve bağlantılar halinde temsil edildiği, sorgulanabilir bilgi yapısı." },
+        { "term": "Heuristic (sezgisel yöntem)", "def": "Kesin/garantili bir çözüm yerine, pratikte çoğunlukla iyi sonuç veren yaklaşık bir kural veya kısayol kullanma yaklaşımı." }
+      ]
+    },
+    {
+      "name": "earthtojake/text-to-cad",
+      "url": "https://github.com/earthtojake/text-to-cad",
+      "stars": "15.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bir AI ajanına \"bana bu parçanın 3D modelini çiz\" dedirtmek kolay ama sonucu gerçekten üretilebilir, standart bir CAD dosyasına dönüştürmek başka bir mesele — format bilgisi, fiziksel toleranslar ve üretilebilirlik kuralları devreye giriyor. text-to-cad, ajanlara bu boşluğu kapatan on ayrı **\"skill\"** (beceri paketi) sunuyor: metinden veya görselden model üretmekten, hazır parça (vida, rulman, motor) bulmaya, 3D baskı için dilimlemeye kadar tüm CAD/CAM/robotik zincirini kapsıyor.",
+        "tech": "Çekirdek geometri motoru olarak **OCP** (Open Cascade'in Python bağlayıcısı) kullanılıyor ve proje Python 3.11+ üzerine kurulu; dağıtım `npx skills add` komutuyla çalışan bir **Skills CLI** üzerinden yapılıyor ve Codex, Claude Code, Grok Build gibi ajanlara doğrudan eklenebiliyor. Üretilen dosyalar STEP, STL, 3MF ve GLB gibi standart CAD formatlarına aktarılabiliyor; robotik tarafında ise **URDF/SRDF** ile robot yapısı ve hareket planlama grupları, **SDF** ile fizik ve sensör içeren simülasyon modelleri tanımlanabiliyor.\n\nProjeyi sıradan bir \"metinden 3D model\" aracından ayıran, üretim zincirinin geri kalanını da kapsaması: `step.parts` becerisi tasarıma uyan hazır vida/rulman/motor gibi parçaları buluyor, DXF becerisi CNC kesim için 2D çizim üretiyor, SendCutSend/DfAM kontrolleri tasarımın gerçekten üretilebilir olup olmadığını doğruluyor, G-code ve Bambu Labs entegrasyonu ise 3D baskı iş akışını otomatikleştiriyor — yani ajan sadece \"tasarlamıyor\", tasarımı fiziksel bir parçaya dönüştürecek tüm adımları da yönetebiliyor.",
+        "why": "Proje, üretken yapay zeka, mekanik tasarım otomasyonu ve robotik gibi üç ayrı yükselen alanın kesişiminde duruyor ve \"ajan-yerel\" (agent-native) CAD iş akışı fikrini somutlaştıran nadir örneklerden biri — çoğu rakip yalnızca görsel/metin üretirken, bu proje doğrudan üretime hazır dosyalar çıkarıyor. MIT lisansı ve büyük ajan platformlarına (Codex, Claude Code) native eklenti desteği, donanım/robotik geliştiricilerinin projeyi hızla kendi iş akışlarına dahil etmesini kolaylaştırıyor.",
+        "evolve": "Depoda ayrı bir `/docs/migrations` klasörünün bulunması, beceri arayüzlerinin henüz oturmadığını ve API'nin aktif olarak değiştiğini gösteriyor — bu, projeyi üretime bağımlı hale getiren ekipler için bir istikrarsızlık riski. Test/örnek model korpusunun Git LFS ile tutulması, projeyi klonlayıp hızlıca denemek isteyenler için ek bir sürtünme noktası yaratıyor; daha hafif bir \"minimal örnek\" seti bu engeli azaltabilir. Üretilebilirlik kontrollerinin (DfAM, SendCutSend) şu an harici servislere bağımlı olması da, tamamen çevrimdışı/yerel bir tasarım-üretim döngüsü isteyenler için sınırlayıcı."
+      },
+      "glossary": [
+        { "term": "CAD (Computer-Aided Design)", "def": "Fiziksel nesnelerin bilgisayar ortamında 2B veya 3B olarak tasarlandığı ve modellendiği yöntem." },
+        { "term": "STEP formatı", "def": "Farklı CAD programları arasında 3B model verisini taşımak için kullanılan, sanayide yaygın standart bir dosya biçimi." },
+        { "term": "URDF (Unified Robot Description Format)", "def": "Bir robotun fiziksel yapısını (eklemler, bağlantılar, boyutlar) tanımlamak için kullanılan standart XML tabanlı format." },
+        { "term": "G-code", "def": "3D yazıcılara ve CNC makinelerine hangi hareketi, hangi hızda ve nerede yapacağını satır satır bildiren makine komut dili." },
+        { "term": "Git LFS (Large File Storage)", "def": "Büyük boyutlu dosyaları (model, video, veri seti gibi) git deposunun kendisini şişirmeden, ayrı bir depoda saklamayı sağlayan git eklentisi." }
+      ]
+    },
+    {
+      "name": "rohitg00/ai-engineering-from-scratch",
+      "url": "https://github.com/rohitg00/ai-engineering-from-scratch",
+      "stars": "53.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "README'nin kendi verdiği istatistik durumu özetliyor: öğrencilerin %84'ü zaten AI araçlarını kullanıyor ama sadece %18'i bunları profesyonelce kullanmaya hazır hissediyor. AI Engineering From Scratch, bu boşluğu doğrusal cebirden başlayıp üretim ortamına kadar uzanan, **\"öğrenmek yerine inşa ederek öğrenmek\"** felsefesiyle tasarlanmış ücretsiz bir müfredatla kapatmaya çalışıyor — her ders soyut bir kavramı değil, elle yazılmış çalışan bir kod parçasını hedefliyor.",
+        "tech": "Müfredat 20 fazda, 523 derse yayılmış ve Python'un yanı sıra TypeScript, Rust ve Julia'da örnekler içeriyor; içerikte PyTorch, JAX, scikit-learn, Hugging Face Transformers ve LangGraph gibi araçlar kullanılıyor. Her dersin izlediği sabit bir şablon var: **problem tanımı → matematiksel türetme → elle (framework'süz) implementasyon → framework tabanlı versiyon → teslim edilebilir bir \"artifact\"** (bir prompt, skill, ajan veya MCP sunucusu). Bu tekrar eden yapı, dersleri birbirinden kopuk alıştırmalar olmaktan çıkarıp bir üretim hattına dönüştürüyor.\n\nİçeriğe erişim tek bir kanalla sınırlı değil: GitHub deposu, ayrı bir web sitesi, EPUB/PDF kitap formatı ve Claude Code gibi araçların içine gömülebilen \"start-learning\", \"learn\", \"course-guide\" adlı **AI tutor skill'leri** üzerinden de takip edilebiliyor. Son fazlar (multi-agent sistemler, sürü/swarm mimarileri, altyapı) ve ayrı bir Claude sertifikasyon hazırlık modülü, müfredatı yalnızca teoriden değil güncel ajan mühendisliği pratiklerinden de besliyor.",
+        "why": "Kendi verdiği rakamla haklılığını kanıtlıyor: 30 günde 114 binden fazla okuma, hızla yayılan bir \"AI mühendisliği eksikliği\" endişesine hitap ettiğini gösteriyor. Video anlatımı yerine kod yazarak öğrenmeyi merkeze alması, MIT lisansıyla tamamen ücretsiz olması ve DeepSeek, streaming ajanlar, MCP, computer-use gibi 2025-2026'nın güncel konularını kapsaması, projeyi statik bir \"AI 101\" kaynağından ayırıp güncel tutuyor; Claude Code içine gömülü AI tutor'lar ise öğrenmeyi ayrı bir siteye gitmeden, çalıştığınız ortamın içine taşıyor.",
+        "evolve": "523 ders ve 20 faz gibi devasa bir kapsam, en büyük riski de beraberinde getiriyor: bu ölçekte bir müfredatı güncel ve tutarlı tutmak, özellikle hızla değişen ajan/LLM alanında ciddi bir bakım yükü demek — topluluk katkısı olmadan tek başına sürdürülebilirliği tartışmalı. \"Ucuz GPU'larla yerel makinede çalışır\" vaadi, ileri fazlardaki (büyük ölçekli dağıtık eğitim, multi-agent sürüleri gibi) konularla gerilim yaratabilir; bu fazlar için bulut/kiralık GPU seçeneklerinin daha net işaretlenmesi beklenti yönetimini kolaylaştırır. Dört farklı dilde (Python/TS/Rust/Julia) örnek kod tutmak da, her dil güncellendiğinde senkron kalması gereken bir bakım yüzeyi yaratıyor."
+      },
+      "glossary": [
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir dil modelinin cevap üretirken önce ilgili belgeleri arayıp bulduğu bilgiyle cevabını desteklediği yöntem." },
+        { "term": "LoRA (Low-Rank Adaptation)", "def": "Büyük bir modelin tüm parametrelerini değiştirmeden, az sayıda ek parametreyle belirli bir göreve uyarlanmasını sağlayan verimli ince ayar (fine-tuning) tekniği." },
+        { "term": "Transformer mimarisi", "def": "Bugünün büyük dil modellerinin temelini oluşturan, metindeki kelimeler arasındaki ilişkiyi \"dikkat (attention)\" mekanizmasıyla öğrenen sinir ağı mimarisi." },
+        { "term": "Tokenization", "def": "Bir metni, dil modelinin işleyebileceği küçük parçalara (kelime, hece veya karakter grupları) bölme işlemi." },
+        { "term": "RLHF (İnsan Geri Bildirimiyle Pekiştirmeli Öğrenme)", "def": "Bir modelin çıktısını, insanların hangi cevapları tercih ettiğine dair geri bildirimle eğiterek daha kullanışlı/güvenli hale getirme yöntemi." }
+      ]
+    }
+  ]
+}
