@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-11",
+  "projects": [
+    {
+      "name": "vercel-labs/skills",
+      "url": "https://github.com/vercel-labs/skills",
+      "stars": "31.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Bugün onlarca farklı kodlama ajanı (Claude Code, Cursor, Cline, OpenCode, vb.) var ve her biri kendi \"yetenek genişletme\" formatını kullanıyor; bir ekip bir ajan için yazdığı talimat setini bir başka ajana taşımak istediğinde baştan yazmak zorunda kalıyor. **vercel-labs/skills**, tek bir `SKILL.md` formatını 75'ten fazla ajana kurulabilen ortak bir \"beceri\" (skill) standardına dönüştürerek bu tekrar işini ortadan kaldırıyor — `npx skills add` ile GitHub, GitLab ya da yerel bir yoldan beceri kurup, hangi ajanı kullanırsanız kullanın aynı talimat setini çalıştırabiliyorsunuz.",
+        "tech": "Araç, **YAML frontmatter** içeren `SKILL.md` dosyalarını `skills/`, `.agents/skills/`, `.claude/skills/` gibi standart klasörlerde arayan bir keşif (discovery) motoru üzerine kurulu; kazara test ya da `examples/` klasörlerinin beceri sanılmaması için tarama üç seviye derinlikle sınırlanmış (`--full-depth` ile aşılabilir).\n\nKurulum varsayılan olarak **symlink** kullanıyor — bu, aynı beceriyi birden çok ajana kopyalamak yerine tek bir kaynaktan yönetmeyi sağlıyor; kopyalama modu ise CI/CD gibi symlink'in çalışmayabileceği ortamlar için yedek olarak duruyor. Kimlik doğrulama tarafında mevcut Git kimlik bilgilerine, GitHub CLI oturumuna ve SSH'a dayanıyor, ekstra bir hesap sistemi kurmuyor.",
+        "why": "Ajan ekosistemi hızla parçalanıyor — her sağlayıcı kendi eklenti/uzantı formatını dayatıyor ve bu da geliştiricileri belirli bir araca kilitliyor. Vercel'in bu projeyi ortak \"Agent Skills\" spesifikasyonu üzerine inşa edip `npx` ile sıfır kurulumla dağıtması, hem bireysel geliştiricilerin hem de ekiplerin kendi iç talimat kütüphanelerini bir kere yazıp her yerde kullanabilmesini vaat ediyor; bu da \"hangi ajanı seçersem seçeyim aynı yatırımı korurum\" güvencesi arayan geliştirici kitlesine hitap ediyor.",
+        "evolve": "Şu an her ajanın desteklediği özellik seti eşit değil — örneğin `allowed-tools` kısıtlaması Kiro CLI'da çalışmazken hook'lar yalnızca Claude Code, Cline ve Kiro'da destekleniyor; bu da \"yaz bir kere, her yerde aynı şekilde çalıştır\" vaadini kısmen zedeliyor. Proje büyüdükçe ajanlar arası özellik eşleşme (parity) tablosunun netleşmesi ve beceri paketlerinin, özellikle çok dosyalı büyük repolar için, indirme/boyut sınırlarının gözden geçirilmesi olası gelişme yönleri arasında."
+      },
+      "glossary": [
+        {
+          "term": "YAML frontmatter",
+          "def": "Bir dosyanın başına `---` işaretleri arasında eklenen ve dosyaya ait meta bilgileri (başlık, açıklama gibi) tanımlayan yapılandırılmış veri bloğu."
+        },
+        {
+          "term": "Symlink (sembolik bağlantı)",
+          "def": "Bir dosya ya da klasöre işaret eden, kendisi asıl içeriği taşımayan kısayol niteliğinde dosya sistemi referansı."
+        },
+        {
+          "term": "CLI (komut satırı arayüzü)",
+          "def": "Kullanıcının komutları yazarak programları çalıştırdığı, grafik arayüz kullanmayan etkileşim biçimi."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik olarak test edilip dağıtıma hazırlandığı sürekli entegrasyon ve sürekli dağıtım süreci."
+        }
+      ]
+    },
+    {
+      "name": "nashsu/llm_wiki",
+      "url": "https://github.com/nashsu/llm_wiki",
+      "stars": "18.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Klasik **RAG** sistemleri her soruda belgeleri yeniden tarayıp cevabı sıfırdan kurar; bu hem yavaştır hem de sorular arasında hiçbir \"hafıza\" biriktirmez. **llm_wiki**, dağınık PDF, DOCX, e-kitap ve web kaynaklarını LLM yardımıyla birbirine bağlı, kalıcı bir \"wiki\"ye dönüştürerek bu tekrarı ortadan kaldırıyor: her yeni belge, var olan bilgi ağına eklenen bir parça oluyor, sıfırdan başlanmıyor.",
+        "tech": "Mimari üç katmana ayrılmış: değişmeyen ham kaynaklar, LLM'in ürettiği çapraz referanslı wiki sayfaları ve bu üretimi yönlendiren bir şema/kural katmanı (özellikle wiki'nin amacını tarif eden `purpose.md` dosyası). İçe aktarma iki adımlı bir \"chain-of-thought\" süreci işliyor: önce kaynak analiz edilip varlık/kavram/çelişkiler çıkarılıyor, sonra bu analizden meta verili wiki sayfaları üretiliyor; değişmeyen dosyalar SHA256 ile önbelleğe alınarak tekrar işlenmiyor.\n\nArama tarafında dört sinyalli bir ilişkilendirme modeli (doğrudan wiki bağlantıları, kaynak örtüşmesi, Adamic-Adar ortak komşu skoru, sayfa türü yakınlığı) ve isteğe bağlı **LanceDB** tabanlı vektör araması bir araya geliyor; masaüstü uygulaması **Tauri** (Rust) + React/TypeScript ile yazılmış.",
+        "why": "Bilgi çalışanları için asıl sorun tek bir belgeyi özetlemek değil, aylar süren araştırmayı birbirine bağlı, geri dönüp güncellenebilir bir yapıya dönüştürmek. Projenin ürettiği wikinin doğrudan bir **Obsidian** kasası olarak kullanılabilmesi, zaten not tutma alışkanlığı olan geliştirici ve araştırmacı kitlesine sürtünmesiz bir geçiş sunuyor; yerel-öncelikli çalışıp bulut zorunluluğu getirmemesi de kurumsal/gizli belgelerle çalışanlar için çekici bir konumlanma.",
+        "evolve": "README'de açık bir yol haritası veya kısıtlar bölümü yok; ancak vektör aramanın isteğe bağlı olması ve yalnızca yaklaşık %13 geri çağırma (recall) iyileştirmesi sağlaması, temel mimarinin zaten grafik tabanlı ilişkilendirmeye güvendiğini gösteriyor. Derin araştırma özelliğinin dış arama sağlayıcılarına (Tavily, SerpApi, SearXNG) bağımlı olması ve masaüstüne özel kalması, web tabanlı ortak çalışma ve sağlayıcısız/çevrimdışı derin arama gibi alanları gelecekteki olası gelişim yönleri olarak öne çıkarıyor."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin cevap üretirken önce ilgili belgelerden bilgi çekip bu bilgiyi cevaba dahil ettiği yöntem."
+        },
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metinlerin sayısal (vektör) temsillerini saklayıp anlamsal olarak benzer içerikleri hızlıca bulmaya yarayan veritabanı türü."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle (HTML/CSS/JS) arayüz kurup Rust ile hafif, hızlı masaüstü uygulamaları paketleyen bir çatı (framework)."
+        },
+        {
+          "term": "Chain-of-thought (düşünce zinciri)",
+          "def": "Bir yapay zeka modelinin cevaba varmadan önce ara akıl yürütme adımlarını sırayla üretmesi."
+        },
+        {
+          "term": "Community detection (topluluk tespiti)",
+          "def": "Bir ağ/grafik içindeki düğümleri, aralarındaki bağlantı yoğunluğuna göre anlamlı kümelere ayırma yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "JustVugg/colibri",
+      "url": "https://github.com/JustVugg/colibri",
+      "stars": "27.5k",
+      "language": "C",
+      "sections": {
+        "serves": "Yüzlerce milyar, hatta trilyon parametreli \"frontier\" **MoE** modellerini çalıştırmak normalde çok sayıda pahalı GPU ya da bulut aboneliği gerektiriyor. **Colibri**, bu modelleri sıradan bir masaüstü ya da tek GPU'lu bir makinede — hatta yalnızca CPU ve diskle — çalıştırılabilir hale getirerek \"frontier modeli özel/yerel çalıştırma\" hayalini erişilebilir kılıyor.",
+        "tech": "Motor, VRAM/RAM/NVMe diski tek bir hafıza hiyerarşisi gibi ele alıyor: modelin \"yoğun\" (dense) katmanları int4 **kuantizasyon**la RAM'de sabit tutulurken, binlerce \"uzman\" (expert) katmanı diskte kalıp yalnızca ihtiyaç anında akış halinde okunuyor. Bir **JIT** derleyicisinin sık çalışan kod yollarını hızlandırması gibi, Colibri de hangi uzmanların sık seçildiğini öğrenip bunları daha hızlı katmanlara (VRAM/RAM) sabitliyor; ayrıca bir sonraki katmanın yönlendirmesini %71,6 doğrulukla önceden tahmin eden bir \"prefetch\" iş parçacığı disk gecikmesini gizliyor. Tüm bunlar CUDA, BLAS gibi ağır çalışma zamanı bağımlılıkları olmadan, mimari başına tek bir C dosyası halinde, sıfır bağımlılıkla yazılmış.",
+        "why": "\"Frontier\" modelleri kapatılmış API'ler arkasında değil, kendi donanımınızda ve gizlilik içinde çalıştırma isteği — özellikle hassas veriyle çalışan ya da bulut maliyetinden kaçınmak isteyen geliştiriciler arasında — hızla büyüyen bir talep. Colibri'nin GLM-5.2, Kimi K3, DeepSeek V4 Flash gibi güncel açık modelleri gerçek donanım ölçümleriyle (6×RTX 5090'dan 128 GB'lık sade bir masaüstüne kadar) desteklemesi ve \"hız garanti etmiyoruz ama model kalitesinden asla ödün vermiyoruz\" ilkesini benimsemesi, abartılı pazarlama yerine dürüst mühendislik arayan bir kitleye hitap ediyor.",
+        "evolve": "Proje kendi sınırlarını açıkça listeliyor: disk G/Ç'si çoğu makinede hâlâ ana darboğaz, yönlendirme geçmişi tekrar eden iş yüklerine aşırı uyum sağlayabiliyor ve **spekülatif kod çözme** her zaman net kazanç sağlamıyor — bir ölçümde %85 isabet oranında bile %32 kayıp gözlenmiş. Çoklu SSD'nin bant genişliğini gerçekten toplayıp toplamadığı ve donanıma özgü otomatik ayarın elle ayarlamayı yakalayıp yakalayamayacağı gibi sorular topluluk doğrulamasını bekleyen açık hipotezler olarak duruyor; daha fazla açık model desteği de yol haritasında."
+      },
+      "glossary": [
+        {
+          "term": "MoE (Mixture-of-Experts)",
+          "def": "Bir modelin tüm parametrelerini her girdi için değil, yalnızca ilgili \"uzman\" alt ağları seçerek kullandığı mimari yaklaşım."
+        },
+        {
+          "term": "Kuantizasyon (quantization)",
+          "def": "Bir modelin sayısal ağırlıklarını daha az bit ile temsil ederek boyutunu küçültme ve hızını artırma tekniği."
+        },
+        {
+          "term": "VRAM",
+          "def": "Ekran kartına (GPU) doğrudan bağlı, çok hızlı erişilen özel bellek."
+        },
+        {
+          "term": "NVMe",
+          "def": "Klasik disklere göre çok daha yüksek hızda veri okuyup yazabilen modern SSD depolama arabirimi."
+        },
+        {
+          "term": "JIT (Just-In-Time) derleme",
+          "def": "Bir programın kod parçalarını çalışma anında, ihtiyaç oldukça derleyip hızlandıran teknik."
+        },
+        {
+          "term": "Spekülatif kod çözme (speculative decoding)",
+          "def": "Bir modelin olası sonraki adımları önceden tahmin ederek işlemi hızlandırmaya çalıştığı, ama tahmin yanlışsa geri alınan teknik."
+        }
+      ]
+    },
+    {
+      "name": "alsk1992/CloddsBot",
+      "url": "https://github.com/alsk1992/CloddsBot",
+      "stars": "1.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Otonom trading isteyen biri bugün onlarca farklı borsa, tahmin piyasası ve DeFi protokolünün kendi API'siyle ayrı ayrı uğraşmak zorunda kalıyor. **CloddsBot**, Polymarket'ten Binance vadeli işlemlerine, Solana DeFi'den Kalshi'ye kadar onlarca piyasayı tek bir doğal dil arayüzünün arkasında birleştirerek \"borsa API'si öğrenmeden, konuşarak strateji çalıştırma\" vaadinde bulunuyor.",
+        "tech": "Sistem üç katmandan oluşuyor: 21 mesajlaşma platformunu (Telegram, Discord, Slack vb.) yöneten bir ağ geçidi (gateway), Claude ile çalışan dört uzman ajandan (Ana, Trading, Araştırma, Uyarı) oluşan bir akıl katmanı ve 118'den fazla stratejiyi piyasalara bağlayan bir yürütme/risk katmanı. Risk yönetiminde **circuit breaker**, VaR/CVaR hesapları, **Kelly kriteri**yle pozisyon boyutlandırma ve SHA-256 ile bütünlüğü korunan bir karar denetim izi bulunuyor; veri katmanında yerel ayarlar için SQLite, anlamsal hafıza için LanceDB, analitik/işlem geçmişi için PostgreSQL kullanılıyor.",
+        "why": "Yapay zeka ajanlarının finansal karar almada giderek daha fazla özerklik kazanması ve **tahmin piyasalarının** (Polymarket, Kalshi) ana akım ilgi görmeye devam etmesi, \"ajanımı borsalara bağlayıp stratejiyi o yönetsin\" isteyen bir kitleyi büyütüyor. Projenin 21 farklı piyasa/borsa entegrasyonunu tek çatı altında toplaması ve ajanlar arası otomatik ödeme gibi deneysel özellikler sunması, hem bireysel trader'lara hem de \"ajan ekonomisi\" fikrine yatırım yapan geliştiricilere hitap ediyor.",
+        "evolve": "README, platformlar arası arbitrajın \"para birimi/takas karmaşıklığı\" taşıdığını ve bu yüzden varsayılan olarak gerçek para harcamadan simülasyon yapan \"dry-run\" modunda çalıştığını açıkça belirtiyor — bu, projenin henüz üretimde tam güvenle bırakılacak olgunlukta olmadığının bir işareti. Çok sayıda üçüncü taraf API'ye bağımlılık (her birinin kendi kesinti/limit riskiyle) ve halihazırda 21 açık issue/9 açık PR bulunması, risk motorunun sağlamlaştırılmasının ve piyasa entegrasyonlarının kararlılığının artırılmasının öncelikli gelişim alanları olduğunu gösteriyor."
+      },
+      "glossary": [
+        {
+          "term": "Tahmin piyasası (prediction market)",
+          "def": "Kullanıcıların gerçek dünya olaylarının sonucuna fiyat verdiği, bu fiyatların olayın gerçekleşme olasılığını yansıttığı piyasa türü."
+        },
+        {
+          "term": "Vadeli işlem (perpetual futures)",
+          "def": "Vadesi olmayan, kaldıraçla açılabilen ve bir varlığın fiyat hareketine bahis yapılmasını sağlayan türev finansal sözleşme."
+        },
+        {
+          "term": "Circuit breaker (devre kesici)",
+          "def": "Riskli ya da olağandışı durumlarda sistemin otomatik olarak işlemleri durdurduğu güvenlik mekanizması."
+        },
+        {
+          "term": "VaR/CVaR (Value at Risk / Conditional VaR)",
+          "def": "Bir portföyün belirli bir güven aralığında ne kadar zarar edebileceğini ölçen finansal risk metrikleri."
+        },
+        {
+          "term": "Kelly kriteri",
+          "def": "Beklenen getiri ve kayıp olasılığına göre bir bahsin/pozisyonun ne kadar büyük olması gerektiğini matematiksel olarak hesaplayan formül."
+        },
+        {
+          "term": "DeFi (Merkeziyetsiz Finans)",
+          "def": "Banka gibi aracılar olmadan, blok zinciri üzerindeki akıllı sözleşmelerle yürütülen finansal hizmetler bütünü."
+        }
+      ]
+    }
+  ]
+}
