@@ -1,0 +1,155 @@
+{
+  "date": "2026-09-12",
+  "projects": [
+    {
+      "name": "bilawalsidhu/gods-eye-view",
+      "url": "https://github.com/bilawalsidhu/gods-eye-view",
+      "stars": "27.5k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "Uçaklar, gemiler, uydular, yangınlar ve kamu kameraları gibi onlarca farklı halka açık veri kaynağı ayrı ayrı sitelerde dağınık halde durur. **God's Eye View**, bunların hepsini tarayıcıda çalışan tek bir fotogerçekçi 3D küre üzerinde birleştirip \"gerçek verilerle casus uydu simülatörü\" deneyimi sunuyor: 11.000'den fazla uçağı, binlerce gemiyi ve yörünge objelerini canlı takip edebiliyorsunuz.",
+        "tech": "Görselleştirme katmanı **CesiumJS** ve Google'ın fotogerçekçi 3D Tiles verisi üzerine kurulu, render tarafı düz JavaScript ve WebGL ile Vite üzerinden derleniyor. API anahtarlarını istemciye sızdırmamak için küçük bir Node.js sunucusu araya giriyor. Sesle kontrol özelliği **OpenAI Realtime API**'yi 28 ayrı araçla (kamera hareketi, sensör modu değiştirme, sahne yönetimi) donatarak çalışıyor; veri katmanları ise OpenSky, AISstream, USGS ve NASA FIRMS gibi tamamen açık kaynaklardan besleniyor.",
+        "why": "Projenin sahibi Bilawal Sidhu, teknoloji ve AI konularında geniş takipçi kitlesine sahip tanınmış bir içerik üreticisi; paylaşımının viral olmasıyla proje bir günde GitHub trending listesinde bir numaraya yükseldi. \"Gezegenle konuşmak\" fikrinin sesli AI ajanlarla buluşması, hem gösterişli 3D görselleştirmeyi hem de güncel AI-ajan trendini tek pakette sunduğu için hem geliştiricilerin hem meraklı kullanıcıların ilgisini çekti; üstelik tüm verinin kamuya açık ve kodun tamamen incelenebilir olması şeffaflık vurgusuyla güven kazandırıyor.",
+        "evolve": "Fotogerçekçi 3D Tiles ve WebGL render yükü mobil cihazlarda ve düşük bant genişliğinde zorlanabilir; performans optimizasyonu büyümenin önündeki doğal engel. Kamu kameralarının 3D sahneye gerçek zamanlı yansıtılması gizlilik ve kötüye kullanım tartışmalarını beraberinde getirebilir, bu yüzden kullanım politikalarının netleşmesi önemli. Ayrıca OpenAI Realtime API çağrıları ölçeklendikçe maliyet kontrolü ve hız sınırlama mekanizmaları projenin sürdürülebilirliği için kritik hale gelecek."
+      },
+      "glossary": [
+        {
+          "term": "CesiumJS",
+          "def": "Coğrafi verileri 3 boyutlu bir küre üzerinde tarayıcıda görselleştirmeye yarayan açık kaynaklı bir JavaScript kütüphanesi."
+        },
+        {
+          "term": "WebGL",
+          "def": "Tarayıcı içinde donanım hızlandırmalı 3D ve 2D grafik çizmeyi sağlayan bir web standardı."
+        },
+        {
+          "term": "Fotogerçekçi 3D Tiles",
+          "def": "Google'ın uydu ve hava fotoğraflarından ürettiği, gerçek dünyayı üç boyutlu, gerçekçi dokularla temsil eden harita veri formatı."
+        },
+        {
+          "term": "OpenAI Realtime API",
+          "def": "Sesle konuşarak gecikmesiz, çift yönlü etkileşim kurmayı sağlayan, yapay zeka modeline gerçek zamanlı ses akışı gönderip alan bir arayüz."
+        }
+      ]
+    },
+    {
+      "name": "jihe520/MathModelAgent",
+      "url": "https://github.com/jihe520/MathModelAgent",
+      "stars": "4.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "Matematiksel modelleme yarışmaları (örneğin MCM/ICM tarzı takım yarışmaları) genelde 3 gün süren, problem analizi, model kurma, kod yazma ve resmi bir bilimsel makale hazırlama gibi yorucu bir süreç gerektirir. **MathModelAgent**, bu sürecin tamamını uçtan uca otomatikleştirip 3 günlük işi yaklaşık 1 saate indirmeyi hedefliyor.",
+        "tech": "Sistem, modelci/kodlayıcı/yazar rollerine bölünmüş bir **çoklu ajan** mimarisi üzerine kurulu; arka planda **FastAPI**, **Redis** ve bir **RAG** bilgi tabanı için **ChromaDB** vektör veritabanı kullanılıyor. Kod üretimi yerel Jupyter ya da bulut sandbox'ları (E2B, Daytona) üzerinde çalışıyor, makale çıktısı ise 17 hazır yarışma şablonuyla **Typst** ile biçimlendiriliyor. **LiteLLM** sayesinde hangi LLM sağlayıcısının kullanılacağı serbest bırakılmış, kritik adımlarda insan onayı (human-in-the-loop) devreye giriyor.",
+        "why": "Matematiksel modelleme yarışmaları özellikle Çin'de çok yaygın ve rekabetçi; öğrenci ve akademik camianın büyük bölümü bu formatı biliyor. Uçtan uca bir yapay zeka ajan hattının haftalar süren ekip emeğini saatlere indirme vaadi, dar bir niş için bile olsa somut ve ölçülebilir bir fayda sunduğundan hızla paylaşılıp yıldız kazandı; \"ajanların gerçek bir yarışmayı komple yönetmesi\" fikri, agent mimarilerine ilgi duyan geniş bir kitleye de hitap ediyor.",
+        "evolve": "Proje şu an yalnızca kişisel kullanıma izin veriyor, ticari kullanım yazar onayına bağlı; bu durum ekosistemin etrafında büyümesini sınırlıyor. Dokuz adımlı doğrulama sisteminin, uzman değerlendirmesiyle karşılaştırmalı olarak açık biçimde kıyaslanması güven artırıcı olur. Şablon setinin yalnızca belirli yarışma formatlarına özel olması, farklı disiplinlerdeki modelleme problemlerine genelleşmeyi zorlaştırabilir; eklenti mimarisiyle yeni şablon ve değerlendirme kriterleri eklenmesi doğal bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir yapay zeka modelinin cevap üretirken önce ilgili belgeleri arayıp bulduğu bilgiyle cevabını zenginleştirdiği yöntem."
+        },
+        {
+          "term": "ChromaDB",
+          "def": "Metinleri anlamsal olarak aranabilir hale getiren, gömme (embedding) vektörlerini saklayan açık kaynaklı bir veritabanı."
+        },
+        {
+          "term": "Typst",
+          "def": "LaTeX'e alternatif olarak geliştirilmiş, daha hızlı ve modern sözdizimine sahip bir belge/makale dizgi sistemi."
+        },
+        {
+          "term": "LiteLLM",
+          "def": "Farklı yapay zeka sağlayıcılarının (OpenAI, Anthropic, vb.) API'lerini tek bir ortak arayüz üzerinden çağırmayı sağlayan kütüphane."
+        }
+      ]
+    },
+    {
+      "name": "jordan-gibbs/hyperresearch",
+      "url": "https://github.com/jordan-gibbs/hyperresearch",
+      "stars": "2.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Yapay zekaya \"şunu araştır\" dendiğinde çoğu zaman yüzeysel özetler ya da uydurma (halüsinasyon) kaynaklar üretilir. **Hyperresearch**, tek bir komuttan 16 adımlık bir araştırma hattı işleterek 250'den fazla kaynağı tarayıp her alıntıyı doğrulayan, kaynak kökeni (provenance) net raporlar üretmeyi hedefliyor.",
+        "tech": "Claude Code üzerinde çalışan sistem, taslak raporu **çekişmeli şekilde denetleyen** dört paralel \"eleştirmen\" ajan kullanıyor; bu eleştirmenler yalnızca cerrahi, satır bazlı düzeltme yapabiliyor. Web taraması için **crawl4ai**, akademik kaynak erişimi için OpenAlex, Crossref, CORE, ClinicalTrials.gov ve SEC EDGAR gibi doğrudan entegrasyonlar; açık erişim kurtarma için Unpaywall ve Europe PMC kullanılıyor. Okunan her kaynak **SQLite** ile indekslenen, aranabilir bir markdown \"kasada\" (vault) kalıcı olarak saklanıyor ve çalışmalar kesintiden sonra kaldığı yerden devam edebiliyor.",
+        "why": "Üretken yapay zekanın araştırma metinlerinde uydurma kaynak/alıntı üretmesi, güven açısından en büyük sorunlardan biri; her alıntıyı doğrulayan, tekrar eden/türetilmiş kaynakları kümeleyerek sahte uzlaşı oluşmasını engelleyen bir sistem bu acı noktaya doğrudan cevap veriyor. Proje ayrıca DeepResearch-Bench RACE liderlik tablosunda zirvede olduğunu iddia ediyor; bu iddianın kendi ölçümüne dayandığı ve bağımsız doğrulamanın henüz beklendiği not edilmeli, yine de iddianın kendisi ilgiyi artıran önemli bir etken oldu.",
+        "evolve": "Kendi bildirdiği liderlik tablosu sonucunun bağımsız üçüncü taraflarca doğrulanması, projenin güvenilirliği açısından önemli bir sonraki adım. \"Tez modu\" gibi 4-8 saat süren profillerin API maliyeti ve hız sınırlarıyla nasıl başa çıktığı netleşmeli. Şu an doğrudan Claude Code'a bağımlı olması taşınabilirliği kısıtlıyor; farklı ajan çalışma zamanlarını da destekleyen bir soyutlama katmanı, aracın erişilebilirliğini artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Crawl4AI",
+          "def": "Web sayfalarını yapay zeka ajanlarının işleyebileceği temiz metne dönüştüren, tarayıcı tabanlı bir kazıma (scraping) kütüphanesi."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, tek bir dosya üzerinde çalışan hafif bir ilişkisel veritabanı motoru."
+        },
+        {
+          "term": "Çekişmeli denetim (adversarial audit)",
+          "def": "Bir çıktının, onu bilerek eleştirip hatasını bulmaya çalışan ayrı bir sistem tarafından test edilmesi yöntemi."
+        },
+        {
+          "term": "Kaynak kökeni (provenance)",
+          "def": "Bir bilginin veya iddianın hangi kaynaktan geldiğinin izlenebilir şekilde belgelenmesi."
+        }
+      ]
+    },
+    {
+      "name": "alphaXiv/OpenResearch",
+      "url": "https://github.com/alphaXiv/OpenResearch",
+      "stars": "1.4k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Araştırmacılar bugün Claude Code, Cursor gibi genel amaçlı kodlama ajanlarını sohbet pencerelerinde doğaçlama şekilde araştırma için kullanıyor; ama bu oturumlar dağınık ve tekrarlanabilir değil. **OpenResearch**, bu ajanları literatür taraması, hipotez geliştirme ve deney yürütme yapabilen, düzenli bir araştırma asistanına dönüştürüyor.",
+        "tech": "Yerel öncelikli (**local-first**) bir masaüstü uygulaması ve CLI olarak Rust ile yazılmış; her paralel araştırma yönü için izole bir **Git worktree** açarak ajanların birbirine karışmadan aynı anda farklı fikirleri denemesini sağlıyor. Deneyler Git'in kendi ağaç yapısında versiyonlanarak tekrarlanabilir hale geliyor; hesaplama tarafı yerelden SSH, **Slurm**, **Kubernetes** ve **Ray**'e kadar esnek biçimde dağıtılabiliyor, ve Claude Code, Codex, OpenCode, Cursor gibi birden fazla ajanı destekliyor.",
+        "why": "alphaXiv, yapay zeka araştırma makaleleri üzerine tartışma platformuyla tanınan bir isim; bu arka planla \"AI destekli otonom araştırma\" trendine kendi aracını sunması, halihazırda alphaXiv'i takip eden akademik/ML araştırmacı kitlesinde hızlı yankı buldu. Araştırmacıların ajanlarla yaptığı deneyleri düzenli, versiyonlanmış ve tekrarlanabilir hale getirme ihtiyacı gerçek ve yaygın bir sorun olduğu için proje somut bir boşluğu dolduruyor.",
+        "evolve": "Git worktree modelinin, büyük model ağırlıkları veya veri setleri gibi ağır ikili (binary) çıktılar üreten uzun süreli GPU deneylerinde ne kadar iyi ölçeklendiği henüz belirsiz; çok sayıda paralel dalın birleştirilmesi karmaşıklaşabilir. Slurm/Kubernetes gibi HPC zamanlayıcılarıyla entegrasyonun derinleşmesi ve ekipler arasında hipotez/deney paylaşımını kolaylaştıran bir \"deney pazarı\" katmanı, projeyi bireysel kullanımdan takım ölçeğine taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "Git worktree",
+          "def": "Aynı Git deposunun birden fazla dalını, aynı anda ayrı klasörlerde birbirinden bağımsız olarak açık tutma özelliği."
+        },
+        {
+          "term": "Slurm",
+          "def": "Süper bilgisayar ve büyük sunucu kümelerinde iş yüklerini dağıtan, akademik/HPC ortamlarda yaygın bir görev zamanlayıcı."
+        },
+        {
+          "term": "Kubernetes",
+          "def": "Konteynerleştirilmiş uygulamaları otomatik olarak dağıtan, ölçekleyen ve yöneten açık kaynaklı bir orkestrasyon sistemi."
+        },
+        {
+          "term": "Local-first",
+          "def": "Verilerin ve işlemlerin öncelikle kullanıcının kendi cihazında tutulup çalıştırıldığı, buluta bağımlılığın en aza indirildiği tasarım yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "melgarafael/DeskcommCRM",
+      "url": "https://github.com/melgarafael/DeskcommCRM",
+      "stars": "1.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "WhatsApp üzerinden satış yapan küçük işletmeler genelde Kommo, Octadesk ya da Intercom gibi pahalı ve kapalı kaynaklı araçlara bağımlı kalıyor. **DeskcommCRM**, kendi sunucunuzda barındırabileceğiniz, yapay zeka satış ajanlarıyla donatılmış açık kaynaklı bir CRM sunarak bu bağımlılığı ortadan kaldırmayı hedefliyor.",
+        "tech": "Arayüz **Next.js 16**, React 19, TypeScript, Tailwind ve shadcn/ui ile yazılmış; veri katmanında Supabase üzerinden **Postgres** kullanılıyor. WhatsApp entegrasyonu **WAHA** ile sağlanıyor ve hem QR kod hem de Meta'nın resmi kanalıyla çoklu numara desteği sunuyor. **RAG** tabanlı yapay zeka ajanları OpenRouter, Anthropic ya da OpenAI modelleriyle çalışıp müşteri sohbetlerini yürütüyor; webhook tabanlı KOŞUL/EĞER/O-HALDE (WHEN/IF/THEN) kuralları ve **MCP** uyumluluğu otomasyonu genişletiyor, çoklu kiracı (multi-tenant) mimari ise Brezilya'nın veri koruma yasası **LGPD**'ye uyumu hedefliyor.",
+        "why": "WhatsApp üzerinden ticaret özellikle Brezilya ve Latin Amerika'da devasa bir pazar oluşturuyor, ama bu pazara hitap eden CRM'lerin çoğu kapalı ve abonelik bazlı. Açık kaynaklı, tek komutla kurulabilen ve kendi sunucusunda barınabilen, üstelik yerel dil ve sektör sözlüğüne (e-ticaret, klinik, emlak) göre uyarlanabilen bir alternatif, göz ardı edilen geniş bir KOBİ kitlesine hitap ettiği için hızla ilgi topladı; MCP desteği de projeyi güncel ajan-araç entegrasyonu trendine bağlıyor.",
+        "evolve": "WAHA üzerinden WhatsApp Web otomasyonu, resmi WhatsApp Business API'sinin aksine platformun kullanım koşullarına aykırı sayılıp hesap askıya alınması riski taşıyor; bu riskin netçe belgelenmesi kullanıcılar için önemli. Çoklu kiracı mimarinin ve LGPD uyumluluğunun bağımsız bir güvenlik denetiminden geçmesi, kurumsal güven kazanmak için gerekli olacak. Ayrıca satış ajanlarının RAG kalitesi işletmeden işletmeye çok değişeceğinden, sektöre özel ince ayar (fine-tuning) rehberlerinin geliştirilmesi benimsenmeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "WAHA (WhatsApp HTTP API)",
+          "def": "WhatsApp Web'i bir HTTP API üzerinden otomatikleştirmeyi sağlayan açık kaynaklı bir köprü aracı."
+        },
+        {
+          "term": "LGPD",
+          "def": "Brezilya'nın kişisel verilerin korunmasını düzenleyen, Avrupa'nın GDPR'ına benzer ulusal veri koruma yasası."
+        },
+        {
+          "term": "Çoklu kiracı (multi-tenant) mimari",
+          "def": "Tek bir yazılım kurulumunun, verileri birbirinden izole ederek birden fazla müşteriye/işletmeye aynı anda hizmet vermesi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara ve veri kaynaklarına standart bir yöntemle bağlanmasını sağlayan açık protokol."
+        }
+      ]
+    }
+  ]
+}
