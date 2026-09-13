@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-13",
+  "projects": [
+    {
+      "name": "vxcontrol/pentagi",
+      "url": "https://github.com/vxcontrol/pentagi",
+      "stars": "23.6k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 PentAGI, bir sızma testi (**pentest**) sürecinin büyük kısmını insan müdahalesi olmadan yürütebilen otonom bir yapay zeka ajan sistemi. Normalde bir güvenlik uzmanı bir hedefi manuel olarak keşfeder, açık portları/servisleri tarar, zafiyet arar, exploit dener ve bulguları raporlar; bu döngü saatler, bazen günler sürer. PentAGI bir görev tanımını (\"şu IP aralığını/uygulamayı test et\") alıp keşiften nihai rapora kadar tüm zinciri kendi başına işletiyor.",
+        "tech": "🛠️ Backend Go ile yazılmış, arayüz React tabanlı; tüm sistem Docker Compose ile tek komutla ayağa kalkıyor. Mimarinin kalbinde bir **multi-agent** tasarım var: keşif, exploit geliştirme ve raporlama gibi görevler farklı uzman ajanlara bölünmüş, bunlar birbiriyle koordineli çalışıyor.\n\n- Birden fazla **LLM** sağlayıcısı destekleniyor (OpenAI, Anthropic/Claude ve diğerleri)\n- Gözlemlenebilirlik için Langfuse (LLM çağrı izleme) ve Graphiti (bilgi grafiği) entegrasyonu var\n- Dış sistemlerle konuşmak için **GraphQL** API sunuluyor\n- **Self-hosted** kurulum, verinin/görevin şirket dışına çıkmasını istemeyen ekipler için önemli",
+        "why": "📈 Otonom ajanların sadece sohbet değil, gerçek dünyada karmaşık ve riskli bir işi (saldırgan güvenlik) uçtan uca yürütebildiğini gösteren somut örneklerden biri olması ilgi çekti. **DevSecOps** süreçlerini otomatikleştirmek isteyen şirketler ile AI ajanlarının saldırı sınırlarını merak eden güvenlik araştırmacıları, projeyi hem pratik bir araç hem de bir \"ne kadar ileri gidebilir\" deneyi olarak izliyor. Açık kaynak ve kendi altyapınızda çalışabilmesi, hassas testler için kurumsal ilgiyi artırıyor.",
+        "evolve": "💡 Şu an tek, net tanımlı bir hedefe yönelik görevlerde güçlü; büyük ölçekli, çok adımlı kurumsal pentest senaryolarında ajanların birbirinin hatalarını nasıl denetleyip düzelttiği (self-correction) daha da olgunlaştırılabilir. Üretilen bulguların otomatik olarak MITRE ATT&CK gibi standart çerçevelere eşlenmesi, çıktının uyumluluk (compliance) raporlamasında doğrudan kullanılabilmesini sağlayabilir."
+      },
+      "glossary": [
+        {
+          "term": "Pentest (sızma testi)",
+          "def": "Bir sistemin güvenlik açıklarını, izinli ve kontrollü şekilde gerçek bir saldırgan gibi deneyerek bulma sürecidir."
+        },
+        {
+          "term": "Multi-agent sistem (çoklu ajan)",
+          "def": "Tek bir büyük yapay zekâ yerine, her biri farklı bir alt görevde uzmanlaşmış birden fazla ajanın birlikte çalıştığı mimaridir."
+        },
+        {
+          "term": "LLM",
+          "def": "Large Language Model; metin üretebilen, büyük veriyle eğitilmiş yapay zekâ dil modelidir (ör. GPT, Claude)."
+        },
+        {
+          "term": "GraphQL",
+          "def": "İstemcinin sunucudan tam olarak ihtiyaç duyduğu veriyi tek bir sorguyla istediği, REST'e alternatif bir API sorgu dilidir."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üçüncü taraf bir bulut yerine, kullanıcının kendi sunucusunda barındırılmasıdır."
+        },
+        {
+          "term": "DevSecOps",
+          "def": "Güvenlik kontrollerini yazılım geliştirme ve operasyon (DevOps) sürecinin en başından itibaren otomatik olarak sürece dahil etme yaklaşımıdır."
+        },
+        {
+          "term": "Gözlemlenebilirlik (observability)",
+          "def": "Bir sistemin iç durumunu loglar, metrikler ve izler üzerinden dışarıdan anlayabilme yeteneğidir."
+        }
+      ]
+    },
+    {
+      "name": "max-sixty/worktrunk",
+      "url": "https://github.com/max-sixty/worktrunk",
+      "stars": "7.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Aynı repo üzerinde birden fazla AI kodlama ajanını (Claude Code, Codex vb.) paralel çalıştırmak isteyen geliştiriciler bir soruna takılıyor: Git'in **worktree** özelliği aynı depodan birden fazla bağımsız çalışma klasörü açmaya izin verse de, native komutları (ekleme, listeleme, temizleme) elle kullanmak zahmetli ve hataya açık. Worktrunk, her dalı (**branch**) otomatik olarak kendi klasörüne bağlayıp bu süreci sadeleştiriyor.",
+        "tech": "🛠️ Rust ile yazılmış bir **CLI** aracı; bash, zsh, fish ve PowerShell için kabuk (**shell**) entegrasyonu sağlıyor. Üç komut etrafında şekilleniyor:\n\n- `switch`: dallar arası geçiş yapar veya yoksa yeni bir worktree oluşturur\n- `list`: tüm worktree'lerin durumunu, commit'lerini ve diff'lerini gösterir\n- `merge`: **squash**, **rebase** ve **merge** adımlarını tek işlemde ana dala geri taşır\n\nAyrıca otomatik hook'lar, LLM ile commit mesajı üretme, interaktif worktree seçici ve **CI** durumu entegrasyonu gibi ek özellikler sunuyor. Homebrew, Cargo, Arch Linux ve conda/Pixi üzerinden dağıtılıyor.",
+        "why": "📈 Birden fazla AI ajanının aynı anda kod yazdığı \"agentic coding\" iş akışları yaygınlaştıkça, bu ajanların birbirinin dosyalarını ezmeden paralel çalışabilmesi kritik bir ihtiyaç haline geldi. Worktrunk bu ihtiyacı sade, \"gösterişsiz\" (no-slop) bir CLI deneyimiyle karşılayarak geliştirici topluluğunda hızla yayıldı.",
+        "evolve": "💡 Şu an tek makinede çalışan yerel bir araç; bir ekibin hangi ajanın hangi dalda çalıştığını paylaşımlı olarak görebildiği bir durum takibi, ya da uzak sandbox/CI orkestrasyon araçlarıyla doğrudan entegrasyon, kurumsal ekipler için değerli bir sonraki adım olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Git worktree",
+          "def": "Aynı Git deposundan, farklı dallar için birden fazla bağımsız çalışma klasörü açmayı sağlayan Git özelliğidir."
+        },
+        {
+          "term": "Branch (dal)",
+          "def": "Bir Git deposunda ana koddan ayrılan, bağımsız geliştirme yapılabilen bir çizgidir."
+        },
+        {
+          "term": "CLI",
+          "def": "Command Line Interface; komutların yazılarak çalıştırıldığı, grafik arayüzü olmayan program türüdür."
+        },
+        {
+          "term": "Squash",
+          "def": "Birden fazla Git commit'ini tek bir commit haline getirme işlemidir."
+        },
+        {
+          "term": "Rebase",
+          "def": "Bir dalın commit geçmişini başka bir dalın üzerine, geçmişi yeniden yazarak taşıma işlemidir."
+        },
+        {
+          "term": "Merge",
+          "def": "İki Git dalının değişikliklerini birleştirme işlemidir."
+        },
+        {
+          "term": "CI (Continuous Integration)",
+          "def": "Kod her değiştiğinde otomatik olarak derlenip test edilmesini sağlayan sürekli entegrasyon sürecidir."
+        },
+        {
+          "term": "Agentic coding",
+          "def": "Kod yazma görevlerinin, insan yerine otonom AI ajanları tarafından yürütüldüğü çalışma biçimidir."
+        },
+        {
+          "term": "Shell (kabuk)",
+          "def": "Kullanıcının komutları yazarak işletim sistemiyle etkileşime girdiği komut satırı programıdır (bash, zsh, fish vb.)."
+        }
+      ]
+    },
+    {
+      "name": "asgeirtj/system_prompts_leaks",
+      "url": "https://github.com/asgeirtj/system_prompts_leaks",
+      "stars": "65.6k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "🎯 Bu proje, büyük yapay zekâ sohbet botlarının (ChatGPT, Claude, Gemini, Grok ve 20'den fazla diğer platform) kullanıcıyla konuşmaya başlamadan önce arka planda aldığı, normalde gizli tutulan \"**sistem promptu**\" talimatlarını bir araya topluyor. Şirketler bu metinleri genelde saklı tutar; repo, farklı yöntemlerle elde edilmiş bu talimatları şeffaf ve düzenli şekilde arşivliyor.",
+        "tech": "🛠️ İçerik, satıcı (vendor) bazında klasörlenmiş sade markdown dosyalarından oluşuyor — karmaşık bir yazılım mimarisi yok, projenin değeri küratörlük ve güncel tutulmasında. 771'in üzerinde commit ile aktif şekilde güncelleniyor; yeni model varyantları (ör. Claude Code'un \"**headless**\" sürümleri) çıktıkça arşive ekleniyor. CC0-1.0 lisansı içeriğin serbestçe yeniden kullanılmasına izin veriyor.",
+        "why": "📈 Yapay zekâ şeffaflığına duyulan güçlü kamuoyu ilgisinin somut bir yansıması — Washington Post gibi büyük medya kuruluşlarının bu sızıntıları haber yapması, \"AI şirketleri modellerine tam olarak ne söylüyor?\" sorusuna geniş bir merak uyandırdı. Geliştiriciler için de bu promptlar, kendi ajanlarını tasarlarken bir **prompt engineering** referansı olarak kullanılıyor.",
+        "evolve": "💡 Arşiv şu an ham metinlerin bir listesi halinde duruyor; bir modelin sistem promptunun zaman içinde nasıl değiştiğini gösteren sürüm karşılaştırması, ya da farklı sağlayıcıların ortak kalıplarını (ör. hepsinin \"yardımsever ve zararsız ol\" gibi ifadeler kullanıp kullanmadığı) otomatik analiz eden bir katman, projeyi bir referans arşivinden bir araştırma veri setine dönüştürebilir."
+      },
+      "glossary": [
+        {
+          "term": "Sistem promptu (system prompt)",
+          "def": "Bir yapay zekâ modeline, kullanıcı mesajlarından önce verilen ve modelin davranışını/kişiliğini/sınırlarını belirleyen gizli talimat metnidir."
+        },
+        {
+          "term": "Prompt engineering",
+          "def": "Bir yapay zekâ modelinden istenen sonucu almak için giriş metnini (prompt) özenle tasarlama pratiğidir."
+        },
+        {
+          "term": "CC0 lisansı",
+          "def": "Bir içeriğin tüm telif haklarından feragat edilerek herkesin serbestçe kullanabileceği bir açık lisans türüdür."
+        },
+        {
+          "term": "Headless",
+          "def": "Bir yazılımın grafik arayüzü olmadan, sadece komut/API üzerinden çalışan sürümüdür."
+        }
+      ]
+    },
+    {
+      "name": "multimodal-art-projection/YuE",
+      "url": "https://github.com/multimodal-art-projection/YuE",
+      "stars": "7.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 YuE2, metinden (şarkı sözü + tarz tarifi) tam bir şarkı — vokal ve enstrümantal dahil — üreten bir yapay zekâ sistemi. Çoğu müzik üretim modeli sonucu doğrudan sesten sese, bir **kara kutu** gibi üretirken, YuE2 önce düzenlenebilir bir müzik notası (melodi, akor dizisi) oluşturuyor, ardından bunu sese dönüştürüyor; yani kullanıcı şarkı sese çevrilmeden önce sonucu görüp değiştirebiliyor.",
+        "tech": "🛠️ Çekirdekte 3 milyar parametreli bir **AR-NAR** (autoregressive/non-autoregressive) karma **Mixture-of-Transformers** mimarisi var. Üretim dört aşamada ilerliyor: `plan()` (nota/akor planı çıkar) → `generate_semantic()` → `synthesize()` → `decode()` (48kHz stereo sese dönüştür). MERT2 adlı bir müzik anlama modeli ve SheetSage2 adlı ses-den-notaya transkripsiyon modeli, ana modeli destekliyor. Python 3.12 ve PyTorch üzerinde çalışıyor, model ağırlıkları Hugging Face üzerinden dağıtılıyor.",
+        "why": "📈 WildSongBench ölçütünde Suno v5/v6 gibi kapalı kaynak rakiplerini geride bırakan bir skor elde etmesi dikkat çekti. Ayrıca \"kara kutu değil, beyaz kutu\" yaklaşımı — üretilen notaların düzenlenebilir olması — hem müzisyenlerin manuel müdahalesine hem de AI ajanlarının şarkı üretim sürecine geri bildirimle katılmasına imkân tanıyor; bu da projeyi sadece bir \"şarkı üretici\"den, ajan tabanlı iş akışlarına entegre edilebilir bir bileşene dönüştürüyor.",
+        "evolve": "💡 Proje şu an İngilizce ağırlıklı ve akademik kurumların (HKUST, NYU, Stanford ve diğerleri) ortak ürünü olarak öne çıkıyor. Ticari kullanım için netleştirilmiş lisanslama, canlı performans/gerçek zamanlı üretim desteği ve daha fazla dil/müzik tarzı kapsaması, projenin yayılımını daha da artırabilecek yönler."
+      },
+      "glossary": [
+        {
+          "term": "Kara kutu (black box)",
+          "def": "İç işleyişi gözlemlenemeyen, sadece girdi-çıktı ilişkisiyle değerlendirilen bir sistemdir."
+        },
+        {
+          "term": "AR-NAR (autoregressive / non-autoregressive)",
+          "def": "Autoregressive üretim çıktıyı adım adım (bir öncekine bakarak), non-autoregressive üretim ise çıktının birden fazla parçasını aynı anda oluşturur."
+        },
+        {
+          "term": "Mixture-of-Transformers",
+          "def": "Farklı alt görevlere uzmanlaşmış birden fazla transformer bloğunun bir arada kullanıldığı model mimarisidir."
+        },
+        {
+          "term": "Hugging Face",
+          "def": "Yapay zekâ modellerinin, veri setlerinin ve demo uygulamalarının paylaşıldığı popüler bir topluluk platformudur."
+        },
+        {
+          "term": "PyTorch",
+          "def": "Yapay zekâ modeli geliştirmek için yaygın kullanılan açık kaynaklı bir Python makine öğrenmesi kütüphanesidir."
+        }
+      ]
+    }
+  ]
+}
