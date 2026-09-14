@@ -1,0 +1,153 @@
+{
+  "date": "2026-09-14",
+  "projects": [
+    {
+      "name": "tech-leads-club/agent-skills",
+      "url": "https://github.com/tech-leads-club/agent-skills",
+      "stars": "5.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI kodlama ajanlarının (Claude Code, Cursor, Copilot gibi) yetenek/eklenti ekosistemi son bir yılda patladı, ama bu \"skill\" pazaryerlerinin büyük kısmı denetimsiz: proje sahiplerine göre pazaryerindeki skill'lerin **%13'ünden fazlası** kritik güvenlik açığı barındırıyor. **agent-skills**, bu kaosa karşı küratörlü ve güvenlik taramasından geçmiş bir skill kayıt defteri sunuyor — geliştiricinin \"bu eklentiyi kurarsam ajanım tehlikeye girer mi?\" sorusunu sormasına gerek kalmadan doğrulanmış yetenekleri tek komutla kurmasını sağlıyor.",
+        "tech": "Proje bir **Nx monorepo** içinde tamamen TypeScript ile yazılmış ve npm üzerinden dağıtılan bir CLI aracı olarak sunuluyor. Node.js 22+ gerektiriyor, test için Jest, kod kalitesi için ESLint/Prettier ve sürüm yönetimi için semantic-release kullanıyor. Mimari tercihlerin çoğu güvenlik odaklı: her skill statik analizden geçiriliyor, **symlink guard** ve **path isolation** mekanizmalarıyla dosya sistemi kaçışları engelleniyor, kilit dosyası bütünlüğü kontrol ediliyor. Ayrıca bir **MCP sunucusu** üzerinden \"progressive disclosure\" mantığıyla skill'leri aşamalı keşfettirerek ajanın bağlam penceresini gereksiz yere şişirmiyor.",
+        "why": "Zamanlama kritik: MCP standardının yaygınlaşmasıyla birlikte her ajan platformu kendi eklenti/skill sistemini kurdu, ama hiçbiri merkezi bir güvenlik denetimi getirmedi. Bu proje, tedarik zinciri güvenliği endişesini (npm paket zehirlenmesi skandallarına benzer şekilde) ajan skill'lerine taşıyarak hem bireysel geliştiricilere hem de kurumsal AI-agent dağıtımlarına hitap ediyor. 15'in üzerinde ajanı desteklemesi de onu tek bir araca bağımlı kalmak istemeyen ekipler için cazip kılıyor.",
+        "evolve": "Şu anki statik analiz ve küratörlü inceleme modeli insan emeğine bağımlı ve ölçeklenmesi zor; **sandbox içinde otomatik davranış testi** (skill'i izole bir ortamda gerçekten çalıştırıp ne yaptığını gözlemlemek) bir sonraki mantıklı adım olabilir. Ayrıca skill'lere kriptografik imza ve **provenance** (kaynak doğrulanabilirliği) eklenmesi, GitHub'ın kendi güvenlik danışmanlıklarıyla entegrasyon ve topluluk tabanlı itibar puanlaması projeyi bir sonraki seviyeye taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka ajanlarının dış araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Nx monorepo",
+          "def": "Birden fazla paket/uygulamayı tek bir depo (repository) içinde, paylaşılan yapılandırma ve derleme araçlarıyla yönetmeyi sağlayan sistem."
+        },
+        {
+          "term": "Statik analiz",
+          "def": "Kodu çalıştırmadan, kaynak metnini tarayarak güvenlik açığı veya hata tespit eden inceleme yöntemi."
+        },
+        {
+          "term": "Symlink (sembolik bağlantı)",
+          "def": "Bir dosya veya klasöre işaret eden kısayol niteliğinde özel dosya; kötüye kullanılırsa yetkisiz dosyalara erişim sağlayabilir."
+        },
+        {
+          "term": "Semantic-release",
+          "def": "Commit mesajlarını analiz ederek sürüm numarasını ve değişiklik günlüğünü otomatik oluşturan araç."
+        },
+        {
+          "term": "Progressive disclosure",
+          "def": "Kullanıcıya (burada yapay zeka ajanına) bilginin tamamını değil, ihtiyaç duyduğu kadarını aşama aşama gösterme tasarım ilkesi."
+        }
+      ]
+    },
+    {
+      "name": "tonhowtf/omniget",
+      "url": "https://github.com/tonhowtf/omniget",
+      "stars": "11.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "İnternetten video, ders, müzik ve kitap indirmek isteyen biri genelde yt-dlp, gallery-dl, aria2 gibi onlarca ayrı komut satırı aracını tek tek öğrenmek zorunda kalır. **OmniGet**, bu araçların hepsini tek bir masaüstü uygulamasında birleştirip 1.800'den fazla siteden (Udemy, YouTube, Instagram, Bilibili, Telegram) terminale hiç dokunmadan, linki yapıştırıp indirme yapabilmeyi vaat ediyor.",
+        "tech": "Elektron yerine **Tauri 2** tercih edilmiş: arayüz mantığı Rust'ta çalışırken, kullanıcı arayüzü SvelteKit ve Svelte 5 ile yazılmış — bu kombinasyon çok daha küçük kurulum dosyası ve düşük bellek kullanımı sağlıyor. İndirme motoru olarak yt-dlp ve gallery-dl'yi, torrent benzeri paralel indirme için Rust tabanlı **librqbit** ve **aria2**'yi, çevrimdışı transkripsiyon için **whisper.cpp**'yi arka planda çalıştırıyor. Yerel veri (kuyruk, geçmiş, ayarlar) SQLite'ta tutuluyor; kimlik doğrulaması gereken indirmeler için bir tarayıcı eklentisi köprü görevi görüyor.",
+        "why": "Projenin ivme kazanmasının arkasında \"platform kırılganlığı\" korkusu var: ücretli kurs veya video platformları kapanabiliyor, hesaplar askıya alınabiliyor, abonelikler sona erince erişim kesiliyor. OmniGet, kendi kendine öğrenen (self-learner) ve dijital arşivci kitleye \"bir kere indir, hep sende kalsın\" vaadiyle hitap ediyor. 108 aracı tek çatı altında toplaması ve reklamsız/telemetrisiz olması da güven inşa eden unsurlar.",
+        "evolve": "Projenin en büyük açığı hukuki: Udemy ve Hotmart gibi **ücretli** kurs platformlarını hedef alması telif hakkı ve hizmet şartları ihlali riskini doğrudan kullanıcıya yüklüyor. Sürdürülebilir bir yol, yalnızca kullanıcının zaten yasal olarak erişim hakkına sahip olduğu içerikleri (kendi satın aldığı, DRM'siz materyalleri) hedefleyen bir moda geçmek olabilir. Teknik tarafta ise topluluk katkılı **extractor eklenti API'si** ve cihazlar arası senkronizasyon mantıklı sonraki adımlar."
+      },
+      "glossary": [
+        {
+          "term": "Tauri",
+          "def": "Masaüstü uygulamalarını Rust arka uçla ve web tabanlı arayüzle, Electron'a göre çok daha küçük dosya boyutunda paketleyen çatı (framework)."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML/CSS/JS) masaüstü uygulaması geliştirmeyi sağlayan, ancak yüksek bellek tükettiği bilinen popüler bir çatı."
+        },
+        {
+          "term": "whisper.cpp",
+          "def": "OpenAI'nin Whisper konuşma tanıma modelini internet bağlantısı olmadan, yerel bilgisayarda çalıştırmayı sağlayan hafif kütüphane."
+        },
+        {
+          "term": "librqbit",
+          "def": "Rust programlama dilinde yazılmış, torrent protokolüyle dosya indirmeyi sağlayan kütüphane."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, tek dosya üzerinde çalışan hafif bir veritabanı motoru."
+        },
+        {
+          "term": "DRM (Dijital Haklar Yönetimi)",
+          "def": "Dijital içeriğin izinsiz kopyalanmasını veya dağıtılmasını engellemeye yönelik teknik koruma sistemleri."
+        }
+      ]
+    },
+    {
+      "name": "SnailSploit/Claude-Red",
+      "url": "https://github.com/SnailSploit/Claude-Red",
+      "stars": "4.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "Yetkili bir sızma testi (pentest) yapan bir güvenlik uzmanı, saldırı yüzeyine göre (web, kablosuz ağ, bulut, ikili dosya) çok farklı uzmanlık alanlarına hızlıca geçiş yapmak zorundadır. **Claude-Red**, Claude'un Skills sistemini kullanarak, her biri belirli bir saldırı yüzeyi için uzman düzeyinde metodoloji içeren 78 hazır \"skill\" dosyasıyla, yapay zeka asistanını istendiğinde o alanda uzmanlaşmış bir danışmana dönüştürüyor.",
+        "tech": "Teknik omurga son derece sade: her yetenek, Claude'un okuyabildiği yapılandırılmış bir **SKILL.md** metin dosyası olarak tanımlanıyor ve konuşma sırasında geçen anahtar kelimelere göre otomatik olarak devreye giriyor (**on-demand loading**). Bu sayede model varsayılan olarak yüzlerce sayfalık saldırı bilgisiyle yüklenmiyor, yalnızca o an gereken uzmanlık alanı bağlama ekleniyor. 23 kategoriye yayılan 78 skill; SQL enjeksiyonundan **shellcode** yazımına, **EDR atlatmaya** kadar geniş bir yelpazeyi kapsıyor; küçük Python betikleri format dönüştürme ve kurulum işlerini görüyor.",
+        "why": "Ajan tabanlı yapay zekanın siber güvenlik iş akışlarına girmesi hız kazandı: güvenlik ekipleri artık genel amaçlı bir asistanı, ihtiyaç anında belirli bir konuda uzmanlaşmış bir meslektaşa dönüştürme fikrine ısınıyor. Proje, \"skill\" mimarisinin sadece üretkenlik araçlarına değil, yüksek riskli/yüksek uzmanlık gerektiren alanlara da taşınabileceğini gösteren çarpıcı bir örnek olduğu için hem kırmızı takım (red team) profesyonellerinin hem de yapay zeka güvenliğini takip edenlerin dikkatini çekiyor.",
+        "evolve": "Projenin kendisi de \"yalnızca yetkili testler için\" uyarısı yapıyor, ama bu tür araçların doğası gereği **çok amaçlı (dual-use)** olması, kapsam doğrulama ve yetki kaydı (\"bu testi yapmaya yetkiniz var mı?\") gibi otomatik denetim katmanlarının eksikliğini öne çıkarıyor. Gelecekte, her skill kullanımını loglayan bir denetim izi, kapsam dışı hedeflere karşı otomatik uyarı mekanizması ve savunma tarafına hitap eden bir \"Claude-Blue\" kardeş proje, aracı kurumsal ortamlarda daha güvenle benimsenebilir hale getirebilir."
+      },
+      "glossary": [
+        {
+          "term": "SKILL.md",
+          "def": "Claude'un belirli bir konuda uzmanlaşmış davranmasını sağlayan, talimat ve yöntemleri içeren yapılandırılmış metin dosyası formatı."
+        },
+        {
+          "term": "Kırmızı takım (red team)",
+          "def": "Bir kuruluşun savunmasını gerçek saldırganlar gibi davranarak test eden yetkili güvenlik ekibi."
+        },
+        {
+          "term": "EDR (Endpoint Detection and Response)",
+          "def": "Bilgisayarlardaki şüpheli etkinlikleri tespit edip müdahale eden uç nokta güvenlik yazılımı."
+        },
+        {
+          "term": "Shellcode",
+          "def": "Bir güvenlik açığından yararlanıldığında hedef sistemde doğrudan çalıştırılan, genellikle makine diline yakın küçük kod parçası."
+        },
+        {
+          "term": "SQL enjeksiyonu (SQLi)",
+          "def": "Bir uygulamanın veritabanı sorgularına kötü amaçlı kod ekleyerek yetkisiz veri erişimi sağlamaya yönelik saldırı türü."
+        },
+        {
+          "term": "On-demand loading",
+          "def": "Bir bileşenin veya bilginin, önceden değil tam da ihtiyaç duyulduğu anda yüklenmesi."
+        }
+      ]
+    },
+    {
+      "name": "Swordfish90/cool-retro-term",
+      "url": "https://github.com/Swordfish90/cool-retro-term",
+      "stars": "26.3k",
+      "language": "QML",
+      "sections": {
+        "serves": "Modern terminal uygulamaları işlevsel ama görsel olarak sterildir. **cool-retro-term**, geliştiricilere eski katot tüplü (CRT) monitörlerin bulanık parıltısını, tarama çizgilerini ve hafif titremesini yaşatan, ama günlük kullanım için yeterince hafif ve özelleştirilebilir kalan bir terminal emülatörü sunarak nostaljiyle pratikliği birleştiriyor.",
+        "tech": "Terminal motoru olarak KDE Konsole'un altyapısı olan **qtermwidget**'in QML'e taşınmış bir versiyonu kullanılıyor; yani komut satırının kendisiyle uğraşmak yerine kanıtlanmış bir bileşene güveniliyor. Asıl \"sihir\" **Qt6/QML shader'ları** ile yapılıyor: bulanıklık (bloom), renk kayması (chromatic aberration) ve tarama çizgileri gibi efektler GPU üzerinde gerçek zamanlı render ediliyor. Bu ayrım (sağlam terminal çekirdeği + ayrı görsel katman), efektlerin performansı neredeyse hiç etkilememesini sağlıyor.",
+        "why": "On yılı aşkın süredir var olan proje olmasına rağmen periyodik olarak trend listelerine geri dönüyor; bunun arkasında geliştirici kültüründeki masaüstü \"rice'lama\" (özelleştirme) akımı ve r/unixporn tarzı topluluklarda paylaşılan ekran görüntülerinin viral etkisi var. Retro estetiğin genel olarak (piksel sanatı, sentezwave, eski konsol emülatörleri) tekrar popülerleşmesiyle de örtüşüyor; teknik olmayan kullanıcılar bile sadece \"havalı göründüğü\" için kuruyor.",
+        "evolve": "Proje şu an yalnızca Linux ve macOS'u resmi olarak destekliyor; Windows desteğinin gelmesi kullanıcı tabanını ciddi genişletebilir. Ayrıca WezTerm veya Ghostty gibi daha yeni, GPU hızlandırmalı terminal emülatörlerinin yükselişiyle birlikte, CRT shader efektinin bağımsız bir eklenti/tema olarak bu araçlara taşınması, cool-retro-term'ün özgün fikrinin daha geniş bir kitleye ulaşmasını sağlayabilir."
+      },
+      "glossary": [
+        {
+          "term": "QML",
+          "def": "Qt çatısında kullanıcı arayüzlerini bildirimsel (declarative) biçimde tanımlamaya yarayan bir betik dili."
+        },
+        {
+          "term": "Shader",
+          "def": "Görüntülerin veya efektlerin doğrudan ekran kartında (GPU) hesaplanmasını sağlayan küçük programlar."
+        },
+        {
+          "term": "Tarama çizgisi (scanline)",
+          "def": "Eski CRT ekranlarda görüntüyü oluşturan yatay çizgilerin görsel izi; retro ekran efektlerinde taklit edilir."
+        },
+        {
+          "term": "Chromatic aberration (renk kayması)",
+          "def": "Görüntüde renk kanallarının hafifçe kaymasıyla oluşan, genelde eski optik/ekran donanımlarına özgü görsel bozulma."
+        },
+        {
+          "term": "CRT (Katot Işın Tüpü)",
+          "def": "Eski televizyon ve bilgisayar monitörlerinde görüntüyü oluşturan, elektron ışını kullanan ekran teknolojisi."
+        }
+      ]
+    }
+  ]
+}
