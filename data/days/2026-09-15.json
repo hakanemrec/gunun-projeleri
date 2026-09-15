@@ -1,0 +1,189 @@
+{
+  "date": "2026-09-15",
+  "projects": [
+    {
+      "name": "666ghj/MiroFish",
+      "url": "https://github.com/666ghj/MiroFish",
+      "stars": "73.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Karmaşık gerçek dünya olaylarının (bir haberin nasıl yayılacağı, bir politikanın nasıl tepki toplayacağı, bir yatırımın nasıl sonuçlanacağı) sonucunu önceden kestirmek son derece zor ve riskli — özellikle karar hataları gerçek maliyetlere yol açtığında. **MiroFish**, bu belirsizliği bir \"dijital kum havuzunda geleceği prova etme\" fikrine çeviriyor: gerçek dünyadan (haber, rapor, veri) beslenen binlerce yapay ajanla paralel bir simülasyon dünyası kuruyor, kullanıcı bu dünyaya değişkenler enjekte ederek olası gelecekleri sayısız kez \"oynatıp\" gözlemleyebiliyor.",
+        "tech": "Mimari, Node.js 18+ tabanlı bir ön yüz ile Python 3.11-3.12 ve **uv** paket yöneticisiyle çalışan bir arka uçtan oluşuyor. Sistemin temelinde CAMEL-AI'nin **OASIS** (Open Agent Social Interaction Simulations) çerçevesi var; bunun üzerine **GraphRAG** ile gerçek dünya metinlerinden varlık (entity) ve ilişki çıkarımı yapılıp her simülasyon ajanına bağımsız bir kişilik ve uzun süreli hafıza kazandırılıyor. Büyük dil modeli entegrasyonu (test edilen: Alibaba'nın Bailian platformu üzerinden Qwen) ajanların davranışlarını yönlendirirken, **Zep Cloud** üzerinden ajan hafızaları kalıcı hale getiriliyor. Kurulum kaynak koddan (`npm run setup:all`) ya da Docker Compose ile yapılabiliyor, ön yüz 3000, arka uç 5001 portunda çalışıyor.",
+        "why": "73,4 bin yıldıza rağmen yalnızca 320 commit ile nispeten genç ama patlayıcı bir büyüme gösteren proje, arkasında **Shanda Group**'un stratejik desteğiyle dikkat çekiyor. Somut ve ilgi çekici kullanım örnekleri (kamuoyu tepkisi tahmini, finansal öngörü, hatta \"Kızıl Köşk Rüyası\" gibi klasik bir romanın kayıp sonunu tahmin etme) projeyi soyut bir AI aracı olmaktan çıkarıp herkesin anlayabileceği somut bir vaka haline getiriyor. Canlı bir demo ortamının halka açık olması da viral yayılmayı hızlandıran etkenlerden biri.",
+        "evolve": "Binlerce ajanlı simülasyonların hesaplama maliyeti ve LLM API çağrı sayısı ölçeklendikçe hızla artacağı için, projenin en büyük fırsatı maliyet-etkin ölçeklenme (örneğin küçük/açık modellerle hibrit çalışma) olabilir. Ayrıca simülasyon sonuçlarının ne kadar güvenilir olduğunu ölçecek bağımsız bir doğrulama/kalibrasyon katmanı eklenmesi — yani \"bu tahmin gerçekten ne kadar isabetli çıktı\" sorusuna sistematik cevap vermesi — projeyi meraklı bir demo olmaktan çıkarıp ciddi bir karar destek aracına taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "Swarm intelligence (sürü zekâsı)",
+          "def": "Çok sayıda basit ajanın birbirleriyle etkileşerek ortaya çıkardığı kolektif, karmaşık davranış."
+        },
+        {
+          "term": "GraphRAG",
+          "def": "Metinlerden çıkarılan varlık ve ilişkileri bir bilgi grafiğine dönüştürüp, üretken yapay zekanın bu grafikten yararlanmasını sağlayan teknik."
+        },
+        {
+          "term": "OASIS",
+          "def": "CAMEL-AI'nin geliştirdiği, büyük ölçekli sosyal etkileşim simülasyonları kurmaya yarayan açık kaynak çerçeve."
+        },
+        {
+          "term": "uv",
+          "def": "Python paketlerini kurmak ve yönetmek için geliştirilmiş, hıza odaklanan yeni nesil bir araç."
+        },
+        {
+          "term": "Zep Cloud",
+          "def": "Yapay zeka ajanları için uzun süreli hafıza/bellek yönetimi sunan bulut servisi."
+        },
+        {
+          "term": "Entity extraction (varlık çıkarımı)",
+          "def": "Bir metinden kişi, yer, kurum gibi somut varlıkları otomatik olarak tespit etme işlemi."
+        }
+      ]
+    },
+    {
+      "name": "rlaope/oh-my-hermes",
+      "url": "https://github.com/rlaope/oh-my-hermes",
+      "stars": "2.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "AI kodlama ajanları (Claude Code, Codex gibi) artık günlük iş akışının parçası, ama \"ajana bir görev verip bekleme\" modelinin ciddi bir zaafı var: ajan işi bitirdiğini söyler, oysa gerçekte doğrulanmamış ya da yarım kalmış olabilir. **Oh-My-Hermes**, Nous Research'ün açık kaynak ajan çerçevesi **Hermes Agent**'in üzerine oturan bir \"orkestrasyon katmanı\" ekleyerek bu güven sorununu çözmeye çalışıyor: hangi modelin hangi görevi üstleneceğine karar veriyor, işleri paralel parçalara bölüyor ve bir görevin sadece \"yapıldı denildi\" mi yoksa gerçekten \"kanıtla doğrulandı\" mı olduğunu ayırt ediyor.",
+        "tech": "Python tabanlı bir CLI ve eklenti sistemi olarak kurulu; Hermes CLI, masaüstü uygulaması ve mesajlaşma araçları gibi birden çok kanaldan çalışabiliyor, ayrıca Claude Code ve Codex ile de entegre oluyor. Mimarinin merkezinde **mixture-of-models routing** var: gelen her istek karmaşıklığına göre puanlanıyor ve 13 farklı model ailesinden (Claude, GPT-6 Astra, DeepSeek vb.) göreve en uygun olanı otomatik seçiliyor. \"ulw-*\" adlı dokuz \"ultra-skill\" iş akışı (bağlam hizalama, araştırma, planlama, paralel yürütme, inceleme döngüleri) görevi standart adımlara bölerken, dosya sahipliği ayrık tutularak paralel çalışan modellerin birbirinin işine çakışması engelleniyor. Ayrıca dosya tabanlı, kabul kapılı (admission gate) bir uzun süreli hafıza sistemi, Hermes'in kendi hafızasından bağımsız olarak bilgi biriktiriyor.",
+        "why": "Proje, kanıtladığı somut bir rakamla dikkat çekiyor: aynı kodlama görevini \"4,29 dolar yerine 0,66 dolara, 23 dakika yerine 5 dakikada\" çözdüğünü iddia ediyor — bu da maliyet ve hız konusunda endişeli olan bireysel geliştiricilerden kurumsal AI-ajan operasyonlarına kadar geniş bir kitleye hitap ediyor. 2,2 bin yıldıza rağmen 3.400'ün üzerinde commit ile son derece aktif geliştirilmesi ve İngilizce, Korece, Japonca, Çince dört dilde dokümantasyon sunması, projenin özellikle Asya merkezli açık kaynak ajan topluluğunda hızla yayıldığının bir işareti.",
+        "evolve": "Proje şu an ölçülmüş, yayımlanmış bir karşılaştırma (benchmark) sonucu sunmuyor — \"$0,66 vs $4,29\" gibi iddialar altyapısı `/benchmarks/product-ab/v1` klasöründe hazır olsa da henüz halka açık veriyle desteklenmiyor; bunun şeffaf ve tekrarlanabilir hale getirilmesi güvenilirliği artırır. Ayrıca tek bir ajan çerçevesine (Hermes) bağımlı olması, ileride Claude Code veya Codex gibi diğer ajanlar için de birinci sınıf, bağımsız bir orkestrasyon katmanına dönüşmesiyle çok daha geniş bir kullanıcı kitlesine ulaşabilir."
+      },
+      "glossary": [
+        {
+          "term": "Hermes Agent",
+          "def": "Nous Research'ün geliştirdiği açık kaynak yapay zeka kodlama ajanı çerçevesi."
+        },
+        {
+          "term": "Mixture-of-models routing",
+          "def": "Gelen bir görevi, karmaşıklığına göre en uygun yapay zeka modeline otomatik yönlendiren teknik."
+        },
+        {
+          "term": "CLI (komut satırı arayüzü)",
+          "def": "Programların yazılı komutlarla, grafik arayüz olmadan çalıştırıldığı arayüz türü."
+        },
+        {
+          "term": "TUI (metin tabanlı arayüz)",
+          "def": "Terminal içinde çalışan, ama grafik arayüze benzer görsel öğeler (pencere, panel) içeren arayüz türü."
+        },
+        {
+          "term": "Admission gate (kabul kapısı)",
+          "def": "Bir bilginin hafızaya kalıcı olarak kaydedilmeden önce geçtiği onay/filtre mekanizması."
+        }
+      ]
+    },
+    {
+      "name": "huggingface/transformers",
+      "url": "https://github.com/huggingface/transformers",
+      "stars": "166k",
+      "language": "Python",
+      "sections": {
+        "serves": "Yapay zeka modelleri (dil modelleri, görüntü işleme, ses tanıma) hâlâ çoğunlukla PyTorch, JAX veya TensorFlow gibi farklı çerçevelerde, birbirinden bağımsız şekilde yeniden yazılıyor — bir araştırmacının yayınladığı model, başka bir ekibin altyapısında çalışmayabiliyor. **Transformers**, bu parçalanmayı bir \"model tanımı\" (model definition) katmanına indirgiyor: bir mimari bu kütüphanede tanımlandığında, otomatik olarak onlarca eğitim ve çıkarım (inference) aracıyla uyumlu hale geliyor. Kısacası proje, \"bu modeli nasıl çalıştırırım\" sorusunu araştırmacı ile motor arasında tek bir ortak dile indirgeyen bir çeviri katmanı.",
+        "tech": "Python 3.10+ üzerine, çekirdek olarak **PyTorch 2.5+** ile inşa edilmiş. Kullanıcıya sadece üç temel sınıf (model, tokenizer, pipeline) gösterilirken, arka planda **Axolotl**, **Unsloth**, **DeepSpeed** ve **FSDP** gibi eğitim çerçeveleriyle; **vLLM**, **SGLang** ve **TGI** gibi çıkarım motorlarıyla; **llama.cpp** ve **mlx** gibi cihaz-üstü kütüphanelerle uyumluluk garanti ediliyor. Bu, projeyi bir \"araç kutusu\"ndan çok, ekosistemin ortasında duran bir pivot (eksen) noktası yapıyor — Hugging Face Hub üzerindeki 1 milyonun üzerinde hazır model ağırlığı (checkpoint) bu ortak tanım sayesinde her yerde çalışabiliyor.",
+        "why": "166 bin yıldız ve 34 binin üzerinde fork ile zaten AI dünyasının fiili standardı olan Transformers'ın bugün yeniden trend olması, kütüphanenin \"bir kere kurup unutulan\" değil, sürekli canlı kalan bir proje olduğunu gösteriyor: yeni bir model mimarisi duyurulduğunda genelde birkaç gün içinde Transformers'a entegre ediliyor, bu da araştırmacıları ve şirketleri kod tabanını yakından takip etmeye zorluyor. Kitle çok geniş — akademik araştırmacılardan üretim ortamında model servis eden mühendislere kadar — ve her yeni entegrasyon haberi (yeni bir açık model ailesi, yeni bir donanım desteği) topluluğu yeniden harekete geçiriyor.",
+        "evolve": "Kütüphanenin en büyük eleştirisi, desteklenen model sayısı arttıkça kod tabanının bir \"mutfak lavabosu\"na dönüşmesi: her yeni mimari bakım yükünü katlıyor ve bu da bazen PyTorch dışı çerçevelerin (JAX, TensorFlow) geride kalmasına yol açıyor. Gelecekte modeller arası kod tekrarını azaltacak daha agresif bir soyutlama katmanı, JAX/TF desteğinin PyTorch ile eşitlenmesi ya da cihaz-üstü performansta llama.cpp/mlx seviyesine daha yakın bir deneyim sunulması, projeyi hem araştırma hem üretim tarafında daha da güçlendirebilir."
+      },
+      "glossary": [
+        {
+          "term": "PyTorch",
+          "def": "Meta (Facebook) kaynaklı, araştırmacılar arasında en yaygın kullanılan açık kaynak derin öğrenme çerçevesi."
+        },
+        {
+          "term": "JAX",
+          "def": "Google'ın geliştirdiği, yüksek performanslı sayısal hesaplama ve makine öğrenmesi kütüphanesi."
+        },
+        {
+          "term": "TensorFlow",
+          "def": "Google'ın geliştirdiği, üretim ortamlarında yaygın kullanılan derin öğrenme çerçevesi."
+        },
+        {
+          "term": "vLLM",
+          "def": "Büyük dil modellerini hızlı ve verimli şekilde sunmak (serve etmek) için geliştirilmiş çıkarım motoru."
+        },
+        {
+          "term": "SGLang",
+          "def": "Büyük dil modeli çıkarımını hızlandırmak için tasarlanmış açık kaynak sunum motoru."
+        },
+        {
+          "term": "TGI (Text Generation Inference)",
+          "def": "Hugging Face'in geliştirdiği, metin üretim modellerini üretim ortamında sunmak için kullanılan sunucu."
+        },
+        {
+          "term": "FSDP",
+          "def": "PyTorch'un devasa modelleri birden fazla GPU'ya bölerek eğitmesini sağlayan tekniği (Fully Sharded Data Parallel)."
+        },
+        {
+          "term": "DeepSpeed",
+          "def": "Microsoft'un geliştirdiği, büyük modellerin eğitimini bellek ve hız açısından optimize eden kütüphane."
+        },
+        {
+          "term": "Axolotl",
+          "def": "Büyük dil modellerini fine-tune etmeyi kolaylaştıran, yapılandırma dosyası tabanlı açık kaynak eğitim aracı."
+        },
+        {
+          "term": "Unsloth",
+          "def": "Büyük dil modellerinin fine-tune işlemini daha az bellek ve daha yüksek hızla yapmayı sağlayan optimize edilmiş kütüphane."
+        },
+        {
+          "term": "Checkpoint (model ağırlığı)",
+          "def": "Bir modelin eğitim sonucunda öğrendiği parametrelerin kaydedilmiş hâli."
+        },
+        {
+          "term": "Hugging Face Hub",
+          "def": "Eğitilmiş modellerin, veri setlerinin ve demoların paylaşıldığı merkezi platform."
+        },
+        {
+          "term": "llama.cpp",
+          "def": "Büyük dil modellerini düşük kaynaklı cihazlarda (CPU, mobil) çalıştırmak için yazılmış hafif kütüphane."
+        },
+        {
+          "term": "mlx",
+          "def": "Apple'ın geliştirdiği, Apple Silicon çipler için optimize edilmiş makine öğrenmesi çerçevesi."
+        }
+      ]
+    },
+    {
+      "name": "Crosstalk-Solutions/project-nomad",
+      "url": "https://github.com/Crosstalk-Solutions/project-nomad",
+      "stars": "37k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "İnternete güvenilir erişimin olmadığı ya da hiç olmadığı ortamlarda (afet bölgeleri, uzak kırsal alanlar, gelişmekte olan ülkeler, hazırlıklı yaşam senaryoları) eğitim ve bilgiye erişim ciddi bir sorun. **Project NOMAD**, Wikipedia'dan Khan Academy derslerine, tıbbi rehberlerden yapay zeka sohbet asistanına kadar geniş bir bilgi setini tek bir kutuda, tamamen çevrimdışı çalışacak şekilde bir araya getiriyor — ilk kurulumdan sonra internete hiç ihtiyaç duymadan kullanılabiliyor.",
+        "tech": "Sistem, **Docker/Docker Compose** ile orkestre edilen bir konteynerize mikroservis mimarisine dayanıyor: her araç (Wikipedia için **Kiwix**, dersler için **Kolibri**, haritalar için **ProtoMaps**, yerel yapay zeka sohbeti için **Ollama**, notlar için FlatNotes) kendi konteynerinde ayrı bir servis olarak çalışıyor ve hepsi \"Command Center\" adlı Node.js tabanlı bir yönetim arayüzü ile MySQL veritabanı üzerinden koordine ediliyor. Donanım gereksinimi esnek tasarlanmış: minimum 2 çekirdek/4GB RAM ile temel işlevler çalışırken, yapay zeka özellikleri için Ryzen 7/i7 ve üzeri, 32GB RAM, RTX 3060+ GPU öneriliyor — yani proje hem ucuz bir mini bilgisayarda hem de güçlü bir ev sunucusunda çalışacak şekilde ölçekleniyor.",
+        "why": "37 bin yıldızlık proje, somut ve duygusal olarak güçlü bir ihtiyacı hedefliyor: afet hazırlığı, uzak bölgelerde eğitim ve dijital egemenlik (internete/bulut sağlayıcılarına bağımlı olmama) arayan çok farklı kitleleri (araştırmacılar, öğretmenler, hazırlıklı yaşam topluluğu, gelişmekte olan ülkelerdeki eğitimciler) aynı çatı altında topluyor. Farklı bütçelere göre belgelenmiş donanım kurulum rehberleri sunması ve \"Supply Depot\" ile kullanıcıların kendi Docker uygulamalarını sisteme ekleyebilmesi, projeyi tek amaçlı bir araçtan genişleyebilir bir platforma dönüştürüyor — bu da hem meraklı bireysel kullanıcıları hem de topluluk projelerini çekiyor.",
+        "evolve": "Şu an bileşenlerin çoğu üçüncü parti açık kaynak projelerin (Kiwix, Kolibri, Ollama) bir araya getirilmesinden oluşuyor; projenin asıl katma değeri bunları düzenleyen Command Center katmanında. Bu katmanın; içerik güncellemelerini (özellikle Wikipedia anlık görüntüleri gibi büyük veri setlerini) bant genişliği kısıtlı ortamlarda verimli senkronize edebilmesi, çoklu-NOMAD kurulumları arasında mesh ağ üzerinden içerik paylaşımı yapabilmesi ve çok kullanıcılı ortamlarda erişim kontrolü konusunda derinleşmesi, projeyi bireysel bir hobi kurulumundan toplum ölçeğinde bir altyapıya taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "Kiwix",
+          "def": "Wikipedia gibi büyük web içeriklerini indirilebilir, çevrimdışı paketler hâlinde sunan açık kaynak araç."
+        },
+        {
+          "term": "Kolibri",
+          "def": "İnternet bağlantısı olmayan ortamlarda eğitim içeriği (Khan Academy gibi) sunmak için geliştirilmiş öğrenme platformu."
+        },
+        {
+          "term": "Ollama",
+          "def": "Büyük dil modellerini kişisel bilgisayarda, bulut bağlantısı olmadan çalıştırmayı sağlayan araç."
+        },
+        {
+          "term": "ProtoMaps",
+          "def": "Harita verilerini tek bir dosya içinde, çevrimdışı kullanılabilir şekilde paketleyen açık kaynak harita sistemi."
+        },
+        {
+          "term": "Docker Compose",
+          "def": "Birden fazla konteynerleştirilmiş servisi tek bir yapılandırma dosyasıyla birlikte çalıştırmayı sağlayan araç."
+        },
+        {
+          "term": "Konteyner (container)",
+          "def": "Bir uygulamayı ve tüm bağımlılıklarını izole, taşınabilir bir pakette çalıştırma teknolojisi."
+        },
+        {
+          "term": "Mikroservis",
+          "def": "Bir sistemi, her biri bağımsız çalışan küçük ve odaklı servislere bölerek tasarlama yaklaşımı."
+        }
+      ]
+    }
+  ]
+}
