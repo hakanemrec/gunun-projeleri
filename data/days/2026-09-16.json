@@ -1,0 +1,141 @@
+{
+  "date": "2026-09-16",
+  "projects": [
+    {
+      "name": "danny-avila/LibreChat",
+      "url": "https://github.com/danny-avila/LibreChat",
+      "stars": "44k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Kullanıcıların farklı yapay zeka sağlayıcılarını (OpenAI, Anthropic, Google, Azure, AWS Bedrock vb.) tek bir sohbet arayüzünden kullanmasını sağlayan, kendi sunucunuzda barındırabileceğiniz açık kaynaklı bir \"ChatGPT alternatifi\". Temel sorun şu: kurumlar ve geliştiriciler, verilerini üçüncü taraf bir SaaS'a emanet etmeden, istedikleri modeli istedikleri an değiştirebilecekleri esnek bir sohbet altyapısına ihtiyaç duyuyor. LibreChat bunu tek bir kurulumla çözüyor.",
+        "tech": "React tabanlı bir arayüz, Node.js API, veri katmanında MongoDB ve oturum/önbellek için Redis kullanıyor. Docker ve Kubernetes (Helm chart) ile kurumsal ortamlara kolayca dağıtılabiliyor. Mimarinin can alıcı noktası **modüler endpoint sistemi** — her sağlayıcı OpenAI uyumlu bir arayüz arkasına gizleniyor, böylece yeni bir model eklemek mevcut kodu bozmuyor. Ajanlar için **MCP** sunucu entegrasyonu ve \"Skills\" mekanizmasıyla otomatik iş akışları kurulabiliyor; kod çalıştırma (Python, Node.js, Go, C/C++, Java, PHP, Rust) izole bir **sandbox** üzerinden yapılıyor.",
+        "why": "Son sürüm (v0.8.8-rc3) kurumsal kullanıma yönelik ciddi eklemeler getirdi: Agent Management API, kod onay kontrolleri, birleşik ek dosya yönetimi ve **OpenTelemetry** ile gözlemlenebilirlik. Bu, projeyi bireysel bir \"kendi ChatGPT'ini barındır\" aracından, şirketlerin üretimde güvenle kullanabileceği bir platforma taşıyor — 44 bin yıldıza rağmen hâlâ günde yüzlerce yeni yıldız alması bu kurumsal ivmenin göstergesi.",
+        "evolve": "Çoklu sağlayıcı desteği ve MCP entegrasyonu netleştikçe asıl fark yaratacak alan, model başına maliyet/performans takibi ve ince taneli erişim kontrolü olabilir — büyük ekiplerde \"kim hangi modeli ne kadar kullandı\" sorusu kritikleşiyor. Kod çalıştırma sandbox'ının güvenlik izolasyonu da kurumsal denetimlerde en çok sorgulanacak nokta olacaktır."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka ajanlarının harici araç ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan performans ve hata verisi toplayıp izlemeye yarayan açık kaynaklı gözlemlenebilirlik standardı."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Çalıştırılan kodun ana sistemden izole, güvenli bir ortamda çalıştırılmasını sağlayan kapsayıcı."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üçüncü parti bulut yerine kendi sunucunuzda barındırılması."
+        },
+        {
+          "term": "Helm chart",
+          "def": "Kubernetes uygulamalarını paketleyip tek komutla kurulabilir hale getiren şablon seti."
+        }
+      ]
+    },
+    {
+      "name": "rustfs/rustfs",
+      "url": "https://github.com/rustfs/rustfs",
+      "stars": "32.4k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Büyük veri, yapay zeka eğitim setleri ve veri gölü (data lake) senaryoları için S3 uyumlu, dağıtık bir nesne depolama sistemi. Mevcut popüler çözüm MinIO'nun lisans politikası (AGPL) kurumsal kullanımı zorlaştırıyor; RustFS bu boşluğu Apache 2.0 lisansıyla ve Rust'ın çöp toplayıcısız bellek modeliyle dolduruyor.",
+        "tech": "Tamamen Rust ile yazılmış, bellek güvenliğini derleme zamanında garanti eden ve **çöp toplama** duraksamaları olmayan bir mimari kullanıyor. **S3 uyumluluğu** yanında OpenStack Swift ve Keystone kimlik doğrulamasını da destekliyor. Hata toleransı için **erasure coding** ve **bitrot** koruması uyguluyor; tek düğümden çok düğümlü kümeye kadar ölçeklenebiliyor, havuz genişletme/küçültme ve Kubernetes'e Helm chart ile yerleşik dağıtım destekleniyor.",
+        "why": "Proje, 4KB'lık küçük nesnelerde MinIO'ya göre 2.3 kat daha hızlı olduğunu öne süren somut performans karşılaştırmaları yayınladı. Bu tür ölçülebilir \"X kat daha hızlı\" iddiaları, özellikle AI/ML altyapısı kuran ekiplerin dikkatini hızla çekiyor; Rust'ın bellek güvenliği vaadi de üretim ortamında çökme riskini azaltan bir ek satış noktası oluşturuyor.",
+        "evolve": "Depolama katmanlarında en büyük risk veri bütünlüğü olduğundan, projenin olgunluğunu kanıtlaması için bağımsız dayanıklılık testleri ve uzun vadeli üretim referansları paylaşması kritik. MinIO'nun geniş ekosistem entegrasyonlarına (yedekleme araçları, izleme eklentileri) yetişmesi de benimsenme hızını belirleyecek."
+      },
+      "glossary": [
+        {
+          "term": "Nesne depolama (object storage)",
+          "def": "Dosyaları klasör hiyerarşisi yerine benzersiz kimlikli \"nesneler\" olarak saklayan depolama modeli."
+        },
+        {
+          "term": "S3 uyumluluğu",
+          "def": "Amazon S3'ün API'siyle aynı arayüzü sunarak mevcut araçların değişiklik yapmadan çalışabilmesini sağlama."
+        },
+        {
+          "term": "Erasure coding (silme kodlama)",
+          "def": "Veriyi parçalayıp fazladan eşlik parçalarıyla saklayarak, bazı parçalar kaybolsa bile veriyi kurtarabilme yöntemi."
+        },
+        {
+          "term": "Bitrot (bit çürümesi)",
+          "def": "Diskte sessizce oluşan, fark edilmeden veri bozulmasına yol açan hatalar."
+        },
+        {
+          "term": "Çöp toplama (garbage collection)",
+          "def": "Bir programlama dilinin kullanılmayan bellek alanlarını otomatik geri kazanma süreci; bu süreç uygulamayı kısa süreliğine durdurabilir."
+        },
+        {
+          "term": "AGPL / Apache 2.0",
+          "def": "Açık kaynak lisans türleri; AGPL, yazılımı ağ üzerinden sunan herkesi kaynak kodu paylaşmaya zorlarken Apache 2.0 çok daha esnek ve ticari kullanıma uygundur."
+        }
+      ]
+    },
+    {
+      "name": "Homebrew/BrewUI",
+      "url": "https://github.com/Homebrew/BrewUI",
+      "stars": "1.5k",
+      "language": "Swift",
+      "sections": {
+        "serves": "macOS'ta paket yöneticisi Homebrew'i terminal komutu yazmadan, tamamen grafik arayüzden kullanmayı sağlayan resmi masaüstü uygulaması. Homebrew güçlü ama komut satırına aşina olmayan kullanıcılar için erişilemez kalıyordu; BrewUI, `brew` komutlarının ne yaptığını şeffaf biçimde gösteren bir arayüzle bu bariyeri kaldırıyor.",
+        "tech": "**Swift** 6.0 ve **SwiftUI** ile yazılmış, macOS Tahoe 26 ve üzerini hedefleyen tamamen **native** bir uygulama; Swift Package Manager ile derleniyor. Veri kaynağı olarak hem yerel `brew` komut satırı aracını hem de Homebrew'in JSON API'sini kullanıyor — yani arka planda gerçek `brew` komutlarını çalıştırıp sonucu bir konsol log'unda kullanıcıya gösteriyor; \"kara kutu\" değil, şeffaf bir katman.",
+        "why": "Homebrew organizasyonunun resmi projesi olması güven veriyor. Apple'ın kendi ekosisteminde native SwiftUI uygulamalarının hem performans hem native his açısından ağır çatılara üstünlüğü, bu tarz araçlara olan ilgiyi artırıyor; macOS kullanıcı tabanının büyümesiyle \"terminal korkusu\" olan yeni kullanıcılar için de doğal bir giriş noktası oluşturuyor.",
+        "evolve": "Şu an tek platform sürümüyle (macOS Tahoe 26+) sınırlı olması, eski macOS sürümlerini kullananları dışarıda bırakıyor. Paket kurulum geçmişi, geri alma (rollback) ve birden fazla Homebrew profili arasında geçiş gibi özellikler eklenirse, güç kullanıcılar için de cazip hale gelebilir."
+      },
+      "glossary": [
+        {
+          "term": "Homebrew",
+          "def": "macOS ve Linux için en yaygın kullanılan komut satırı paket yöneticisi."
+        },
+        {
+          "term": "SwiftUI",
+          "def": "Apple'ın, arayüzleri bildirimsel (declarative) şekilde tanımlamayı sağlayan modern arayüz çatısı."
+        },
+        {
+          "term": "Native uygulama",
+          "def": "Belirli bir işletim sistemi için özel olarak, o platformun kendi diliyle yazılmış, ek bir çalışma zamanı katmanı gerektirmeyen uygulama."
+        },
+        {
+          "term": "Swift Package Manager",
+          "def": "Swift projelerinin bağımlılıklarını yönetip derleyen resmi araç."
+        }
+      ]
+    },
+    {
+      "name": "wealthfolio/wealthfolio",
+      "url": "https://github.com/wealthfolio/wealthfolio",
+      "stars": "9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "Yatırım portföyünüzü, net varlığınızı ve harcamalarınızı takip eden, tamamen **local-first** çalışan açık kaynaklı bir kişisel finans uygulaması. Bulut tabanlı portföy takip araçları hassas finansal verinizi üçüncü bir sunucuya taşıyor; Wealthfolio tüm veriyi cihazınızda tutarak bu güven sorununu ortadan kaldırıyor, isteğe bağlı olarak 30'dan fazla aracı kurumla salt-okunur senkronizasyon da sunuyor.",
+        "tech": "Masaüstü ve mobil istemci **Tauri** ile üretiliyor — arayüz React/TypeScript/Tailwind ile yazılıyor, ama uygulamayı saran \"kabuk\" Electron gibi ağır bir Chromium değil, hafif bir Rust çekirdeği. Arka planda Rust ile yazılmış bir Axum HTTP sunucusu ve verinin cihazda saklandığı bir **SQLite** veritabanı (Diesel **ORM** ile) çalışıyor. Hassas bilgiler işletim sisteminin kendi **keyring** mekanizmasında tutuluyor. TypeScript SDK'lı bir eklenti sistemiyle üçüncü taraf geliştiriciler izin tabanlı bir güvenlik modeliyle uygulamayı genişletebiliyor.",
+        "why": "Product Hunt ve Hacker News'te öne çıkması, olgunlaşan eklenti ekosisteminin duyurulması ve iOS uygulamasının yayınlanması gibi birkaç gelişme aynı döneme denk gelmiş görünüyor. Finansal verisinin gizliliğini önemseyen, bulut aboneliklerinden yorulmuş kullanıcı kitlesi, local-first yaklaşıma özellikle bu dönemde sıcak bakıyor.",
+        "evolve": "Şu anki en büyük fırsat, eklenti ekosistemini üçüncü taraf geliştiricilere daha fazla açarak bir \"finansal araçlar mağazası\" haline getirmek olabilir. Çok cihazlı senkronizasyon (yerel veriyi bozmadan) ve daha gelişmiş vergi/raporlama şablonları, bireysel kullanıcılar için sonraki mantıklı adımlar."
+      },
+      "glossary": [
+        {
+          "term": "Local-first",
+          "def": "Verinin öncelikle kullanıcının kendi cihazında saklandığı, buluta bağımlı olmayan yazılım tasarım yaklaşımı."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle yazılmış arayüzleri, Electron'a göre çok daha küçük ve hafif bir Rust çekirdeğiyle masaüstü uygulamasına dönüştüren çatı."
+        },
+        {
+          "term": "SQLite",
+          "def": "Sunucu gerektirmeyen, tek bir dosya olarak çalışan hafif ilişkisel veritabanı motoru."
+        },
+        {
+          "term": "ORM (Object-Relational Mapping)",
+          "def": "Veritabanı tablolarıyla programlama dilindeki nesneler arasında dönüşüm yapan katman; SQL yazmadan veritabanıyla çalışmayı sağlar."
+        },
+        {
+          "term": "Keyring (anahtarlık)",
+          "def": "İşletim sisteminin şifre ve gizli anahtarları güvenli şekilde sakladığı yerleşik depolama mekanizması."
+        }
+      ]
+    }
+  ]
+}
