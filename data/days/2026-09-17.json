@@ -1,0 +1,153 @@
+{
+  "date": "2026-09-17",
+  "projects": [
+    {
+      "name": "supabase/supabase",
+      "url": "https://github.com/supabase/supabase",
+      "stars": "109.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Firebase'in kapalı kaynak ve **vendor lock-in** sorununa açık kaynaklı, PostgreSQL tabanlı bir cevap. Geliştiricilerin kimlik doğrulama, veritabanı, dosya depolama ve gerçek zamanlı senkronizasyon gibi backend parçalarını sıfırdan yazmak zorunda kalmadan, tek bir platformdan (kendi sunucusunda veya bulutta) kurmasını sağlıyor.",
+        "tech": "Çekirdekte klasik ve kanıtlanmış **PostgreSQL** var; üstüne şemayı otomatik bir REST API'ye dönüştüren **PostgREST**, bir **GraphQL** katmanı, kimlik doğrulama için **JWT** tabanlı bir servis, dosyalar için **S3 uyumlu depolama** ve **WebSocket** üzerinden çalışan gerçek zamanlı abonelik sistemi ekleniyor. Mimarinin felsefesi \"veritabanını merkeze koy\": tablo şeman değiştiğinde API otomatik güncelleniyor, ayrı bir backend katmanı yazmaya gerek kalmıyor. Son dönemde vektör/**embedding** desteği güçlendirilerek **RAG** tabanlı yapay zeka uygulamaları için de doğal bir veritabanı seçeneği haline getiriliyor.",
+        "why": "110 bine yakın yıldıza rağmen bugün trendlerde olması, yapay zeka uygulamalarının backend ihtiyaçlarının klasikleşmesiyle ilgili: geliştiriciler embedding saklama, kimlik doğrulama ve dosya depolamayı aynı yerde istiyor, Supabase bu üçünü PostgreSQL'in güvencesiyle tek platformda sunuyor. Bu ölçekteki köklü projelerin yeniden ivme kazanması genelde büyük bir sürüm duyurusu veya yapay zeka entegrasyonu haberiyle tetikleniyor.",
+        "evolve": "Çok bölgeli (multi-region) dağıtım ve maliyet şeffaflığı, kurumsal müşterilerin en çok sorduğu konular arasında. **Self-host** tarafında gözlemlenebilirlik ve ölçekleme araçlarının resmi barındırılan sürümle eşitlenmesi, projeyi \"gerçek\" bir Firebase alternatifinden çok daha ileri taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "PostgreSQL",
+          "def": "Açık kaynaklı, ilişkisel ve çok özellikli bir veritabanı yönetim sistemi."
+        },
+        {
+          "term": "Vendor lock-in",
+          "def": "Bir hizmete bağımlı hale gelip başka bir sağlayıcıya geçişin zorlaşması durumu."
+        },
+        {
+          "term": "PostgREST",
+          "def": "PostgreSQL veritabanı şemasını otomatik olarak bir REST API'ye dönüştüren araç."
+        },
+        {
+          "term": "GraphQL",
+          "def": "İstemcilerin ihtiyaç duydukları veriyi tek bir sorguyla, tam olarak istedikleri şekilde çekebildiği API sorgu dili."
+        },
+        {
+          "term": "JWT (JSON Web Token)",
+          "def": "Kullanıcı kimlik bilgisini güvenli şekilde taşıyan, dijital olarak imzalanmış küçük bir veri paketi."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Sunucu ve istemci arasında sürekli açık kalan, gerçek zamanlı iki yönlü veri bağlantısı."
+        },
+        {
+          "term": "Embedding",
+          "def": "Metin, görsel gibi verilerin anlamsal benzerliğini yakalayan sayısal vektör temsili."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir yapay zeka modelinin yanıt üretirken harici bir veri kaynağından ilgili bilgiyi çekip kullanması."
+        },
+        {
+          "term": "Self-host",
+          "def": "Bir yazılımın üçüncü parti bulut yerine kendi sunucunda barındırılması."
+        },
+        {
+          "term": "S3 uyumlu depolama",
+          "def": "Amazon S3 standardıyla aynı arayüzü kullanan dosya depolama sistemi."
+        }
+      ]
+    },
+    {
+      "name": "abue-ammar/tinycast",
+      "url": "https://github.com/abue-ammar/tinycast",
+      "stars": "5.8k",
+      "language": "Swift",
+      "sections": {
+        "serves": "macOS kullanıcılarının gün içinde ayrı ayrı açtığı uygulama başlatıcı, dosya arama, pano (clipboard) geçmişi ve pencere yönetimi araçlarını tek bir hafif pencerede birleştiriyor. Elektron tabanlı rakiplerin tükettiği yüzlerce megabaytlık belleğe karşı, \"native ve minimal\" bir alternatif sunmayı hedefliyor.",
+        "tech": "Tamamen **SwiftUI/AppKit** ile yazılmış, sıfır üçüncü parti bağımlılığı var; bu da uygulamanın hem çok küçük (100 MB altı bellek kullanımı) hem de macOS'un kendi sistem API'lerine doğrudan bağlı kalmasını sağlıyor. **Electron** tabanlı alternatiflerin aksine içine bir tarayıcı motoru gömmüyor. İlginç bir tasarım kararı olarak, kullanıcıların zaten yatırım yaptığı **Raycast** eklenti ekosistemini de doğrudan çalıştırabiliyor; böylece \"sıfırdan başla\" yerine \"mevcut alışkanlığı native ortama taşı\" stratejisi izleniyor.",
+        "why": "5,8 bin yıldız ve günlük ~1.200 yıldızlık artış, gizlilik (telemetri yok) ve performans vaadinin geliştirici çemberinde hızla yayıldığını gösteriyor. macOS'un en yeni sürümünü zorunlu kılması da projeyi \"bugünün\" bir aracı olarak konumlandırıyor, bu da erken benimseyenler arasında merak yaratıyor.",
+        "evolve": "**Global hotkey** ile açılan pencere ve pencere yönetimi gibi temel özellikler olgunlaşmış görünse de, Raycast uyumluluğu dışında kendi başına bir eklenti ekosistemi kurması zaman alacak. Şirket içi/takım kullanımı için paylaşılan pano geçmişi veya senkronizasyon gibi özellikler eklenirse, bireysel bir üründen ekip aracına evrilebilir."
+      },
+      "glossary": [
+        {
+          "term": "SwiftUI/AppKit",
+          "def": "Apple'ın macOS ve iOS uygulamaları için sunduğu native arayüz geliştirme çerçeveleri."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML/JS) masaüstü uygulaması yapılmasını sağlayan, içine tarayıcı motoru gömen çerçeve."
+        },
+        {
+          "term": "Raycast",
+          "def": "macOS için popüler, eklentilerle genişletilebilen bir uygulama başlatıcı ve üretkenlik aracı."
+        },
+        {
+          "term": "Global hotkey",
+          "def": "Hangi uygulamada olursanız olun çalışan, sistem genelinde tanımlı klavye kısayolu."
+        }
+      ]
+    },
+    {
+      "name": "cloudflare/security-audit-skill",
+      "url": "https://github.com/cloudflare/security-audit-skill",
+      "stars": "7.9k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "Yapay zeka kodlama ajanlarının (Claude Code, Cursor vb.) bir kod tabanında güvenlik açığı taraması yaparken düştüğü klasik tuzağı çözmeye çalışıyor: tek bir ajanın hem açık arayıp hem de kendi bulgusunu onaylaması, halüsinasyon ve yanlış pozitiflerle sonuçlanıyor. Bu proje, \"avlama\" ve \"doğrulama\" işlerini farklı ajan çalıştırmalarına bölerek daha güvenilir bir denetim süreci kuruyor.",
+        "tech": "Teknik olarak bir kod projesi değil, bir **coding-agent skill** — yani markdown talimat dosyaları, **JSON şeması** doğrulaması ve küçük Node.js doğrulayıcı betiklerinden oluşan bir \"yetenek paketi\". Ajan bu paketi yükleyince altı aşamalı bir süreci (keşif, avlanma, doğrulama, yapılandırılmış çıktı, bağımsız kontrol, raporlama) otomatik izliyor. Kritik tasarım kararı, bulguları \"confirmed / needs_validation / rejected\" olarak üçe ayırıp her birinde kaynağa referans zorunluluğu getirmesi — bu da ajanın uydurma bulgu üretmesini zorlaştırıyor.",
+        "why": "Yapay zeka ajanlarının koda erişiminin genişlemesiyle \"ajan güvenlik açığını gerçekten buluyor mu, yoksa **halüsinasyon** mu görüyor\" sorusu kurumlar için kritikleşti. Cloudflare'in bunu bir \"skill\" olarak, yani mevcut herhangi bir ajana takılabilecek şekilde yayınlaması, özel bir güvenlik aracı yerine \"var olan ajanını güçlendir\" yaklaşımını popüler kılıyor.",
+        "evolve": "Şu an tek seferlik veya periyodik taramalara odaklı; **CI/CD** boru hattına gömülüp her pull request'te otomatik tetiklenmesi doğal bir sonraki adım. Bellek güvenliği, **tedarik zinciri saldırıları** gibi geniş kapsamlı kontrol listesinin, dile ve çerçeveye özel derinlemesine kurallarla desteklenmesi doğruluğu daha da artırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Coding-agent skill",
+          "def": "Bir yapay zeka kodlama asistanına belirli bir görevi nasıl yapacağını öğreten, talimat ve araçlardan oluşan eklenti paketi."
+        },
+        {
+          "term": "Halüsinasyon (yapay zekada)",
+          "def": "Modelin gerçekte var olmayan veya yanlış bir bilgiyi kendinden emin şekilde üretmesi."
+        },
+        {
+          "term": "JSON şeması",
+          "def": "Bir JSON verisinin hangi alanları, hangi tipte içermesi gerektiğini tanımlayan doğrulama kuralı seti."
+        },
+        {
+          "term": "Tedarik zinciri saldırısı",
+          "def": "Bir yazılımın doğrudan kendisine değil, kullandığı bağımlılık veya araçlara sızılarak yapılan saldırı türü."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik test edilip yayına alınmasını sağlayan sürekli entegrasyon/dağıtım hattı."
+        }
+      ]
+    },
+    {
+      "name": "anthropics/knowledge-work-plugins",
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "stars": "24.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Genel amaçlı bir sohbet botunun aksine, Claude'u satış, finans, hukuk, ürün yönetimi gibi belirli mesleklerde \"uzmanlaştıran\" hazır eklenti koleksiyonu. Sorun şu: her şirket aynı işi (örneğin sözleşme incelemesi veya finansal mutabakat) biraz farklı yapıyor, genel bir asistan bu farkı yakalayamıyor — bu proje şirketlerin kendi terminoloji ve süreçlerine göre uyarlayabileceği bir başlangıç noktası sunuyor.",
+        "tech": "Mimari tamamen dosya tabanlı, kod veya sunucu altyapısı gerektirmiyor: her eklenti bir manifest dosyası, **MCP** (harici araçlara bağlanma) tanımları, açık **slash command**'lar (örn. `/finance:reconciliation`) ve markdown formatında yazılmış \"skill\" (alan bilgisi) dosyalarından oluşuyor. Bu sadelik, ekiplerin Slack, HubSpot, Notion, Jira gibi 20'den fazla **connector**'ı kendi araç setine göre değiştirip, komutları fork'layarak kendi sürecine uyarlamasını kolaylaştırıyor.",
+        "why": "Anthropic'in kendi üretim iş akışlarından damıtılmış 11 hazır eklentiyi, yeni **Claude Cowork** ürünüyle aynı anda açık kaynak yapması, \"genel chatbot\"tan \"role-özel uzman\" paradigmasına geçişin somut bir kurumsal örneği. Şirketlerin bu şablonları fork'layıp saatler içinde kendi süreçlerine göre özelleştirebilmesi ilgiyi hızla artırıyor.",
+        "evolve": "Şu haliyle her eklenti duruma göre elle uyarlanmalı; şirket-özel terminolojiyi otomatik öğrenip skill dosyalarını kendiliğinden güncelleyen bir katman eklenmesi büyük bir sıçrama olurdu. Ayrıca connector sayısı arttıkça, hangi eklentinin hangi veriye eriştiğini denetleyen merkezi bir yetkilendirme/izin katmanı ihtiyacı da güçlenecektir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka ajanlarının harici araç ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Slash command",
+          "def": "Sohbet arayüzünde eğik çizgiyle (/) başlatılan, önceden tanımlanmış bir eylemi tetikleyen kısa komut."
+        },
+        {
+          "term": "Connector",
+          "def": "Bir yapay zeka aracını Slack, Notion, Jira gibi harici bir servise bağlayan entegrasyon modülü."
+        },
+        {
+          "term": "Claude Cowork",
+          "def": "Anthropic'in ekiplerin ortak, rol-bazlı yapay zeka iş akışları için sunduğu üretkenlik ürünü."
+        }
+      ]
+    }
+  ]
+}
