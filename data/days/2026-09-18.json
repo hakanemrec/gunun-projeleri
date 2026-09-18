@@ -1,0 +1,82 @@
+{
+  "date": "2026-09-18",
+  "projects": [
+    {
+      "name": "Tencent/BrowserSkill",
+      "url": "https://github.com/Tencent/BrowserSkill",
+      "stars": "4.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "AI ajanlarının (Claude Code, Cursor gibi) web üzerinde bir işlem yapması gerektiğinde düştüğü klasik ikilemi çözüyor: ya kullanıcının aktif tarayıcı sekmesini işgal ediyorlar ya da oturum açma bilgisi olmayan **headless** bir tarayıcıyla uğraşıp kimlik doğrulama sorunları yaşıyorlar. BrowserSkill, ajanın kullanıcının zaten giriş yapmış gerçek tarayıcısını, kullanıcının kendi gezintisini kesintiye uğratmadan kullanmasına izin veriyor.",
+        "tech": "Mimari üç yerel bileşenden oluşuyor: ajanın konuştuğu `bsk` **CLI**'ı, istekleri yönlendiren bir **daemon**, ve otomasyonu gerçekleştiren tarayıcı eklentisi. Ajan CLI'ya komut verir, daemon bunu **WebSocket** üzerinden eklentiye iletir; eklenti de kullanıcının pencerelerine dokunmadan ayrı bir \"Agent Window\" içinde çalışır. Kullanıcının açık bir sekmesine erişilmesi gerektiğinde \"tab-borrowing\" adı verilen mekanizmayla açıkça izin istenir. CLI ve daemon, performans ve bellek güvenliği için Rust ile yazılmış.",
+        "why": "Günde +1.302 yıldızla toplam 4,5 bine ulaşması, ajan tabanlı kodlama araçlarının hızla yaygınlaşmasıyla \"ajanın web'e nasıl güvenli eriştiği\" sorusunun aciliyet kazandığını gösteriyor. Mevcut çözümlerin (headless tarayıcı, ayrı test hesabı) hem yavaş hem kimlik doğrulama açısından zahmetli olduğu bir dönemde, \"gerçek oturumu paylaş ama izole et\" fikri hem güvenlik hem kullanılabilirlik açısından ikna edici bulunuyor.",
+        "evolve": "Şu an yalnızca Chrome/Edge destekleniyor; Firefox desteği yol haritasında ama henüz yok, bu da gizlilik odaklı tarayıcı kullanan geliştiricileri dışarıda bırakıyor. Kurumsal ortamlarda birden fazla ajanın aynı oturumu aynı anda kullanmaya çalıştığı senaryolarda çakışma yönetimi ve bir denetim (audit) kaydı katmanının olgunlaşması, projeyi bireysel bir araçtan takım/kurum standardına taşıyabilir."
+      },
+      "glossary": [
+        { "term": "Headless tarayıcı", "def": "Ekran arayüzü olmadan, arka planda komutlarla yönetilen bir web tarayıcısı." },
+        { "term": "CLI (Command Line Interface)", "def": "Kullanıcının komutları yazarak bir programı çalıştırdığı, arayüzsüz komut satırı arabirimi." },
+        { "term": "Daemon", "def": "Kullanıcı müdahalesi olmadan arka planda sürekli çalışan yardımcı program." },
+        { "term": "WebSocket", "def": "Sunucu ve istemci arasında sürekli açık kalan, gerçek zamanlı iki yönlü veri bağlantısı." },
+        { "term": "Rust", "def": "Bellek güvenliğini derleme aşamasında garanti eden, performans odaklı bir sistem programlama dili." }
+      ]
+    },
+    {
+      "name": "e2b-dev/runtime",
+      "url": "https://github.com/e2b-dev/runtime",
+      "stars": "1.6k",
+      "language": "Go",
+      "sections": {
+        "serves": "AI ajanlarının ürettiği veya çalıştırdığı kodu, kullanıcının kendi makinesini ya da ana sunucuları riske atmadan izole bir ortamda saniyeler içinde çalıştırabilmesini sağlıyor. Klasik sanal makineler saniyeler-dakikalar süren açılış süreleriyle ajan iş akışlarını yavaşlatırken, bu proje \"önceden hazırlanmış görüntüden anında devam et\" yaklaşımıyla bu gecikmeyi ortadan kaldırıyor.",
+        "tech": "Çekirdekte **Firecracker microVM** teknolojisi var — AWS'nin sunucusuz bilişim (Lambda) için geliştirdiği, klasik sanal makinelerden çok daha hafif ve hızlı açılan bir sanallaştırma katmanı. Runtime, bu VM'leri sıfırdan başlatmak yerine önceden alınmış bir **snapshot**'tan, bellek sayfalarını yalnızca ihtiyaç anında yükleyerek (**lazy paging**) \"devam ettiriyor\", bu da açılışı neredeyse anlık hale getiriyor. Mimari beş parçaya ayrılmış: sandbox yaşam döngüsünü yöneten API, düğümlerde Firecracker'ı çalıştıran Orchestrator, VM içindeki süreç/dosya erişimini sağlayan Envd, trafiği yönlendiren proxy katmanı ve Docker tariflerinden VM imajı üreten şablon yöneticisi. **Kontrol düzlemi** ile **veri düzlemi**'nin ayrılması, yüzlerce sandbox'ın paralel çalışmasında darboğaz oluşmasını engelliyor.",
+        "why": "E2B'nin bu çekirdek altyapıyı açık kaynak yapması, \"ajan sandbox'ı\" pazarının tek bir şirketin kapalı kutusu olmaktan çıkıp bir altyapı katmanı olarak standartlaşmaya başladığının işareti. Kod yazan/çalıştıran ajanların sayısı arttıkça, her çalıştırma için güvenli ve ucuz bir izolasyon katmanı ihtiyacı da genelleşiyor; 7.500'ü aşan commit sayısıyla gelen olgunluk, projeye \"deneysel değil üretimde kullanılan\" bir güven veriyor.",
+        "evolve": "README'de belirgin bir sınırlama listesi yer almıyor, bu da özellikle çoklu bulut sağlayıcıya taşınabilirlik ve maliyet karşılaştırması konularında belgelemenin henüz olgunlaşmadığını düşündürüyor. Kendi donanımında (**on-prem**) çalıştırmak isteyen ekipler için kurulum karmaşıklığının azaltılması ve gözlemlenebilirlik verilerinin hazır panolarla sunulması, benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        { "term": "Firecracker microVM", "def": "AWS'nin geliştirdiği, saniyenin çok altında açılan, hafif ve güvenli bir sanal makine teknolojisi." },
+        { "term": "Snapshot", "def": "Bir sistemin belirli bir andaki tam durumunun kaydedilip sonra o noktadan devam edilebilmesini sağlayan görüntü." },
+        { "term": "Lazy paging", "def": "Bellek verisinin tamamını baştan yüklemek yerine, sadece gerçekten ihtiyaç duyulduğunda parça parça yükleme yöntemi." },
+        { "term": "Sandbox", "def": "Çalıştırılan kodun dış sisteme zarar veremeyeceği, izole edilmiş güvenli çalışma ortamı." },
+        { "term": "Kontrol düzlemi / veri düzlemi", "def": "Sistemin yönetim kararlarını verdiği katman (kontrol) ile asıl veriyi taşıyan katmanın (veri) birbirinden ayrılması." },
+        { "term": "On-prem", "def": "Bir yazılımın bulut yerine kurumun kendi fiziksel sunucularında çalıştırılması." }
+      ]
+    },
+    {
+      "name": "coder/coder",
+      "url": "https://github.com/coder/coder",
+      "stars": "14.9k",
+      "language": "Go",
+      "sections": {
+        "serves": "Yeni bir geliştiricinin işe başladığı gün yaşanan \"ortamım hazır değil\" sorununu ve artan sayıda AI kodlama ajanının hangi altyapıda, ne kadar yetkiyle çalışacağı sorusunu birlikte çözmeye çalışıyor. Coder, bulut geliştirme ortamlarını saniyeler içinde ayağa kaldırıp hem insan geliştiricilerin hem de onlar adına kod yazan ajanların bu ortamlarda güvenli şekilde çalışmasını sağlıyor.",
+        "tech": "Geliştirme ortamlarının altyapısı **Terraform** şablonlarıyla tanımlanıyor (AWS EC2, Kubernetes, Docker gibi hedeflere dağıtılabiliyor); ortamlara erişim şifreli bir **WireGuard** tüneli üzerinden sağlanıyor. Kontrol düzlemi ajan döngülerini yönetirken LLM kimlik bilgilerini çalışma alanının (**workspace**) içinde saklamıyor — bu, bir ortamın ele geçirilmesi durumunda API anahtarlarının sızmasını engelleyen bilinçli bir güvenlik kararı. Üretim dağıtımları **PostgreSQL** (13 ve üzeri) üzerine kuruluyor ve Anthropic, OpenAI, Google, Bedrock ile kendi barındırılan modeller dahil birçok LLM sağlayıcısını destekliyor.",
+        "why": "Yapay zeka ajanlarının artık bir editör eklentisi olmaktan çıkıp kendi başlarına uzun süren görevler yürütmesiyle, bu ajanları nerede ve hangi izinlerle çalıştıracağınız kurumsal bir soru haline geldi. Coder'ın \"merkezi yönetişim, dağıtık çalıştırma\" modeli — ajan sizin altyapınızda çalışır ama maliyet ve eylemler merkezi olarak izlenir — özellikle güvenlik ve maliyet kontrolüne önem veren kurumlar için ikna edici.",
+        "evolve": "Şu an her kullanıcı eylemi kimliğe bağlanarak izlenebilir durumda, ama ajan başına ince taneli (**fine-grained**) yetkilendirme politikaları (örneğin \"bu ajan sadece şu klasörlere yazabilir\") henüz derinleşmiş görünmüyor. Farklı ajan sağlayıcıları arasında maliyet ve performans karşılaştırmasını tek panelde gösteren bir gözlemlenebilirlik katmanı eklenmesi, kurumsal benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        { "term": "Terraform", "def": "Bulut altyapısını (sunucu, ağ, veritabanı vb.) kod olarak tanımlayıp otomatik kurmayı sağlayan araç." },
+        { "term": "WireGuard", "def": "Basit ve hızlı çalışan, modern bir şifreli sanal özel ağ (VPN) protokolü." },
+        { "term": "Workspace", "def": "Bir geliştiricinin veya ajanın kod yazıp çalıştırdığı, kendine ait izole çalışma ortamı." },
+        { "term": "PostgreSQL", "def": "Açık kaynaklı, ilişkisel ve çok özellikli bir veritabanı yönetim sistemi." },
+        { "term": "Fine-grained yetkilendirme", "def": "Genel bir izin yerine, kimin tam olarak neyi yapabileceğini çok ince ayrıntıda belirleyen yetki kontrolü." }
+      ]
+    },
+    {
+      "name": "gastownhall/beads",
+      "url": "https://github.com/gastownhall/beads",
+      "stars": "27.3k",
+      "language": "Go",
+      "sections": {
+        "serves": "Uzun süren kodlama görevlerinde ajanların \"neyi yaptım, sırada ne var, hangi görev hangisine bağımlı\" bilgisini kaybetmesi klasik bir sorun; çoğu proje bunu dağınık markdown notlarıyla çözmeye çalışıyor. Beads, bunun yerine bağımlılıkları takip eden bir görev sistemi sunarak ajanın oturumlar arasında, hafızası sıfırlansa bile kaldığı yerden devam edebilmesini sağlıyor.",
+        "tech": "Depolama katmanında sıradan bir dosya yerine **Dolt** kullanılıyor — Git gibi dallanıp birleştirilebilen, versiyonlanabilen bir SQL veritabanı. Varsayılan olarak gömülü (**embedded**) modda çalışıyor, ölçek büyüdükçe ayrı bir sunucu modu da destekleniyor. Görevler hash tabanlı kimliklerle, hiyerarşik yapı ve `relates-to`, `duplicates`, `supersedes` gibi ilişkilerden oluşan bir **bağımlılık grafiği** ile organize ediliyor. Birden fazla ajanın aynı görev havuzunda çakışmadan çalışabilmesi için atomik görev üstlenme mekanizması ve hücre düzeyinde birleştirme kullanılıyor; `bd dolt push/pull` komutlarıyla görev geçmişi git uzak deposu gibi senkronize edilebiliyor.",
+        "why": "Ajanların artık tek seferlik komutlardan çok, günler süren görev zincirlerini yönetmesi bekleniyor; bu da \"ajan hafızası\" kategorisini hızla büyüyen bir alan haline getirdi. Beads'in bir veritabanı motorunu (Dolt) doğrudan versiyon kontrolüne bağlaması, hem ajanlar hem insanlar için tek, çakışmasız bir gerçek kaynağı (**source of truth**) vaat ediyor — bu da onu basit bir yapılacaklar listesinden ayırıyor.",
+        "evolve": "Gömülü moddaki tek-yazarlı sınırlama, çok ajanlı yoğun paralel çalışmada darboğaz yaratabilir; sunucu moduna geçiş şu an manuel bir karar gerektiriyor. Şema göçü sürecinin karmaşık olduğu README'de de kabul ediliyor — bu adımın otomatikleştirilmesi ve IDE/CLI araçlarına daha görünür şekilde entegre edilmesi, projeyi \"ekstra kurulan bir araç\"tan \"varsayılan altyapı\"ya taşıyabilir."
+      },
+      "glossary": [
+        { "term": "Dolt", "def": "Git'teki dallanma ve birleştirme mantığını bir SQL veritabanına taşıyan, versiyon kontrollü veritabanı motoru." },
+        { "term": "Embedded (gömülü) mod", "def": "Bir veritabanının ayrı bir sunucu süreci olmadan, doğrudan uygulamanın içinde çalışması." },
+        { "term": "Bağımlılık grafiği", "def": "Görevlerin veya bileşenlerin birbirine hangi ilişkilerle bağlı olduğunu gösteren ağ yapısı." },
+        { "term": "Source of truth (gerçek kaynağı)", "def": "Bir bilginin tartışmasız, güncel ve tek geçerli halinin tutulduğu merkezi kaynak." },
+        { "term": "Şema göçü (schema migration)", "def": "Bir veritabanının yapısını (tablo, alan vb.) bozmadan yeni bir sürüme taşıma işlemi." }
+      ]
+    }
+  ]
+}
