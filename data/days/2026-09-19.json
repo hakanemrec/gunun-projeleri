@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-19",
+  "projects": [
+    {
+      "name": "Tencent/BrowserSkill",
+      "url": "https://github.com/Tencent/BrowserSkill",
+      "stars": "5.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 AI ajanlarının (Claude Code, Cursor, Codex gibi) kullanıcının halihazırda giriş yaptığı tarayıcı oturumlarını bozmadan web'de işlem yapabilmesini sağlıyor. Şimdiye kadar ajanlar web görevleri için ya ayrı test hesaplarıyla **headless tarayıcı** kullanmak zorunda kalıyor ya da kullanıcının aktif sekmelerini ele geçiriyordu. BrowserSkill, kullanıcının kendi pencerelerinden ayrı, görünür bir \"Ajan Penceresi\" açarak ajanın oturum açılmış hesaplarla (bir SaaS paneli, e-posta, CRM) çalışmasına izin verirken kullanıcı kendi tarayıcısını normal şekilde kullanmaya devam edebiliyor.",
+        "tech": "🛠️ Rust ile yazılmış bir `bsk` **CLI**/**daemon**, bir Chrome/Edge tarayıcı eklentisi ve bunlar arasında yerel (localhost) **WebSocket** üzerinden haberleşen üç katmanlı bir mimari kullanılıyor. Akış şöyle işliyor: Ajan → CLI komutu → Daemon (yerel IPC) → Eklenti → Ajan Penceresi. Eklenti, \"Ajan Penceresi\" ile kullanıcının normal pencerelerini izole tutuyor ve yalnızca açıkça istenen sekmeleri \"ödünç\" veriyor. **CAPTCHA** veya onay gerektiren adımlarda **human-in-the-loop** devreye giriyor. Protokol sürümlemesi (1.0-1.3) sayesinde CLI, daemon ve eklenti bağımsız olarak güncellenebiliyor; tasarım herhangi bir shell çalıştırabilen ajan çerçevesiyle uyumlu olacak şekilde (framework-agnostic) yapılmış.",
+        "why": "📈 Ajan tabanlı otomasyon araçlarının patlaması ve \"ajanların gerçek dünya web görevlerini güvenle nasıl yapacağı\" sorusu geliştirici ekosisteminin en sıcak konularından biri. Selenium/Puppeteer gibi klasik headless otomasyonun aksine gerçek oturum bilgilerini paylaşmadan çalışması ve kullanıcının işini kesintiye uğratmaması, Cursor/Claude Code/DeepSeek Harness gibi popüler ajan araçları etrafında hızla topluluk oluşturmuş — bir günde 1300'ün üzerinde yıldız alarak bugünün en hızlı yükselenlerinden biri olmuş.",
+        "evolve": "💡 Şu an yalnızca Chromium tabanlı tarayıcıları (Chrome, Edge) destekliyor; Firefox desteği yol haritasında. Telefon QR kod okuma ve yüz doğrulama gibi cihaz bağımlı **2FA** adımları hâlâ metin tabanlı modeller için engel, görsel anlama yeteneği olmayan ajanlar görsel CAPTCHA'ları çözemiyor. Çoklu tarayıcı desteği, daha zengin görsel anlama entegrasyonu ve kurumsal ortamlar için merkezi politika/denetim katmanı, projenin olası gelişim yönleri arasında görünüyor."
+      },
+      "glossary": [
+        { "term": "Headless tarayıcı", "def": "Ekran arayüzü olmadan arka planda çalışan tarayıcı; genelde otomasyon ve test için kullanılır." },
+        { "term": "WebSocket", "def": "İki taraf arasında sürekli açık kalan, gerçek zamanlı veri alışverişine izin veren bir iletişim protokolü." },
+        { "term": "CLI (Command Line Interface)", "def": "Kullanıcının komutları yazarak programla etkileşime girdiği metin tabanlı arayüz." },
+        { "term": "Daemon", "def": "Arka planda sürekli çalışan, kullanıcı müdahalesi olmadan görevleri yöneten sistem servisi." },
+        { "term": "Human-in-the-loop", "def": "Otomatik bir sürecin belirli noktalarında insan onayı veya müdahalesi gerektiren tasarım yaklaşımı." },
+        { "term": "CAPTCHA", "def": "İnsan ile botu birbirinden ayırt etmek için kullanılan bir doğrulama testi." },
+        { "term": "2FA (İki Faktörlü Kimlik Doğrulama)", "def": "Şifreye ek olarak SMS kodu veya uygulama onayı gibi ikinci bir doğrulama adımı gerektiren güvenlik yöntemi." }
+      ]
+    },
+    {
+      "name": "coder/coder",
+      "url": "https://github.com/coder/coder",
+      "stars": "15.4k",
+      "language": "Go",
+      "sections": {
+        "serves": "🎯 Kurumların bulut geliştirme ortamlarını merkezi ve güvenli biçimde sağlamasını, aynı zamanda AI kodlama ajanlarının şirketin kendi altyapısında, API anahtarlarını çalışma alanına (**workspace**) sızdırmadan çalışmasını sağlıyor. Geliştirici ortamlarının elle kurulumu zaman kaybettiriyor, boşta kalan bulut kaynakları maliyet yaratıyor ve AI ajanlarına LLM erişim bilgisi vermek güvenlik riski oluşturuyordu; Coder bu üç sorunu tek platformda çözüyor.",
+        "tech": "🛠️ Go ile yazılmış coderd (sunucu), agent (AI bileşeni), provisioner (dağıtım) ve cli modüllerinden oluşan bir mimarisi var. Geliştirme ortamları **Terraform** ile \"kod olarak altyapı\" (**Infrastructure-as-code**) şeklinde tanımlanıp EC2, Kubernetes veya Docker gibi farklı altyapılarda kurulabiliyor; bağlantılar **WireGuard** tabanlı güvenli tünelle sağlanıyor, üretim dağıtımları PostgreSQL (v13+) kullanıyor. \"Coder Agents\" özelliğiyle AI kodlama ajanlarının çalıştırma döngüsü workspace içinde değil merkezi sunucu altyapısında yürütülüyor; böylece kimlik bilgileri hiçbir zaman workspace'e girmiyor.",
+        "why": "📈 Kurumların hem maliyet kontrolü (boşta kalan ortamların otomatik kapanması) hem de AI ajanlarını güvenle devreye alma ihtiyacı burada örtüşüyor. \"Ajan çalıştırmayı merkezi altyapıda tutup kimlik bilgisi sızıntısını önleme\" yaklaşımı, kurumsal AI benimsemesinin önündeki en büyük engellerden birine (güvenlik ve denetlenebilirlik) doğrudan cevap verdiği için platform mühendisliği ve IT ekiplerinin ilgisini çekiyor.",
+        "evolve": "💡 Kendi barındırılan (self-hosted) bir platform olduğu için kurulum ve işletim yükü bulut-native SaaS alternatiflerine göre daha fazla; küçük ekipler için karmaşık kalabiliyor. Çoklu LLM sağlayıcı desteği (Anthropic, OpenAI, Google, Bedrock, self-hosted) zaten mevcut; maliyet takibi ve **audit log** özelliklerinin daha ince taneli roller ve politikalarla genişlemesi, ayrıca ajan çalıştırmanın **sandboxing** tarafının daha da sıkılaştırılması olası gelişim alanları."
+      },
+      "glossary": [
+        { "term": "Infrastructure-as-code (IaC)", "def": "Sunucu, ağ gibi altyapı bileşenlerinin elle değil, kod ve konfigürasyon dosyalarıyla tanımlanıp otomatik kurulmasını sağlayan yaklaşım." },
+        { "term": "Terraform", "def": "Altyapıyı kod olarak tanımlamaya yarayan popüler açık kaynak IaC aracı." },
+        { "term": "WireGuard", "def": "Hızlı ve basit, modern bir VPN/tünelleme protokolü." },
+        { "term": "Workspace", "def": "Bir geliştiricinin kod yazıp çalıştırdığı, izole edilmiş bulut veya konteyner tabanlı çalışma ortamı." },
+        { "term": "Sandboxing", "def": "Bir programın veya ajanın, sistemin geri kalanına zarar veremeyecek şekilde izole bir ortamda çalıştırılması." },
+        { "term": "Audit log", "def": "Sistemde kimin ne zaman ne yaptığını kaydeden denetim günlüğü." }
+      ]
+    },
+    {
+      "name": "ankitects/anki",
+      "url": "https://github.com/ankitects/anki",
+      "stars": "31.2k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Öğrenilen bilginin uzun süreli hafızada kalıcı olmasını sağlamak için \"aralıklı tekrar\" (**spaced repetition**) yöntemini uygulayan bir dijital kart (flashcard) programı. Klasik \"sıkıştırarak çalışma\" (**cramming**) kısa vadede işe yarasa da bilgi hızla unutuluyor; Anki her kartı kişinin unutma eğrisine göre en doğru zamanda yeniden göstererek bu sorunu çözüyor.",
+        "tech": "🛠️ Çok dilli bir mimarisi var: performans kritik çekirdek mantık Rust (rslib) ile yazılmış, masaüstü arayüzü **Qt** tabanlı, web/eklenti tarafı Svelte ve TypeScript ile geliştirilmiş, Python (pylib) katmanı bu bileşenleri birbirine bağlıyor. Zamanlama algoritması, kullanıcının bir kartı ne kadar kolay veya zor hatırladığına göre bir sonraki gösterim tarihini hesaplayan istatistiksel bir model olan **FSRS**'i kullanıyor.",
+        "why": "📈 31 binin üzerinde yıldızı ve 12.500'ü aşkın commit'iyle uzun süredir olgun ve aktif geliştirilen bir proje; öğrenciler, dil öğrenenler ve sınavlara hazırlanan profesyoneller arasında yıllardır referans araç. Bugün trend olması muhtemelen yeni bir sürüm veya özellik duyurusuyla ilişkili; öğrenme verimliliğine dair bilimsel temelli araçlara duyulan sürekli talep, projeyi düzenli olarak trend listelerine taşıyor.",
+        "evolve": "💡 Mobil ve masaüstü deneyimleri farklı ekipler/kod tabanları tarafından geliştirildiği için özellik paritesi zaman zaman gecikebiliyor. Yapay zeka destekli kart üretimi (bir metinden otomatik soru-cevap kartı çıkarma) ve daha akıllı, kişiselleştirilmiş zamanlama modelleri, projenin gelecekte odaklanabileceği alanlar arasında görünüyor."
+      },
+      "glossary": [
+        { "term": "Spaced repetition (aralıklı tekrar)", "def": "Bilginin unutulmaya yüz tuttuğu ana yakın zamanlarda tekrar edilmesini sağlayan, hafızada kalıcılığı artıran öğrenme tekniği." },
+        { "term": "Cramming (sıkıştırarak çalışma)", "def": "Sınav öncesi kısa sürede yoğun çalışma; kısa vadede işe yarar ama kalıcı öğrenmeyi sağlamaz." },
+        { "term": "FSRS", "def": "Kullanıcının hatırlama performansına göre bir sonraki tekrar zamanını hesaplayan açık kaynak zamanlama algoritması." },
+        { "term": "Qt", "def": "Masaüstü uygulamaları için kullanılan çapraz platform arayüz (GUI) çatısı." }
+      ]
+    },
+    {
+      "name": "supermemoryai/supermemory",
+      "url": "https://github.com/supermemoryai/supermemory",
+      "stars": "30.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Yapay zeka asistanlarının konuşmalar arasında hafızasının olmaması sorununu çözüyor; kullanıcı tercihlerini, geçmiş konuşmaları ve bağlamı kalıcı olarak saklayıp gerektiğinde ilgili anıları otomatik olarak geri getiren bir \"hafıza katmanı\" sunuyor.",
+        "tech": "🛠️ TypeScript/Node.js ile yazılmış, PostgreSQL ve Drizzle **ORM** kullanan bir Turbo monorepo yapısında. Dört ana yetenek sunuyor: konuşmalardan otomatik bilgi çıkarma (çelişkileri ve zamana bağlı değişimleri de yöneterek), ~50 milisaniyede erişilebilen kullanıcı profilleri, **RAG** ile kişisel hafızayı tek sorguda birleştiren hibrit arama, ve PDF/görsel/video/kod için özel ayrıştırıcılar. Claude Code, Cursor gibi araçlar için eklentiler, bir **MCP** sunucusu ve Google Drive/Gmail/Notion/GitHub/OneDrive gibi servislerle bağlayıcılar sunuyor; tamamen yerel/çevrimdışı çalışabilen tek dosyalık (binary) bir self-host seçeneği de mevcut.",
+        "why": "📈 Proje, LongMemEval, LoCoMo ve ConvoMem gibi önde gelen AI hafıza **benchmark**'larında birinci sıraya çıktığını duyurdu (yaklaşık %95 **Recall@15**, bağlamda %99,4 azaltma). Kalıcı bağlam/hafıza katmanına duyulan pazar talebinin hızla büyümesi ve ajan tabanlı araçların (Claude Code, Cursor) yaygınlaşmasıyla bu tür altyapı katmanlarının kritikleşmesi, projenin trend olmasının başlıca sebebi.",
+        "evolve": "💡 Hafıza çıkarımının doğruluğu ve gizlilik/güvenlik yönetimi, özellikle kurumsal ve hassas veri içeren senaryolarda kritik önem taşıyor; bu alanlarda şeffaflığın ve kullanıcı kontrolünün nasıl genişletileceği önemli bir soru. Daha fazla veri kaynağı bağlayıcısı, çoklu kullanıcı/takım hafızası paylaşımı ve unutma/hafıza silme politikalarının (ör. GDPR uyumu) olgunlaşması olası gelişim yönleri."
+      },
+      "glossary": [
+        { "term": "RAG (Retrieval-Augmented Generation)", "def": "Bir yapay zeka modelinin cevap üretirken önce ilgili belgeleri/bilgiyi getirip bu bilgiyle cevabı zenginleştirdiği yöntem." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol." },
+        { "term": "ORM (Object-Relational Mapping)", "def": "Veritabanı tablolarını programlama dilindeki nesnelerle eşleştirerek veritabanı işlemlerini kolaylaştıran katman." },
+        { "term": "Benchmark", "def": "Farklı sistemlerin performansını aynı ölçütlerle karşılaştırmak için kullanılan standart test seti." },
+        { "term": "Recall@15", "def": "Bir arama veya öneri sisteminde, ilk 15 sonuç içinde doğru cevabın bulunma oranını ölçen başarı metriği." }
+      ]
+    },
+    {
+      "name": "ahmedkhaleel2004/gitdiagram",
+      "url": "https://github.com/ahmedkhaleel2004/gitdiagram",
+      "stars": "16.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Karmaşık bir kod tabanını hızlıca anlamak zor bir problem; GitDiagram herhangi bir GitHub deposunu saniyeler içinde etkileşimli bir mimari diyagramına dönüştürerek yeni bir projeye alışma (**onboarding**) veya sistem tasarımını kavrama sürecini kısaltıyor.",
+        "tech": "🛠️ Next.js 16 (App Router), React 19, TypeScript ve Tailwind CSS ile kurulmuş bir frontend; Next.js **Route Handler**'ları üzerinde Bun çalışma zamanıyla çalışan bir backend kullanılıyor. Üretim hattı altı aşamadan oluşuyor: GitHub API üzerinden dosya ağacı/README/yapı çekme, sınırlı kaynak kodu parçalarını bütünlük kontrolüyle alma, AI ile (OpenAI veya OpenRouter üzerinden) grafik üretimi, kimlik ve bağlantı doğrulama, güvenli kaçış (escaping) uygulanmış deterministik **Mermaid** derlemesi, ve tarayıcı tarafında sıkı güvenlik modlu **sanitizasyon**. Üretilen artefaktlar Cloudflare R2'de saklanıyor, kota yönetimi için Upstash Redis kullanılıyor.",
+        "why": "📈 \"github.com\" yerine \"gitdiagram.com\" yazarak ya da URL'de \"hub\" yerine \"diagram\" geçirerek anında bir mimari diyagramı elde etmenin sürtünmesiz kolaylığı, geliştirici topluluğunda hızla yayılmasını sağlıyor. Yeni bir depoya bakan herkesin \"bu proje nasıl kurgulanmış?\" sorusuna anında görsel bir cevap vermesi, hem bireysel geliştiriciler hem de kod incelemesi/onboarding süreçlerindeki ekipler için pratik bir ihtiyacı karşılıyor.",
+        "evolve": "💡 Üretilen diyagramların doğruluğu, AI modelinin depo yapısını ne kadar iyi \"anladığına\" bağlı; çok büyük veya alışılmadık organize edilmiş depolarda hatalı ya da eksik ilişkiler çıkabiliyor. Diyagramların kod değiştikçe otomatik güncellenmesi, takım içi paylaşım/yorumlama özellikleri ve daha derin, fonksiyon seviyesinde çağrı grafikleriyle zenginleştirilmesi olası gelişim yönleri."
+      },
+      "glossary": [
+        { "term": "Mermaid", "def": "Metin tabanlı basit bir söz dizimiyle akış şeması, mimari diyagram gibi görseller üretmeyi sağlayan açık kaynak araç/dil." },
+        { "term": "Route Handler", "def": "Next.js çatısında, belirli bir URL yoluna gelen istekleri işleyen sunucu tarafı fonksiyon." },
+        { "term": "Sanitizasyon", "def": "Kullanıcıdan veya dış kaynaktan gelen verinin, güvenlik açığı (ör. XSS) oluşturmayacak şekilde temizlenip güvenli hale getirilmesi işlemi." },
+        { "term": "Onboarding", "def": "Yeni bir çalışanın veya geliştiricinin bir projeye ya da ekibe alıştırılma süreci." }
+      ]
+    }
+  ]
+}
