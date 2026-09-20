@@ -1,0 +1,133 @@
+{
+  "date": "2026-09-20",
+  "projects": [
+    {
+      "name": "Fission-AI/OpenSpec",
+      "url": "https://github.com/Fission-AI/OpenSpec",
+      "stars": "69.6k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "🎯 AI destekli kod yazımının en büyük zaafı, gereksinimlerin sadece sohbet geçmişinde kalıp hiçbir yerde kalıcı olarak yazılmamasıydı. OpenSpec, kodu yazmadan önce insan ile yapay zekanın **aynı spesifikasyon üzerinde** anlaşmasını sağlayan hafif bir katman sunuyor. `/opsx:explore` ile önce fikirler tartışılıyor, `/opsx:propose` ile değişiklik için spec, tasarım dokümanı ve görev listesi üretiliyor, onaydan sonra `/opsx:apply` ile uygulama yapılıyor ve son olarak `/opsx:archive` ile tamamlanan değişiklik arşivleniyor. Sonuç: AI'ın \"tahmin ederek\" kod yazması yerine, üzerinde önceden mutabık kalınmış net bir plana göre kod yazması.",
+        "tech": "🛠️ OpenSpec, Node.js 20.19+ üzerinde çalışan bir CLI aracı ve npm üzerinden dağıtılıyor. Kilit mimari kararı **araç bağımsızlığı**: proje herhangi bir kapalı formatta değil, düz Markdown ile yazılıyor ve 30'dan fazla AI kodlama asistanıyla (Claude, Cursor, GitHub Copilot, Amazon Q vb.) çalışıyor — her araç kendi komut söz dizimini kullanıyor (`/opsx:propose`, `@opsx-propose`, `$openspec-propose` gibi). Yeni eklenen **Stores (beta)** özelliği, birden fazla repo arasında ortak spesifikasyon paylaşımına izin veriyor; platform ekibi spec'in sahibi olurken ürün ekipleri onu salt-okunur referans olarak kullanabiliyor. Bu, mikroservis mimarilerinde tutarlılığı korumak için önemli bir tasarım kararı.",
+        "why": "📈 Repo bugün +367 yıldız ile GitHub genelinde en hızlı büyüyenlerden biri oldu. Bunun arkasında, \"spec-driven development\" (spesifikasyon odaklı geliştirme) akımının 2026'da AI ajanlarının kod tabanlarında güvenle çalışabilmesi için neredeyse zorunlu hale gelmesi var. GitHub'ın kendi Spec Kit'ine kıyasla daha hafif ve daha esnek bir akış sunması, AWS Kiro'ya kıyasla belirli bir IDE'ye bağımlı olmaması, hem yeni hem de mevcut (brownfield) projelerde kademeli olarak benimsenebilmesi projeyi öne çıkarıyor. Kısacası: ekipler AI'a güvenmek istiyor ama kontrolü de kaybetmek istemiyor, OpenSpec tam bu ortadaki boşluğu dolduruyor.",
+        "evolve": "💡 Şu an spec'ler düz metin dosyaları olduğu için, büyük organizasyonlarda spec'ler arası çakışmaları veya bağımlılıkları otomatik tespit eden bir doğrulama katmanı eksik. Stores özelliği beta aşamasında olduğundan, çoklu repo senaryolarında versiyon çatışması yönetimi olgunlaştıkça projenin kurumsal ölçekte benimsenmesi hızlanabilir. Ayrıca CI/CD'ye entegre edilip \"spec'e uymayan PR otomatik reddedilir\" gibi bir kapı haline gelmesi, spec-driven development'ı sadece bir öneri değil bir zorunluluk haline getirebilir."
+      },
+      "glossary": [
+        {
+          "term": "Spec-driven development",
+          "def": "Kod yazmaya başlamadan önce ne yapılacağının net bir spesifikasyon (gereksinim dokümanı) olarak yazılıp üzerinde anlaşılması yaklaşımı."
+        },
+        {
+          "term": "Slash command",
+          "def": "Sohbet tabanlı araçlarda `/` ile başlayan, önceden tanımlı bir işlemi tetikleyen kısa komut (örn. `/opsx:propose`)."
+        },
+        {
+          "term": "Brownfield proje",
+          "def": "Sıfırdan değil, zaten var olan ve üzerinde çalışılmaya devam edilen bir yazılım projesi."
+        },
+        {
+          "term": "IDE lock-in",
+          "def": "Bir aracın yalnızca belirli bir geliştirme ortamında (IDE) çalışacak şekilde tasarlanması ve kullanıcıyı o ortama bağımlı kılması."
+        }
+      ]
+    },
+    {
+      "name": "cactus-compute/needle",
+      "url": "https://github.com/cactus-compute/needle",
+      "stars": "11.7k",
+      "language": "C++",
+      "sections": {
+        "serves": "🎯 Needle, telefon, giyilebilir cihaz, akıllı ev sistemi ve hatta mikrodenetleyici gibi kısıtlı donanımlarda **buluta hiç çıkmadan** araç çağırma (tool calling), yapılandırılmış veri çıkarma ve embedding üretme problemini çözüyor. Amaç, gecikme, gizlilik ve internet bağımlılığı gibi bulut tabanlı LLM kullanımının getirdiği sorunları ortadan kaldırmak. Model, fonksiyon imzalarını ve açıklamalarını okuyarak kullanıcı isteğine uygun fonksiyonu seçiyor; konuyla alakasız bir istekte ise tahmin yürütmek yerine boş liste döndürüyor — bu, üretimde güvenilirlik açısından kritik bir davranış.",
+        "tech": "🛠️ Needle 3, \"Laddered Simple Attention Network\" adlı özgün bir mimari kullanıyor: Monarch Hadamard MLP katmanları, GQA (Grouped Query Attention), nedensel konvolüsyonlar ve n-gram bellek birleştiriliyor. En dikkat çekici mühendislik kararı, 2 ile 20 katman arasındaki **her derinliğin ayrı, dağıtılabilir bir model** olarak sunulması — bu sayede geliştirici, hedef cihazın hafıza ve işlemci gücüne göre en uygun boyutu seçebiliyor. 2-bit kuantizasyon (Cactus Quants, ağırlık başına 2.125 bit) ile model tek bir 8-29 MB'lık ikili dosyaya sığıyor; her platform için 1 MB'ın altında bir çalıştırma motoru (engine) hazırlanmış, WASI desteğiyle tarayıcıda bile çalışabiliyor.",
+        "why": "📈 Bugün +234 yıldız kazanarak Python ve genel trend listelerinde birden görünen Needle, \"edge AI\" (uç cihazlarda yapay zeka) trendinin somut bir kanıtı. Yapılandırılmış çıktı garantisi veren bayt-seviyesi gramer kısıtlaması (grammar-constrained decoding), her token'ın şemaya uymasını zorunlu kılarak halüsinasyonu mimari düzeyde engelliyor — bu da onu kurumsal otomasyon senaryoları için cazip kılıyor. Kendi büyüklüğünün 10 katı modelleri mobil araç çağırma görevlerinde geride bırakması, \"küçük ama görev-odaklı model\" akımının büyük genel amaçlı LLM'lere alternatif olarak ciddiye alındığını gösteriyor.",
+        "evolve": "💡 Şu anki güç, dar görev setlerinde (araç çağırma, çıkarma, embedding) yoğunlaşmış olması; genel amaçlı sohbet veya karmaşık akıl yürütme bu modelin kapsamı dışında kalıyor, bu bilinçli bir tercih ama aynı zamanda bir sınır. İleride farklı diller ve daha uzun bağlam pencereleri desteklenirse, gerçek zamanlı çeviri veya sesli asistan gibi düşük gecikmeli uç senaryolarda kullanımı genişleyebilir. Ayrıca 2-20 katman arası model ailesinin otomatik seçimini cihaz profiline göre yapan bir \"auto-tune\" aracı, geliştirici deneyimini önemli ölçüde iyileştirebilir."
+      },
+      "glossary": [
+        {
+          "term": "Edge AI (uç yapay zeka)",
+          "def": "Yapay zeka modelinin bulut sunucusu yerine doğrudan kullanıcının cihazında (telefon, sensör, mikrodenetleyici) çalıştırılması."
+        },
+        {
+          "term": "Kuantizasyon",
+          "def": "Bir modelin ağırlıklarını daha az bit ile temsil ederek boyutunu küçültme ve hızını artırma tekniği (örn. 2-bit kuantizasyon)."
+        },
+        {
+          "term": "Tool calling (araç çağırma)",
+          "def": "Bir yapay zeka modelinin, kendisine tanımlanan fonksiyonlardan hangisini hangi parametrelerle çağıracağına karar vermesi."
+        },
+        {
+          "term": "Grammar-constrained decoding",
+          "def": "Modelin ürettiği her token'ın önceden tanımlı bir gramere (şemaya) uymasını zorunlu kılan, geçersiz çıktı üretimini mimari düzeyde engelleyen teknik."
+        },
+        {
+          "term": "GQA (Grouped Query Attention)",
+          "def": "Transformer modellerinde dikkat mekanizmasının bellek kullanımını azaltmak için sorgu başlıklarını gruplayan bir optimizasyon yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "pgvector/pgvector",
+      "url": "https://github.com/pgvector/pgvector",
+      "stars": "23.1k",
+      "language": "C",
+      "sections": {
+        "serves": "🎯 Vektör benzerlik araması (embedding'lere dayalı \"anlamca yakın\" arama) yapmak isteyen ekipler genelde ayrı bir vektör veritabanı kurmak zorunda kalıyor; bu da veriyi iki sistemde senkron tutma yükü getiriyor. pgvector, bu problemi **PostgreSQL'e bir uzantı olarak** çözüyor: vektörler, ilişkisel verinin yanında aynı tabloda saklanabiliyor. `CREATE EXTENSION vector` ile etkinleştirilen bu uzantı, geliştiricinin zaten güvendiği, ACID uyumlu, JOIN destekli, olgun bir veritabanı motorunu vektör arama yeteneğiyle donatıyor.",
+        "tech": "🛠️ pgvector; tam hassasiyetli (`vector`), yarı hassasiyetli (`halfvec`), ikili (`bit`) ve seyrek (sparse) olmak üzere birden fazla vektör tipini destekliyor; L2, iç çarpım, kosinüs, L1, Hamming ve Jaccard olmak üzere altı farklı mesafe metriği sunuyor. İki indeks türü öne çıkıyor: **HNSW** (Hierarchical Navigable Small World) — daha iyi hız/doğruluk dengesi ama daha yavaş indeks inşası, en fazla 2.000 boyuta kadar destekli; ve **IVFFlat** — daha hızlı indeks oluşturma ama daha düşük sorgu performansı, vektörleri aranabilir listelere bölerek çalışıyor. Paralel indeks inşası, filtrelemeyle otomatik sonuç genişletme yapan \"iterative index scan\" ve ikili kuantizasyon gibi ölçekleme özellikleri, projeyi üretim ortamlarına hazır hale getiriyor.",
+        "why": "📈 Bugün +24 yıldız gibi mütevazı ama istikrarlı bir artışla trend listesinde yer alması, RAG (Retrieval-Augmented Generation) tabanlı uygulamaların patlamasıyla doğrudan ilişkili: her AI destekli arama/chatbot projesi bir vektör deposuna ihtiyaç duyuyor ve pgvector, \"zaten kullandığınız Postgres'e bir uzantı kurun, yeter\" diyerek altyapı karmaşıklığını ortadan kaldırıyor. Supabase gibi büyük Postgres tabanlı platformların varsayılan vektör çözümü olması, ekosistem genelinde benimsenmesini hızlandırıyor.",
+        "evolve": "💡 Milyarlarca vektörlük gerçekten devasa ölçeklerde, özel vektör veritabanlarının (Pinecone, Milvus gibi) sunduğu dağıtık mimari ve yatay ölçekleme kolaylığı hâlâ pgvector'ün elinde değil — proje şu an replika ve sharding çözümlerine bağımlı, yerleşik bir dağıtık mimarisi yok. HNSW indekslerinde güncelleme (update-heavy) senaryolarda performans kaybı yaşanabiliyor; bu alanda artımlı indeks bakım algoritmalarının olgunlaşması beklenebilir. Ayrıca çok modlu (görsel + metin) embedding'lerin tek sorguda birleştirilmesini kolaylaştıracak yerleşik yardımcı fonksiyonlar, geliştirici deneyimini bir adım öteye taşıyabilir."
+      },
+      "glossary": [
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metin, görsel gibi verilerin sayısal vektör (embedding) temsillerini saklayıp aralarında benzerlik araması yapmaya özel veritabanı sistemi."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir verinin (metin, görsel vb.) anlamını sayısal bir vektöre dönüştürülmüş hali; benzer anlamlı veriler vektör uzayında birbirine yakın konumlanır."
+        },
+        {
+          "term": "HNSW",
+          "def": "Yaklaşık en yakın komşu aramasında yüksek hız ve doğruluk dengesi sunan, katmanlı graf yapısına dayalı bir indeksleme algoritması."
+        },
+        {
+          "term": "ACID uyumluluk",
+          "def": "Bir veritabanı işleminin Atomicity (bütünlük), Consistency (tutarlılık), Isolation (izolasyon) ve Durability (kalıcılık) garantilerini sağlaması."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin cevap üretmeden önce ilgili belgeleri bir veritabanından çekip bağlam olarak kullandığı yöntem."
+        }
+      ]
+    },
+    {
+      "name": "docling-project/docling",
+      "url": "https://github.com/docling-project/docling",
+      "stars": "67.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Gerçek dünyadaki belgeler (PDF, Word, PowerPoint, taranmış kağıtlar, hatta ses kayıtları) yapay zeka modelleri için doğrudan kullanılabilir değildir — düzen, tablo ve formüller ham metne dönüştürülürken kolayca bozulur. Docling, IBM Research Zürih'teki AI for Knowledge ekibinin geliştirdiği bir kütüphane olarak, PDF'ten DOCX'e, XLSX'ten e-postaya kadar onlarca formatı okuyup sayfa düzenini, okuma sırasını, tabloları ve formülleri koruyarak Markdown veya JSON gibi LLM'lerin kolayca işleyebileceği formatlara dönüştürüyor.",
+        "tech": "🛠️ Python 3.10+ üzerine inşa edilen Docling, veri doğrulama için Pydantic v2 kullanıyor ve karmaşık düzen analizi için GraniteDocling gibi görsel dil modellerinden (Visual Language Model) faydalanıyor. Mimarinin merkezinde, farklı kaynak formatlarını tek bir tutarlı yapıya indirgeyen **DoclingDocument** temsili yer alıyor — bu sayede bir PDF de bir DOCX de aynı arayüzle işlenebiliyor. LangChain, LlamaIndex, CrewAI ve Haystack gibi popüler RAG çatıları için hazır konnektörler, ayrıca ajanlar için bir MCP sunucusu ve servis olarak çalıştırılabilen `docling-serve` API sunucusu içeriyor.",
+        "why": "📈 Bugün +129 yıldız ile listenin en tepesinde yer alması tesadüf değil: RAG ve ajan tabanlı sistemlerin en büyük darboğazı, kurumsal belge arşivlerinin (sözleşmeler, raporlar, finansal tablolar) modele beslenebilir hale getirilmesi. LF AI & Data Foundation çatısı altında olması ve IBM'in kurumsal desteği, projeye özellikle şirket içi (on-premise) çözüm arayan büyük kuruluşlar nezdinde güven veriyor. Video (MP4, AVI, MOV) ve XBRL finansal rapor desteğinin yakın zamanda eklenmesi, projenin kapsamını klasik \"belge\" tanımının ötesine taşıyarak ilgiyi tazeliyor.",
+        "evolve": "💡 Görsel dil modeli tabanlı düzen analizi güçlü ama hesaplama maliyeti yüksek; çok sayfalı büyük arşivlerde toplu işleme hızı ve maliyeti, hafif/kural-tabanlı bir mod ile daha da optimize edilebilir. Şu an desteklenen DocTags gibi özel formatların, endüstri standardı hale gelmesi zaman alabilir; OpenAI'nin veya başka sağlayıcıların benzer temsil biçimleriyle birlikte çalışabilirlik (interoperability) sağlanması ekosistemi güçlendirebilir. Çok dilli, özellikle sağdan sola yazılan diller ve karmaşık tablo iç içe geçmelerinde doğruluk oranının nasıl geliştiği, projenin kurumsal benimsenmesinde belirleyici olacak."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin cevap üretmeden önce ilgili belgeleri bir veritabanından çekip bağlam olarak kullandığı yöntem."
+        },
+        {
+          "term": "Visual Language Model (VLM)",
+          "def": "Hem görseli hem metni birlikte anlayabilen, örneğin bir sayfanın düzenini görsel olarak yorumlayabilen yapay zeka modeli türü."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka ajanlarının harici araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "OCR (Optical Character Recognition)",
+          "def": "Taranmış görsellerdeki yazılı metni tanıyıp düzenlenebilir dijital metne çeviren teknoloji."
+        }
+      ]
+    }
+  ]
+}
