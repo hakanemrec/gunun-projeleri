@@ -1,0 +1,78 @@
+{
+  "date": "2026-09-21",
+  "projects": [
+    {
+      "name": "paperless-ngx/paperless-ngx",
+      "url": "https://github.com/paperless-ngx/paperless-ngx",
+      "stars": "45.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Evde veya ofiste biriken faturalar, sözleşmeler ve resmi yazılar zamanla aranamaz bir kağıt yığınına dönüşüyor. Paperless-ngx, taranmış veya dijital belgeleri otomatik olarak OCR'dan geçirip etiketleyen, tam metin arama ile saniyeler içinde bulunabilir hale getiren, kendi sunucunuzda (self-hosted) çalışan bir belge yönetim sistemi sunuyor. Amaç net: fiziksel arşivi tamamen ortadan kaldırıp, verinin kontrolünü bulut sağlayıcılara bırakmadan kendi elinizde tutmak.",
+        "tech": "🛠️ Backend Django, arayüz Angular ile yazılmış; belge işleme kuyruğu Redis üzerinden Celery ile asenkron yürütülüyor, böylece büyük dosyalar arayüzü kilitlemiyor. OCR için Tesseract tabanlı `ocrmypdf` kullanılıyor, veriler PostgreSQL/MariaDB gibi ilişkisel veritabanlarında saklanıyor. Son sürümlerde eklenen yapay zeka destekli otomatik etiketleme ve öneri motoru, kullanıcı geçmiş sınıflandırmalarından öğrenerek yeni belgelere etiket/klasör önerisi yapıyor — bu, klasik kural tabanlı otomasyonun ötesine geçen bilinçli bir mimari tercih.",
+        "why": "📈 Proje bugün de istikrarlı büyümesini sürdürerek 45.7k yıldıza ulaştı; bunun arkasında self-hosting ve \"verimi kendi sunucumda tutayım\" akımının homelab/NAS topluluklarında (Unraid, TrueNAS, Synology) hızla yaygınlaşması var. Orijinal Paperless projesinin bakımının durmasının ardından topluluk tarafından çatallanıp sürdürülmesi, açık kaynakta \"topluluk devralması\" (community takeover) başarı hikayelerinden biri olarak da öne çıkıyor.",
+        "evolve": "💡 Mobil deneyim hâlâ web arayüzünün gerisinde kalıyor; native bir mobil istemci projenin erişilebilirliğini artırabilir. Çoklu dilli OCR doğruluğu, özellikle el yazısı ve karışık dilli belgelerde geliştirilmeye açık. Yapay zeka destekli etiketleme motorunun büyük dil modelleriyle daha derin entegrasyonu — örneğin bir sözleşmenin süresini veya tutarını otomatik çıkarıp hatırlatma oluşturması — projeyi pasif bir arşivden aktif bir asistana dönüştürebilir."
+      },
+      "glossary": [
+        { "term": "OCR (Optik Karakter Tanıma)", "def": "Taranmış bir görseldeki yazılı metni tanıyıp düzenlenebilir/aranabilir dijital metne çeviren teknoloji." },
+        { "term": "Self-hosted (kendi sunucunda barındırma)", "def": "Bir yazılımı bulut sağlayıcı yerine kendi sunucunuzda veya evdeki cihazınızda çalıştırma; veri kontrolünü tamamen kullanıcıda bırakır." },
+        { "term": "Celery / görev kuyruğu", "def": "Zaman alan işleri (örn. OCR taraması) ana uygulamayı bloklamadan arka planda sırayla işleyen bir yazılım bileşeni." },
+        { "term": "Tam metin arama", "def": "Bir belgenin içeriğindeki herhangi bir kelimeyi arayarak o belgeyi anında bulabilme yeteneği." }
+      ]
+    },
+    {
+      "name": "vercel-labs/json-render",
+      "url": "https://github.com/vercel-labs/json-render",
+      "stars": "17.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Bir yapay zeka modeline \"bana bir form/dashboard tasarla\" dedirtmek risklidir: model ya rastgele kod üretir ya da tutarsız, güvensiz arayüzler ortaya çıkar. json-render, modelin yalnızca geliştiricinin önceden tanımladığı **onaylı bileşen kataloğu** içinden seçim yapmasına izin vererek bu riski ortadan kaldırıyor. Akış şöyle işliyor: kullanıcı isteği → model + katalog → şemaya uygun JSON çıktısı → bu JSON'u gerçek arayüze çeviren bir render motoru. Sonuç, her seferinde şemaya birebir uyan, öngörülebilir ve güvenli bir \"generative UI\".",
+        "tech": "🛠️ TypeScript çekirdek üzerine kurulu proje; React, Vue, Svelte, Solid ve React Native için ayrı render motorları sunuyor, hatta video (Remotion), terminal arayüzü (Ink) ve 3D sahne (Three.js) gibi alışılmadık hedefler için de render katmanı var. 36 hazır shadcn/ui bileşeni kutudan çıkıyor. Mimarinin can alıcı noktası, kataloğun şemasından **sistem promptunun otomatik üretilmesi** ve modelin ürettiği JSON'un parça parça (streaming) gelirken arayüzün kademeli olarak render edilmesi — kullanıcı sonucu beklerken boş ekran görmüyor. MCP entegrasyonu sayesinde Claude, ChatGPT ve Cursor gibi araçlardan doğrudan çağrılabiliyor.",
+        "why": "📈 Bugün +291 yıldız kazanarak listede hızlı yükselenlerden biri oldu. Vercel'in v0 ve AI SDK ile zaten generative UI alanında güven kazanmış olması projeye kredibilite katıyor. Asıl itici güç ise kurumların \"AI serbestçe kod/arayüz üretsin\" fikrine hâlâ temkinli yaklaşması: json-render, yaratıcılığı tamamen kısıtlamadan öngörülebilirlik vaat ederek bu ikilemi çözüyor ve ajan tabanlı uygulamaların arayüz katmanı ihtiyacına tam oturuyor.",
+        "evolve": "💡 Şu an geliştirici, kataloğu ve şemayı elle tanımlamak zorunda; mevcut bir tasarım sistemi (design system) token'larından kataloğu otomatik türeten bir araç, kurulum sürtünmesini büyük ölçüde azaltabilir. Üretilen arayüzlerin erişilebilirlik (accessibility) standartlarına uyup uymadığını otomatik doğrulayan bir katman da eksik. Ayrıca farklı render motorları (React vs Vue vb.) arasında görsel/davranışsal tutarlılığı garanti eden ortak bir test paketi, çoklu platform iddiasını daha sağlam temellere oturtabilir."
+      },
+      "glossary": [
+        { "term": "Generative UI (üretici arayüz)", "def": "Kullanıcı arayüzünün sabit kod yerine, bir yapay zeka modeli tarafından o an isteğe göre dinamik olarak oluşturulması." },
+        { "term": "Guardrail (koruma bariyeri)", "def": "Bir yapay zeka modelinin üretebileceği çıktıları önceden belirlenmiş sınırlar içine hapseden güvenlik/kontrol mekanizması." },
+        { "term": "Streaming (akış halinde iletim)", "def": "Bir yanıtın tamamı hazır olmadan, parça parça üretildikçe kullanıcıya gösterilmesi." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka ajanlarının harici araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol." }
+      ]
+    },
+    {
+      "name": "BuilderIO/agent-native",
+      "url": "https://github.com/BuilderIO/agent-native",
+      "stars": "5.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Bugünün tipik AI uygulamalarında ajan bir sohbet penceresinde çalışırken, uygulamanın gerçek arayüzü bundan habersiz kalıyor; kullanıcı ajanın ne yaptığını göremiyor, onaylayamıyor. Agent-Native, ajanların ve arayüzün **aynı eylem katmanını** paylaşmasını sağlayarak bu kopukluğu gideriyor: bir \"action\" hem ajan için bir araç (tool) hem de arayüz için çağrılabilir bir fonksiyon oluyor. Böylece ajanın yaptığı iş anında arayüzde görünüyor, kullanıcı da isterse müdahale edip onaylayabiliyor.",
+        "tech": "🛠️ TypeScript ve React üzerine kurulu, geliştirme ortamında PGlite (tarayıcıda/yerel çalışan hafif Postgres) kullanan, üretimde PostgreSQL'e geçen bir yığın tercih edilmiş. Mimarinin merkezinde tek bir **eylem katmanı** var; bu katman HTTP, MCP, A2A (agent-to-agent) ve CLI gibi birden fazla protokolden aynı anda erişilebiliyor, yani doğrulama ve yetkilendirme mantığı tek yerde yazılıp her arayüzden tutarlı şekilde çalışıyor. Kimlik doğrulama, ajan hafızası/becerileri, otomasyonlar ve çoklu ajan takımları gibi özellikler kutudan çıkıyor.",
+        "why": "📈 Bugün +98 yıldız ile büyümesini sürdürdü. Builder.io'nun görsel/no-code arayüz araçlarındaki birikimini ajan çağına taşıması, projeye hem teknik hem de pazar bilgisi açısından güven veriyor. \"Agentic application\" (ajan-yerel uygulama) kavramının 2026'da salt sohbet arayüzlerinin ötesine geçip gerçek iş akışlarına oturması gerektiği fikri güçleniyor; özellikle kurumların ajanlara tam özerklik vermek yerine görünürlük ve onay mekanizması istemesi bu projeyi cazip kılıyor.",
+        "evolve": "💡 Şu an yetkilendirme modeli nispeten temel; kurumsal ortamlarda ihtiyaç duyulan ince taneli rol ve izin sistemi (örneğin \"bu ajan sadece taslak oluşturabilir, yayınlayamaz\") olgunlaştıkça büyük şirketlerde benimsenme hızlanabilir. Ajan eylemlerinin tam denetim izi (audit trail) ve geri alma (rollback) desteği de kritik bir eksik. TypeScript dışı dillerde SDK sunulması, ekosistemi backend tarafı Python/Go ağırlıklı olan ekiplere de açabilir."
+      },
+      "glossary": [
+        { "term": "Agentic application (ajan-yerel uygulama)", "def": "Yapay zeka ajanlarının sadece sohbet yoluyla değil, uygulamanın arayüzü ve verisiyle doğrudan, görünür şekilde etkileşime girdiği uygulama türü." },
+        { "term": "Eylem katmanı (action layer)", "def": "Bir uygulamadaki tüm işlemlerin (veri okuma, yazma, tetikleme) tek, merkezi bir arayüz üzerinden tanımlandığı mimari katman." },
+        { "term": "A2A (Agent-to-Agent)", "def": "Farklı yapay zeka ajanlarının birbirleriyle doğrudan iletişim kurup görev devredebilmesini sağlayan protokol." },
+        { "term": "PGlite", "def": "PostgreSQL veritabanının tarayıcıda veya yerel ortamda, ayrı bir sunucu kurmadan çalışabilen hafif bir sürümü." }
+      ]
+    },
+    {
+      "name": "higgsfield-ai/higgsfield",
+      "url": "https://github.com/higgsfield-ai/higgsfield",
+      "stars": "5.5k",
+      "language": "Jupyter Notebook",
+      "sections": {
+        "serves": "🎯 Milyarlarca hatta trilyonlarca parametreli modelleri eğitmek, tek bir GPU'ya asla sığmayan bir iş; onlarca sunucuya, yüzlerce GPU'ya dağıtılmış eğitimi güvenilir şekilde yönetmek başlı başına bir mühendislik problemi. Higgsfield, kaynak paylaşımı, iş kuyruğa alma, hata toleransı ve izleme gibi bu dağıtık eğitim altyapısının can sıkıcı kısımlarını üstlenerek ML mühendislerinin asıl işine, yani modele odaklanmasını sağlıyor.",
+        "tech": "🛠️ Proje, kendi kapalı soyutlamasını dayatmak yerine bilinçli olarak **standart PyTorch iş akışını** takip ediyor; DeepSpeed ve Hugging Face Accelerate ile uyumlu çalışıyor, ZeRO-3 ve PyTorch'un yerleşik Fully Sharded Data Parallel (FSDP) API'si üzerinden model parçalama (sharding) destekliyor. GitHub Actions entegrasyonu, eğitim işlerinin sürekli entegrasyon (CI) mantığıyla tetiklenip izlenmesine olanak tanıyor; Docker tabanlı konteynerleştirme ile ortam versiyonlama ve tekrarlanabilirlik (reproducibility) ön planda tutuluyor.",
+        "why": "📈 Bugün +465 yıldız ile günün en hızlı büyüyen projelerinden biri oldu. Bu ivmenin arkasında, büyük dil modeli eğitiminin artık sadece dev teknoloji şirketlerinin değil, orta ölçekli araştırma laboratuvarlarının da gündeminde olması var; bulut sağlayıcıların yönetilen ML eğitim hizmetlerinin maliyeti caydırıcı kaldıkça, açık kaynaklı ve tanıdık PyTorch mantığıyla çalışan alternatiflere talep artıyor. Standart PyTorch'a sadık kalması, mevcut eğitim kodunu yeniden yazmadan projeye geçişi kolaylaştırıyor — bu da benimsenme bariyerini büyük ölçüde düşürüyor.",
+        "evolve": "💡 Şu an homojen GPU kümelerine odaklanmış görünüyor; farklı nesil/kapasitede GPU'ları bir arada verimli kullanan heterojen küme desteği projeyi daha geniş bir donanım yelpazesine açabilir. Spot/geçici (preemptible) GPU örneklerini maliyet optimizasyonu için otomatik yöneten bir zamanlayıcı büyük bir eksik. Haftalarca süren eğitim koşularında ilerlemeyi, maliyeti ve anomalileri tek ekrandan takip edilebilir kılan daha zengin bir gözlemlenebilirlik (observability) panosu da projeyi kurumsal kullanıma bir adım daha yaklaştırabilir."
+      },
+      "glossary": [
+        { "term": "GPU orkestrasyon", "def": "Birden fazla GPU/sunucu arasında hesaplama iş yükünü paylaştırıp yöneten sistem." },
+        { "term": "ZeRO-3 / Sharding (model parçalama)", "def": "Devasa bir modelin ağırlıklarını tek bir GPU yerine birçok GPU'ya bölerek bellek sınırını aşmayı sağlayan teknik." },
+        { "term": "FSDP (Fully Sharded Data Parallel)", "def": "PyTorch'un, model parametrelerini, gradyanları ve optimizer durumunu GPU'lar arasında otomatik bölen yerleşik eğitim stratejisi." },
+        { "term": "Hata toleransı (fault tolerance)", "def": "Sistemin bir bileşeni (örn. bir GPU sunucusu) çökse bile işi kaybetmeden veya yeniden başlatarak devam edebilme yeteneği." },
+        { "term": "Reproducibility (tekrarlanabilirlik)", "def": "Aynı kod ve ortamla eğitimin tekrar çalıştırıldığında aynı/tutarlı sonuçları üretebilmesi." }
+      ]
+    }
+  ]
+}
