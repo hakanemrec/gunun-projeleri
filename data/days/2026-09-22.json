@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-22",
+  "projects": [
+    {
+      "name": "anthropics/financial-services",
+      "url": "https://github.com/anthropics/financial-services",
+      "stars": "35.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Yatırım bankacılığı, özel sermaye, fon idaresi ve hisse araştırması gibi finans dünyasında saatler süren tekrarlayan analiz ve raporlama işlerini otomatikleştiren, hazır ajan ve beceri (skill) koleksiyonu. Pitch deck hazırlama, genel muhasebe mutabakatı, NAV kontrolü, KYC taraması gibi görevleri Claude'a devrederek, analistlerin gözden geçirip onaylayacağı taslak çıktılar üretiyor.",
+        "tech": "🛠️ Repo klasik bir yazılım projesi değil; markdown talimatlar ve JSON konfigürasyonlardan oluşan, build adımı gerektirmeyen dosya tabanlı bir 'plugin' koleksiyonu. `plugins/agent-plugins` altında uçtan uca iş akışı ajanları (Pitch Agent, GL Reconciler...), `plugins/vertical-plugins` altında sektöre özel beceri paketleri (yatırım bankacılığı, fon idaresi...) yer alıyor. FactSet, S&P Global, Moody's, LSEG, PitchBook gibi 11 farklı veri sağlayıcısına MCP sunucuları üzerinden bağlanıyor; hem Claude Cowork eklentisi hem de Managed Agents API ile headless olarak devreye alınabiliyor.",
+        "why": "📈 Anthropic'in kendi imzasıyla yayınladığı, gerçek dünyada kullanılabilir somut bir vertical AI ajan örneği olması dikkat çekti — çoğu ajan demosu genel amaçlıyken bu repo düzenleyici uyum, mutabakat ve finansal modelleme gibi çok spesifik ve yüksek maliyetli iş süreçlerini hedefliyor. Hem finans sektöründeki ekipler hem de kurumsal AI ajan mimarisiyle ilgilenen geliştiriciler için referans niteliğinde.",
+        "evolve": "💡 Ajanlar şu an bilinçli olarak 'taslak üretir, insan onaylar' prensibiyle sınırlandırılmış — işlem yürütme veya risk üstlenme yetkisi yok. Zamanla daha ayrıntılı denetlenebilirlik (audit trail), çok adımlı onay zincirleri ve daha fazla bölgesel veri sağlayıcı desteği eklenmesi olası bir yön. `partner-built` klasörünün üçüncü taraf entegrasyonlara açık olması, topluluk katkılarıyla hızlı büyüme potansiyeli taşıyor."
+      },
+      "glossary": [
+        {
+          "term": "GL mutabakatı (General Ledger Reconciliation)",
+          "def": "Bir şirketin genel muhasebe defterindeki kayıtların farklı kaynaklarla karşılaştırılıp tutarlılığının doğrulanması işlemi."
+        },
+        {
+          "term": "NAV (Net Asset Value)",
+          "def": "Bir yatırım fonunun toplam varlıklarından borçları çıkarıldığında kalan net değeri; fon fiyatlamasının temelini oluşturur."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin harici veri kaynaklarına ve araçlara standart bir protokolle bağlanmasını sağlayan açık teknoloji."
+        },
+        {
+          "term": "KYC (Know Your Customer)",
+          "def": "Finans kuruluşlarının müşterilerinin kimliğini ve risk profilini doğrulamak için uyguladığı süreç."
+        },
+        {
+          "term": "Headless deployment",
+          "def": "Kullanıcı arayüzü olmadan, doğrudan API ya da arka planda çalışacak şekilde bir yazılımın kurulup çalıştırılması."
+        },
+        {
+          "term": "Audit trail",
+          "def": "Bir işlemin kim tarafından, ne zaman ve nasıl yapıldığını adım adım izlenebilir kılan kayıt zinciri."
+        }
+      ]
+    },
+    {
+      "name": "yynxxxxx/Codex-X",
+      "url": "https://github.com/yynxxxxx/Codex-X",
+      "stars": "3.8k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 OpenAI Codex CLI kullanıcıları için dağınık hâldeki prompt şablonlarını, API sağlayıcı ayarlarını, oturum geçmişini ve Skill/MCP konfigürasyonlarını tek bir görsel panelde topluyor. Her seferinde TOML dosyalarını elle düzenlemek yerine tıkla-kullan bir kontrol merkezi sunuyor.",
+        "tech": "🛠️ Masaüstü uygulaması Tauri 2 üzerine kurulu: arka planda Rust, ön yüzde React 18 + TypeScript + Vite kullanılıyor. Bu kombinasyon, Electron tabanlı alternatiflere göre çok daha küçük paket boyutu ve düşük bellek tüketimi sağlıyor. Yerel veriler SQLite'ta tutuluyor, prompt şablonları GitHub üzerinden senkronize edilip çevrimdışı da erişilebiliyor. macOS, Windows ve Linux için ayrı paket formatlarıyla (MSI, AppImage, deb, rpm) dağıtılıyor.",
+        "why": "📈 OpenAI'ın Codex CLI'ı hızla yaygınlaşırken konfigürasyon karmaşıklığı (çoklu API sağlayıcı, prompt yönetimi, oturum senkronu) kullanıcılar için gerçek bir sürtünme noktası haline geldi; Codex-X bu boşluğu dolduran ilk görsel araçlardan biri olarak öne çıktı. Token kullanım analitiği gibi maliyet takibi özellikleri de API faturasını yöneten geliştiricilerin ilgisini çekiyor.",
+        "evolve": "💡 Şu an tek bir CLI aracına (Codex) odaklanmış durumda; Claude Code veya Gemini CLI gibi rakip araçlara da destek eklenmesi doğal bir genişleme olur. Takım/organizasyon düzeyinde paylaşımlı prompt kütüphaneleri ve şu an yalnızca GitHub'a bağımlı olan senkronun genişletilmesi kurumsal kullanım için değerli olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Tauri",
+          "def": "Masaüstü uygulamaları için Rust tabanlı, web teknolojileriyle arayüz oluşturmayı sağlayan, Electron'a alternatif hafif bir uygulama çatısı."
+        },
+        {
+          "term": "TOML",
+          "def": "Yapılandırma dosyaları için kullanılan, insan tarafından kolay okunabilen basit bir veri formatı."
+        },
+        {
+          "term": "SQLite",
+          "def": "Sunucu gerektirmeyen, tek dosya üzerinde çalışan hafif bir veritabanı motoru."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin harici araç ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan protokol."
+        }
+      ]
+    },
+    {
+      "name": "Open-Dev-Society/OpenStock",
+      "url": "https://github.com/Open-Dev-Society/OpenStock",
+      "stars": "18.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Bloomberg Terminal veya TradingView Premium gibi pahalı abonelik gerektiren borsa takip platformlarına açık kaynaklı, ücretsiz bir alternatif sunuyor. Gerçek zamanlı fiyat takibi, kişiselleştirilmiş alarm kurma ve şirket bazlı detaylı analiz özellikleriyle 30'dan fazla uluslararası borsayı destekliyor.",
+        "tech": "🛠️ Next.js 15 ve React 19 ile modern bir sunucu taraflı render mimarisi kurulmuş, arayüz Tailwind CSS v4 ve shadcn/ui bileşenleriyle oluşturulmuş. Veriler MongoDB'de tutuluyor, kimlik doğrulama Better Auth ile yapılıyor. Piyasa verisi Finnhub API'sinden, grafikler TradingView widget'larından besleniyor; fiyat alarmları ve günlük özet e-postaları gibi zamanlanmış görevler Inngest ile workflow olarak yönetiliyor. Kişiselleştirilmiş e-posta içerikleri için Google Gemini API entegre edilmiş.",
+        "why": "📈 Bireysel yatırımcı ilgisinin arttığı bir dönemde 'ücretsiz ve açık kaynak' vaadi tek başına güçlü bir çekim yaratıyor; insanlar hem ürünü doğrudan kullanmak hem de kendi sunucularında barındırıp özelleştirmek istiyor. Docker Compose ile tek komutla kurulabilmesi ve modern, tanıdık bir teknoloji yığını kullanması (Next.js, shadcn/ui) katkıda bulunmak isteyen geliştiriciler için giriş bariyerini düşürüyor.",
+        "evolve": "💡 Gerçek zamanlı veri kaynağı şu an tek bir sağlayıcıya (Finnhub) bağımlı — çoklu veri kaynağı desteği ve kripto/emtia gibi ek varlık sınıfları eklenmesi doğal bir sonraki adım olabilir. AGPL-3.0 lisansı ticari çatallanmaları (fork) sınırlayacağından, topluluk sürümüyle ticari bir barındırılan sürüm arasında net bir ayrım kurulması gerekebilir."
+      },
+      "glossary": [
+        {
+          "term": "SSR (Server-Side Rendering)",
+          "def": "Web sayfasının HTML içeriğinin tarayıcıda değil sunucuda oluşturulup kullanıcıya hazır gönderilmesi tekniği."
+        },
+        {
+          "term": "MongoDB",
+          "def": "Verileri tablo yerine esnek, JSON benzeri belgeler (document) halinde saklayan bir NoSQL veritabanı."
+        },
+        {
+          "term": "Finnhub",
+          "def": "Hisse senedi, döviz ve kripto piyasası verileri sağlayan bir finansal veri API'si."
+        },
+        {
+          "term": "Inngest",
+          "def": "Zamanlanmış görevleri ve arka plan iş akışlarını (workflow) yönetmeye yarayan bir geliştirici aracı."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılımı değiştirip sunucu üzerinden hizmet olarak sunanların da kaynak kodu paylaşmasını zorunlu kılan güçlü bir açık kaynak lisansı."
+        },
+        {
+          "term": "shadcn/ui",
+          "def": "Hazır, özelleştirilebilir React arayüz bileşenleri sunan popüler bir tasarım kütüphanesi."
+        }
+      ]
+    },
+    {
+      "name": "Crosstalk-Solutions/project-nomad",
+      "url": "https://github.com/Crosstalk-Solutions/project-nomad",
+      "stars": "38.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 İnternete bağlı olmadan çalışabilen, kişisel donanım üzerinde barındırılan bir 'bilgi ve eğitim sunucusu'. Wikipedia, Khan Academy dersleri, haritalar ve yerel bir yapay zeka sohbet asistanını tek bir kutuda birleştirip acil durumlarda, kırsal bölgelerde veya gizlilik önceliği olan kullanımlarda kesintisiz bilgiye erişim sağlıyor.",
+        "tech": "🛠️ Sistem Docker üzerinde çalışan çok sayıda konteynerden oluşuyor; 'Command Center' adlı Node.js tabanlı bir yönetim arayüzü bunların kurulumunu ve güncellemesini otomatikleştiriyor. Yapay zeka tarafında Ollama ya da OpenAI uyumlu bir sunucu ve anlamsal arama için Qdrant vektör veritabanı kullanılıyor; içerik tarafında Kiwix (çevrimdışı Wikipedia), Kolibri (Khan Academy) ve ProtoMaps (çevrimdışı harita) gibi hazır açık kaynak projeler entegre edilmiş. Tek satırlık bash betiğiyle Debian tabanlı sistemlere kurulabiliyor.",
+        "why": "📈 'Offline-first' ve dayanıklılık teması — afet senaryoları, elektrik/internet kesintileri, kırsal bağlantı sorunları — hem hazırlıklı yaşam topluluğunda hem de gizlilik odaklı self-hosting camiasında güçlü bir karşılık buluyor. Var olan birçok iyi projeyi (Kiwix, Kolibri, Ollama) tek bir kurulabilir pakette birleştirmesi, tek tek kurmanın getirdiği teknik yükü ortadan kaldırdığı için ilgi görüyor.",
+        "evolve": "💡 Kimlik doğrulamasının bulunmaması, paylaşılan veya ağ dışına açık kurulumlarda öne çıkan bir eksiklik; şu an ağ seviyesinde güvenlik öneriliyor ama uygulama seviyesinde kullanıcı yönetimi eklenmesi doğal bir geliştirme olur. Ayrıca GPU'suz düşük donanımlarda AI bileşenlerinin performansı sınırlı kalabilir; daha hafif model seçenekleri veya bulut yedekli hibrit bir mod, kullanım alanını genişletebilir."
+      },
+      "glossary": [
+        {
+          "term": "Konteyner (Docker)",
+          "def": "Bir uygulamayı tüm bağımlılıklarıyla birlikte izole ve taşınabilir bir pakette çalıştırma teknolojisi."
+        },
+        {
+          "term": "Ollama",
+          "def": "Büyük dil modellerini kendi bilgisayarınızda ya da sunucunuzda yerel olarak çalıştırmanızı sağlayan açık kaynak araç."
+        },
+        {
+          "term": "Vektör veritabanı (Qdrant)",
+          "def": "Metinleri sayısal 'anlam' vektörlerine dönüştürüp aralarında benzerlik araması yapmaya yarayan özel bir veritabanı türü."
+        },
+        {
+          "term": "Kiwix",
+          "def": "Wikipedia gibi web içeriklerinin çevrimdışı, sıkıştırılmış bir kopyasını okumaya yarayan araç."
+        },
+        {
+          "term": "Self-hosting",
+          "def": "Bir yazılımı üçüncü taraf bir bulut hizmeti yerine kendi sunucunuzda ya da donanımınızda barındırma pratiği."
+        }
+      ]
+    }
+  ]
+}
