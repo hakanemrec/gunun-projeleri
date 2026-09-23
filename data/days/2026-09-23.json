@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-23",
+  "projects": [
+    {
+      "name": "dream-num/univer",
+      "url": "https://github.com/dream-num/univer",
+      "stars": "15.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "Univer, kendi uygulamanıza gömebileceğin açık kaynak bir **ofis SDK'sı**: tablo (spreadsheet), doküman ve sunum düzenleyicilerini hazır bir bileşen gibi ürününe ekleyebiliyorsun. Sorun şu — bugüne kadar bir SaaS ürününe \"Excel gibi bir tablo\" veya \"Word gibi bir editör\" koymak istediğinde ya pahalı ve kapalı üçüncü parti bileşenlere ya da tarayıcıya gömülü, sınırlı iframe çözümlerine mahkumdun. Univer bunun yerine formül motoru, biçimlendirme, filtreleme ve doğrulama gibi gerçek bir ofis uygulamasının tüm inceliklerini barındıran, tamamen senin kontrolünde çalışan bir çekirdek sunuyor. Asıl ilginç kısmı: aynı API'yi hem tarayıcıda hem de sunucu tarafında (Node.js) \"headless\" biçimde çalıştırabiliyorsun — yani bir AI ajanının kullanıcı arayüzü açmadan bir tabloyu okuyup düzenleyip doğrulayabildiği bir çalışma ortamı elde ediyorsun.",
+        "tech": "Mimarinin temeli **plugin-first (eklenti öncelikli)** yaklaşım: tablo, doküman, sunum, hatta \"Bases\" adını verdikleri yapılandırılmış veri görünümü gibi her yetenek ayrı bir composable (birleştirilebilir) eklenti olarak geliyor, yani sadece ihtiyacın olan parçayı bundle'ına dahil edip gereksiz kod yükünden kaçınabiliyorsun. Büyük ve karmaşık tabloların akıcı kalması için DOM tabanlı değil, **canvas tabanlı bir render motoru** kullanılmış — binlerce hücreyi DOM elemanına çevirmek yerine doğrudan çizim yaparak performansı koruyorlar. Ayrı bir formül motoru hesaplamaları üstleniyor. \"Isomorphic\" tasarım sayesinde aynı kod tabanı hem tarayıcıda hem Node.js'te (>=18.17.0) çalışıyor ve React 18/19, Vue ile Web Components için hazır adaptörler sunuluyor. Üstüne, iki farklı kullanım modu var: ince ayar isteyenler için \"Plugin Mode\" (hangi paketin yükleneceğini tek tek seçebiliyorsun), hızlı başlamak isteyenler için ise hazır paketlenmiş \"Preset Mode\". Çekirdek Apache-2.0 lisanslı ve açık; gerçek zamanlı ortak düzenleme, pivot tablo, grafik gibi kurumsal özellikler ise ücretli \"Univer Pro\" katmanına bırakılmış — klasik açık çekirdek + ticari eklenti stratejisi.",
+        "why": "Univer aslında 2023'ten beri geliştiriliyor ama bugünkü ivmesinin asıl sebebi AI ajanlarının ofis dosyalarıyla çalışma ihtiyacının patlaması. DeepSeek Harness, OpenClaw ve WorkBuddy gibi ajan platformlarıyla entegrasyonların duyurulması, projeyi \"insanlar için tablo editörü\"nden \"AI ajanları için doğrulanabilir ofis çalışma zamanı\" konumuna taşıdı. Bir ajanın bir tabloyu programatik olarak değiştirip sonucu tekrar okuyup doğrulayabilmesi — yani insan arayüzüne muhtaç olmadan headless çalışabilmesi — şu anki \"agent altyapısı\" trendiyle tam örtüşüyor. Hedef kitle hem kendi SaaS ürününe tablo/doküman gömmek isteyen geliştiriciler hem de AI ajan iş akışları kuran ekipler.",
+        "evolve": "Sunum (Slides) desteğinin hâlâ aktif geliştirme aşamasında olması ve gerçek zamanlı ortak çalışma gibi kritik özelliklerin ücretli katmanda kalması, topluluk sürümünü ciddi üretim kullanımları için sınırlı bırakıyor — özellikle rakip açık kaynak projelerin bu tür özellikleri çekirdekte sunmasıyla karşılaştırıldığında. Ajan entegrasyonu tarafında ise standart bir MCP (Model Context Protocol) sunucusu ya da resmi bir ajan araç seti henüz repo içinde yok; bu, projenin en çok konuşulan kullanım senaryosunu (AI ajanları) hâlâ üçüncü parti entegrasyonlara bağımlı bırakıyor. İçe/dışa aktarma (xlsx, docx gibi) formatlarının da pro sürüme kaydırılmış olması, açık kaynak sürümün gerçek dünya dosyalarıyla çalışmasını zorlaştırıyor."
+      },
+      "glossary": [
+        {
+          "term": "SDK",
+          "def": "Bir yazılım geliştirme kiti; geliştiricilerin kendi ürünlerine hazır bileşen ve API'ler ekleyebilmesini sağlayan araç-kütüphane paketi."
+        },
+        {
+          "term": "Canvas tabanlı render motoru",
+          "def": "Ekrana içerik çizerken her öğe için ayrı bir HTML elemanı oluşturmak yerine doğrudan bir çizim yüzeyine (canvas) piksel bazlı çizim yapan teknik; büyük veri setlerinde performansı artırır."
+        },
+        {
+          "term": "Plugin-first mimari",
+          "def": "Bir yazılımın her özelliğinin, ana çekirdeğe sıkı sıkıya bağlı olmadan ayrı, takılıp çıkarılabilir eklentiler (plugin) halinde tasarlanması."
+        },
+        {
+          "term": "Isomorphic (izomorfik) kod",
+          "def": "Aynı kaynak kodun hem tarayıcıda hem sunucu tarafında (örneğin Node.js) değişiklik yapılmadan çalışabilmesi."
+        },
+        {
+          "term": "Headless çalışma",
+          "def": "Bir uygulamanın görsel arayüz açmadan, yalnızca kod/API üzerinden çalıştırılabilmesi; genellikle otomasyon ve AI ajanları için kullanılır."
+        },
+        {
+          "term": "Facade API",
+          "def": "Karmaşık bir sistemin arkasındaki birçok alt bileşeni tek, sade ve tutarlı bir arayüz üzerinden kullanıma sunan tasarım deseni."
+        },
+        {
+          "term": "Açık çekirdek (open core)",
+          "def": "Bir ürünün temel işlevlerinin açık kaynak, gelişmiş/kurumsal özelliklerinin ise ücretli ve kapalı olduğu iş modeli."
+        }
+      ]
+    },
+    {
+      "name": "google/ax",
+      "url": "https://github.com/google/ax",
+      "stars": "8k",
+      "language": "Go",
+      "sections": {
+        "serves": "AX, Google'ın yayınladığı bir **ajan orkestrasyon çalışma zamanı**: amacı, bir kümede (cluster) milyarlarca otonom AI ajanı görevini güvenli, izole ve kontrollü şekilde çalıştırmak. README'nin de vurguladığı gibi ajanlar klasik iş yükleri gibi değil — durum biriktiriyorlar, izolasyon istiyorlar, dış model API'lerini çağırıyorlar ve denetimsiz bırakılırlarsa gerçek para/zaman kaybına yol açabiliyorlar. AX bu riski, Kubernetes'in konteynerlere yaptığını ajan görevlerine yaparak çözüyor: her ajan çalıştırmasını tanımlı kaynak sınırları, ağ izolasyonu ve kimlik bilgisi yönetimi olan bir \"görev\" (Task) olarak ele alıyor.",
+        "tech": "AX, Go dilinde yazılmış ve Kubernetes kümeleri üzerinde, \"Agent Substrate\" adlı alt katmanın sağladığı sandbox (izole çalışma alanı) üzerinde çalışıyor. Kontrol düzlemi (control plane) `ko` ile konteynerleştirilip dağıtılıyor ve görev çalıştırıcılarla (task runner) gRPC üzerinden konuşuyor; durum yönetimi için Redis kullanılıyor. Sistem dört temel yapı taşı (\"primitive\") üzerine kurulu: **Task** (CPU/bellek sınırlı izole sandbox çalıştırması), **Workspace** (önceden yapılandırılmış Git deposu, MCP sunucuları ve \"skill\" paketleri), **Gateway** (host allowlisting ile dışa giden trafiği kısıtlama) ve **Model** (Kubernetes secret üzerinden kimlik bilgisi yönetimiyle LLM yapılandırması). Checkpoint/resume (kaldığı yerden devam etme) desteği ve sandbox'lara doğrudan SSH ile erişim gibi DevOps dostu özellikler de var; tüm sistem `kubectl` benzeri bir CLI ile yönetiliyor ve bildirimsel (declarative) YAML manifestleriyle tanımlanıyor — yani \"nasıl çalışacağını\" değil \"ne istediğini\" tarif ediyorsun.",
+        "why": "Bugün 2.300'ün üzerinde yıldız kazanarak listenin en hızlı yükseleni oldu; bunun arkasında hem Google'ın güvenilirliği hem de üretim ortamında \"agent altyapısı\" sorununa somut bir cevap sunması var. Şu ana kadar çoğu ajan çerçevesi (framework) tek makinede çalışan Python kütüphaneleriydi; AX ise doğrudan \"bunu Kubernetes'te, ölçekte, güvenli şekilde nasıl çalıştırırım\" sorusuna odaklanıyor. Hedef kitle klasik ajan geliştiricilerinden çok, platform/DevOps mühendisleri ve şirket içi ajan altyapısı kurmak isteyen ekipler — YAML tabanlı bildirimsel yaklaşım onlara tanıdık geliyor.",
+        "evolve": "README'de rakip çerçevelerle (LangGraph, CrewAI gibi uygulama katmanı araçları veya diğer sandbox sağlayıcıları) doğrudan bir karşılaştırma yok; bu da projenin nerede durduğunu (altyapı mı, çerçeve mi) net anlamayı zorlaştırıyor. Kubernetes'e sıkı bağımlılık, tek makinede hızlıca denemek isteyen küçük ekipler için giriş bariyerini yükseltiyor — hafif bir \"tek node\" veya yerel geliştirme modu eklenmesi benimsenmeyi hızlandırabilir. Ayrıca maliyet/kota yönetimi (bir ajanın kontrolsüz şekilde para harcamasını engelleyen bütçe limitleri) şu an dördüncü temel yapı taşı olan Model içinde net tarif edilmemiş; bu konudaki gözlemlenebilirlik (observability) ve maliyet raporlama araçlarının olgunlaşması, kurumsal benimsemede belirleyici olacak."
+      },
+      "glossary": [
+        {
+          "term": "Orkestrasyon (orchestration)",
+          "def": "Birden fazla bileşenin veya görevin ne zaman, nerede ve nasıl çalışacağını otomatik olarak yöneten sistem katmanı."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Bir programın ana sistemden izole, sınırlı yetkilerle çalıştırıldığı güvenli bir ortam; ajan yanlış bir şey yaparsa zararı bu alanla sınırlı kalır."
+        },
+        {
+          "term": "Kontrol düzlemi (control plane)",
+          "def": "Bir sistemin genel durumunu izleyip kararları veren merkezi yönetim katmanı; gerçek işi yapan bileşenlere (veri düzlemi) talimat verir."
+        },
+        {
+          "term": "gRPC",
+          "def": "Google'ın geliştirdiği, servisler arası hızlı ve tip güvenli iletişim sağlayan uzak prosedür çağrısı (RPC) protokolü."
+        },
+        {
+          "term": "Bildirimsel (declarative) yapılandırma",
+          "def": "Sistemin adım adım nasıl yapılacağını değil, ulaşılmak istenen son hali tarif eden yapılandırma biçimi; Kubernetes YAML'ları bunun tipik örneğidir."
+        },
+        {
+          "term": "Checkpoint/resume",
+          "def": "Uzun süren bir işlemin durumunun kaydedilip, kesinti sonrası kaldığı yerden devam ettirilebilmesi."
+        },
+        {
+          "term": "Host allowlisting",
+          "def": "Bir sistemin yalnızca önceden izin verilen belirli adreslere/sunuculara erişmesine izin veren, geri kalan tüm trafiği engelleyen güvenlik yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "superdesigndev/treg",
+      "url": "https://github.com/superdesigndev/treg",
+      "stars": "2.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "Treg, kendini \"ajan araçları için OpenRouter\" olarak tanımlıyor ve gerçek bir sorunu hedefliyor: bir AI ajanının Semrush, Crunchbase gibi araçlara erişmesi gerektiğinde, tek seferlik bir görev için aylık 100-150 dolarlık abonelik açmak veya bir ekip için onlarca hesap ve API anahtarını yönetmek mantıksız. Treg bu hesapları kendisi taşıyıp, her çağrı için santin küsuratı kadar ücret keserek araya giriyor: tek bir taban URL ve tek bir token ile SEO, sosyal medya, veri zenginleştirme, reklam ve medya üretimi gibi alanlarda 60'tan fazla sağlayıcıya ait 3.000'den fazla API uç noktasına erişim sağlıyor — tıpkı OpenRouter'ın onlarca farklı LLM sağlayıcısını tek API altında toplaması gibi.",
+        "tech": "Python ve FastAPI üzerine kurulu bir \"faithful-relay\" (sadık aktarım) proxy mimarisi kullanıyor: istekler yukarı akış (upstream) uç noktasına akıtılırken kimlik bilgileri sunucu tarafında araya enjekte ediliyor, sistem yalnızca taşıma başlıklarını ve treg'e özgü kontrol başlıklarını değiştiriyor, isteğin geri kalanına dokunmuyor. Dört farklı kimlik doğrulama şeklini (`injectors.py`) destekliyor: ortam değişkeni anahtarları, OAuth, CLI kimlik bilgileri ve gizli dosyalar; token yenilemesi `oauth.py` üzerinden otomatik yönetiliyor. Veri katmanında SQLModel kullanılıyor, geliştirmede SQLite, üretimde isteğe bağlı PostgreSQL destekleniyor. Gizli bilgiler (API anahtarları) diskte **Fernet şifrelemesiyle** saklanıyor, yani sunucu ele geçirilse bile ham anahtarlar açık metin olarak durmuyor. Kullanıcılar hem treg'in kendi (metered/ücretli) araçlarını hem de kendi kimlik bilgileriyle getirdikleri (ücretsiz/unmetered) araçlarını aynı katalogda birleştirebiliyor.",
+        "why": "Ajan tabanlı iş akışlarının (Claude Code, otonom araştırma ajanları vb.) yaygınlaşmasıyla birlikte gerçek dünya verisine erişim ihtiyacı da patladı, ama her ekibin her ajan için ayrı ayrı onlarca ücretli API'ye abone olması pratik değil. Treg tam bu sürtünmeyi \"kullan-kadar-öde\" modeliyle çözüyor ve doğrudan Claude gibi ajan platformlarına eklenti/skill olarak entegre olabiliyor — bu da onu genel geliştiricilerden çok, ajan tabanlı otomasyon kuran ekipler ve \"agent-as-a-service\" ürünleri inşa edenler için cazip kılıyor. Kurucunun Superdesign ekibinden gelmesi ve treg.to üzerinden barındırılan bir servisin de canlı olması, projenin sadece bir kütüphane değil aktif işletilen bir ürün olduğunu gösteriyor.",
+        "evolve": "Lisans modeli açık kaynak (Apache 2.0) olsa da \"rakip yönetilen servis olarak dağıtma\" kısıtı içeriyor; bu, tam bağımsız self-hosting isteyen kurumsal kullanıcılar için belirsizlik yaratabilir ve netleştirilmiş bir SSS/örnek vaka seti faydalı olur. Kimlik bilgilerinin sunucu tarafında merkezi biçimde tutulması güçlü bir kullanılabilirlik sağlasa da, tek bir treg kurulumunun tüm ekibin üçüncü parti hesaplarına erişimi temsil eden tek bir hata noktası (single point of failure) haline gelmesi riskini de beraberinde getiriyor — ayrıntılı denetim kaydı (audit log) ve anomali tespiti (örneğin normalden fazla çağrı yapan bir ajanı otomatik durdurma) eklenmesi güven inşası için önemli bir sonraki adım olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Proxy / relay",
+          "def": "İstemci ile hedef sunucu arasına girip istekleri ileten, bu sırada başlık ekleme veya kimlik bilgisi enjekte etme gibi işlemler yapabilen ara katman."
+        },
+        {
+          "term": "OAuth",
+          "def": "Kullanıcının şifresini paylaşmadan, bir uygulamaya başka bir servisteki hesabına sınırlı erişim izni vermesini sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "Fernet şifrelemesi",
+          "def": "Python ekosisteminde yaygın kullanılan, simetrik anahtarla veriyi güvenli biçimde şifreleyip çözen basit bir kriptografi yöntemi."
+        },
+        {
+          "term": "Metered / unmetered kullanım",
+          "def": "Metered: her çağrı başına ücretlendirilen kullanım. Unmetered: kullanıcının kendi kimlik bilgisiyle sınırsız, ek ücret alınmadan yapılan kullanım."
+        },
+        {
+          "term": "SQLModel",
+          "def": "Python'da veritabanı tablolarını, tip kontrollü Python sınıfları olarak tanımlamayı sağlayan, FastAPI ile uyumlu bir kütüphane."
+        },
+        {
+          "term": "Tek hata noktası (single point of failure)",
+          "def": "Bozulduğunda veya erişilemez olduğunda tüm sistemin çalışmasını durdurabilecek, yedeksiz kritik bileşen."
+        }
+      ]
+    },
+    {
+      "name": "mvt-project/mvt",
+      "url": "https://github.com/mvt-project/mvt",
+      "stars": "14.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "MVT (Mobile Verification Toolkit), bir telefonun casus yazılım (spyware) ile hedef alınıp alınmadığını tespit etmeye yardımcı olan adli bilişim (forensics) aracı. 2021'de Pegasus Project soruşturmalarının ardından Uluslararası Af Örgütü'nün (Amnesty International) Güvenlik Laboratuvarı tarafından geliştirildi; gazeteciler, insan hakları savunucuları ve araştırmacılar gibi devlet destekli gözetim riski altındaki kişilerin kendi Android veya iOS cihazlarında sızma izlerini aramasını sağlıyor. Yani sıradan bir antivirüs değil, uzman kullanım için tasarlanmış bir adli inceleme aracı.",
+        "tech": "Python ile yazılmış ve `mvt-ios`, `mvt-android` ile platformdan bağımsız işlemler için `mvt` olmak üzere üç ayrı komut satırı aracı sunuyor. PyPI üzerinden veya `uv tool install` ile kurulabiliyor. Sistemin kalbinde bir cihazdan alınan yedek veya adli görüntüyü, bilinen **IOC (Indicator of Compromise / uzlaşma göstergesi)** veritabanlarıyla karşılaştıran bir tarama motoru var; bu IOC'ler Amnesty ve diğer araştırma gruplarının yayımladığı, bilinen kötücül alan adları, dosya imzaları ve süreç adları gibi \"parmak izleri\". Araç, **eklenti (plugin) mimarisi** sayesinde üçüncü tarafların kendi adli analiz modüllerini ve özel komutlarını sisteme eklemesine izin veriyor; ayrıca Bash, Zsh, Fish için kabuk tamamlama ve ayrıntılı hata ayıklama (debug) günlükleri gibi profesyonel CLI dokunuşları mevcut.",
+        "why": "Mobil casus yazılım gündeminin (Pegasus, Predator gibi ticari gözetim yazılımları hakkında tekrarlayan medya haberleri ve yeni araştırma raporları) periyodik olarak gündeme gelmesi, bu tür adli araçlara ilgiyi de dalgalar halinde artırıyor. Ayrıca projenin aktif bakımının sürmesi ve düzenli IOC güncellemeleri, onu hem gazetecilik hem güvenlik araştırması camiasında referans araç konumunda tutuyor. Dev tools kategorisinde nadir görülen, doğrudan insan hakları savunuculuğuna hizmet eden bir proje olması da onu diğer trend olan ajan/altyapı araçlarından ayırıyor.",
+        "evolve": "README'de de açıkça belirtildiği gibi, herkese açık IOC veritabanları tek başına bir cihazın \"temiz\" olduğunu kanıtlamaya yetmiyor — gerçek kapsamlı analiz için Amnesty'nin kapalı, güncel tehdit istihbaratına ihtiyaç var; bu da aracın açık kaynak sürümünün doğası gereği sınırlı kalacağı anlamına geliyor. iOS tarafında tam adli görüntü almak için genellikle jailbreak veya özel donanım gerekmesi, ortalama bir kullanıcının aracı kendi başına etkin şekilde kullanmasını zorlaştırıyor — bu nedenle daha rehberli, adım adım kullanıcı deneyimi (veya güvenilir aracı kuruluşlarla iş birliği akışları) erişilebilirliği artırabilir. Android tarafında da üreticiye özgü güvenlik kısıtlamalarının artması, gelecekte kök erişimi olmadan yapılabilecek analiz derinliğini sınırlama riski taşıyor."
+      },
+      "glossary": [
+        {
+          "term": "Adli bilişim (digital forensics)",
+          "def": "Dijital cihazlardaki verileri, bir olay veya saldırının izlerini bulmak amacıyla sistematik ve kanıt niteliğinde inceleme disiplini."
+        },
+        {
+          "term": "Casus yazılım (spyware)",
+          "def": "Kullanıcının haberi ya da izni olmadan cihazına yüklenip mesajlarını, konumunu veya verilerini gizlice toplayıp dışarı aktaran kötücül yazılım türü."
+        },
+        {
+          "term": "IOC (Indicator of Compromise)",
+          "def": "Bir sistemin veya cihazın saldırıya uğradığını gösteren; kötücül dosya imzası, alan adı ya da ağ trafiği deseni gibi somut teknik iz/parmak izi."
+        },
+        {
+          "term": "Eklenti (plugin) mimarisi",
+          "def": "Bir yazılımın temel işlevlerini bozmadan, üçüncü tarafların yeni özellik ya da modül ekleyebildiği genişletilebilir tasarım."
+        },
+        {
+          "term": "Jailbreak",
+          "def": "Bir iOS cihazın üreticisi tarafından konan yazılım kısıtlamalarının kaldırılarak sisteme tam yönetici erişimi elde edilmesi."
+        }
+      ]
+    }
+  ]
+}
