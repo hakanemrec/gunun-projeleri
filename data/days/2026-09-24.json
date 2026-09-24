@@ -1,0 +1,173 @@
+{
+  "date": "2026-09-24",
+  "projects": [
+    {
+      "name": "agent-substrate/substrate",
+      "url": "https://github.com/agent-substrate/substrate",
+      "stars": "3.6k",
+      "language": "Go",
+      "sections": {
+        "serves": "Agent Substrate, otonom AI ajanlarını production'da milyonlarca \"sandbox\" halinde, güvenli ve yüksek yoğunlukla çalıştırmak için tasarlanmış bir **çalışma zamanı (runtime)**. Sorun şu: ajanlar çoğu zaman boşta bekliyor (kullanıcı/model yanıtı bekleniyor) ama klasik container altyapısı her ajanı sürekli aktif bir süreç gibi ele alıp kaynağı israf ediyor. Agent Substrate bu boşta bekleme süresini kullanarak aynı fiziksel altyapı üzerine çok daha fazla ajanı \"multiplekslemeyi\" (üst üste bindirmeyi) sağlıyor — kendi demo'larında yaklaşık 30 kat oransal büyüme (oversubscription) gösteriyorlar.",
+        "tech": "Go ile yazılmış, Kubernetes üzerine kurulu bir kontrol düzlemi mimarisi var: `ateapi` (gRPC kontrol sunucusu, actor/worker yaşam döngüsünü yönetir), `atelet` (her node'da çalışan DaemonSet, snapshot ve state transferini koordine eder), `atenet` (Envoy tabanlı ağ yönlendirme). İzolasyon için gVisor veya microVM (cloud-hypervisor) kullanılıyor, yani \"zero-trust\" güvenlik native kernel/ağ izolasyonuyla sağlanıyor. En dikkat çekici özellik \"Actor Teleport\": 500ms altı sürede bir ajanın tüm durumunu (RAM + dosya sistemi) dondurup (suspend) başka bir worker'da devam ettirebiliyor (resume), saniyede 500'ün üzerinde böyle aktivasyon destekleniyor. Snapshot depolama için PostgreSQL ve GCS entegrasyonu var. Framework-agnostik tasarım sayesinde ADK, LangChain, Claude Code ve MCP sunucularıyla birlikte çalışabiliyor.",
+        "why": "Ajan tabanlı sistemlerin production'a taşınmasıyla birlikte \"bunu ölçekte nasıl ucuza çalıştırırım\" sorusu öne çıkıyor; Agent Substrate klasik container orkestrasyonundan farklı olarak ajanlara özgü boşta-bekleme davranışını hedefleyip somut bir maliyet avantajı vaat ediyor. Hedef kitle uygulama geliştiricilerinden çok altyapı/platform mühendisleri — kendi ajan platformunu kurmak isteyen şirketler ve bulut sağlayıcıları.",
+        "evolve": "README'de rakip sandbox sağlayıcılarıyla (ör. E2B, Modal gibi) doğrudan bir karşılaştırma yok; bu, projenin konumlanmasını (genel amaçlı mı yoksa çok özel bir niş mi) anlamayı zorlaştırıyor. Kubernetes'e sıkı bağımlılık, hızlıca denemek isteyen küçük ekipler için giriş bariyerini yükseltiyor — hafif bir tek-node/yerel geliştirme modu benimsenmeyi hızlandırabilir. Ayrıca \"30 kat oversubscription\" iddiasının hangi iş yükü profili için geçerli olduğuna dair bağımsız benchmark eksikliği, kurumsal karar vericiler için netleştirilmesi gereken bir nokta."
+      },
+      "glossary": [
+        {
+          "term": "Sandbox",
+          "def": "Bir programın ana sistemden izole, sınırlı yetkilerle çalıştırıldığı güvenli ortam; ajan yanlış bir şey yaparsa zarar bu alanla sınırlı kalır."
+        },
+        {
+          "term": "gVisor / microVM",
+          "def": "Konteynerlere ek olarak çekirdek düzeyinde ek izolasyon sağlayan hafif sanallaştırma teknikleri; güvenlik açığı olsa bile ana sistemi korurlar."
+        },
+        {
+          "term": "DaemonSet",
+          "def": "Kubernetes'te bir kümedeki her node üzerinde otomatik olarak birer kopyası çalışan, genelde arka plan/altyapı görevleri için kullanılan iş yükü türü."
+        },
+        {
+          "term": "gRPC",
+          "def": "Google'ın geliştirdiği, servisler arası hızlı ve tip güvenli iletişim sağlayan uzak prosedür çağrısı (RPC) protokolü."
+        },
+        {
+          "term": "Oversubscription (aşırı ölçülü paylaştırma)",
+          "def": "Fiziksel kaynaklardan (CPU, bellek) ilan edilenden daha fazlasını, iş yüklerinin genelde aynı anda tam kapasite kullanmayacağı varsayımıyla paylaştırma stratejisi."
+        },
+        {
+          "term": "Kontrol düzlemi (control plane)",
+          "def": "Bir sistemin genel durumunu izleyip kararları veren merkezi yönetim katmanı; gerçek işi yapan bileşenlere talimat verir."
+        },
+        {
+          "term": "Zero-trust güvenlik",
+          "def": "Hiçbir bileşene veya ağ segmentine varsayılan olarak güvenmeyip her erişimi ayrı ayrı doğrulayan güvenlik yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "strands-agents/harness-sdk",
+      "url": "https://github.com/strands-agents/harness-sdk",
+      "stars": "8k",
+      "language": "Python",
+      "sections": {
+        "serves": "Strands, \"prototip ajan\" ile \"production'a hazır ajan\" arasındaki boşluğu kapatmayı hedefleyen açık kaynak bir SDK: sıfırdan bir ajan döngüsü (loop) yazmak yerine yaşam döngüsü yönetimi, araç (tool) entegrasyonu ve gözlemlenebilirliği hazır sunan bir çatı sağlıyor. Python ve TypeScript'te, herhangi bir model sağlayıcısı ve bulutla çalışacak şekilde tasarlanmış — \"any model, any cloud\" vaadiyle satıcıya kilitlenmeyi (vendor lock-in) engellemeyi hedefliyor.",
+        "tech": "Monorepo yapısında iki katman sunuyor: `harness-py`/`harness-ts` (batteries-included, hazır paketlenmiş ajan uygulamaları) ve daha düşük seviyeli `strands-py`/`strands-ts` (ajan döngüsü, sağlayıcı entegrasyonları, araçlar için çekirdek SDK'lar) — yani hem hızlı başlamak hem de ince ayar yapmak isteyenler için iki farklı giriş noktası var. Amazon Bedrock, Anthropic, OpenAI, Gemini gibi modellerle model-agnostik çalışıyor; tur limiti (turn limit), token bütçesi, iptal (cancellation) gibi yaşam döngüsü kontrolleri yerleşik geliyor. MCP entegrasyonu, structured output, guardrails, tracing ve değerlendirme (evaluation) da hazır sunuluyor. Terminal tabanlı hızlı prototipleme için `strands-cli` var, dokümantasyon Astro/Starlight ile üretiliyor. Python 3.10+ veya Node.js 22+ gerektiriyor.",
+        "why": "Agentic AI'ın yaygınlaşması, çoklu model ekosisteminde (farklı sağlayıcılar arası geçiş yapabilme ihtiyacı) esneklik talebi ve production dağıtım baskısının kesişimi, karmaşıklığı soyutlayan ama satıcıya kilitlenmeyen katmanlara talep yaratıyor. Strands'in hem \"hazır çözüm\" (harness) hem \"esnek SDK\" sunması, farklı olgunluk seviyesindeki ekipleri aynı ekosistemde tutuyor ve büyük bulut sağlayıcıları (Amazon dahil) tarafında da destek görüyor.",
+        "evolve": "Model-agnostik olma iddiasının pratikte her sağlayıcıda aynı derinlikte (örneğin guardrails veya structured output) desteklenip desteklenmediği README'den net değil — bu tutarlılık, production'da sağlayıcı değiştirmeyi düşünen ekipler için kritik. Ayrıca hem \"harness\" hem \"SDK\" olarak iki farklı soyutlama seviyesi sunmak esneklik sağlasa da, yeni başlayan bir geliştirici için \"hangisini kullanmalıyım\" sorusu belirsiz kalabiliyor; net bir karar ağacı/rehber dokümantasyon eklenmesi benimsemeyi hızlandırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Harness (ajan çatısı)",
+          "def": "Bir AI ajanını çalıştırmak, izlemek ve yönetmek için gereken tüm altyapıyı (döngü, araçlar, gözlemlenebilirlik) hazır paketleyen üst düzey katman."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara, verilere ve servislere standart bir arayüz üzerinden erişmesini sağlayan açık protokol."
+        },
+        {
+          "term": "Guardrails",
+          "def": "Bir AI ajanının üretebileceği zararlı, uygunsuz veya istenmeyen çıktıları önceden tanımlanmış kurallarla sınırlayan koruma mekanizmaları."
+        },
+        {
+          "term": "Structured output",
+          "def": "Bir modelin serbest metin yerine, önceden tanımlanmış bir şemaya (ör. JSON) uyan, programatik olarak işlenebilir çıktı üretmesi."
+        },
+        {
+          "term": "Token bütçesi",
+          "def": "Bir ajanın tek bir görev veya oturumda harcayabileceği maksimum token miktarını sınırlayan kontrol mekanizması; maliyeti ve süreyi öngörülebilir kılar."
+        },
+        {
+          "term": "Vendor lock-in (satıcıya kilitlenme)",
+          "def": "Bir sistemi belirli bir sağlayıcının araç veya API'lerine o kadar bağımlı hale getirmek ki başka bir sağlayıcıya geçmek maliyetli veya zor olsun."
+        },
+        {
+          "term": "Tracing (izleme)",
+          "def": "Bir isteğin sistem içinde adım adım nasıl işlendiğini kaydedip görselleştiren gözlemlenebilirlik tekniği; hata ayıklama ve performans analizinde kullanılır."
+        }
+      ]
+    },
+    {
+      "name": "DeusData/codebase-memory-mcp",
+      "url": "https://github.com/DeusData/codebase-memory-mcp",
+      "stars": "44.7k",
+      "language": "C",
+      "sections": {
+        "serves": "Bu proje, AI kodlama ajanlarının bir kod tabanını dosya dosya okumak yerine yapısal olarak (structural) sorgulayabilmesini sağlayan bir **MCP sunucusu**: kaynak kodu, düğüm ve kenarlardan (node/edge) oluşan kalıcı bir bilgi grafiğine (knowledge graph) dönüştürüyor. Sorun şu: bir ajana \"bu fonksiyonu kim çağırıyor\" gibi bir soru sorduğunuzda, dosyaları tek tek okutmak yüz binlerce token tüketebiliyor — proje aynı soruyu birkaç bin tokenla yanıtlayan bir graf sorgusuna indirgiyor.",
+        "tech": "Saf C ile yazılmış, çalışma zamanı bağımlılığı olmayan tek bir statik binary; ayrı bir dil sunucusu (language server), harici API veya ek bir AI modeli gerektirmiyor, tip çözümlemesini (type resolution) doğrudan native koda gömmüş. 158 dil, projeye gömülü (vendored) tree-sitter gramerleriyle destekleniyor; depolama SQLite ve bellek içi LZ4 sıkıştırmalı bir pipeline üzerinden yapılıyor. Sorgulama, openCypher'ın bir alt kümesini (Cypher benzeri graf sorgu dili) destekliyor. Semantik arama için Nomic'in `nomic-embed-code` modeliyle 768 boyutlu int8 vektör gömme (embedding) kullanılıyor; fonksiyonel modülleri otomatik keşfetmek için Louvain topluluk tespiti algoritması çalıştırılıyor. macOS, Linux, Windows için native binary dağıtımı var; iddiaya göre Linux kernelini (28 milyon satır, 75 bin dosya) yaklaşık 3 dakikada indeksleyebiliyor.",
+        "why": "AI kodlama ajanlarının büyük kod tabanlarında \"yapısal anlayış\" ihtiyacı ile LLM token maliyetinin patlaması aynı anda gerçekleşiyor; proje \"%99'ın üzerinde token azaltımı\" gibi somut bir iddiayla bu acıyı doğrudan hedefliyor. Tek binary, API anahtarı gerektirmeyen \"kur ve unut\" basitliği, hem bireysel geliştiriciler hem kurumsal MCP dağıtımları için cazip kılıyor ve mevcut popüler AI kodlama araçlarının çoğuna (45 farklı ajan yüzeyi) otomatik yapılandırma sunuyor.",
+        "evolve": "Saf C ile yazılmış olması performans için avantaj sağlasa da, çoğu geliştiricinin daha aşina olduğu diller yerine C bilgisi gerektirdiği için topluluk katkısını sınırlayabilir. 158 dil desteği iddiası ile \"12 dilde hybrid LSP tipi çözümleme\" arasındaki fark README'de net değil — hangi dillerde ne kadar derin analiz yapıldığı daha açık belgelenirse güven artar. Ayrıca kalıcı bilgi grafiğinin, hızla değişen bir kod tabanında ne sıklıkla ve ne maliyetle güncellendiği (incremental re-indexing) öne çıkmıyor; bu netleşmeden büyük ve aktif geliştirilen depolarda güvenilirlik sorgulanabilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara, verilere ve servislere standart bir arayüz üzerinden erişmesini sağlayan açık protokol."
+        },
+        {
+          "term": "Bilgi grafiği (knowledge graph)",
+          "def": "Varlıkları (ör. fonksiyonlar, dosyalar) düğüm, aralarındaki ilişkileri (ör. \"çağırır\", \"içe aktarır\") kenar olarak temsil eden veri yapısı."
+        },
+        {
+          "term": "Tree-sitter",
+          "def": "Kaynak kodunu ayrıştırıp bir sözdizimi ağacına (AST) dönüştüren, birçok programlama dilini destekleyen açık kaynak ayrıştırma kütüphanesi."
+        },
+        {
+          "term": "LSP (Language Server Protocol)",
+          "def": "Kod editörleri ile dil analiz araçları arasında otomatik tamamlama, hata bulma gibi özellikleri standart bir protokolle sağlayan arayüz."
+        },
+        {
+          "term": "Cypher sorgu dili",
+          "def": "Graf veritabanlarında düğümler ve aralarındaki ilişkileri sorgulamak için kullanılan, okunabilir söz dizimine sahip bir sorgu dili."
+        },
+        {
+          "term": "Embedding (vektör gömme)",
+          "def": "Metin veya kodu, anlamsal benzerliği sayısal uzaklık olarak ifade eden bir sayı dizisine (vektöre) dönüştürme işlemi."
+        },
+        {
+          "term": "Louvain algoritması",
+          "def": "Büyük bir ağdaki (graf) yoğun bağlantılı alt grupları (topluluklar/modüller) otomatik olarak tespit eden kümeleme algoritması."
+        }
+      ]
+    },
+    {
+      "name": "TNT-Likely/PanWatch",
+      "url": "https://github.com/TNT-Likely/PanWatch",
+      "stars": "1.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "PanWatch, A hisseleri, Hong Kong ve ABD borsalarındaki portföyünü tek yerden takip etmek isteyenler için self-hosted (kendi sunucunda barındırılan) bir AI destekli hisse takip asistanı. Üçüncü parti bir SaaS'a verilerini ve API anahtarlarını teslim etmeden, çoklu hesap/çoklu piyasa portföyünü birleştirip TradingAgents adlı çoklu-ajan (multi-agent) çerçevesini kullanarak \"tartışma tabanlı\" yatırım önerileri üretiyor.",
+        "tech": "Backend FastAPI + SQLAlchemy + APScheduler ile kurulmuş, OpenAI uyumlu API'ler (OpenAI, DeepSeek, Ollama dahil) üzerinden LLM'lere bağlanıyor; frontend React 18 + TypeScript + Tailwind CSS + shadcn/ui. Analiz motoru, TradingAgents entegrasyonuyla teknik, duygu (sentiment), haber ve temel analiz (fundamental) olmak üzere dört farklı \"analist\" rolünü birbirine karşı tartıştırıp konsensüs bir öneri çıkarıyor. Teknik göstergeler (MA, MACD, RSI/KDJ, Bollinger bantları) hazır geliyor; piyasa verisi Çin borsaları için yaygın kullanılan `akshare` kütüphanesinden çekiliyor. Bildirimler Telegram, WeChat, DingTalk, Feishu, Bark ve webhook üzerinden gönderilebiliyor; Docker ile konteynerleştirilmiş, isteğe bağlı Playwright tarayıcı otomasyonu ve OpenTelemetry ile izlenebilirlik (Jaeger/Tempo/Langfuse) destekleniyor.",
+        "why": "Hem ajan tabanlı finansal analiz araçlarının (TradingAgents gibi projelerin yüz binlerce yıldıza ulaşması) popülerleşmesi hem de kendi verisini kontrol etmek isteyen bireysel yatırımcı/quant geliştirici kitlesinin büyümesi, bu tür \"self-hosted + AI\" ürünlere ilgiyi artırıyor. Özellikle Çin borsa piyasasına özgü araçlarla (akshare, WeChat/DingTalk bildirimleri) gelmesi, o bölgedeki bireysel yatırımcı-geliştirici kitlesine doğrudan hitap ediyor; üretkenlik ve kişisel finans yönetimi ilgi alanlarıyla da örtüşüyor.",
+        "evolve": "\"Tartışma tabanlı\" çoklu-ajan yatırım önerilerinin gerçek piyasa koşullarında ne kadar isabetli olduğuna dair bağımsız bir backtest/performans verisi README'de yok — bu tür araçların en büyük riski, kullanıcıya yanlış bir güven duygusu vermesi. Ayrıca LLM API maliyetlerinin (özellikle sık aralıklı intraday izleme senaryosunda) kullanıcı başına ne kadar tutabileceğine dair bir tahmin/uyarı eklenmesi, kullanıcıların bütçe sürprizi yaşamasını önleyebilir. Çoklu borsa desteği güçlü bir başlangıç olsa da, aracın gerçek zamanlı emir verme (trade execution) değil yalnızca izleme/öneri sunması, \"karar destek\" ile sınırlı kaldığını da netleştirmek gerekiyor."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üçüncü parti bir bulut servisi yerine kullanıcının kendi sunucusunda veya altyapısında çalıştırılması; veri kontrolü kullanıcıda kalır."
+        },
+        {
+          "term": "Multi-agent (çoklu ajan)",
+          "def": "Bir görevi, her biri farklı bir rol veya bakış açısı üstlenen birden fazla yapay zeka ajanının birlikte (genelde tartışarak) çözmesi yaklaşımı."
+        },
+        {
+          "term": "Backtest",
+          "def": "Bir yatırım stratejisinin veya modelin geçmiş piyasa verileri üzerinde simüle edilerek performansının test edilmesi."
+        },
+        {
+          "term": "Teknik gösterge (MA/MACD/RSI)",
+          "def": "Fiyat ve işlem hacmi verilerinden hesaplanan, bir hissenin yönünü veya momentumunu tahmin etmeye yardımcı matematiksel araçlar."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan performans ve hata izleme (tracing) verisi toplamak için kullanılan, sağlayıcıdan bağımsız açık kaynak gözlemlenebilirlik standardı."
+        },
+        {
+          "term": "Konsensüs tabanlı karar",
+          "def": "Birden fazla bağımsız görüşün (burada AI ajanlarının) tartışılıp ortak bir sonuca varılarak alınan karar."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir sistemde bir olay gerçekleştiğinde, önceden belirlenmiş bir URL'ye otomatik olarak bildirim/istek gönderen mekanizma."
+        }
+      ]
+    }
+  ]
+}
