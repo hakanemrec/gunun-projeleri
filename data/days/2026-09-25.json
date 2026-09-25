@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-25",
+  "projects": [
+    {
+      "name": "vectorize-io/hindsight",
+      "url": "https://github.com/vectorize-io/hindsight",
+      "stars": "28.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "Hindsight, AI ajanlarının basitçe konuşma geçmişini hatırlamasının ötesine geçip zamanla gerçekten \"öğrenen\" bir hafızaya sahip olmasını sağlayan açık kaynak bir **ajan hafıza (agent memory) katmanı**. Klasik RAG (ilgili metin parçalarını arayıp modele ekleme) ya da statik bilgi grafiği yaklaşımları, geçmiş konuşmaları aynen geri getirmekle sınırlı kalıyor; Hindsight bunun yerine bilgiyi \"gözlemler\" ve \"zihinsel modeller\" haline getirip yeni kanıtlarla güçlendiriyor, zayıflatıyor veya güncelliyor — yani ajan zamanla aynı konuda daha isabetli bir anlayışa ulaşabiliyor.",
+        "tech": "Bilgi üç işlemle yönetiliyor: **Retain** (bir LLM kullanarak yeni girdiden olgu, zaman bilgisi, varlık ve ilişkileri çıkarıp saklama), **Recall** (semantik vektör benzerliği, `BM25` anahtar kelime araması, graf tabanlı ilişki takibi ve zamansal filtreleme olmak üzere dört farklı arama stratejisini paralel çalıştırıp **Reciprocal Rank Fusion** ile birleştirme) ve **Reflect** (derin analizle yeni bağlantılar kurup karmaşık sorulara yanıt üretme). Hafızalar kullanıcı/ajan/proje başına izole \"banka\"larda tutuluyor; depolama PostgreSQL + `pgvector` üzerinde, kurumsal kullanım için Oracle AI Database 23ai desteği de var. Python, TypeScript ve Go'da istemciler; 25'ten fazla LLM sağlayıcısı (OpenAI, Anthropic, Gemini, Groq, Ollama dahil) ve LangGraph, CrewAI, Claude Code, GitHub Copilot gibi 60'tan fazla entegrasyon; Docker/Kubernetes (Helm) ile dağıtım ve yerleşik bir MCP uç noktası sunuyor. Ayrıca isteğe bağlı \"Memory Defense\" özelliği 45 desene karşı PII/gizli anahtar taraması yapıp bunları redakte edebiliyor veya engelleyebiliyor.",
+        "why": "2024-2025'te ajan hafızası (Mem0, Zep gibi projelerle) AI ekosisteminin en sıcak alt başlıklarından biri haline geldi; Hindsight bu alanda LongMemEval benchmarkında -Virginia Tech ve Washington Post tarafından bağımsız doğrulanan- lider bir performans iddiasıyla öne çıkıyor, bu da somut bir teknik üstünlük vaadi. Bugün tek başına +1.668 yıldız alarak listedeki en hızlı büyüyen proje olması, hem MIT lisanslı açık kaynak sürümün hem de yönetilen bulut hizmetinin (%99,9 SLA) aynı anda duyurulmuş olabileceğine işaret ediyor. Hedef kitle, uzun soluklu, oturumlar arası hafıza gerektiren müşteri destek botları, kişisel asistanlar ve otonom ajan uygulamaları geliştiren ekipler.",
+        "evolve": "README, büyük ölçekte (milyonlarca gözlem/kullanıcı bankası) sorgu gecikmesi ve hesaplama maliyetine dair somut rakam vermiyor; \"Retain\" adımının her girdi için bir LLM çağrısı gerektirmesi, yüksek hacimli üretim kullanımında maliyeti ciddi şekilde artırabilir. Açık kaynak proje ile ücretli \"Hindsight Cloud\" arasındaki sınırın (hangi özellikler yalnızca bulutta) net çizilmemiş olması, açık-çekirdek (open-core) projelerde sık görülen bir belirsizlik. Ayrıca birden fazla ajanın aynı hafıza bankasına eşzamanlı yazdığı, çelişen \"gözlemler\" ürettiği senaryolarda tutarlılığın nasıl sağlandığına dair detay eksik."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Bir dil modelinin yanıt üretmeden önce ilgili belgeleri bir veritabanından arayıp bunları bağlam olarak modele eklediği teknik."
+        },
+        {
+          "term": "BM25",
+          "def": "Kelime eşleşmesine dayanan, arama motorlarında yaygın kullanılan klasik bir metin alaka düzeyi (relevance) sıralama algoritması."
+        },
+        {
+          "term": "Reciprocal Rank Fusion (RRF)",
+          "def": "Birden fazla farklı arama yönteminin sonuç sıralamalarını, her sonucun sırasının tersini kullanarak tek bir birleşik sıralamada toplayan yöntem."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL veritabanına vektör (embedding) depolama ve benzerlik araması yeteneği ekleyen bir eklenti."
+        },
+        {
+          "term": "PII (Kişisel Tanımlanabilir Bilgi)",
+          "def": "Ad, e-posta, kimlik numarası gibi bir bireyi doğrudan veya dolaylı olarak tanımlayabilecek veri türleri."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araçlara, verilere ve servislere standart bir arayüz üzerinden erişmesini sağlayan açık protokol."
+        },
+        {
+          "term": "Benchmark (LongMemEval)",
+          "def": "Uzun vadeli hafıza yeteneğini ölçmek için tasarlanmış, ajanların geçmiş bilgiyi ne kadar doğru hatırlayıp kullandığını test eden standart bir değerlendirme seti."
+        }
+      ]
+    },
+    {
+      "name": "NVIDIA/Model-Optimizer",
+      "url": "https://github.com/NVIDIA/Model-Optimizer",
+      "stars": "4.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "Model Optimizer, büyük derin öğrenme modellerini (özellikle LLM ve difüzyon modelleri) production'da çalıştırmanın maliyetini düşürüp hızını artırmak için NVIDIA'nın tek çatı altında topladığı bir model sıkıştırma/optimizasyon kütüphanesi. Sorun şu: kuantizasyon, budama, distilasyon gibi teknikler ayrı ayrı birbirinden kopuk araçlarla uygulanıyor ve her biri farklı çıkarım (inference) motoruna entegre edilmesi gerekiyor; Model Optimizer bunları tek bir API altında birleştirip Hugging Face, PyTorch ve ONNX modelleri üzerinde doğrudan kullanılabilir hale getiriyor.",
+        "tech": "Kütüphane kuantizasyon (2-4 kat küçültme, `NVFP4` gibi özel 4-bit formatlar dahil), **Quantization-Aware Training (QAT)** ile doğruluk telafisi, budama (**pruning**), bilgi damıtma (**distillation**), taslak modül eğiterek ek token tahmini yapan **speculative decoding** ve **Neural Architecture Search (NAS)** gibi teknikleri destekliyor. Optimize edilmiş model çıktıları doğrudan TensorRT-LLM, TensorRT, vLLM, SGLang, Hugging Face Accelerate ve Megatron-LM/Megatron-Bridge gibi çıkarım/eğitim çerçeveleriyle uyumlu şekilde üretiliyor. Python tabanlı, `pip install nvidia-modelopt[all]` ile kuruluyor; önceden kuantize edilmiş kontrol noktaları Hugging Face üzerinden dağıtılıyor ve NVIDIA PyTorch/NeMo container image'leriyle hazır geliyor. Apache-2.0 lisanslı.",
+        "why": "LLM'lerin production'a taşınmasıyla birlikte GPU maliyeti tek başına en büyük operasyonel gider kalemlerinden biri haline geldi; NVIDIA'nın kendi donanımına özel, uçtan uca doğrulanmış bir optimizasyon paketini tek elden sunması (ör. Nemotron-3'te 2,6 kat verim artışı iddiası) hem güven inşa ediyor hem de CUDA/TensorRT ekosistemine bağlılığı pekiştiriyor. Hedef kitle doğrudan uygulama geliştiricilerinden çok MLOps/altyapı mühendisleri ve model dağıtımından sorumlu ekipler; \"dev tools\" ilgi alanına doğrudan giren, somut maliyet/performans vaadi olan bir proje.",
+        "evolve": "Kütüphane doğası gereği NVIDIA GPU'larına ve CUDA/TensorRT ekosistemine sıkı bağlı; AMD, Apple Silicon veya TPU üzerinde çalışan ekipler için doğrudan bir fayda sağlamıyor, bu da benimsenmeyi belirli bir donanım kitlesiyle sınırlıyor. Projenin henüz 1.0 öncesi olduğu ve NVIDIA'nın kendi belirttiği bir kullanımdan kaldırma (deprecation) politikasıyla API'lerin değişebileceği açıkça yazılmış — production'a entegre eden ekiplerin sürüm değişikliklerini yakından takip etmesi gerekiyor. Ayrıca farklı teknik kombinasyonlarının (ör. kuantizasyon + budama birlikte) doğruluk kaybına etkisi genel geçer rakamlarla değil, kullanıcının kendi modelinde ölçmesi gereken bir konu olarak bırakılmış."
+      },
+      "glossary": [
+        {
+          "term": "Kuantizasyon (Quantization)",
+          "def": "Bir modelin ağırlıklarını daha az bit ile (ör. 32-bit yerine 4-bit) temsil ederek boyutunu küçültme ve hızlandırma tekniği."
+        },
+        {
+          "term": "QAT (Quantization-Aware Training)",
+          "def": "Bir modelin, kuantize edilmiş haliyle çalışacağını bilerek yeniden eğitilip doğruluk kaybının telafi edilmesi süreci."
+        },
+        {
+          "term": "Distilasyon (Knowledge Distillation)",
+          "def": "Büyük ve yetenekli bir modelin çıktısını taklit etmesi için daha küçük bir modelin eğitilmesi yöntemi."
+        },
+        {
+          "term": "Budama (Pruning)",
+          "def": "Bir modeldeki katkısı düşük ağırlık veya nöronların çıkarılarak model boyutunun ve hesaplama yükünün azaltılması."
+        },
+        {
+          "term": "Speculative decoding",
+          "def": "Küçük bir 'taslak' modelin olası sonraki tokenleri önceden tahmin edip büyük modelin bunları tek seferde doğrulamasıyla çıkarımı hızlandıran teknik."
+        },
+        {
+          "term": "NAS (Neural Architecture Search)",
+          "def": "Bir sinir ağının mimarisini (katman sayısı, bağlantılar vb.) elle tasarlamak yerine otomatik arama ile bulma yöntemi."
+        },
+        {
+          "term": "ONNX",
+          "def": "Farklı derin öğrenme çerçevelerinde eğitilen modelleri ortak, taşınabilir bir formatta temsil eden açık standart."
+        }
+      ]
+    },
+    {
+      "name": "julyx10/lap",
+      "url": "https://github.com/julyx10/lap",
+      "stars": "2.9k",
+      "language": "Vue",
+      "sections": {
+        "serves": "Lap, Google Photos veya iCloud gibi bulut servislerine veri yüklemeden, büyük kişisel fotoğraf/video arşivlerini (100 binin üzerinde dosya) yerelde hızlıca gezip arayabilmek isteyenler için **yerel-öncelikli (local-first)** bir fotoğraf yöneticisi. Sorun şu: bulut servisleri gizlilik, abonelik maliyeti ve ani politika değişiklikleri riski taşıyor, buna karşın klasik dosya gezginleri eski fotoğrafları bulmayı (yer, tarih, içerik bazlı arama) zorlaştırıyor; Lap ikisi arasındaki boşluğu, cihazdan hiç veri çıkarmadan modern AI destekli arama sunarak dolduruyor.",
+        "tech": "Uygulama Tauri (Rust çekirdek + native webview) üzerine kurulu; arayüz Vue.js + Vite + Tailwind CSS ile yazılmış, veriler yerel bir SQLite veritabanında tutuluyor. RAW dosyalar için `LibRaw`, HEIC için `libheif`, hızlı JPEG işleme için `libjpeg-turbo`, video için FFmpeg kullanılıyor. Arama tarafında ONNX Runtime üzerinde çalışan `CLIP` modeliyle metin-görsel (50'den fazla dilde) anlamsal arama, `InsightFace` ile yüz tanıma yapılıyor — bunların tümü cihaz üzerinde, buluta veri göndermeden çalışıyor. Harita görünümü için Leaflet entegre; kural tabanlı akıllı albümler, RAW+JPEG eşleştirmesi, klasör yapısını bozmayan güvenli dosya işlemleri ve 1024px'e kadar yapılandırılabilir küçük resim önbelleği gibi özellikler var. macOS (Apple Silicon/Intel), Windows (x64/ARM64) ve Linux (Debian tabanlı, AppImage) için native build sağlanıyor.",
+        "why": "Bulut fotoğraf servislerine güvenin azalması (fiyat artışları, gizlilik endişeleri, abonelik yorgunluğu) ile küçük AI modellerinin (CLIP, yüz tanıma) artık mütevazı donanımlarda bile hızlı çalışabilecek kadar optimize olması aynı anda gerçekleşiyor; bu da \"yerelde çalışan, bulutsuz Google Photos alternatifi\" fikrini yeniden cazip kılıyor. Hedef kitle özellikle RAW formatta çekim yapan fotoğrafçılar, eski dijital kamera arşivi biriken aileler ve verisinin kontrolünü elinde tutmak isteyen gizlilik odaklı kullanıcılar — hem üretkenlik hem de yerel AI ilgi alanlarıyla örtüşüyor.",
+        "evolve": "README, dosyaların Lap dışında (ör. bir dosya gezgininde) taşınması/yeniden adlandırılması durumunda SQLite indeksinin nasıl senkronize edildiğine veya çakışma durumunda ne olacağına dair bir açıklama içermiyor — büyük arşivlerde bu tür dış değişiklikler kaçınılmaz. Apple Photos, Google Photos veya Lightroom kataloglarından geçiş için bir içe aktarma/taşıma aracı da belirtilmemiş; bu genelde bu tür araçlara geçişte en büyük sürtünme noktası oluyor. Ayrıca 100 binin üzerindeki koleksiyonlarda gerçek performans (indeksleme süresi, arama gecikmesi) için bağımsız bir ölçüm paylaşılmamış."
+      },
+      "glossary": [
+        {
+          "term": "Yerel-öncelikli (local-first)",
+          "def": "Verinin öncelikli olarak kullanıcının kendi cihazında saklanıp işlendiği, buluta bağımlılığın en aza indirildiği yazılım tasarım yaklaşımı."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle (HTML/CSS/JS) arayüz, Rust ile hafif ve güvenli bir çekirdek kullanarak masaüstü uygulaması geliştirmeyi sağlayan bir çerçeve."
+        },
+        {
+          "term": "ONNX Runtime",
+          "def": "Farklı çerçevelerde eğitilmiş yapay zeka modellerini hızlı ve taşınabilir şekilde çalıştırmak için kullanılan çıkarım (inference) motoru."
+        },
+        {
+          "term": "CLIP",
+          "def": "Görselleri ve metinleri aynı anlamsal uzayda temsil ederek 'bu görsel şu açıklamaya ne kadar uyuyor' gibi sorguları yanıtlayabilen bir yapay zeka modeli."
+        },
+        {
+          "term": "InsightFace",
+          "def": "Açık kaynak bir yüz tespiti ve tanıma kütüphanesi; fotoğraflarda kişileri otomatik gruplamak için kullanılır."
+        },
+        {
+          "term": "RAW format",
+          "def": "Bir fotoğraf makinesinin sensöründen gelen veriyi sıkıştırmadan/işlemeden saklayan, sonradan detaylı düzenlemeye izin veren ham görüntü formatı."
+        }
+      ]
+    },
+    {
+      "name": "mvt-project/mvt",
+      "url": "https://github.com/mvt-project/mvt",
+      "stars": "14.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "MVT (Mobile Verification Toolkit), gazeteciler, insan hakları savunucuları ve muhalifler gibi \"yüksek riskli\" hedeflerin telefonlarına bulaşan Pegasus benzeri gelişmiş ticari casus yazılımların izlerini tespit etmeye yardımcı bir **adli bilişim (forensics)** aracı. Sorun şu: bu tür casus yazılımlar sıradan kullanıcıya hiçbir belirti göstermeden cihazı ele geçirebiliyor; MVT, bir iOS ya da Android cihazından alınan yedek/görüntüden adli kanıt çıkarıp bilinen tehdit göstergeleriyle karşılaştırma imkânı sunuyor.",
+        "tech": "Python 3 ile yazılmış, `mvt-ios` ve `mvt-android` adlı iki komut satırı aracından oluşuyor; PyPI üzerinden `pip` veya `uv` ile kuruluyor. Analiz iki katmanlı: (1) Amnesty International ve diğer araştırma gruplarının yayımladığı halka açık **Indicators of Compromise (IOC)** veritabanlarıyla eşleştirme (kötü amaçlı dosya yolları, süreç adları, alan adları gibi), (2) cihaz yedeklerinden (iOS backup, Android sysdiagnose/backup) adli artefaktları çıkarıp analiz etme. Proje, kendine özgü bir lisansla dağıtılıyor; bu lisans aracın yalnızca \"rızaya dayalı adli analiz\" için kullanılmasını amaçlıyor ve kişinin haberi/onayı olmadan başkasının cihazında kullanılmasını lisans düzeyinde engellemeye çalışıyor.",
+        "why": "Proje, Temmuz 2021'deki Pegasus Project soruşturmasının bir ürünü olarak Amnesty International Security Lab tarafından geliştirildi ve o zamandan beri gazeteci/STK güvenlik ekipleri tarafından bakımı sürdürülüyor. Ticari casus yazılım skandallarının (yeni Pegasus varyantları, NSO Group benzeri şirketlerle ilgili haberler) düzenli aralıklarla gündeme gelmesi, projeye periyodik ilgi dalgaları yaratıyor; bugünkü +272 yıldız/gün ivmesi muhtemelen yakın zamanda kamuoyuna yansıyan yeni bir casus yazılım vakasıyla ilişkili. Hedef kitle son kullanıcılar değil; dijital adli bilişim uzmanları, gazeteci güvenlik ekipleri ve STK'lardaki teknik personel — güvenlik/dev tools ilgi alanıyla örtüşen, sorumlu açık kaynak güvenlik araçlarına iyi bir örnek.",
+        "evolve": "Proje kendi belgelerinde açıkça uyarıyor: halka açık IOC'ler bir cihazın 'temiz' olduğunu kanıtlamaya yetmez, yalnızca bilinen imzaları arar — yani bir antivirüs gibi kesin güvence vermiyor, bu nüansın anlaşılmadan kullanılması yanlış güven duygusu yaratabilir. Araç komut satırı ve adli bilişim bilgisi gerektiriyor; asıl hedef olan gazeteci/aktivist kitlesinin çoğu bunu tek başına kullanamaz, bu da daha kolay erişilebilir bir rehberli mod veya güvenilir aracı kurumlarla ortaklık ihtiyacını gündeme getiriyor. Ayrıca yöntem doğası gereği tepkisel: yalnızca zaten bilinen ve yayımlanmış göstergeleri arayabildiği için henüz kamuoyuna yansımamış yeni casus yazılım varyantlarını yakalayamıyor."
+      },
+      "glossary": [
+        {
+          "term": "Adli bilişim (digital forensics)",
+          "def": "Dijital cihazlardan hukuki veya araştırma amacıyla kanıt niteliğinde veri toplama, koruma ve analiz etme disiplini."
+        },
+        {
+          "term": "IOC (Indicator of Compromise)",
+          "def": "Bir sistemin veya cihazın saldırıya uğradığını gösteren bilinen iz; kötü amaçlı dosya adı, ağ adresi veya süreç gibi somut kanıtlar."
+        },
+        {
+          "term": "Casus yazılım (spyware)",
+          "def": "Kullanıcının haberi olmadan cihazına bulaşıp mesajlarını, konumunu veya kamera/mikrofonunu gizlice izleyen kötü amaçlı yazılım türü."
+        },
+        {
+          "term": "Sysdiagnose",
+          "def": "iOS cihazlarının sistem durumu, süreçler ve günlükler hakkında ayrıntılı bir anlık görüntü (snapshot) çıkaran Apple'a özgü tanılama aracı."
+        },
+        {
+          "term": "PyPI",
+          "def": "Python programlama dili için paketlerin yayımlandığı ve `pip` ile kurulduğu resmi merkezi paket deposu."
+        }
+      ]
+    }
+  ]
+}
