@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-26",
+  "projects": [
+    {
+      "name": "androoAGI/starnet",
+      "url": "https://github.com/androoAGI/starnet",
+      "stars": "542",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "StarNet, birden fazla yapay zeka ajanını aynı anda çalıştırıp yönetmenin karmaşıklığına görsel ve somut bir çözüm sunuyor. Klasik yaklaşım ajanları sohbet pencerelerinde ayrı ayrı yönetmekken, StarNet bunları piksel-art bir uzay istasyonunda odalara ve koridorlara yerleştirilen karakterler olarak temsil ediyor. Bu görsel yerleşim süslemeden ibaret değil: istasyondaki her **oda** bir ajan takımının yetki kapsamını, her **koridor** ajanlar arasındaki izinli devir (handoff) hattını, yerleştirilen her **nesne** de gerçek bir yetenek yetkisini (capability grant) temsil ediyor. Yani arayüzü değiştirmek, ajanların çalışma zamanındaki iznini de değiştiriyor.",
+        "tech": "Mimari net bir güvenlik sınırı üzerine kurulu: piksel-art arayüz düz JavaScript ile yazılmış ve **Tauri** (Rust tabanlı) çatısıyla masaüstü uygulamasına paketleniyor; arayüz ile gerçek işi yapan kısım arasında yerel bir Node.js **sidecar** süreci köprü kuruyor. Frontend bu sidecar'a HTTP, NDJSON ve **SSE (Server-Sent Events)** bağlantılarıyla konuşuyor. Kritik nokta: API anahtarları ve sırlar hiçbir zaman arayüzde tutulmuyor, sidecar veya işletim sisteminin anahtar zincirinde (keychain) saklanıyor — model çağrıları, araç çalıştırma, kalıcı veri ve bütçe kontrolü hep bu sidecar üzerinden yürütülüyor. Kullanıcılar kendi API anahtarlarını (OpenRouter, Anthropic, OpenAI, Google) getirebiliyor veya tamamen yerel çalışan Ollama'yı kullanabiliyor; ayrıca Telegram, Discord, Slack, Signal, Matrix gibi mesajlaşma uygulamalarına ve **MCP** bağlayıcılarına entegrasyon var.",
+        "why": "2025-2026 döneminde ajan çatıları (agent frameworks) alanı hızla kalabalıklaştı ve çoğu proje metin tabanlı loglar veya soyut sohbet arayüzleriyle ilerliyor; StarNet bu yorgunluğa karşı somut, oyunlaştırılmış bir alternatif sunarak dikkat çekiyor. Harcama, geçmiş, hafıza ve dosya çıktılarının kalıcı defterlerle (ledger) şeffaf tutulması, “ajanlar arka planda ne yapıyor, param nereye gidiyor” kaygısı taşıyan geliştiricilere hitap ediyor. Küçük yıldız sayısına (542) karşın bugün +93 yıldız kazanması, projenin henüz keşfedilme aşamasında olup organik bir ilgi patlaması yaşadığını gösteriyor — büyük olasılıkla bir sosyal medya paylaşımı veya Hacker News tartışmasıyla tetiklendi.",
+        "evolve": "Proje hâlâ küçük ölçekli olduğundan, çok sayıda ajanın aynı istasyonda eşzamanlı çalıştığı senaryolarda performans ve kaynak tüketiminin nasıl davranacağı belirsiz. Piksel-art metaforu ilk bakışta öğrenmeyi kolaylaştırsa da, düzinelerce oda ve koridorla büyüyen karmaşık kurulumlarda görsel yönetimin metin tabanlı konfigürasyondan daha mı kolay yoksa daha mı kalabalık olacağı henüz test edilmemiş bir varsayım. Sidecar mimarisinin güvenlik avantajı açık, ama Tauri + Node.js ikili sürecinin güncelleme ve dağıtım (paketleme, imzalama) yükü, tek dosyalık CLI araçlarına kıyasla daha ağır bir bakım yükü getirebilir."
+      },
+      "glossary": [
+        { "term": "Sidecar", "def": "Ana uygulamanın yanında ayrı bir süreç olarak çalışıp ona yardımcı görevler (ağ, kimlik doğrulama, iş mantığı) üstlenen destek bileşeni." },
+        { "term": "Tauri", "def": "Web teknolojileriyle yazılmış arayüzleri Rust tabanlı hafif bir çekirdekle masaüstü uygulamasına paketleyen açık kaynak çatı." },
+        { "term": "SSE (Server-Sent Events)", "def": "Sunucunun tarayıcıya veya istemciye tek yönlü, sürekli açık bir bağlantı üzerinden canlı veri akışı gönderebildiği web standardı." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin dış araçlara, verilere ve servislere standart bir arayüz üzerinden erişmesini sağlayan açık protokol." },
+        { "term": "Keychain", "def": "İşletim sisteminin şifre ve API anahtarı gibi hassas bilgileri şifreli biçimde sakladığı güvenli depolama alanı." }
+      ]
+    },
+    {
+      "name": "openbao/openbao",
+      "url": "https://github.com/openbao/openbao",
+      "stars": "7.8k",
+      "language": "Go",
+      "sections": {
+        "serves": "OpenBao, bir organizasyonun API anahtarları, veritabanı şifreleri, sertifikalar ve şifreleme anahtarları gibi hassas verilerini merkezi, denetlenebilir ve otomatik olarak döndürülebilir şekilde yönetmesini sağlıyor. Sorunun kökü basit: bu sırlar genelde konfigürasyon dosyalarına, ortam değişkenlerine veya kod içine gömülü kalıyor ve kimin hangi sırra ne zaman eriştiğini takip etmek platformdan platforma değişen, dağınık bir iş haline geliyor. OpenBao bunun için tek bir güvenli \"kasa\" sunuyor: sırlar şifreli saklanıyor, erişimler politika ile kısıtlanıyor ve her erişim denetim (audit) kaydına düşüyor.",
+        "tech": "Go dilinde yazılan proje, HashiCorp Vault'un lisans değişikliği sonrası **Linux Foundation** şemsiyesi altında topluluk tarafından yürütülen bir **fork**'u; Vault API'siyle uyumluluğu koruyor ama **MPL-2.0** gibi OSI onaylı açık kaynak lisansı altında geliştiriliyor. Mimarisi disk, PostgreSQL gibi birden fazla depolama arka ucunu (storage backend) destekliyor; \"dinamik sırlar\" özelliğiyle AWS veya SQL veritabanları için istek anında, kısa ömürlü kimlik bilgisi üretebiliyor. Her sır bir **lease** (kiralama süresi) ile geliyor ve süre dolduğunda otomatik olarak iptal ediliyor; web arayüzü TypeScript/JavaScript ile yazılmış. Proje OpenSSF Scorecard ve Best Practices rozetlerine sahip, 21 binin üzerinde commit ile aktif geliştiriliyor.",
+        "why": "2023'te HashiCorp'un Vault, Terraform gibi ürünlerini kapalı kaynağa yakın **BUSL** lisansına geçirmesi, kurumların vendor bağımlılığından kaçınmak için topluluk destekli çatallara (fork) yönelmesine yol açtı (OpenTofu'nun Terraform'a yaptığı gibi). OpenBao bu dalganın sırlar yönetimi tarafındaki karşılığı; Linux Foundation'ın yönetişimi altında olması kurumsal kullanıcılara \"tek şirkete bağlı kalmama\" güvencesi veriyor. Hedef kitle DevOps/platform mühendisliği ekipleri ve düzenleyici uyumluluk (compliance) gereksinimi olan kurumlar; günlük +49 yıldız gibi istikrarlı ama patlamalı olmayan büyüme, projenin hype'tan değil kurumsal benimsemeden beslendiğine işaret ediyor.",
+        "evolve": "Vault ekosistemindeki üçüncü parti eklentiler ve entegrasyonların (bulut sağlayıcı SDK'ları, Terraform provider'ları gibi) OpenBao'ya taşınma hızı, projenin pratikte Vault'un tam yerine geçip geçemeyeceğini belirleyecek en kritik açık nokta. Ayrıca Vault ile API uyumluluğunu sürdürmek, HashiCorp yeni özellikler eklerken OpenBao topluluğunun bunları bağımsızca yeniden geliştirmesini gerektiriyor — bu da uzun vadede iki proje arasında özellik farkının açılma riskini taşıyor. Yönetişimin tek şirketten bağımsız, gönüllü topluluğa dayanması, güvenlik açığı gibi acil durumlarda tepki hızının kurumsal bir şirkete kıyasla nasıl olacağı konusunda henüz kanıtlanmamış bir varsayım."
+      },
+      "glossary": [
+        { "term": "Fork", "def": "Bir yazılım projesinin kaynak kodunun kopyalanıp bağımsız bir yön ve ekip tarafından geliştirilmeye devam edilmesi." },
+        { "term": "Lease (Kiralama)", "def": "Bir sırrın veya kimlik bilgisinin yalnızca belirli bir süre geçerli olmasını sağlayan, süre dolunca otomatik iptal mekanizması." },
+        { "term": "MPL-2.0", "def": "Mozilla tarafından hazırlanmış, kodun değiştirilip dağıtılmasına izin veren OSI onaylı açık kaynak lisansı." },
+        { "term": "BUSL (Business Source License)", "def": "Kaynak kodu görülebilir kılan ama rekabet eden ticari kullanımı sınırlayan, tam açık kaynak sayılmayan bir lisans türü." },
+        { "term": "OpenSSF Scorecard", "def": "Açık kaynak projelerin güvenlik pratiklerini (bağımlılık taraması, imzalama, inceleme süreci gibi) otomatik puanlayan bir denetim aracı." },
+        { "term": "Audit Log (Denetim Kaydı)", "def": "Sisteme kimin, ne zaman, hangi işlemi yaptığını kayıt altına alan, sonradan incelenebilen günlük dosyası." }
+      ]
+    },
+    {
+      "name": "kelseyhightower/kubernetes-the-hard-way",
+      "url": "https://github.com/kelseyhightower/kubernetes-the-hard-way",
+      "stars": "50.2k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "Bu proje bir yazılım aracı değil, bir öğrenme rotası: Kubernetes'i **kubeadm** veya bulut sağlayıcı yönetilen servisleri gibi otomasyon araçları kullanmadan, sıfırdan elle kurmayı öğretiyor. Amacı bilinçli olarak \"uzun yolu\" seçmek — her adımda TLS sertifikası üretmek, etcd kümesini ayağa kaldırmak, kontrol düzlemi bileşenlerini tek tek yapılandırmak zahmetli ama kullanıcıyı Kubernetes'in perde arkasında gerçekte ne olduğunu anlamaya zorluyor. Otomasyon aracı Kubernetes'i \"nasıl kurulur\" sorusuna cevap verirken, bu proje \"nasıl çalışır\" sorusuna cevap veriyor.",
+        "tech": "Rehber, güncel sürümlere sabitlenmiş bileşenlerle (Kubernetes v1.32.x, containerd v2.1.x, CNI v1.6.x, etcd v3.6.x) ilerliyor ve herhangi bir bulut sağlayıcıya bağlı değil — ARM64 veya AMD64 mimarili, ağ üzerinden birbirine bağlı dört makine (sanal veya fiziksel) yeterli. On üçe yakın sıralı modülde önce bir jumpbox ve hesaplama kaynakları hazırlanıyor, ardından TLS sertifikaları ve kimlik doğrulama yapılandırmaları elle üretiliyor, etcd kümesi ve kontrol düzlemi bileşenleri (API server, controller manager, scheduler) tek tek kurulup doğrulanıyor, sonra worker node'lar container runtime (containerd) ve ağ eklentisiyle (CNI) kümeye katılıyor, son olarak kubectl ile erişim ve temel işlevsellik testleri yapılıyor.",
+        "why": "Repo 2017'den beri var ve Kubernetes öğrenmek isteyenler için neredeyse bir klasik haline geldi; 50 binin üzerindeki yıldızı ve 15,9 bin fork'u bunun kanıtı. Periyodik olarak yeniden trend olması genelde yeni bir Kubernetes sürümüne (bu sefer v1.32.x) güncellenmesiyle çakışıyor — versiyon güncellemeleri hem eski takipçileri geri döndürüyor hem de \"bu sefer güncel mi\" diye arayan yeni öğrencileri çekiyor. Hedef kitle, sertifikasyon (CKA gibi) hazırlığı yapan mühendisler ve yönetilen Kubernetes servislerinin (EKS, GKE gibi) arkasında ne olduğunu gerçekten anlamak isteyen platform/DevOps mühendisleri; +119 günlük yıldız, yoğun ama istikrarlı bir referans kaynağı olarak sürekli keşfedildiğini gösteriyor.",
+        "evolve": "Rehber kasıtlı olarak minimalist ve tek-bulut-bağımsız kalmayı seçtiği için, üretimde kritik olan yüksek erişilebilirlik (HA kontrol düzlemi), yedekleme/felaket kurtarma ve gözlemlenebilirlik (observability) gibi konulara hiç girmiyor — bu bilinçli bir kapsam sınırlaması ama başlangıç seviyesindeki bazı okuyucular bunu eksiklik olarak yorumlayabilir. Ayrıca dört makineyi elle ayağa kaldırma adımları, bulut sağlayıcı özgü otomasyon (Terraform script'leri gibi) eklenirse öğrencinin \"gerçekten mi elle yapıyorum\" hissi zayıflayabilir; bu dengeyi her sürüm güncellemesinde yeniden kurmak proje sahibinin sürekli görevi."
+      },
+      "glossary": [
+        { "term": "etcd", "def": "Kubernetes kümesinin tüm yapılandırma ve durum bilgisini tutan, dağıtık, anahtar-değer tabanlı veritabanı." },
+        { "term": "CNI (Container Network Interface)", "def": "Container'ların birbirleriyle ve dış dünyayla ağ üzerinden nasıl haberleşeceğini standartlaştıran eklenti arayüzü." },
+        { "term": "Containerd", "def": "Container'ları indirme, başlatma ve yönetme işlerini yürüten, Kubernetes'in arka planda kullandığı çalışma zamanı (runtime) yazılımı." },
+        { "term": "kubeadm", "def": "Kubernetes kümesini otomatik ve standart adımlarla kurmayı sağlayan resmi komut satırı aracı." },
+        { "term": "Kontrol Düzlemi (Control Plane)", "def": "Kümenin genel durumunu yöneten, zamanlama ve karar verme işlerini yürüten Kubernetes bileşenleri kümesi (API server, scheduler, controller manager vb.)." },
+        { "term": "Jumpbox", "def": "Diğer sunuculara güvenli erişim için önce bağlanılan, ara geçiş noktası olarak kullanılan sunucu." }
+      ]
+    }
+  ]
+}
