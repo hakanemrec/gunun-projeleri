@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-27",
+  "projects": [
+    {
+      "name": "paperclipai/paperclip",
+      "url": "https://github.com/paperclipai/paperclip",
+      "stars": "87.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Yapay zeka ajanlarını gerçek işlere koşan ekipler çoğu zaman aynı sorunla karşılaşıyor: on, yirmi paralel Claude Code veya Codex oturumu açık, hangi ajanın ne yaptığını, ne kadar harcadığını, kimin onay verdiğini takip etmek imkânsızlaşıyor. Paperclip, bu dağınıklığa kurumsal bir çözüm sunuyor: ajanları bir organizasyon gibi modelliyor — roller, hiyerarşi, görev **ticket**'ları ve bütçeler tanımlayarak ajan filosunu tek bir kontrol panelinden yönetilebilir hale getiriyor. Kısacası Paperclip, \"yirmi terminal sekmesi\" kaosunu, hesap verebilir bir organizasyon şemasına dönüştürüyor.",
+        "tech": "🛠️ Paperclip, TypeScript/Node.js (24.11+) üzerine pnpm ile yönetilen bir **monorepo**; React tabanlı bir arayüzü var, kalıcılık için PostgreSQL kullanıyor (yerelde gömülü, üretimde harici veritabanı). Mimarinin kalbi **heartbeat** modeli: ajanlar sürekli çalışan pahalı süreçler değil, zamanlanmış veya olay tetiklemeli \"nabız\" sinyalleriyle uyanıp görev kuyruğunu kontrol ediyor, bütçeleri dahilinde iş yapıp tekrar uykuya dönüyor. Her iş bir **ticket** olarak temsil ediliyor ve değişmez bir denetim izinde bütün araç çağrıları kayıt altına alınıyor; bütçe kontrolü atomik işlemlerle uygulanıyor ki iki ajan aynı anda aynı limiti aşmasın. Test tarafında Vitest ve Playwright, isteğe bağlı gözlemlenebilirlik için **OpenTelemetry** ve Sentry entegre; çoklu organizasyon desteği tek bir dağıtımda tam veri izolasyonu sağlıyor.",
+        "why": "📈 2026'nın ikinci yarısında agentic coding araçlarının (Claude Code, Codex, Cursor) yaygınlaşması, bireysel geliştiricilerin bile onlarca paralel ajan oturumu yönetmesine yol açtı; Paperclip bu büyümenin doğal sonraki adımını temsil ediyor: ajanları bireysel araçlar değil, kurumsal bir işgücü gibi yönetmek. Projenin bugün trend listesinin başında olması ve 87 binin üzerinde yıldıza tek başına ulaşmış olması — 15,5 bin fork ve 4.600'e yakın commit ile — olağanüstü bir ivmeye işaret ediyor; bu büyüklüğe bu hızda ulaşmak genelde geniş çaplı bir sosyal medya/Hacker News dalgasıyla mümkün olur. Hedef kitle net: ajan kullanımını bireysel deneyden ekip/şirket ölçeğine taşımak isteyen platform mühendisleri ve teknik liderler; \"kim, ne zaman, ne kadar harcadı\" sorusuna kurumsal düzeyde cevap arayanlar.",
+        "evolve": "💡 Bütçe kontrolü ve organizasyon şeması güçlü bir temel ama şu an bütçe sınırları ajan/ay bazında tanımlı — görev veya token bazında daha ince taneli anomali tespiti (bir ajanın normalden 50 kat fazla token harcadığı bir görevi otomatik durdurma gibi) eklenmesi riskleri azaltabilir. Onay iş akışları ve yetkilendirme şu an Paperclip'e özgü görünüyor; kurumların zaten sahip olduğu SSO/OPA tabanlı politika sistemleriyle entegrasyon büyük şirketlerde benimsemeyi hızlandırabilir. Ayrıca çok sayıda ajanın aynı ticket kuyruğuna aynı anda erişmeye çalıştığı yüksek eşzamanlılık senaryolarında heartbeat/kilitleme mekanizmasının nasıl davrandığı, proje bu kadar hızlı büyürken üretim ortamlarında henüz kanıtlanmamış bir varsayım."
+      },
+      "glossary": [
+        { "term": "Heartbeat", "def": "Bir sürecin sürekli açık kalmak yerine belirli aralıklarla veya bir olay tetiklendiğinde kısaca uyanıp görevini kontrol ettiği çalışma modeli." },
+        { "term": "Ticket sistemi", "def": "Her işin ayrı bir kayıt (bilet) olarak tanımlandığı, durumu ve geçmişi izlenebilen görev takip yöntemi." },
+        { "term": "Monorepo", "def": "Birden fazla paket veya bileşenin tek bir git deposunda birlikte tutulduğu proje organizasyon biçimi." },
+        { "term": "OpenTelemetry", "def": "Uygulamalardan performans ve hata verisi toplamak için kullanılan, sağlayıcıdan bağımsız açık kaynak gözlemlenebilirlik standardı." },
+        { "term": "SSO / OPA", "def": "SSO (Single Sign-On) tek bir kimlikle birden fazla sisteme giriş yapmayı, OPA (Open Policy Agent) ise erişim politikalarını merkezi ve kod olarak tanımlamayı sağlayan sistemler." }
+      ]
+    },
+    {
+      "name": "mobile-next/mobile-mcp",
+      "url": "https://github.com/mobile-next/mobile-mcp",
+      "stars": "7.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Bir AI ajanına gerçek bir mobil uygulamayı \"kullan\" dedirtmek bugüne kadar iki cepheli bir uzmanlık gerektiriyordu: iOS tarafında XCUITest, Android tarafında Espresso — ayrı diller, ayrı araç zincirleri, ayrı öğrenme eğrileri. Mobile MCP, bu parçalanmayı ortadan kaldırıp simülatör, emülatör ve gerçek cihazlar üzerinde çalışan tek, birleşik bir arayüz sunuyor: ajan hangi platformda olduğunu bilmek zorunda kalmadan aynı komut setiyle uygulamayı açabiliyor, dokunabiliyor, kaydırabiliyor, metin girebiliyor.",
+        "tech": "🛠️ Proje bir **MCP (Model Context Protocol)** sunucusu olarak TypeScript/Node.js (v20+) üzerinde çalışıyor ve 40'tan fazla yapılandırılmış araç sunuyor: cihaz listeleme, uygulama kurma/başlatma/kapatma, konum sahteleme, pano erişimi, ekran kaydı gibi. Mimarinin kritik tercihi, **erişilebilirlik ağacı (accessibility tree)** öncelikli çalışması: ajan önce ekran görüntüsü alıp piksel koordinatlarıyla tıklamaya çalışmak yerine, işletim sisteminin native erişilebilirlik ağacını okuyarak elemanları yapısal olarak buluyor — bu, görsel modele ve görüntü token'larına ihtiyaç duymadığı için hem daha ucuz hem daha **deterministik** (tekrarlanabilir, öngörülebilir) sonuç veriyor; görüntüye dayalı yaklaşım ancak yapı yetersiz kaldığında yedek olarak devreye giriyor. Sunucu hem **stdio** hem Streamable HTTP aktarım modlarını destekliyor ve Xcode komut satırı araçları ile Android Platform Tools'a bağımlı; isteğe bağlı olarak Mobile Next Cloud üzerinden uzak gerçek cihaz kiralanabiliyor.",
+        "why": "📈 Agentic coding ve test otomasyonu dalgası önce web ve masaüstünde olgunlaştı; şimdi mobil QA'ya sıçrıyor — kurumlar, ayrı platform uzmanlığı gerektiren pahalı native test ekiplerini AI ajanlarıyla desteklemek istiyor. Erişilebilirlik-ağacı-öncelikli yaklaşım, görüntü token'ı maliyetinin katlanarak arttığı yüzlerce paralel ajan test koşusu senaryosunda ciddi bir maliyet avantajı sağlıyor, bu da bütçesi kısıtlı ekiplere çekici geliyor. Claude, Gemini ve GitHub Copilot gibi birden fazla büyük AI platformuyla entegre olabilmesi, projeyi tek bir sağlayıcıya bağımlı kalmak istemeyen geliştirici kitlesi için de cazip kılıyor; 7,5 bin yıldıza rağmen istikrarlı commit temposu, hype'tan çok pratik benimsemeden beslendiğine işaret ediyor.",
+        "evolve": "💡 Erişilebilirlik ağacı yaklaşımı standart arayüz bileşenleri için güçlü, ama oyun motorlarıyla çizilen canvas tabanlı arayüzler veya özel çizim yapan uygulamalarda ağaç neredeyse boş kalabiliyor — bu durumda projenin görüntü tabanlı yedek moda ne sıklıkla düştüğü ve bunun güvenilirliği netleşmiş değil. iOS tarafında gerçek cihazlarda imzalama ve **provisioning** süreci geleneksel olarak mobil otomasyonun en can sıkıcı kısmı; bunun ne kadar sadeleştiği README'de yeterince açık değil. Ayrıca Mobile Next Cloud gibi ücretli bir uzak cihaz katmanının varlığı, açık kaynak çekirdeğin gelecekte hangi özelliklerinin ücretsiz kalacağı konusunda bir belirsizlik yaratıyor."
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin dış araçlara, verilere ve servislere standart bir arayüz üzerinden erişmesini sağlayan açık protokol." },
+        { "term": "Accessibility tree (erişilebilirlik ağacı)", "def": "İşletim sisteminin, ekrandaki her arayüz elemanını (buton, metin kutusu vb.) yapısal olarak listelediği, ekran okuyucular ve otomasyon araçları için kullanılan veri modeli." },
+        { "term": "Deterministik", "def": "Aynı girdi verildiğinde her seferinde aynı sonucu üreten, tahmin edilebilir davranış." },
+        { "term": "stdio", "def": "Bir programın standart giriş/çıkış akışları üzerinden başka bir programla veri alışverişi yapması." },
+        { "term": "Provisioning profile", "def": "Bir iOS uygulamasının gerçek bir cihaza kurulup çalıştırılabilmesi için gereken imzalama ve yetkilendirme dosyası." }
+      ]
+    },
+    {
+      "name": "anthropics/claude-code-action",
+      "url": "https://github.com/anthropics/claude-code-action",
+      "stars": "9.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Bir pull request açıldığında insan bir gözden geçiricinin müsait olmasını beklemek ya da elle bir bot tetiklemek yerine, Claude Code Action bunu doğrudan GitHub iş akışının bir parçası hâline getiriyor: PR yorumlarındaki @claude etiketlerine, yeni issue atamalarına veya elle tanımlanmış otomasyon görevlerine göre otomatik olarak kod inceliyor, değişiklik uyguluyor, mimari sorulara cevap veriyor ve issue triyajı yapıyor.",
+        "tech": "🛠️ TypeScript ile yazılmış ve **Bun** çalışma zamanıyla çalıştırılan action, GitHub Actions **runner**'ı üzerinde uçtan uca kendi altyapınızda çalışıyor — yani kod ve veriler üçüncü parti bir sunucuya gitmiyor. Bir akıllı mod tespiti katmanı, tetikleyici bağlama bakarak üç moddan birini otomatik seçiyor: etkileşimli asistan (yorum/mention'lara cevap), kod inceleme (PR analizi) veya otomasyon (açık `prompt` ile görev çalıştırma). Kimlik doğrulama tarafında yalnızca Anthropic'in kendi API'sine değil, kurumsal esneklik için AWS Bedrock, Google Vertex AI ve Microsoft Foundry'ye de bağlanabiliyor. Çıktılar sonraki Action adımlarında kullanılabilmesi için yapılandırılmış JSON olarak veriliyor ve ek araç erişimi **MCP** sunucuları üzerinden genişletilebiliyor.",
+        "why": "📈 Agentic coding araçları (Claude Code, Cursor, GitHub Copilot Workspace, OpenAI Codex) arasındaki rekabet artık bireysel editör deneyiminden CI/CD hattına kayıyor; ekipler \"hiç uyumayan gözden geçirici\" fikrine ilgi duyuyor. Kendi altyapınızda çalışma vurgusu, veri gizliliği konusunda hassas kurumlar için önemli bir satış noktası; çoklu bulut kimlik doğrulama desteği bu kurumsal kitleye özellikle hitap ediyor. v1.0'a geçiş ve sadeleştirilmiş yapılandırmaya vurgu, projenin olgunlaşma evresine girdiğini gösteriyor; 335 pull request ve 470 issue'luk aktif katkı hacmi, sadece kullanılan değil aktif şekillendirilen bir araç olduğuna işaret ediyor.",
+        "evolve": "💡 Akıllı mod tespiti kullanım kolaylığı sağlasa da, bir yorumun tam olarak neyi tetikleyeceğinin ekip için önceden net olmaması, yazma iznine sahip bir bota güvenmeden önce bir **dry-run** (kuru çalıştırma/önizleme) modunun eksikliğini hissettiriyor. Her çalıştırmanın maliyetini/token kullanımını iş akışı bazında görünür kılan bir gözlemlenebilirlik katmanı, harcamayı kontrol etmek isteyen ekipler için değerli olurdu. Ayrıca tek bir ajan/tek bir çağrı modeli yerine, örneğin bir güvenlik uzmanı ve bir performans uzmanı gibi birden fazla özelleşmiş gözden geçirici ajanın aynı PR üzerinde paralel çalışması, incelemenin derinliğini artırabilir."
+      },
+      "glossary": [
+        { "term": "Bun", "def": "JavaScript/TypeScript projelerini çalıştırmak, paketlemek ve test etmek için kullanılan hızlı, hepsi bir arada çalışma zamanı." },
+        { "term": "GitHub Actions runner", "def": "GitHub Actions iş akışlarındaki adımları fiilen çalıştıran sunucu veya sanal makine." },
+        { "term": "AWS Bedrock / Google Vertex AI", "def": "Büyük bulut sağlayıcıların, farklı yapay zeka modellerini API üzerinden kurumsal müşterilere sunduğu yönetilen servisler." },
+        { "term": "MCP (Model Context Protocol)", "def": "Yapay zeka modellerinin dış araçlara ve servislere standart bir arayüz üzerinden erişmesini sağlayan açık protokol." },
+        { "term": "Dry-run", "def": "Bir işlemin gerçek etkisi olmadan, sadece ne yapacağını göstermek amacıyla önizleme olarak çalıştırılması." }
+      ]
+    },
+    {
+      "name": "block/buzz",
+      "url": "https://github.com/block/buzz",
+      "stars": "34.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Bugün bir yazılım ekibi çalışırken mesajlaşma Slack'te, kod incelemesi GitHub'da, CI sonuçları ayrı bir dashboard'da, AI ajanları ise arka planda sessizce çalışan \"hayaletimsi\" cron işleri gibi yaşıyor — hiçbiri birbirinden haberdar değil. Buzz, bunların hepsini tek bir çalışma alanında birleştiriyor ve daha radikal bir iddiada bulunuyor: insanlar ve AI ajanları aynı odalarda, aynı kimlik modeliyle, aynı denetlenebilir olay kaydıyla bir arada bulunan birinci sınıf üyeler olmalı. Projenin kendi tabiriyle ajanlar artık \"bot\" değil, kendi anahtarlarına ve hesap verebilirliğine sahip \"üye\"ler.",
+        "tech": "🛠️ Çekirdek Rust ile yazılmış; **Axum** çatısı üzerinden WebSocket/REST sunan bir **Nostr** tabanlı **relay** (NIP-01 temel protokol, NIP-42 kimlik doğrulama) mimarinin bel kemiği. Depolama PostgreSQL + Redis + S3/MinIO kombinasyonuyla sağlanıyor; kod tabanı `buzz-relay`, `buzz-db`, `buzz-search`, `buzz-cli` ve ajanları platforma bağlayan `buzz-acp` gibi odaklı **crate**'lere bölünmüş. Masaüstü istemcisi Tauri ile paketlenmiş bir React arayüzü. Nostr'un merkeziyetsiz, imzalı olay modelini seçmek mimari açıdan önemli bir karar: her mesaj/aksiyon kriptografik olarak imzalanıyor, bu da \"kendi barındırdığın relay\" fikrini bir sohbet uygulamasından çok bir kimlik ve güven altyapısına dönüştürüyor. `buzz-acp` bileşeni, Goose, Codex, Claude Code gibi harici ajan araçlarını platforma birinci sınıf, imzalı kimliklerle bağlayan bir köprü görevi görüyor.",
+        "why": "📈 Bu hafta trend olan pek çok projede tekrarlayan bir tema var: ajanları izole araçlar olmaktan çıkarıp ekibin görünür, hesap verebilir bir parçası hâline getirmek. Buzz bu temayı iletişim katmanından yakalıyor — Slack/Discord'a kıyasla kendi barındırdığın, merkeziyetsiz bir protokol üzerine kurulu olması, vendor kilidine karşı temkinli geliştirici kitlesine hitap ediyor. Block (Square'in ana şirketi) gibi tanınmış bir şirket tarafından geliştiriliyor olması projeye kurumsal güvenilirlik katıyor ve 34,9 bin yıldız/4,6 bin fork'luk hızlı büyümeyi açıklıyor. Hedef kitle: dağınık araç setinden bıkmış, kendi altyapısını kontrol etmek isteyen ekipler ile ajanları gerçek takım arkadaşı gibi görmek isteyen erken benimseyiciler.",
+        "evolve": "💡 README'nin kendisi onay iş akışı kapılarını ve push bildirimlerini hâlâ \"geliştirme aşamasında\", **web-of-trust** itibar sistemini ve Git barındırma arka ucunu ise sadece \"gelecek\" olarak işaretliyor — yani platformun GitHub+Slack ikilisine gerçek bir alternatif olup olamayacağı, henüz teslim edilmemiş bu parçalara bağlı. Nostr tabanlı merkeziyetsizlik felsefi olarak çekici ama kendi relay'ini barındıran bir ekip için moderasyon, spam ve kötüye kullanım yönetimi gibi operasyonel yük tamamen kendi üzerlerinde kalıyor. Ajanların \"üye\" olarak imzalı kimlik taşıması güzel bir fikir ama ele geçirilmiş bir ajanın anahtarını hızlıca iptal edip geçmiş imzaların güvenilirliğini yeniden değerlendirme süreci netleşmemiş, bu da güvenlik açısından kritik bir açık nokta."
+      },
+      "glossary": [
+        { "term": "Nostr", "def": "Mesajların merkezi bir sunucuya değil, herkesin barındırabileceği bağımsız \"relay\"lere kriptografik imzayla yayıldığı merkeziyetsiz iletişim protokolü." },
+        { "term": "Relay", "def": "Nostr ağında imzalı mesajları/olayları depolayıp dağıtan sunucu." },
+        { "term": "Axum", "def": "Rust dilinde web sunucuları ve API'ler yazmak için kullanılan popüler bir sunucu çatısı." },
+        { "term": "Crate", "def": "Rust ekosisteminde bir paket veya kütüphane birimi." },
+        { "term": "Web-of-trust", "def": "Merkezi bir otorite yerine kullanıcıların birbirini doğrudan onaylamasıyla oluşan, dağıtık güven/itibar ağı." }
+      ]
+    }
+  ]
+}
