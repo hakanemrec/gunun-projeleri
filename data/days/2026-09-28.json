@@ -1,0 +1,213 @@
+{
+  "date": "2026-09-28",
+  "projects": [
+    {
+      "name": "mvschwarz/openrig",
+      "url": "https://github.com/mvschwarz/openrig",
+      "stars": "1.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Claude Code veya Codex gibi ajanlı kodlama araçlarını aynı anda birkaç görevde çalıştıran geliştiriciler tanıdık bir kaosla karşılaşıyor: her ajan ayrı bir terminal sekmesinde yaşıyor, hangisinin ne yaptığını takip etmek, birinden diğerine bilgi aktarmak veya hepsini aynı anda yönlendirmek neredeyse imkânsız hale geliyor. OpenRig bu dağınıklığı bir \"rig\" (düzenek) kavramıyla çözüyor: ajanları ayrı ayrı terminal oturumları olarak değil, birbirine bağlı **pod**'lardan (koltuklardan) oluşan tanımlı bir topoloji olarak modelliyor. Böylece tek bir ekran üzerinden onlarca ajanı bir ekip gibi başlatmak, izlemek ve yönlendirmek mümkün oluyor — proje ismindeki \"rig\" tam olarak bunu ifade ediyor: donanım değil, bir ajan ekibinin kurulumu.",
+        "tech": "🛠️ OpenRig, TypeScript ve Node.js üzerine kurulu; ajan oturumlarını fiilen barındırmak için **tmux** terminal çoğullayıcısını kullanıyor, yani her pod aslında yönetilen bir tmux penceresi. Topoloji YAML formatında bir **RigSpec** dosyasıyla tanımlanıyor — hangi pod'ların var olduğu, aralarındaki iletişim kanalları (**edge**'ler) ve süreklilik politikaları burada belirtiliyor; tek bir `rig up` komutu bu tanımı okuyup tüm tmux oturumlarını, hazırlık kontrollerini ve servisleri ayağa kaldırıyor. Mimarinin merkezinde hafif bir **Hono** tabanlı HTTP **daemon**'ı var; bu daemon durumunu **SQLite** veritabanında tutuyor ve CLI, bir **TUI** (terminal arayüzü) ile bir **MCP** sunucusu tarafından aynı anda kontrol edilebiliyor — yani bir ajan, OpenRig'in MCP arayüzü üzerinden başka ajanları yönetebiliyor. `rig send`, `rig broadcast` ve `rig chatroom` komutları pod'lar arası doğrudan iletişimi sağlıyor; `rig grow`/`rig shrink` ile topoloji çalışırken büyütülüp küçültülebiliyor, snapshot/restore mekanizması da yeniden başlatmalarda durumu koruyor. Servis ağırlıklı pod'lar için isteğe bağlı **Docker** desteği de mevcut.",
+        "why": "📈 2026'nın ikinci yarısında agentic kodlama araçlarının (Claude Code, Codex, Cursor) günlük iş akışına iyice yerleşmesiyle birlikte, artık tek bir geliştiricinin bile aynı anda birden fazla ajan oturumu açık tutması sıradanlaştı; OpenRig tam da bu noktada \"bir ajanı yönetmek\" ile \"bir ajan ekibini yönetmek\" arasındaki boşluğu dolduruyor. Toplam yıldız sayısı (1,2 bin) büyük platformlara kıyasla mütevazı ama bugünkü artış (+114) oranla oldukça yüksek — bu da niş ama yoğun ilgili bir kitleye, çok sayıda paralel ajan çalıştıran ileri düzey \"agentic coding\" kullanıcılarına hitap eden odaklı bir lansman dalgasına işaret ediyor. Hazır \"rig\" şablonları (adversarial-review, research-team, secrets-manager gibi) ve YouTube üzerinden kurulum videoları, ürünü denemeyi kolaylaştırarak organik paylaşımı hızlandırmış görünüyor.",
+        "evolve": "💡 OpenRig şu an tamamen tmux ve yerel makineye bağlı; pod'ların uzak sunucularda veya bulutta çalışabilmesi, ekiplerin ajan filosunu tek bir dizüstü bilgisayara sıkıştırmak zorunda kalmadan ölçeklendirmesini sağlardı. Şu anda yalnızca Claude Code ve Codex desteklendiği görülüyor; Gemini CLI veya Cursor ajanı gibi başka araçların da rig'e katılabilmesi kitleyi genişletirdi. Pod'lar arası `rig broadcast` gibi komutlar güçlü ama hangi pod'un hangi pod'a komut gönderebileceğine dair bir yetkilendirme/izin modeli belirtilmiyor — topoloji büyüdükçe bu bir güvenlik ve düzen sorunu haline gelebilir. Son olarak, Paperclip gibi projelerin odaklandığı token/maliyet takibi OpenRig'de henüz yok; bir rig'deki tüm pod'ların toplam harcamasını gösteren bir panel doğal bir sonraki adım olurdu."
+      },
+      "glossary": [
+        {
+          "term": "Pod",
+          "def": "Bir rig içinde tek bir ajanın çalıştığı, yönetilen tmux oturumuna karşılık gelen birim."
+        },
+        {
+          "term": "tmux",
+          "def": "Tek bir terminal penceresinde birden çok oturumu aynı anda açık tutmayı ve aralarında geçiş yapmayı sağlayan terminal çoğullayıcı araç."
+        },
+        {
+          "term": "RigSpec",
+          "def": "Bir rig'in pod'larını, aralarındaki bağlantıları ve çalışma kurallarını tanımlayan YAML formatındaki yapılandırma dosyası."
+        },
+        {
+          "term": "YAML",
+          "def": "Yapılandırma dosyalarında yaygın kullanılan, girinti tabanlı, insan tarafından kolay okunan bir veri biçimlendirme dili."
+        },
+        {
+          "term": "Edge",
+          "def": "Bir topolojide iki bileşen (burada iki pod) arasındaki bağlantıyı/iletişim kanalını temsil eden kavram."
+        },
+        {
+          "term": "Hono",
+          "def": "Hızlı ve hafif olması için tasarlanmış, JavaScript/TypeScript tabanlı bir web sunucusu çatısı (framework)."
+        },
+        {
+          "term": "Daemon",
+          "def": "Kullanıcı müdahalesi olmadan arka planda sürekli çalışan sunucu süreci."
+        },
+        {
+          "term": "SQLite",
+          "def": "Ayrı bir sunucu gerektirmeyen, tek bir dosya üzerinde çalışan hafif ilişkisel veritabanı motoru."
+        },
+        {
+          "term": "TUI",
+          "def": "Fare yerine klavye ve metin tabanlı görsel öğelerle kullanılan terminal içi kullanıcı arayüzü."
+        },
+        {
+          "term": "MCP",
+          "def": "Yapay zeka ajanlarının dış araçlara ve verilere standart bir protokolle bağlanmasını sağlayan Model Context Protocol."
+        },
+        {
+          "term": "Docker",
+          "def": "Uygulamaları bağımlılıklarıyla birlikte taşınabilir, izole \"konteyner\" paketleri halinde çalıştırmayı sağlayan platform."
+        }
+      ]
+    },
+    {
+      "name": "hydra-db/hydradb",
+      "url": "https://github.com/hydra-db/hydradb",
+      "stars": "11.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "🎯 Neo4j gibi klasik graf veritabanları genelde depolama ve hesaplamayı aynı sunucuda birleştirir; bu da veri büyüdükçe ölçeklendirmeyi pahalı ve karmaşık hale getirir, düğüm eklemek veya değiştirmek büyük operasyonel risk taşır. HydraDB bu sorunu kökten çözmeyi hedefliyor: veriyi kalıcı olarak ucuz ve dayanıklı bir **nesne depolama** (S3 uyumlu) katmanında tutuyor, sorgu ve indeksleme işini ise durumsuz (stateless), istendiğinde yok edilip yeniden kurulabilen ayrı hesaplama düğümlerine bırakıyor. Sonuç, Neo4j'nin sorgu diline ve protokolüne aşina geliştiricilerin, bulut depolama kadar esnek ölçeklenen bir graf veritabanına kolayca geçebilmesi.",
+        "tech": "🛠️ HydraDB, Rust ile yazılmış ve depolama motoru olarak **SlateDB**'yi kullanıyor; graf kayıtları, **WAL** (write-ahead log, yazma-öncesi günlük) ve manifestler doğrudan S3 uyumlu nesne depolamada tutuluyor, birden çok düğümün aynı veriye güvenli şekilde yazabilmesi için nesne deposu üzerinde **CAS** (compare-and-swap) tabanlı kiralama mekanizması kullanılıyor. Sistem iki ayrı düğüm rolüne ayrılıyor: sorguları ve asıl yazma işlemlerini karşılayan, yerel SSD/NVMe önbelleğiyle hızlandırılan `graph-node`'lar; ve arka planda GraphBLAS (SuiteSparse) kütüphanesiyle **CSC** (Compressed Sparse Column, seyrek sütun sıkıştırması) formatında gezinme indeksleri oluşturan `graph-indexer` işçileri. Sorgu tarafında **OpenCypher**'ın bir alt kümesi destekleniyor, bağlantı için Neo4j'nin **Bolt protokolü** ve ayrıca HTTPS/JSON API sunuluyor; okumalar ya sabit bir SlateDB anlık görüntüsüne (snapshot) sabitlenmiş \"causal\" modda ya da nesne deposundan taze veri çeken \"strong\" tutarlılık modunda yapılabiliyor. Dağıtım Kubernetes ve Helm chart'larıyla destekleniyor.",
+        "why": "📈 Depolama ile hesaplamayı ayırma (disaggregation) fikri Snowflake ve Databricks gibi veri ambarlarında kanıtlanmış bir model; HydraDB bunu graf veritabanları dünyasına taşıyarak hem maliyet hem operasyon açısından cazip bir vaat sunuyor. Bugünkü +2.809 yıldızlık artış — toplam 11 binin üzerindeki yıldızın önemli bir kısmının tek günde gelmesi — büyük ihtimalle Hacker News veya benzeri bir platformda \"S3 üzerinde çalışan graf veritabanı\" başlığıyla yayılan bir duyurunun izini taşıyor. Hedef kitle net: mevcut Neo4j altyapısının işletme maliyetinden ve ölçeklendirme zorluğundan sıkılmış platform mühendisleri ile büyük graf/bilgi grafiği (knowledge graph) iş yükleri taşıyan, RAG (retrieval-augmented generation) tabanlı yapay zeka sistemleri kuran ekipler; Neo4j uyumlu protokol sayesinde geçiş maliyeti düşük görünüyor.",
+        "evolve": "💡 Şu an OpenCypher'ın yalnızca bir alt kümesi destekleniyor; tam Cypher uyumluluğuna yaklaşmak mevcut Neo4j kullanıcılarının geçişini kolaylaştırır. Çoklu bölge (multi-region) replikasyon ve felaket kurtarma senaryoları henüz belgelenmemiş — nesne depolamayı tek gerçek kaynak olarak kullanan bir mimaride bunun nasıl ele alınacağı kritik bir soru. Bilgi grafiği ve RAG kullanım alanlarına daha güçlü hitap etmek için gömülü (embedding) vektör aramayı grafla birleştiren hibrit sorgu desteği eklemek, projeyi mevcut yapay zeka altyapısı trendinin tam merkezine oturtabilir. AGPL-3.0 lisansı bazı şirketler için engel olabileceğinden, yönetilen/bulut sunumu (managed cloud) sunmak hem gelir modeli hem de benimseme açısından doğal bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "Nesne depolama",
+          "def": "Verinin dosya sistemi hiyerarşisi yerine düz, ölçeklenebilir bir alanda anahtar-değer nesneleri olarak tutulduğu depolama biçimi; Amazon S3 en bilinen örneğidir."
+        },
+        {
+          "term": "SlateDB",
+          "def": "Nesne depolama üzerinde çalışacak şekilde tasarlanmış, günlük (log) tabanlı bir gömülü depolama motoru."
+        },
+        {
+          "term": "WAL (write-ahead log)",
+          "def": "Bir veritabanının, veriyi kalıcı hale getirmeden önce yapılacak değişiklikleri sırayla bir günlüğe yazarak çökme durumunda veri kaybını önlediği teknik."
+        },
+        {
+          "term": "CAS (compare-and-swap)",
+          "def": "Bir değeri yalnızca beklenen eski değere eşitse güncelleyen, birden çok sürecin aynı veriye güvenle yazmasını sağlayan atomik işlem."
+        },
+        {
+          "term": "GraphBLAS",
+          "def": "Graf işlemlerini seyrek matris cebiri (lineer cebir) olarak ifade edip hızlandıran bir kütüphane standardı."
+        },
+        {
+          "term": "CSC (Compressed Sparse Column)",
+          "def": "Çoğu değeri sıfır olan (seyrek) matrisleri bellekte az yer kaplayacak şekilde saklayan bir veri yapısı biçimi."
+        },
+        {
+          "term": "OpenCypher",
+          "def": "Neo4j tarafından geliştirilen, graf veritabanlarında ilişkileri sorgulamak için kullanılan açık kaynaklı sorgu dili."
+        },
+        {
+          "term": "Bolt protokolü",
+          "def": "Neo4j ve uyumlu veritabanlarıyla istemci uygulamalar arasında verimli iletişim kurmak için kullanılan ikili (binary) ağ protokolü."
+        },
+        {
+          "term": "Kubernetes / Helm",
+          "def": "Kubernetes konteynerleri otomatik olarak dağıtıp yöneten bir platform, Helm ise bu platformdaki uygulamaları paketlemeye yarayan bir araçtır."
+        },
+        {
+          "term": "Tutarlılık modeli",
+          "def": "Dağıtık bir sistemde farklı düğümlerin aynı veriyi ne zaman ve nasıl aynı görebileceğini tanımlayan kurallar bütünü."
+        },
+        {
+          "term": "RAG (retrieval-augmented generation)",
+          "def": "Bir yapay zeka modelinin yanıt üretirken önce ilgili belgeleri/verileri arayıp bulduğu bilgiyle cevabını zenginleştirdiği yöntem."
+        }
+      ]
+    },
+    {
+      "name": "microsoft/data-formulator",
+      "url": "https://github.com/microsoft/data-formulator",
+      "stars": "17.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "🎯 Veri analistleri genelde parçalı bir süreçle çalışır: önce SQL veya bir tabloda soru sorulur, sonuç başka bir araca (Excel, BI panosu) taşınıp görselleştirilir, soru değiştikçe bu döngü baştan başlar ve önceki keşiflerin bağlamı kaybolur. Data Formulator, doğal dille soru sormayı ve görsel keşfi tek bir çalışma alanında birleştiriyor: kullanıcı bir veri kaynağına bağlanıp sohbet eder gibi sorular sorabiliyor, sistem bunun için otomatik grafikler öneriyor, kullanıcı bu grafikler üzerinde doğrudan düzenleme yaparak analiz sürecini dallandırabiliyor — yani \"soru sor, gör, bir öncekine dön, farklı bir yola sap\" akışı hiç araç değiştirmeden tek ekranda mümkün oluyor.",
+        "tech": "🛠️ Proje ikiye ayrılmış bir mimariye sahip: TypeScript/React tabanlı, Vite ile derlenen bir ön yüz ve büyük veri kümelerini işlemek için **DuckDB** kullanan bir Python arka ucu. Yapay zeka tarafı sağlayıcıdan bağımsız çalışıyor; **LiteLLM** katmanı sayesinde OpenAI, Azure, Anthropic veya yerel olarak çalışan Ollama modelleri arasında geçiş yapılabiliyor. Görselleştirmeler dahili bir grafik tanım dili olan **Flint** üzerinden üretiliyor; bu dil, analiz niyetini soyut bir şekilde tanımlayıp 30'dan fazla grafik türüne dönüştürebiliyor. Projenin en özgün fikri **Veri İş Parçacıkları** (Data Threads): her keşif dalı ayrı bir iş parçacığı olarak saklanıyor, yani bir soruya farklı açılardan yaklaşırken önceki analizler silinmiyor, bir tür \"analiz için git dalları\" gibi çalışıyor. Dosya, klasör, veritabanı ve Databricks gibi platformlardan veri bağlantısı destekleniyor; görüntü, metin, CSV, Excel, JSON gibi formatlardan veri çıkarımı da yapılabiliyor.",
+        "why": "📈 Sohbet tabanlı yapay zeka asistanlarının veri analizinde yalnızca metinle cevap vermesi, görsel keşif ihtiyacı olan analistler için yetersiz kalıyordu; Data Formulator bu boşluğu \"doğal dil + doğrudan arayüz etkileşimi\" karışımıyla dolduruyor. Microsoft Research kökenli olması kurumsal güven kazandırıyor, 15 Ağustos 2026 tarihli v0.8.0 beta sürümünün birleşik veri akışı ve genişletilmiş veri kaynağı desteği getirmesi de güncel bir yıldız artışını (bugün +112) açıklıyor. Hedef kitle, tek seferlik soru-cevaptan çok, bir veri kümesini saatlerce farklı açılardan didikleyen veri analistleri ve ürün ekipleri; \"Veri İş Parçacıkları\" özellikle karmaşık, çok adımlı analizlerde önceki adımları kaybetmeden dallanabilme ihtiyacını karşılıyor.",
+        "evolve": "💡 Şu an tek kullanıcılı bir çalışma alanı izlenimi veriyor; birden fazla analistin aynı iş parçacığı ağacı üzerinde eşzamanlı çalışabilmesi (gerçek zamanlı ortak düzenleme) kurumsal benimsemeyi hızlandırırdı. Veri yönetişimi ve **soy kütüğü** (lineage) izleme — hangi grafiğin hangi ham veriden, hangi LLM isteğiyle üretildiğinin denetlenebilir kaydı — özellikle düzenlemeye tabi sektörlerde önemli bir eksik. Her keşif adımının bir LLM çağrısı gerektirmesi, büyük veri kümelerinde hem maliyeti hem gecikmeyi artırabilir; sonuçları önbelleğe alan veya daha küçük modellerle önceden filtreleme yapan bir katman bu maliyeti düşürebilir. Flint dışında üçüncü taraf grafik türleri eklenebilmesi için bir eklenti (plugin) mimarisi de doğal bir genişleme alanı."
+      },
+      "glossary": [
+        {
+          "term": "DuckDB",
+          "def": "Ayrı bir sunucu kurulumu gerektirmeden, doğrudan uygulama içinde çalışan, analitik sorgular için optimize edilmiş bir veritabanı motoru."
+        },
+        {
+          "term": "LiteLLM",
+          "def": "Farklı yapay zeka sağlayıcılarının (OpenAI, Anthropic, Azure vb.) API'lerini tek, ortak bir arayüz üzerinden çağırmayı sağlayan bir soyutlama katmanı."
+        },
+        {
+          "term": "Flint",
+          "def": "Data Formulator projesinin, analiz niyetini tanımlayıp otomatik grafiğe dönüştürmek için kullandığı dahili grafik tanım dili."
+        },
+        {
+          "term": "Veri İş Parçacıkları (Data Threads)",
+          "def": "Bir veri kümesi üzerindeki farklı keşif/analiz dallarının ayrı ayrı saklanıp daha sonra karşılaştırılabildiği, git dallanmasına benzeyen bir versiyon geçmişi modeli."
+        },
+        {
+          "term": "Databricks",
+          "def": "Büyük veri işleme ve analitik için kullanılan, bulut tabanlı bir veri platformu."
+        },
+        {
+          "term": "Ollama",
+          "def": "Büyük dil modellerini kullanıcının kendi bilgisayarında, internete bağlanmadan çalıştırmayı sağlayan bir araç."
+        },
+        {
+          "term": "Soy kütüğü (lineage)",
+          "def": "Bir verinin veya sonucun hangi kaynaklardan ve hangi işlemlerden geçerek üretildiğinin izlenebilir kaydı."
+        }
+      ]
+    },
+    {
+      "name": "vercel-labs/scriptc",
+      "url": "https://github.com/vercel-labs/scriptc",
+      "stars": "5.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "🎯 Normalde bir TypeScript veya JavaScript programını çalıştırmak için bir JavaScript motoruna (V8, Node.js gibi) ihtiyaç vardır; bu da küçük bir komut satırı aracını bile dağıtırken onlarca megabaytlık bir çalışma zamanını beraberinde taşımak, yavaş başlangıç süreleri ve ağır kurulum adımları demektir. scriptc, uyumlu TypeScript/JavaScript kodunu doğrudan derleme zamanında gerçek makine koduna (native binary) veya WebAssembly'ye çeviriyor; sonuçta Node.js ya da herhangi bir JS motoru gömülü olmadan, tek bir çalıştırılabilir dosya halinde anında açılan araçlar üretmek mümkün oluyor.",
+        "tech": "🛠️ scriptc, kodu ayrıştırmak ve tip bilgisini çıkarmak için doğrudan resmi TypeScript derleyicisini kullanıyor, ardından kendi tipli bir **ara temsile (IR)** indiriyor; buradan okunabilir C koduna veya metinsel **LLVM IR**'ye dönüştürüyor ve LLVM'nin üretim kalitesindeki arka ucuyla (WASI/çapraz derleme için Zig araç zinciri aracılığıyla) gerçek çalıştırılabilir dosyalar, nesne dosyaları veya **WebAssembly** (WASI Preview 1) modülleri üretiyor. Statik olarak derlenemeyen dinamik kod parçaları (örneğin çoğu npm paketi) için `--dynamic` bayrağıyla hafif bir JavaScript motoru olan **quickjs-ng** ikiliğin içine gömülüyor; böylece tamamen statik derlenemeyen kod bile tek bir dosyada paketlenebiliyor. `scriptc coverage` komutu, bir projenin yüzde kaçının tamamen statik derlenebildiğini raporluyor. HTTP sunucusu, dosya sistemi işlemleri, async/await, promise ve zamanlayıcılar gibi yaygın Node API'lerinin bir alt kümesi destekleniyor; hata ayıklama için **AddressSanitizer** entegrasyonu da mevcut.",
+        "why": "📈 Bun ve Deno'nun JavaScript çalışma zamanını yeniden yazması, Rust/Zig tabanlı araçların JS ekosistemine sızması gibi \"JS motorundan kaçış\" trendi son yıllarda güçleniyor; scriptc bu trendi bir adım öteye taşıyıp TypeScript'i doğrudan native koda indirgemeyi deniyor. Vercel Labs etiketi, deneysel de olsa projeye anında görünürlük ve güven kazandırıyor; kenar (edge) dağıtımlarda ve komut satırı araçlarında küçük, hızlı açılan tek dosyalık ikili dosyalara olan talep tam zamanında bir ihtiyaca denk geliyor. Projenin açıkça \"deney\" olarak etiketlenmesi, meraklı geliştiricileri denemeye ve katkıda bulunmaya davet ediyor, bu da bugünkü +102 yıldızlık artışın arkasındaki organik ilgiyi açıklıyor.",
+        "evolve": "💡 Şu an statik olarak derlenebilen JavaScript/TypeScript yüzeyi sınırlı; dinamik kod büyük ölçüde quickjs-ng'ye düşüyor, bu da \"gerçek native\" vaadini zayıflatıyor — statik kapsamı genişletmek projenin en kritik yol haritası maddesi görünüyor. WASI hedefinde ağ soketleri, alt süreç oluşturma, işletim sistemi sinyalleri ve dosya izleme gibi yaygın özellikler henüz desteklenmiyor; bunlar olmadan sunucu tarafı iş yükleri için kullanım alanı kısıtlı kalıyor. Yaygın npm paketleri için önceden derlenmiş **çalışma zamanı paketleri (runtime pack)** sunan bir kayıt defteri (registry), her projenin bu paketleri sıfırdan derlemek zorunda kalmasını önleyebilir. Son olarak, üretime hazır olmadığı açıkça belirtildiğinden, hangi kod kalıplarının güvenle statik derlenebileceğine dair daha net, resmi bir yol haritası ekiplerin projeyi ciddiye almasını kolaylaştırır."
+      },
+      "glossary": [
+        {
+          "term": "Derleme zamanı",
+          "def": "Kaynak kodun çalıştırılmadan önce makine koduna dönüştürüldüğü aşama; buna karşılık 'çalışma zamanı' kodun fiilen işletildiği andır."
+        },
+        {
+          "term": "IR (Ara Temsil)",
+          "def": "Bir derleyicinin kaynak kod ile hedef makine kodu arasında kullandığı, doğrudan işlenmesi daha kolay ara veri biçimi."
+        },
+        {
+          "term": "LLVM",
+          "def": "Birçok programlama dilinin optimize edilmiş makine koduna derlenmesinde kullanılan, yaygın bir derleyici alt yapısı."
+        },
+        {
+          "term": "WebAssembly (WASM)",
+          "def": "Tarayıcılarda ve diğer ortamlarda neredeyse makine koduna yakın hızda çalışabilen, taşınabilir ikili bir kod biçimi."
+        },
+        {
+          "term": "WASI",
+          "def": "WebAssembly programlarının tarayıcı dışında, işletim sistemi kaynaklarına (dosya, ağ gibi) standart bir arayüzle erişebilmesini sağlayan sistem arayüzü."
+        },
+        {
+          "term": "quickjs-ng",
+          "def": "Küçük ve gömülebilir olacak şekilde tasarlanmış, hafif bir JavaScript motoru."
+        },
+        {
+          "term": "AddressSanitizer",
+          "def": "Programlardaki bellek hatalarını (sınır aşımı, kullanılmayan belleğe erişim gibi) çalışma sırasında yakalayan bir hata ayıklama aracı."
+        },
+        {
+          "term": "Çalışma zamanı paketi (runtime pack)",
+          "def": "Bir programın çalışması için gereken önceden derlenmiş, hazır çalışma zamanı bileşenlerinin paketlenmiş hali."
+        },
+        {
+          "term": "Zig",
+          "def": "Sistem programlama için tasarlanmış, aynı zamanda güçlü çapraz derleme (cross-compilation) yetenekleriyle bilinen bir programlama dili/araç zinciri."
+        }
+      ]
+    }
+  ]
+}
