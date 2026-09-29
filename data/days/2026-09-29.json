@@ -1,0 +1,279 @@
+{
+  "date": "2026-09-29",
+  "projects": [
+    {
+      "name": "HelpCode-ai/anythingmcp",
+      "url": "https://github.com/HelpCode-ai/anythingmcp",
+      "stars": "577",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**AnythingMCP**, mevcut kurumsal sistemleri (REST, SOAP, GraphQL, OData ve doğrudan SQL veritabanları) yapay zekâ istemcilerinin (Claude, ChatGPT vb.) kullanabileceği **MCP araçlarına** dönüştüren, kendi sunucunuzda çalışan bir geçit (gateway). Sorun şu: bir ERP'yi veya eski bir SOAP servisini bir ajana bağlamak için her sistem için ayrı MCP sunucusu yazmak gerekiyor. AnythingMCP web arayüzünden bağlantıyı tanımlatıp tek bir uç noktadan hepsini sunuyor. PL/SQL / ERP / IFS dünyası için doğrudan ilgili: Oracle, SQL Server ve SAP HANA bağlayıcıları ile SAP, Odoo gibi ERP adaptörleri hazır geliyor.",
+        "tech": "- **Tek MCP uç noktası, çok bağlayıcı**: REST, SOAP, GraphQL, OData, veritabanı ve MCP-to-MCP bağlayıcıları aynı geçidin arkasında toplanıyor; böylece istemci tarafında tek entegrasyon yeterli.\n- **Görsel araç editörü ve yanıt eşleme**: Hangi alanların modele gideceği seçilebiliyor. Gerekçe: hem token maliyetini düşürmek hem de hassas alanları modele sızdırmamak.\n- **265 hazır adaptör**: SAP Business One, Odoo, WooCommerce gibi sistemler için önceden hazırlanmış tanımlar; sıfırdan araç yazma yükünü kaldırıyor.\n- **Kimlik doğrulama çeşitliliği**: OAuth2 (PKCE, Client Credentials), Bearer, API Key, Basic, HMAC gibi yöntemler; kurumsal sistemlerin dağınık yetkilendirme dünyasına uyum için. Kimlik bilgileri **AES-256-GCM** ile şifreli saklanıyor.\n- **Denetim ve RBAC**: Her araç çağrısı ve yukarı akış yanıtı loglanıyor; self-hosted sürümde rol tabanlı erişim ve SSO var.\n- **Knowledge Graph**: Varlık ilişkileri ve öğrenilmiş iş kuralları için bir katman.\n- **Dağıtım**: Node.js tabanlı, Docker ile kurulum; lisans AGPL-3.0.",
+        "why": "- **Zamanlama**: MCP, ajanların dış sistemlere bağlanma standardı haline geldi; darboğaz artık 'model'den çok 'kurumsal veriye güvenli erişim'.\n- **Kitle**: ERP/e-ticaret entegrasyonu yapan küçük ve orta ölçekli ekipler, sistem entegratörleri.\n- **İvme sebebi**: 'Her sistem için MCP yazma' acısına hazır çözüm sunması, Almanca/Çince/Japonca arayüz desteğiyle Avrupa ve Asya pazarına aynı anda hitap etmesi. Yıldız sayısı görece küçük (577) ama günlük ivmesi yüksek; erken evre bir keşif dalgası.",
+        "evolve": "- WSDL ayrıştırıcı henüz **WS-Security** başlıklarını desteklemiyor; bankacılık/kamu tarzı SOAP servisleri için bu kritik eksik.\n- arm64 desteği bekliyor; Apple Silicon ve ARM sunucularda kurulum sürtünmesi olabilir.\n- **Fırsat (IFS/PL/SQL bakışı)**: IFS Cloud'un OData/REST projeksiyonları ve Oracle paketlerini (PL/SQL prosedürleri) araç olarak açan hazır bir adaptör kolay bir katkı olurdu. Salt-okunur mod, satır seviyesi yetki ve 'onay iste' akışı yazma işlemleri için şart.\n- AGPL lisansı, ürünleştirmek isteyen şirketler için sınırlayıcı olabilir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araç ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Gateway (geçit)",
+          "def": "İstemciyle birçok arka uç servis arasında duran, istekleri yönlendiren ve ortak işleri (yetki, log) üstlenen ara katman."
+        },
+        {
+          "term": "SOAP",
+          "def": "XML tabanlı, WSDL ile tanımlanan eski kuşak web servis protokolü; kurumsal sistemlerde hâlâ yaygın."
+        },
+        {
+          "term": "GraphQL",
+          "def": "İstemcinin tam olarak hangi alanları istediğini sorguyla belirttiği API sorgu dili."
+        },
+        {
+          "term": "OData",
+          "def": "REST üzerinde sorgulama, filtreleme ve sayfalama için standart kurallar tanımlayan protokol; SAP ve IFS'te sık kullanılır."
+        },
+        {
+          "term": "OAuth2 PKCE",
+          "def": "Yetkilendirme kodunun çalınmasına karşı ek doğrulama ekleyen OAuth2 akışı."
+        },
+        {
+          "term": "RBAC",
+          "def": "Rol tabanlı erişim kontrolü: yetkiler kullanıcıya değil role bağlanır."
+        },
+        {
+          "term": "SSO",
+          "def": "Tek girişle birden çok uygulamaya erişmeyi sağlayan kimlik doğrulama yöntemi."
+        },
+        {
+          "term": "AES-256-GCM",
+          "def": "Verileri hem şifreleyen hem de değiştirilmediğini doğrulayan güçlü bir şifreleme yöntemi."
+        },
+        {
+          "term": "Knowledge Graph",
+          "def": "Varlıkları (kişi, sipariş vb.) ve aralarındaki ilişkileri düğüm-kenar yapısıyla tutan bilgi modeli."
+        },
+        {
+          "term": "ERP",
+          "def": "Finans, stok, üretim gibi işletme süreçlerini tek sistemde yöneten kurumsal kaynak planlama yazılımı."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılım ağ üzerinden hizmet olarak sunulsa bile kaynak kodun paylaşılmasını zorunlu kılan copyleft lisansı."
+        }
+      ]
+    },
+    {
+      "name": "microsoft/SkillOpt",
+      "url": "https://github.com/microsoft/SkillOpt",
+      "stars": "17.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**SkillOpt**, yapay zekâ ajanlarına verilen doğal dil talimat dosyalarını (**skill** belgelerini) modelin ağırlıklarına dokunmadan **otomatik olarak eğiten** bir optimizatör. Sorun şu: ajan becerilerini elle yazıp deneme-yanılmayla iyileştirmek yorucu ve tutarsız. SkillOpt, skill belgesini bir 'eğitilebilir parametre' gibi ele alıp geri bildirimle sistematik biçimde iyileştiriyor ve sonunda dağıtıma hazır tek bir `best_skill.md` dosyası veriyor.",
+        "tech": "- **Eğitim döngüsü**: Rollout (ajanı görevlerde çalıştırıp iz toplama) → yansıtma (izleri puanlama) → toplulaştırma (örüntüleri özetleme) → seçim (umut verici düzenlemeler) → güncelleme (sınırlı ekle/sil/değiştir).\n- **Doğrulama kapısı**: Yalnızca doğrulama setinde iyileştiren değişiklikler kabul ediliyor; bu, aşırı öğrenmeyi (overfitting) ve gerilemeyi engelliyor.\n- **Metinsel öğrenme oranı**: Her turda yapılabilecek düzenleme miktarı bütçelenerek belge kararlı tutuluyor; ağırlık tabanlı eğitimdeki learning rate'in metin karşılığı.\n- **Çıktı küçük**: 300–2.000 token'lık bir belge; çalışma zamanında ek çıkarım çağrısı gerektirmiyor.\n- **Esnek altyapı**: OpenAI, Azure, Claude, Qwen, MiniMax ve uyumlu API'ler; doğrudan sohbet, Codex CLI ve Claude Code CLI çalıştırma ortamları. Python 3.10+, `pip install skillopt`, YAML yapılandırma, isteğe bağlı Gradio panosu. MIT lisanslı.",
+        "why": "- **Zamanlama**: Skill dosyaları (SKILL.md, AGENTS.md vb.) ajan ekosisteminde yaygınlaştı; artık soru 'nasıl yazılır'dan 'nasıl ölçülüp iyileştirilir'e kaydı.\n- **Kitle**: Ajan geliştiricileri, prompt/skill mühendisleri, kurum içi ajan platformu ekipleri.\n- **İvme sebebi**: Microsoft imzası ve iddialı sonuçlar: altı benchmark ve yedi model boyunca test edilen 52 yapılandırmanın tamamında en iyi veya eşit en iyi sonuç; GPT-5.5'te ortalama +19 ila +25 puan doğruluk artışı. Skill'lerin model boyutları ve çalıştırma ortamları arasında aktarılabilmesi de ilgi çekiyor.",
+        "evolve": "- Hesaplama maliyeti ve başarısızlık modları belgede net değil; küçük ekipler için 'bir skill eğitmenin bedeli' şeffaf olmalı.\n- Doğrulama setine bağımlılık: iyi bir değerlendirme seti olmayan iş alanlarında (örn. ERP'ye özgü görevler) kullanım zor; hazır değerlendirme seti üreticileri gerekli.\n- **Fırsat**: CI/CD entegrasyonu; skill belgesini her model güncellemesinde otomatik yeniden eğitme, sürüm farkını (diff) insan onayına sunma.\n- Çok skill'li ajanlarda skill'ler arası çakışmayı ölçen ortak optimizasyon."
+      },
+      "glossary": [
+        {
+          "term": "Skill",
+          "def": "Bir ajanın belirli bir işi nasıl yapacağını anlatan, doğal dilde yazılmış talimat belgesi."
+        },
+        {
+          "term": "Ağırlık (weights)",
+          "def": "Bir modelin eğitimle öğrendiği sayısal parametreler."
+        },
+        {
+          "term": "Rollout",
+          "def": "Ajanın bir görevi baştan sona çalıştırıp adım izlerinin (trajectory) kaydedilmesi."
+        },
+        {
+          "term": "Trajectory (iz)",
+          "def": "Ajanın bir görev sırasında attığı adımların, araç çağrılarının ve yanıtların kaydı."
+        },
+        {
+          "term": "Overfitting",
+          "def": "Modelin ya da belgenin eğitim örneklerine fazla uyup yeni durumlarda kötü performans göstermesi."
+        },
+        {
+          "term": "Learning rate",
+          "def": "Her eğitim adımında parametrelerin ne kadar değiştirileceğini belirleyen katsayı."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Sistemleri aynı testlerle karşılaştırmak için kullanılan standart ölçüm seti."
+        },
+        {
+          "term": "Codex CLI",
+          "def": "OpenAI'nin komut satırından çalışan kodlama ajanı."
+        },
+        {
+          "term": "Claude Code CLI",
+          "def": "Anthropic'in terminalde çalışan kodlama ajanı."
+        },
+        {
+          "term": "Gradio",
+          "def": "Python ile hızlıca makine öğrenmesi arayüzü/panosu oluşturmaya yarayan kütüphane."
+        }
+      ]
+    },
+    {
+      "name": "topoteretes/cognee",
+      "url": "https://github.com/topoteretes/cognee",
+      "stars": "31.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Cognee**, yapay zekâ ajanlarına oturumlar arası **kalıcı uzun vadeli hafıza** kazandıran açık kaynaklı bir bellek platformu. Belgeleri, kodu ve konuşmaları bir **bilgi grafiğine** (knowledge graph) dönüştürüp vektör aramasıyla birleştiriyor. Sorun: ajanlar her oturumda sıfırdan başlıyor ve düz vektör arama ('RAG') ilişkileri kaçırıyor. Cognee, 'ne ile ne ilişkili' bilgisini de saklayarak daha isabetli bağlam getiriyor. Veritabanı ilgisi açısından özellikle dikkat çekici: bütün bellek katmanı tek bir PostgreSQL (pgvector) üzerinde çalışabiliyor.",
+        "tech": "- **Üç işlem**: `remember` (kalıcı belleğe veya oturuma yaz), `recall` (otomatik veya elle yönlendirmeli arama), `improve` (belleği zenginleştir, oturum bilgisini grafiğe aktar).\n- **Grafik + vektör birlikte**: Metinden çıkarılan varlık/ilişkiler grafikte, metin parçaları gömme vektörü olarak saklanıyor; ilişkisel sorular ile anlamsal sorular birlikte cevaplanıyor.\n- **Oturum katmanı**: Geçici bellek (Redis olabilir) belirli aralıklarla kalıcı bilgiye damıtılıyor.\n- **Yerel çıkarım**: GLiNER ile API anahtarı olmadan varlık çıkarımı; küçük modellerle çalışma hedefi. (Belgede bunun bir demo olduğu belirtiliyor.)\n- **Depolama esnekliği**: PostgreSQL + pgvector, çeşitli grafik veritabanları, Redis. Postgres'i grafik deposu olarak kullanmak henüz demo özelliği.\n- **Arayüzler**: Python ve TypeScript SDK, REST API, MCP sunucuları, CLI; kod tabanları için sembol/bağımlılık indeksleme. Apache 2.0.",
+        "why": "- **Zamanlama**: Ajan belleği 2026'nın en kalabalık alt alanlarından biri (aynı hafta hindsight, ai-memory gibi projeler de trendde).\n- **Kitle**: Kalıcı bağlam isteyen ajan geliştiricileri, kurum içi bilgi asistanı kuran ekipler.\n- **İvme sebebi**: Olgunluk (31k yıldız, 10 bin+ commit), 'tek Postgres ile her şey' sadeliği ve Mem0, Letta, Zep, Graphiti'den **göç araçları** sunarak rakip kullanıcılarını çekmesi.",
+        "evolve": "- Postgres'i grafik deposu olarak kullanmanın demodan çıkması; büyük grafiklerde performans ve sorgu planı iyileştirmeleri.\n- Bellek **doğruluğu/unutma** politikaları: eski veya çelişkili bilginin nasıl temizleneceği.\n- **Fırsat (IFS/ERP)**: Şema ve PL/SQL kodunu grafiğe alıp 'bu tabloyu hangi paketler değiştiriyor?' gibi etki analizi soruları cevaplamak.\n- Çok kullanıcılı ortamlarda belleğin kullanıcı bazlı izolasyonu ve denetim izi."
+      },
+      "glossary": [
+        {
+          "term": "Knowledge graph",
+          "def": "Varlıkları düğüm, ilişkileri kenar olarak tutan bilgi yapısı."
+        },
+        {
+          "term": "RAG",
+          "def": "Cevap üretmeden önce dış kaynaklardan ilgili metni getirip modele bağlam olarak veren yöntem."
+        },
+        {
+          "term": "Vektör gömme (embedding)",
+          "def": "Metnin anlamını sayı dizisine çevirerek benzerlik aramasını mümkün kılan gösterim."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL'e vektör saklama ve benzerlik arama yeteneği ekleyen eklenti."
+        },
+        {
+          "term": "GLiNER",
+          "def": "Metindeki varlıkları (kişi, kurum vb.) etiketlenmiş veriye ihtiyaç duymadan çıkaran küçük yerel model."
+        },
+        {
+          "term": "Varlık çıkarımı",
+          "def": "Metinden kişi, ürün, tarih gibi adlandırılmış nesnelerin otomatik bulunması."
+        },
+        {
+          "term": "MCP",
+          "def": "Yapay zekâ modellerinin araçlara standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Redis",
+          "def": "Bellek içinde çalışan, hızlı anahtar-değer veritabanı."
+        },
+        {
+          "term": "Ajan belleği",
+          "def": "Ajanın önceki oturumlardan öğrendiklerini saklayıp sonra kullanabilmesini sağlayan katman."
+        }
+      ]
+    },
+    {
+      "name": "ashhart/TensorFold",
+      "url": "https://github.com/ashhart/TensorFold",
+      "stars": "563",
+      "language": "Python",
+      "sections": {
+        "serves": "**TensorFold**, büyük dil modellerini Apple Silicon (MLX) ve NVIDIA GPU (CUDA) üzerinde yerelde, **hızlı ama birebir aynı çıktıyı veren** biçimde çalıştıran, OpenAI uyumlu API sunan bir çıkarım sunucusu. Sorun: hızlandırma teknikleri çoğu zaman çıktıyı hafifçe değiştirir veya eş zamanlı isteklerde tekrar üretilemez sonuç verir. TensorFold, taslak token'lar seri motorun çıktısıyla eşleşmedikçe kabul etmeyerek hız ile tekrarlanabilirliği bir arada tutmayı hedefliyor.",
+        "tech": "- **Spekülatif çözme + sıkı doğrulama**: Küçük taslak kaynağı (MTP başlıkları, DFlash2) birkaç token öneriyor; ana model tek geçişte doğruluyor. Taslak, seri motorun üreteceğiyle uyuşuyorsa kabul ediliyor, aksi halde atılıyor.\n- **Satırdan bağımsız aritmetik**: Doğrulama çekirdekleri (kernel) her isteğin sonucunun diğer eşzamanlı isteklerden etkilenmemesini garanti ediyor; MLX'te birden çok istek hesaplama turlarını paylaşabiliyor.\n- **Model ailesine özel çekirdekler**: Her desteklenen model için özelleştirilmiş kernel'ler; genel amaçlı sunuculara göre hız kazancı buradan geliyor.\n- **Sunucu özellikleri**: Anlık görüntülü prompt önbelleği (MLX), 2–8 bit nicemleme, CUDA'da tensör paralelliği, bellek farkında kabul denetimi.\n- Kurulum `pip`, çalıştırma `tensorfold serve <model>`; uç nokta `http://127.0.0.1:8080/v1`. Python 3.11+, MIT lisanslı.",
+        "why": "- **Zamanlama**: Yerel çıkarım (Mac'te 27B sınıfı modeller) ana akım oldu; hız kadar **tekrarlanabilirlik** de kaygı konusu.\n- **Kitle**: Apple Silicon kullanan geliştiriciler, yerel ajan çalıştıranlar, deterministik test/değerlendirme isteyen ekipler.\n- **İvme sebebi**: 'Hızlı ve exact' vaadi, OpenAI uyumlu API ile mevcut araçlara takılabilmesi ve yeni model ailelerine hızlı destek. Yıldızlar az (563) ama günlük ivme yüksek: erken keşif aşaması.",
+        "evolve": "- Exactness yalnızca aynı motor/ağırlık/ayar içinde garanti; MLX ile CUDA çıktıları ve farklı nicemlemeler birbirinden ayrışıyor. Platformlar arası tekrarlanabilirlik açık bir problem.\n- Bazı modeller özel ağırlık yapılandırması istiyor; desteklenen model listesi dar.\n- CUDA tarafında eşzamanlılık sınırlı.\n- **Fırsat**: Otomatik benchmark raporları, daha geniş model desteği ve kurumsal kullanım için çok kullanıcılı kota/kimlik katmanı."
+      },
+      "glossary": [
+        {
+          "term": "MLX",
+          "def": "Apple'ın Apple Silicon çipleri için geliştirdiği makine öğrenmesi çerçevesi."
+        },
+        {
+          "term": "CUDA",
+          "def": "NVIDIA GPU'larında genel amaçlı hesaplama yapmayı sağlayan platform."
+        },
+        {
+          "term": "Spekülatif çözme",
+          "def": "Küçük bir modelin önerdiği token'ların büyük model tarafından toplu doğrulanmasıyla üretimi hızlandıran teknik."
+        },
+        {
+          "term": "Token",
+          "def": "Modelin metni işlerken kullandığı en küçük parça (kelime ya da kelime parçası)."
+        },
+        {
+          "term": "Kernel",
+          "def": "GPU üzerinde çalışan, belirli bir hesaplamayı yapan küçük program."
+        },
+        {
+          "term": "Nicemleme (quantization)",
+          "def": "Model ağırlıklarını daha az bit ile saklayıp bellek ve hız kazanmak."
+        },
+        {
+          "term": "Tensör paralelliği",
+          "def": "Bir modelin katmanlarını birden çok GPU arasında bölerek çalıştırma yöntemi."
+        },
+        {
+          "term": "Prompt caching",
+          "def": "Aynı başlangıç metni tekrar işlenmesin diye hesaplanmış ara durumun saklanması."
+        },
+        {
+          "term": "OpenAI uyumlu API",
+          "def": "OpenAI'nin istek/yanıt biçimini taklit eden, mevcut istemcilerin doğrudan bağlanabildiği arayüz."
+        },
+        {
+          "term": "Deterministik",
+          "def": "Aynı girdiyle her seferinde aynı çıktının üretilmesi."
+        }
+      ]
+    },
+    {
+      "name": "TencentCloud/Octop",
+      "url": "https://github.com/TencentCloud/Octop",
+      "stars": "5.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Octop**, bireyler, aileler ve küçük ekipler için kendi makinenizde çalışan, çok ajanlı bir **kişisel yapay zekâ asistan platformu**. Web panosu, CLI, masaüstü uygulamaları ve mesajlaşma kanalları (Feishu, DingTalk, Discord, Telegram, WeChat) aynı kontrol düzleminden yönetiliyor. Sorun: bulut asistanlarına veri vermek istemeyenler için hepsi bir arada, yerel ve çok kullanıcılı bir çözüm yok. Octop görev bazlı uzman ajanlar, zamanlanmış işler ve bilgi tabanı sunuyor.",
+        "tech": "- **Tek süreç mimarisi**: Panel, CLI, IM kanalları ve zamanlayıcı tek süreçte, tek kontrol veritabanında (varsayılan SQLite WAL, isteğe bağlı PostgreSQL) çalışıyor; yeniden başlatmada durum veritabanından kurulur. Basitlik kazandırır ama yatay ölçeklenmez.\n- **Bileşenler**: Harness (model yönlendirme, araç ve skill çalıştırma), Gateway (IM mesajlarını normalleştirme), Memory (hiyerarşik hatırlama + tam metin arama), Browser (CDP tabanlı otomasyon).\n- **Yığın**: FastAPI + uvicorn, React 18 + TypeScript + Vite + Ant Design, APScheduler.\n- **Güvenlik**: JWT ile çok kullanıcılı izolasyon, PII maskeleme, kabuk komutu korumaları, araç onay akışı.\n- **Genişletilebilirlik**: Eklenti sistemi, MCP bağlayıcıları, IDE için çift yönlü ACP. `pip install octop`, Docker veya tek satır kurulum.",
+        "why": "- **Zamanlama**: Kişisel/self-hosted ajan platformları (OpenClaw benzeri) popüler; Tencent Cloud desteği güven veriyor.\n- **Kitle**: Çin IM ekosistemini (Feishu, DingTalk, WeChat) kullanan bireyler ve küçük ekipler, gizliliğe önem verenler.\n- **İvme sebebi**: Hazır masaüstü uygulamaları, tek satır kurulum, 16 MBTI kişilik şablonu gibi erişilebilir yönler ve NAS (FnOS) paketi.",
+        "evolve": "- Tek süreç tasarımı büyük ekiplerde sınırlayıcı; kuyruk/işçi ayrımıyla ölçeklenebilir mod eklenebilir.\n- Mobil istemci kapalı betada; ACP ile IM bakımı henüz açık değil.\n- Tarayıcı otomasyonu ek Chromium indirmesi istiyor.\n- **Fırsat**: Kurumsal veri kaynaklarına (SQL, ERP) salt-okunur MCP bağlayıcı şablonları."
+      },
+      "glossary": [
+        {
+          "term": "FastAPI",
+          "def": "Python'da tip ipuçlarıyla hızlı ve asenkron web API'leri yazmaya yarayan çerçeve."
+        },
+        {
+          "term": "Control plane",
+          "def": "Sistemin durumunu ve yapılandırmasını yöneten merkezî katman."
+        },
+        {
+          "term": "SQLite WAL",
+          "def": "SQLite'ın yazma öncesi günlük (write-ahead log) modu; okuma ve yazmanın birlikte daha iyi çalışmasını sağlar."
+        },
+        {
+          "term": "APScheduler",
+          "def": "Python'da zamanlanmış görevler çalıştırmaya yarayan kütüphane."
+        },
+        {
+          "term": "CDP",
+          "def": "Chrome DevTools Protocol: tarayıcıyı programla kontrol etmeyi sağlayan protokol."
+        },
+        {
+          "term": "PII maskeleme",
+          "def": "Kişisel tanımlayıcı bilgilerin (ad, telefon, TC no vb.) çıktıdan gizlenmesi."
+        },
+        {
+          "term": "JWT",
+          "def": "Kullanıcı kimliğini imzalı bir belirteçle taşıyan standart."
+        },
+        {
+          "term": "MCP",
+          "def": "Modellerin dış araçlara standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "ACP",
+          "def": "Editör/IDE ile ajanlar arasında iletişim için kullanılan ajan protokolü."
+        },
+        {
+          "term": "Tam metin arama",
+          "def": "Belge içindeki kelimelerin indekslenip hızlıca aranması."
+        }
+      ]
+    }
+  ]
+}
