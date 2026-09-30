@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-30",
+  "projects": [
+    {
+      "name": "NVIDIA/OpenShell",
+      "url": "https://github.com/NVIDIA/OpenShell",
+      "stars": "10.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**OpenShell**, otonom yapay zekâ ajanlarının dosya okuma, paket kurma, API çağırma gibi işleri **güvenli sınırlar içinde** yapabilmesi için tasarlanmış bir çalışma ortamı (runtime). Sorun şu: ajana gerçek yetki verdiğinizde gizli anahtarlarınıza, diskinize veya ağınıza kontrolsüz erişebilir. OpenShell her ajanı kısıtlı bir kum havuzunda (sandbox) çalıştırır; ağ bağlantıları çıkmadan önce denetlenir, kimlik bilgileri yalnızca onaylı hedeflere enjekte edilir.",
+        "tech": "- **Rust çekirdek + Python/TypeScript/Go/Rust SDK'ları**: Güvenlik açısından kritik katman bellek güvenli bir dille yazılmış; uygulamalar SDK ile gateway'e bağlanır.\n- **Üç katmanlı mimari**: *gateway* (kontrol düzlemi), *supervisor* (kuralları uygulayan katman) ve *sandbox* (ajanın çalıştığı ortam). Politika yönetimi ile çalıştırma birbirinden ayrılır.\n- **Çekirdek düzeyinde izolasyon**: Dosya erişimi ve sistem çağrıları Linux çekirdek mekanizmalarıyla kısıtlanır; Docker, Podman veya sanallaştırma üzerinde çalışır.\n- **Bildirimsel politika + formal doğrulama**: Dosya sistemi, ağ ve süreç kuralları deklaratif yazılır. Politika değişikliği yürürlüğe girmeden önce matematiksel bir kanıtlayıcı riskli yeni izinleri (örn. kimlik bilgisiyle yeni bir sunucuya erişim) işaretler ve insan onayına sunar.\n- **Kubernetes desteği**: Helm chart'ları var; NetworkPolicy uygulayan bir CNI gerekir.\n- **Lisans**: Apache 2.0.",
+        "why": "- **Zamanlama**: Ajanlar artık gerçek işler yapıyor; asıl engel 'model yeterince akıllı mı' değil 'ona güvenle yetki verilebilir mi'.\n- **Kitle**: Ajan platformu kuran ekipler, güvenlik ve platform mühendisleri, kurumsal AI benimsemesi yapanlar.\n- **İvme sebebi**: NVIDIA markası, günlük yaklaşık 990 yıldız; ajan güvenliği (prompt injection, sızan sırlar) en çok konuşulan konulardan biri ve proje net bir cevap sunuyor.",
+        "evolve": "- **Eksikler**: Yalnızca Linux ve Apple Silicon macOS; Windows tarafı WSL 2 ile deneysel.\n- **Fırsat**: Ajan çerçeveleriyle (MCP, Claude Code, Codex) hazır entegrasyonlar ve politika şablon kütüphaneleri.\n- **Yön**: Kurumsal ortamlarda denetim kayıtları ve uyumluluk raporları; ERP/veritabanı erişimi olan ajanlar için 'salt okunur SQL' gibi hazır politika paketleri özellikle değerli olur."
+      },
+      "glossary": [
+        { "term": "Sandbox (kum havuzu)", "def": "Bir programın yalnızca izin verilen dosya, ağ ve sistem kaynaklarına erişebildiği, dış dünyadan yalıtılmış çalışma ortamı." },
+        { "term": "Runtime", "def": "Bir programın çalıştığı ortam; kodu çalıştıran ve ona kaynak sağlayan altyapı katmanı." },
+        { "term": "Kontrol düzlemi (control plane)", "def": "Sistemin nasıl davranacağına dair kuralları ve yapılandırmayı yöneten katman; asıl işi yapan katmandan ayrıdır." },
+        { "term": "Sistem çağrısı (syscall)", "def": "Bir programın işletim sisteminden dosya açma, ağ bağlantısı kurma gibi bir hizmet istemesi." },
+        { "term": "Formal doğrulama", "def": "Bir kuralın veya programın belirli özellikleri sağladığını test etmek yerine matematiksel olarak kanıtlama yöntemi." },
+        { "term": "Prompt injection", "def": "Bir yapay zekâya gizlice kötü niyetli talimat verilerek onun istenmeyen işler yapmasının sağlanması." },
+        { "term": "Helm chart", "def": "Kubernetes'e uygulama kurmak için hazırlanmış paketlenmiş yapılandırma seti." },
+        { "term": "CNI", "def": "Kubernetes'te podlar arası ağ bağlantısını sağlayan eklenti standardı (Container Network Interface)." }
+      ]
+    },
+    {
+      "name": "VectifyAI/PageIndex",
+      "url": "https://github.com/VectifyAI/PageIndex",
+      "stars": "37.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**PageIndex**, uzun ve karmaşık belgelerde (finansal raporlar, hukuki dosyalar, teknik kılavuzlar) soru cevaplamak için **vektör veritabanı kullanmayan**, akıl yürütmeye dayalı bir RAG yaklaşımı. Sorun şu: vektör aramada 'anlamca benzer' olan metin her zaman 'soruyla ilgili' olan metin değildir. PageIndex belgeden bir içindekiler ağacı çıkarır ve LLM'in bu ağaçta, bir insanın belgeyi tarayışı gibi gezinerek doğru bölüme ulaşmasını sağlar.",
+        "tech": "- **Ağaç indeksi**: Yapı, belgenin düzeninden (başlıklar, bölümler) LLM'siz çıkarılır; ardından bir indeks modeli düğümleri özetler. Gerekçe: ucuz ve hızlı indeksleme (sayfa başına yaklaşık 0,001 dolar).\n- **Akıl yürütmeyle gezinme**: Sorgu sırasında LLM hangi düğüme bakacağına karar verir, yalnızca ulaştığı düğümler okunur. Böylece sorgu maliyeti belge uzunluğundan neredeyse bağımsızdır.\n- **Python SDK** (`pip install pageindex`): Yerel mod veya PageIndex Cloud; OpenAI Agents SDK ve Claude Agent SDK ile uyumlu.\n- **Yapılandırılabilir modeller**: İndeksleme için ucuz, sohbet için güçlü model ayrımı.\n- **Sonuçlar**: FinanceBench üzerinde %98,7 doğruluk iddiası (vektör RAG'de yaklaşık %50). Bu rakam projenin kendi raporudur, bağımsız doğrulanmalıdır.\n- **Lisans**: MIT.",
+        "why": "- **Zamanlama**: RAG'in 'parçala, gömle, benzerini getir' klasik hattının kırılganlığı yaygın şekilde hissediliyor; 'vektörsüz' fikri bu memnuniyetsizliğe hitap ediyor.\n- **Kitle**: Finans, hukuk, uyumluluk gibi uzun PDF'lerle çalışan ekipler ve RAG geliştiricileri.\n- **İvme sebebi**: Çarpıcı benchmark sonucu, basit ve anlaşılır bir fikir, günlük ~835 yıldız.",
+        "evolve": "- **Eksikler**: Yerel mod metin tabanlı PDF'lere yönelik; OCR ve görsel anlama ücretli bulut tarafında. LLM API'sine bağımlı, tamamen çevrimdışı çalışmaz.\n- **Fırsat**: Vektör ve ağaç yaklaşımını birleştiren hibrit arama; çok belgeli koleksiyonlarda ağaçlar üstü yönlendirme.\n- **Yön**: Teknik dokümantasyon ve ERP kılavuzları (örn. IFS yardım belgeleri) gibi hiyerarşik içerikte soru-cevap için doğal bir uyum var."
+      },
+      "glossary": [
+        { "term": "RAG", "def": "Bir yapay zekâ modelinin cevap vermeden önce ilgili belgeleri bulup okuyarak yanıtını bunlara dayandırması tekniği (Retrieval-Augmented Generation)." },
+        { "term": "Vektör veritabanı", "def": "Metinlerin sayısal temsillerini (gömme) saklayıp anlamca benzer olanları hızlıca bulan veritabanı." },
+        { "term": "Embedding (gömme)", "def": "Bir metnin anlamını temsil eden sayı dizisi; benzer anlamlı metinler birbirine yakın sayılara sahip olur." },
+        { "term": "Ağaç indeksi", "def": "Belgeyi bölüm, alt bölüm gibi hiyerarşik bir yapıya dönüştüren ve gezinmeyi kolaylaştıran içindekiler benzeri yapı." },
+        { "term": "FinanceBench", "def": "Yapay zekâ sistemlerinin finansal belgeler üzerinden soru cevaplama başarısını ölçen değerlendirme seti." },
+        { "term": "OCR", "def": "Görüntü veya taranmış belgelerdeki yazıyı bilgisayarın okuyabileceği metne çeviren teknoloji." }
+      ]
+    },
+    {
+      "name": "rakyll/hey",
+      "url": "https://github.com/rakyll/hey",
+      "stars": "20.5k",
+      "language": "Go",
+      "sections": {
+        "serves": "**hey**, bir web uygulamasına veya API'ye yük bindirip performansını ölçen küçük bir komut satırı aracı; Apache'nin eski `ab` (ApacheBench) aracının modern karşılığı. Tek komutla 'şu adrese 50 eşzamanlı istemciyle 30 saniye istek gönder' diyebilir, gecikme dağılımını ve durum kodlarını görürsünüz. Yeni bir API'nin ya da veritabanı önündeki servisin ne kadar yük kaldırdığını hızlıca anlamak için idealdir.",
+        "tech": "- **Go**: Tek bir statik ikili dosya; kurulum kolay, Linux/macOS/Windows için derlenir. Goroutine'ler sayesinde çok sayıda eşzamanlı istemci az kaynakla simüle edilir.\n- **Basit bayraklar**: `-n` istek sayısı, `-c` eşzamanlılık, `-z` süre, `-q` saniyedeki istek sınırı, `-m` yöntem, `-H` başlık, `-d` gövde.\n- **HTTP/2 desteği** (`-h2`) ve CSV çıktı: sonuçlar tablolara veya grafiklere aktarılabilir.\n- **Gerekçe**: `ab` HTTP/2 bilmiyor ve modern iş yüklerine uygun değil; hey aynı sadeliği koruyup bunu çözüyor.",
+        "why": "- **Neden bugün?** Proje eski (`boom` adıyla başladı) ve olgun; günlük yıldız artışı düşük (~34). Muhtemelen bir yazı veya tavsiye listesiyle yeniden gündeme geldi. Bu bir 'yeni patlama' değil, 'sağlam klasiğin yeniden keşfi' örneği.\n- **Kitle**: Backend geliştiriciler, SRE'ler, kapasite planlaması yapanlar.\n- **Neden kalıcı?** Öğrenme eşiği neredeyse sıfır.",
+        "evolve": "- **Eksikler**: Senaryo tabanlı test (giriş yap, sonra sepete ekle) yok; dağıtık yük üretimi yok; canlı arayüz yok.\n- **Alternatifler**: Daha zengin senaryolar için k6, wrk, vegeta gibi araçlar.\n- **Yön**: Otomatik regresyon eşikleri (CI'da p99 gecikme bütçesi) ve OpenTelemetry çıktısı eklenirse performans testleri boru hattına doğal biçimde girer. Veritabanı önündeki REST katmanlarını sınamak için de pratik bir başlangıç noktasıdır."
+      },
+      "glossary": [
+        { "term": "Yük testi", "def": "Bir sistemin çok sayıda eşzamanlı istek altında nasıl davrandığını ölçen test." },
+        { "term": "ApacheBench (ab)", "def": "Apache projesiyle gelen, web sunucularına basit yük testi yapan eski komut satırı aracı." },
+        { "term": "Eşzamanlılık (concurrency)", "def": "Aynı anda çalışan istemci veya iş parçacığı sayısı." },
+        { "term": "Goroutine", "def": "Go dilinin çok hafif, eşzamanlı çalışan iş birimi; binlercesi birlikte başlatılabilir." },
+        { "term": "HTTP/2", "def": "HTTP protokolünün, tek bağlantı üzerinden birden çok isteği paralel taşıyabilen daha hızlı sürümü." },
+        { "term": "p99 gecikme", "def": "İsteklerin %99'unun bu süreden daha hızlı tamamlandığı gecikme değeri; en yavaş uçları gösterir." },
+        { "term": "SRE", "def": "Sistemlerin güvenilirliğini yazılım mühendisliği yöntemleriyle sağlayan mühendislik rolü (Site Reliability Engineering)." }
+      ]
+    }
+  ]
+}
