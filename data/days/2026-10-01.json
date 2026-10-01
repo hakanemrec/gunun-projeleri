@@ -1,0 +1,189 @@
+{
+  "date": "2026-10-01",
+  "projects": [
+    {
+      "name": "colbymchenry/codegraph",
+      "url": "https://github.com/colbymchenry/codegraph",
+      "stars": "72.7k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**CodeGraph**, kod tabanını önceden indeksleyip bir **bilgi grafiğine** çeviren ve AI kodlama ajanlarına tek bir araç çağrısıyla yapısal sorulara cevap veren yerel bir araçtır.\n\nBugün ajanlar bir kodu anlamak için onlarca kez `grep` ve dosya okuma yapıyor; bu hem yavaş hem pahalı (token). CodeGraph şu soruları tek çağrıda yanıtlar:\n\n- Bu fonksiyonu kim çağırıyor?\n- Bunu değiştirirsem neler etkilenir?\n- Şu özelliğin çağrı yolu nedir?\n\nİddiası: **\"daha az token, daha az araç çağrısı, %100 yerel\"**. Kod bulutta hiçbir yere gönderilmez.",
+        "tech": "Üç katmanlı bir mimari var:\n\n- **Ayrıştırma:** Rust ile yazılmış yerel bir çekirdek, **tree-sitter** gramerleriyle 20'den fazla dili (TS/JS, Python, Go, Rust, Java, C#, PHP, Swift, Kotlin, COBOL, Terraform vb.) ayrıştırıp fonksiyon, sınıf ve bağımlılıkları çıkarır.\n- **Depolama:** Her şey projedeki `.codegraph/` içinde **SQLite** (WAL modu + **FTS5** tam metin arama) veritabanında tutulur; dosyalar arası referanslar çıkarımdan sonra çözülür.\n- **Senkronizasyon ve sunum:** İşletim sistemi dosya izleyicileri (FSEvents/inotify) değişiklikleri 2 sn'lik debounce ile artımlı işler. Ajanlara **MCP** üzerinden tek bir araç (`codegraph_explore`) sunulur: `codegraph serve --mcp`.\n\nKararların gerekçesi: SQLite = sıfır kurulum, tek dosya; Rust çekirdek = büyük repolarda hız; tek MCP aracı = modelin araç seçme karmaşasını azaltmak. Sistem donanıma göre paralel/tek iş parçacıklı çalışma moduna da uyum sağlar.",
+        "why": "- **Zamanlama:** Ajanlarla kod yazmak yaygınlaştı ve en büyük acı noktası token maliyeti ile bağlam şişmesi oldu.\n- **Ölçülebilir iddialar:** VS Code, Django, Tokio, Gin gibi 7 gerçek repoda **%88 daha az araç çağrısı**, **%53 daha hızlı**, **%44 daha ucuz** sonuç raporlanıyor.\n- **Geniş uyum:** Claude Code, Cursor, Codex CLI, Copilot, opencode, Gemini CLI gibi birçok ajana tek komutla (`codegraph install`) bağlanıyor.\n- Bugün yaklaşık +118 yıldız aldı; toplamda 72k+ yıldızla zaten yerleşik bir proje.",
+        "evolve": "- **Dinamik davranış körlüğü:** Yansıma (reflection), DI konteynerleri ve dinamik dispatch statik analizde hâlâ kör nokta; çalışma zamanı izleriyle zenginleştirilebilir.\n- **Bağlam artıklığı:** Yazarın kendisi de oturum sonunda bağlamda %80 daha fazla kalıcı içerik oluştuğunu not ediyor; uzun oturumlarda sonuç özetleme/budama gerekebilir.\n- **Veritabanı şeması:** SQL tarafında PL/SQL gibi dillerin ve veritabanı nesnelerinin (tablo, paket, tetikleyici) grafiğe eklenmesi, ERP/IFS tipi büyük kod tabanları için çok değerli olurdu.\n- Ağ paylaşımları ve WSL2 sınırlarında kararlılık, indekssiz projeler için yedek (fallback) yol."
+      },
+      "glossary": [
+        {
+          "term": "Bilgi grafiği (knowledge graph)",
+          "def": "Kod öğelerinin (fonksiyon, sınıf) düğüm, aralarındaki ilişkilerin (çağırır, içe aktarır) kenar olarak tutulduğu veri yapısı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araç ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "tree-sitter",
+          "def": "Kaynak kodu hızlı ve hataya dayanıklı biçimde sözdizim ağacına çeviren bir ayrıştırıcı kütüphanesi."
+        },
+        {
+          "term": "SQLite",
+          "def": "Sunucu gerektirmeyen, tek dosyada çalışan gömülü ilişkisel veritabanı."
+        },
+        {
+          "term": "FTS5",
+          "def": "SQLite'ın tam metin arama (full-text search) modülü."
+        },
+        {
+          "term": "WAL modu",
+          "def": "SQLite'ta değişikliklerin önce bir günlüğe yazıldığı, böylece okuma ve yazmanın aynı anda yapılabildiği çalışma biçimi."
+        },
+        {
+          "term": "Debounce",
+          "def": "Kısa sürede art arda gelen olayları bekleyip tek seferde işleme tekniği; burada dosya değişiklikleri için kullanılıyor."
+        },
+        {
+          "term": "Dynamic dispatch",
+          "def": "Hangi fonksiyonun çağrılacağının derleme zamanında değil, çalışma anında belirlendiği durum."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlediği küçük parçalar; maliyet ve bağlam sınırı token üzerinden hesaplanır."
+        },
+        {
+          "term": "Artımlı güncelleme",
+          "def": "Tüm veriyi baştan işlemek yerine yalnızca değişen kısımları yeniden işleme yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "modelcontextprotocol/servers",
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "stars": "90.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**MCP Servers**, Model Context Protocol'ün resmi **referans sunucu** koleksiyonudur. Amaç, bir yapay zekâ modeline dosyalara, git depolarına, web'e veya hafızaya **kontrollü ve güvenli** erişim vermenin nasıl yapılacağını gösteren örnekler sunmaktır.\n\nBunlar hazır üretim ürünü değil, kendi MCP sunucunu yazacak geliştiriciler için **öğretici örneklerdir**. Aktif yedi sunucu var: Filesystem, Git, Memory, Fetch, Sequential Thinking, Time ve Everything (test/referans sunucusu).",
+        "tech": "- **SDK'lar:** Sunucular resmi **TypeScript** ve **Python** SDK'larıyla yazılmıştır; C#, Go, Java, Kotlin, PHP, Ruby, Rust, Swift için de SDK mevcut.\n- **Çalıştırma:** TypeScript sunucuları `npx`, Python sunucuları `uvx` veya `pip` ile çalışır. İstemci (ör. Claude Desktop) bir JSON yapılandırmasıyla komut, argüman ve ortam değişkenlerini tanımlar.\n- **Güvenlik tasarımı:** Filesystem sunucusu erişilebilir dizinleri yapılandırmayla sınırlar; Memory sunucusu bilgi grafiği tabanlı kalıcı hafıza sunar.\n- **Arşiv kararı:** GitHub, GitLab, PostgreSQL, Slack, AWS KB gibi 13 sunucu ayrı bir arşiv deposuna taşındı; birçoğunun yerini topluluk veya satıcı sürümleri aldı. Bu, çekirdek deponun küçük ve referans niteliğinde kalmasını sağlıyor.\n- **Lisans:** Yeni katkılar Apache 2.0, eski kod MIT.",
+        "why": "- MCP, ajan ekosisteminde fiilî standart haline geldi; bu depo **\"MCP nasıl yazılır\"** sorusunun ilk durağı.\n- Pratik kazanç: tek satırlık yapılandırmayla modele dosya sistemi, git veya web erişimi vermek.\n- Hedef kitle: ajan geliştiricileri, kendi araçlarını modele açmak isteyen şirket içi ekipler ve MCP'yi öğrenenler.\n- Bugünkü ivme küçük (+50) ama 90k+ yıldız, ekosistemdeki oturmuş konumunu gösteriyor; diğer trend projelerin çoğu (CodeGraph, OpenRig vb.) zaten MCP üzerinden konuşuyor.",
+        "evolve": "- Kurumsal ihtiyaçlar için **kimlik doğrulama, yetkilendirme ve denetim kaydı** örnekleri.\n- Veritabanı sunucularının (PostgreSQL gibi) arşivden çıkıp güncel, salt-okunur güvenli bir referans olarak geri gelmesi; Oracle/PL/SQL için benzeri bir örnek ERP dünyası için faydalı olur.\n- **Prompt injection** ve araç zehirlenmesine karşı güvenlik rehberi ve test seti.\n- Sunucu keşfi ve sürümleme için resmi bir kayıt (registry) ile entegrasyon."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin araçlara ve veri kaynaklarına standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Referans uygulama",
+          "def": "Bir standardın veya protokolün nasıl uygulanacağını gösteren, örnek amaçlı kaynak kod."
+        },
+        {
+          "term": "SDK",
+          "def": "Belirli bir platform veya protokol için yazılım geliştirmeyi kolaylaştıran kütüphane ve araç seti."
+        },
+        {
+          "term": "npx",
+          "def": "Node.js paketlerini kalıcı kurmadan doğrudan çalıştırmayı sağlayan komut."
+        },
+        {
+          "term": "uvx",
+          "def": "Python araçlarını izole ortamda tek komutla çalıştıran uv aracının komutu."
+        },
+        {
+          "term": "Bilgi grafiği (knowledge graph)",
+          "def": "Varlıkların ve aralarındaki ilişkilerin düğüm ve kenarlarla tutulduğu veri yapısı; Memory sunucusu kalıcı hafızayı bu şekilde saklar."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Modelin okuduğu içeriğe gizlenmiş talimatlarla modelin istenmeyen eylemler yapmaya yönlendirilmesi saldırısı."
+        },
+        {
+          "term": "Registry",
+          "def": "Sunucu veya paketlerin listelenip bulunabildiği merkezi kayıt defteri."
+        }
+      ]
+    },
+    {
+      "name": "NawfalMotii79/PLFM_RADAR",
+      "url": "https://github.com/NawfalMotii79/PLFM_RADAR",
+      "stars": "26.5k",
+      "language": "PLSQL",
+      "sections": {
+        "serves": "**AERIS-10**, 10.5 GHz'de çalışan, düşük maliyetli ve tamamen açık kaynak bir **faz dizili (phased array) radar** projesidir. Araştırmacılar, dron geliştiricileri ve ileri seviye SDR meraklıları için tasarlandı.\n\nNot: GitHub'ın dil etiketi *PLSQL* gösterse de proje veritabanıyla ilgili değil; **PLFM** radar terimi olan *Pulse Linear Frequency Modulated* (darbe doğrusal frekans modülasyonu) kısaltması. Etiket büyük olasılıkla dil tespitinin VHDL/Verilog dosyalarını yanlış sınıflandırmasından geliyor. Yani PL/SQL ile gerçek bir kesişimi yok, ama trend listesinde bu etiketle görünüyor.\n\nİki sürümü var: **AERIS-10N** (8x16 yama anten, ~3 km menzil) ve **AERIS-10X** (32x16 dalga kılavuzu, ~20 km menzil).",
+        "tech": "- **Donanım kartları:** Güç yönetimi, frekans sentezleyici (AD9523-1, ADF4382), ana kart (DAC, LTC5552 karıştırıcı, ADAR1000 faz kaydırıcı, ADTR1107 ön uç yükselteç).\n- **FPGA (XC7A50T):** Darbe sıkıştırma, Doppler FFT, MTI ve CFAR sinyal işleme zincirini donanımda koşturur; dil olarak VHDL/Verilog.\n- **Mikrodenetleyici (STM32F746):** Güç sıralaması, GPS/IMU entegrasyonu, ısıl izleme.\n- **Yazılım:** Harita entegrasyonlu Python GUI.\n- **Elektronik yönlendirme:** ±45° elektronik ışın yönlendirme, mekanik parça yok.\n- **Lisans:** Donanım için CERN-OHL-P, yazılım için MIT. Şematikler, PCB, BOM ve simülasyonlar repoda.",
+        "why": "- Faz dizili radarlar normalde pahalı ve kapalı kutu sistemlerdir; şematikten firmware'e **her şeyi açan** bir proje nadirdir.\n- Dron algılama, SDR ve donanım hacker kültürünün ilgi alanlarının kesişiminde.\n- Zamanlama: dron güvenliği ve düşük maliyetli sensör konuları gündemde.\n- Bugün +263 yıldız; toplamda 26k+. Not: dokümantasyon maliyeti açıkça belirtmiyor, bu \"düşük maliyet\" iddiasını doğrulamayı zorlaştırıyor.",
+        "evolve": "- Net bir **malzeme listesi maliyeti** ve montaj rehberi.\n- Referans veri setleri ve simülasyon ortamıyla yazılım tarafının donanımsız denenebilmesi.\n- Daha zengin bir hedef izleme/sınıflandırma katmanı (makine öğrenmesi ile dron-kuş ayrımı).\n- Yasal uyum rehberi: 10.5 GHz bandında yayın yapmak ülkelere göre lisans gerektirebilir.\n- Dil etiketi sorunu için `.gitattributes` ile linguist ayarı."
+      },
+      "glossary": [
+        {
+          "term": "Faz dizili radar (phased array)",
+          "def": "Çok sayıda küçük antenin sinyal fazlarını değiştirerek ışını mekanik hareket olmadan elektronik olarak yönlendiren radar."
+        },
+        {
+          "term": "PLFM",
+          "def": "Pulse Linear Frequency Modulated; frekansı darbe içinde doğrusal değişen radar sinyali türü."
+        },
+        {
+          "term": "FPGA",
+          "def": "Üretildikten sonra programlanarak donanım devresi gibi davranabilen yeniden yapılandırılabilir yonga."
+        },
+        {
+          "term": "Darbe sıkıştırma",
+          "def": "Uzun bir radar darbesinin işlenerek hem menzili hem çözünürlüğü artıran sinyal işleme tekniği."
+        },
+        {
+          "term": "Doppler FFT",
+          "def": "Hedeflerin hızını, yansıyan sinyalin frekans kaymasından hesaplayan dönüşüm."
+        },
+        {
+          "term": "MTI",
+          "def": "Moving Target Indication; sabit nesneleri (yer yansımaları) eleyip hareketli hedefleri öne çıkaran filtre."
+        },
+        {
+          "term": "CFAR",
+          "def": "Sabit yanlış alarm oranıyla gürültü üzerinden hedef tespit eşiğini dinamik belirleyen algoritma."
+        },
+        {
+          "term": "SDR",
+          "def": "Yazılım tanımlı radyo; radyo sinyallerinin büyük ölçüde yazılımla işlendiği sistem."
+        },
+        {
+          "term": "CERN-OHL-P",
+          "def": "CERN Açık Donanım Lisansı, permissive sürüm; donanım tasarımlarının serbestçe kullanılmasına izin verir."
+        },
+        {
+          "term": "VHDL/Verilog",
+          "def": "FPGA ve yonga tasarımında devreleri tanımlamak için kullanılan donanım tanımlama dilleri."
+        }
+      ]
+    },
+    {
+      "name": "byoungd/up",
+      "url": "https://github.com/byoungd/up",
+      "stars": "66.5k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**up**, yapay zekâ çağında **yaşam boyu öğrenme** için yazılmış, sürekli güncellenen açık bir el kitabıdır (yazarı Han Xiankai, takma adı \"Lipu\"). Sıradan insanların sürdürülebilir şekilde öğrenmesini, gerçek projeler tamamlamasını ve gelişimini belgelemesini hedefler.\n\nKod değil **içerik** deposudur; Çince ve İngilizce EPUB/PDF sürümleri, şablonlar ve kanıt kartları içerir.",
+        "tech": "Teknik yığından çok **içerik mimarisi** öne çıkar:\n\n- Beş ana bölüm: temel oluşturma (özellikle İngilizce), araçlarla yetenek artırma (AI ile iş birliği), gerçek hayata uygulama, pratik ve toparlanma, uzun vadeli eylem.\n- Döngüsel yöntem: sorun keşfi → aktif öğrenme → AI ile iş birliği → gerçek görev → kanıt saklama → gözden geçirme.\n- Araştırma sonuçlarını (kaynaklı), kişisel deneyimi ve test edilebilir hipotezleri birbirinden ayıran bir yazım disiplini.\n- Lisans: içerik CC BY-NC 4.0, kod/yapılandırma MIT; OSI uyumlu açık kaynak olmadığı açıkça belirtilmiş. EPUB/PDF üretimi için betikler JavaScript.",
+        "why": "- AI cevapları ucuzlattı; geriye iyi soru sormak, kanıtı değerlendirmek ve sorumluluk almak kıtlığı kaldı. Kitabın tezi tam bu.\n- Hedef kitle: kariyer geçişindeki gençler, öğrenme alışkanlığı kurmak isteyenler, ebeveynler.\n- Başarısızlığı dürüstçe kayıt altına alan bir ton ve küçük, haftalık, belgelenmiş kazanımlar önerisi çekici.\n- Bugün +743 yıldız; 66k+ toplam. Yıldızların bir kısmı kod değil, içerik ve sosyal paylaşım kaynaklı.",
+        "evolve": "- Etkileşimli sürüm: ilerleme takibi, haftalık gözden geçirme şablonlarını uygulamaya dönüştürme.\n- Daha fazla dile çeviri ve topluluk katkılarıyla yerel örnekler.\n- Geliştiriciler için üretkenlik odaklı bir ek: kod okuma/öğrenme günlükleri, AI destekli tekrar sistemleri.\n- Yöntemin etkisini ölçen küçük vaka çalışmaları."
+      },
+      "glossary": [
+        {
+          "term": "CC BY-NC 4.0",
+          "def": "Eserin atıf yapılarak paylaşılıp uyarlanmasına izin veren ama ticari kullanımı yasaklayan Creative Commons lisansı."
+        },
+        {
+          "term": "EPUB",
+          "def": "E-kitap okuyucularda kullanılan açık e-kitap dosya biçimi."
+        },
+        {
+          "term": "OSI uyumlu",
+          "def": "Open Source Initiative'in açık kaynak tanımına uyan lisans; ticari kullanım yasağı bu tanıma aykırıdır."
+        },
+        {
+          "term": "Yaşam boyu öğrenme",
+          "def": "Eğitim hayatı bittikten sonra da sürekli yeni beceri edinmeyi hedefleyen yaklaşım."
+        }
+      ]
+    }
+  ]
+}
