@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-02",
+  "projects": [
+    {
+      "name": "tile-ai/tilelang",
+      "url": "https://github.com/tile-ai/tilelang",
+      "stars": "8.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**TileLang**, GPU, CPU ve yapay zekâ hızlandırıcıları için yüksek performanslı **çekirdek (kernel)** yazmayı kolaylaştıran Python tabanlı bir alana özel dildir (DSL).\n\nBugün FlashAttention gibi hızlı bir kernel yazmak; bellek hiyerarşisini, thread yerleşimini ve boru hattı (pipeline) zamanlamasını elle yönetmeyi gerektiriyor. Bu da yalnızca birkaç uzmanın yapabildiği bir iş. TileLang şunu vaat eder:\n\n- Python'a benzer, okunaklı bir sözdizimiyle kernel yaz\n- Düşük seviyeli optimizasyonları (veri kopyalama, katmanlama, zamanlama) derleyiciye bırak\n- Aynı kodu farklı donanımlara taşı",
+        "tech": "Proje, **Apache TVM** derleyici altyapısının üzerine kurulu.\n\n- **Dil katmanı:** `T.gemm`, `T.copy`, `T.Pipelined` gibi **tile** (küçük veri bloğu) tabanlı ilkeller. Geliştirici veriyi bloklar halinde düşünür; thread eşlemesi ve bellek yerleşimi (layout) otomatik çıkarılır.\n- **Derleyici:** Kaynak koduna bağlı hata mesajları veren bir ara temsil (IR), optimizasyon ve aşağı indirgeme (lowering) geçişleri.\n- **Çoklu arka uç:** Bir backend kayıt sistemi sayesinde NVIDIA CUDA (SM70–SM120), AMD ROCm/HIP, Huawei Ascend, Apple Metal, LLVM (CPU) ve deneysel CuTe DSL desteklenir.\n- **JIT:** `@tilelang.jit` dekoratörü ile çağrı anında özelleştirilmiş derleme yapılır.\n\nGerekçe: TVM'in olgun derleyici altyapısını yeniden yazmak yerine kullanmak, geliştirme hızını artırır; tile soyutlaması ise performans ile üretkenlik arasındaki dengeyi kurar.",
+        "why": "- **Zamanlama:** LLM çıkarım ve eğitim maliyetleri, özel kernel yazma ihtiyacını patlattı (dikkat mekanizmaları, kuantize edilmiş GEMM, seyrek dikkat).\n- **Donanım çeşitliliği:** NVIDIA dışı çiplere (Ascend, ROCm, Metal) tek kaynaktan hedeflenebilmesi, özellikle Asya ekosisteminde güçlü ilgi çekiyor.\n- **Yeni özellikler:** Ascend 950 NPU arka ucu, Blackwell (SM120) optimizasyonları, Windows desteği ve LSP/IDE desteği son dönemde eklendi.\n- Bugün yaklaşık +163 yıldız aldı; kitle: ML sistem mühendisleri ve kernel geliştiricileri.",
+        "evolve": "- **Öğrenme eğrisi:** Hâlâ GPU bellek modeli bilgisi gerektiriyor; daha fazla otomatik ayarlama (auto-tuning) ve hazır şablon kütüphanesi girişi kolaylaştırır.\n- **Deneysel arka uçlar:** LLVM CPU ve CuTe DSL olgunlaşırsa taşınabilirlik hikâyesi güçlenir.\n- **Ekosistem entegrasyonu:** PyTorch/vLLM/SGLang ile daha derin, hazır operatör entegrasyonu benimsemeyi hızlandırır.\n- **Hata ayıklama:** IR görselleştirme ve pass diff araçları geliştirilerek performans gerilemeleri otomatik yakalanabilir."
+      },
+      "glossary": [
+        { "term": "Kernel", "def": "GPU veya hızlandırıcı üzerinde binlerce thread ile paralel çalışan küçük, performans odaklı hesaplama fonksiyonu." },
+        { "term": "DSL (Alana Özel Dil)", "def": "Genel amaçlı değil, belirli bir problem türü için tasarlanmış küçük programlama dili." },
+        { "term": "Apache TVM", "def": "Makine öğrenmesi hesaplamalarını farklı donanımlar için derleyip optimize eden açık kaynak derleyici altyapısı." },
+        { "term": "Tile", "def": "Büyük bir matrisin, birlikte işlenen küçük dikdörtgen parçası; GPU belleğinde verimli taşınması için kullanılır." },
+        { "term": "GEMM", "def": "Genel matris-matris çarpımı; sinir ağlarının en yoğun hesaplama işlemi." },
+        { "term": "FlashAttention", "def": "Transformer dikkat hesabını bellek erişimini azaltarak çok daha hızlı yapan algoritma." },
+        { "term": "JIT derleme", "def": "Kodun program çalışırken, gerçek parametreleri bilinerek anında derlenmesi." },
+        { "term": "IR (Ara Temsil)", "def": "Derleyicinin kaynak kod ile makine kodu arasında kullandığı, optimizasyona uygun iç program gösterimi." },
+        { "term": "Pipeline (boru hattı)", "def": "Veri yükleme ile hesaplamayı üst üste bindirip donanımı boş bırakmayan zamanlama tekniği." },
+        { "term": "NPU", "def": "Yapay zekâ işlemleri için tasarlanmış özel işlemci (ör. Huawei Ascend)." },
+        { "term": "LSP", "def": "Language Server Protocol; editörlere otomatik tamamlama ve ipucu gibi dil özelliklerini sağlayan standart." }
+      ]
+    },
+    {
+      "name": "pablostanley/yoinks",
+      "url": "https://github.com/pablostanley/yoinks",
+      "stars": "3.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**yoinks**, terminalden video indirmeyi sade ve reklamsız hale getiren bir komut satırı aracıdır.\n\nBir bağlantı yapıştırırsınız; araç mevcut çözünürlükleri ve tahmini dosya boyutlarını listeler, ok tuşlarıyla seçip Enter'a basarsınız. YouTube, X/Twitter, Instagram, Threads, TikTok dahil **1.800'den fazla** siteyi destekler. Ses-only MP3 çıkarma da var.\n\nÇözdüğü problem: `yt-dlp` güçlü ama bayrakları ezberlemek gerekir; web siteleri ise reklam doludur.",
+        "tech": "- **yt-dlp:** İndirme çekirdeği. İlk çalıştırmada yoksa `~/.yoinks/bin` altına otomatik kurulur.\n- **FFmpeg:** Video ve ses akışlarını birleştirir, MP3 çıkarır. PATH'ten ya da paketlenmiş `ffmpeg-static`'ten gelir.\n- **Ink:** React tabanlı terminal arayüz çatısı; bileşen mantığıyla etkileşimli TUI yazılır.\n- **TypeScript + tsup:** Tek paket halinde derleme; Node 18+ ile `npx yoinks` ile kurulumsuz denenebilir.\n\nGerekçe: Yeniden tekerlek icat etmek yerine olgun araçları (yt-dlp, FFmpeg) iyi bir arayüzle sarmak; böylece site desteği yt-dlp topluluğundan bedavaya gelir.",
+        "why": "- **Sürtünmesizlik:** Tek komut (`npx yoinks`), sıfır yapılandırma, hoş bir arayüz.\n- **Tasarımcı geçmişi:** Geliştirici (Pablo Stanley) tasarım topluluğunda tanınıyor; paylaşımı geniş kitleye ulaştı.\n- **Reklam/gizlilik tepkisi:** Şüpheli indirme sitelerine alternatif olarak cazip.\n- Bugün yaklaşık +361 yıldız aldı; kitle: geliştiriciler, içerik üreticileri, terminal severler.",
+        "evolve": "- **Hukuki/telif uyarıları:** İndirmenin yasallığı içerik ve bölgeye göre değişir; araç içinde bilgilendirme eklenebilir.\n- **Toplu indirme ve oynatma listeleri:** Kuyruk, devam ettirme ve altyazı desteği.\n- **Yapılandırma dosyası:** Varsayılan kalite, klasör ve dosya adı şablonları.\n- **Bağımlılık güvenliği:** Otomatik indirilen yt-dlp ikilisi için sürüm sabitleme ve sağlama toplamı doğrulaması."
+      },
+      "glossary": [
+        { "term": "CLI", "def": "Komut satırı arayüzü; programı fare yerine terminalde yazdığınız komutlarla kullanırsınız." },
+        { "term": "TUI", "def": "Terminal içinde çizilen, klavye/fare ile gezilen metin tabanlı etkileşimli arayüz." },
+        { "term": "yt-dlp", "def": "Yüzlerce video sitesinden içerik indirebilen açık kaynak komut satırı programı." },
+        { "term": "FFmpeg", "def": "Ses ve videoyu dönüştüren, birleştiren, kesen açık kaynak medya aracı." },
+        { "term": "Ink", "def": "React bileşenleriyle terminal arayüzü yazmayı sağlayan JavaScript kütüphanesi." },
+        { "term": "tsup", "def": "TypeScript projelerini hızlıca paketleyip derleyen basit bir derleme aracı." },
+        { "term": "npx", "def": "Bir npm paketini kalıcı kurmadan tek seferlik çalıştıran komut." }
+      ]
+    },
+    {
+      "name": "firebase/firebase-ios-sdk",
+      "url": "https://github.com/firebase/firebase-ios-sdk",
+      "stars": "6.9k",
+      "language": "C++",
+      "sections": {
+        "serves": "**Firebase iOS SDK**, Apple platformları (iOS, macOS, tvOS vb.) için Google'ın uygulama geliştirme platformunu sunan resmi açık kaynak kütüphane setidir.\n\nBackend'i sıfırdan kurmadan şunları sağlar:\n\n- **Veri:** Cloud Firestore, Realtime Database, Cloud Storage\n- **Kimlik doğrulama:** Firebase Auth\n- **Bildirim ve mesajlaşma:** Cloud Messaging, In-App Messaging\n- **Sunucu tarafı:** Cloud Functions, App Check\n- **İzleme:** Crashlytics, Performance Monitoring, Remote Config\n- **Yapay zekâ:** Firebase AI Logic (Gemini entegrasyonu)",
+        "tech": "- **Diller:** Swift ve Objective-C ağırlıklı; Firestore gibi performans kritik parçalarda **C++ çekirdek** kullanılır ve ortak mantık platformlar arasında paylaşılır.\n- **Dağıtım:** **Swift Package Manager** önerilen yol; CocoaPods desteği Ekim 2026'ya kadar sürüyor; Carthage deneysel.\n- **Analytics:** Açık kaynak değil; önceden derlenmiş ikili dosya olarak dahil edilir.\n- **Modülerlik:** Her ürün ayrı paket; uygulamaya yalnızca ihtiyaç duyulan bağımlılıklar eklenir.\n\nGerekçe: Çekirdeği C++'ta tutmak, Android ve web SDK'larıyla davranış tutarlılığı ve düşük gecikme sağlar; SPM'e geçiş ise Apple ekosistemindeki standart yönüne uyum demektir.",
+        "why": "- **Zamanlama:** CocoaPods'un Ekim 2026'daki destek bitişi, ekipleri SPM geçişine itiyor; repo bu yüzden ilgi görüyor.\n- **AI ivmesi:** Firebase AI Logic'in Gemini Foundation Models adaptörü önizlemeye girdi; mobil geliştiriciler için cihaz içi/bulut AI kapısı.\n- **Kitle:** Mobil uygulama geliştiricileri ve hızlı prototip isteyen girişimler.\n- Bugünkü artış (+112 yıldız) göreceli olarak küçük; ancak proje çok geniş bir kullanıcı tabanına sahip.",
+        "evolve": "- **Kapalı kalan parçalar:** Analytics'in kapalı kaynak olması şeffaflık ve hata ayıklamada sınırlayıcı.\n- **Swift'e tam geçiş:** Objective-C/C++ katmanlarının azalması Swift concurrency ile daha doğal API'ler sağlar.\n- **Veri modeli:** Firebase Data Connect (SQL/PostgreSQL tabanlı) ile ilişkisel veri senaryolarının daha derin entegrasyonu.\n- **Bağımlılık ağırlığı:** Uygulama boyutunu ve derleme süresini azaltan daha ince paketler."
+      },
+      "glossary": [
+        { "term": "SDK", "def": "Bir platformu kullanmak için gereken kütüphane, araç ve belgelerin hazır paketi." },
+        { "term": "Cloud Firestore", "def": "Google'ın gerçek zamanlı senkronize olan, belge tabanlı (NoSQL) bulut veritabanı." },
+        { "term": "Realtime Database", "def": "Verinin JSON ağacı olarak tutulduğu ve istemcilere anlık yayıldığı Firebase veritabanı." },
+        { "term": "Swift Package Manager", "def": "Apple'ın Swift için resmi bağımlılık yöneticisi; Xcode'a entegredir." },
+        { "term": "CocoaPods", "def": "iOS/macOS projeleri için eski ve yaygın bağımlılık yöneticisi." },
+        { "term": "Carthage", "def": "Kütüphaneleri önceden derleyip projeye ekleyen, merkezi olmayan bir Apple bağımlılık yöneticisi." },
+        { "term": "App Check", "def": "Backend'e yalnızca gerçek uygulamanızdan gelen isteklerin ulaşmasını doğrulayan koruma servisi." },
+        { "term": "Crashlytics", "def": "Uygulama çökmelerini toplayıp raporlayan Firebase hata izleme servisi." },
+        { "term": "Remote Config", "def": "Uygulama sürümü yayınlamadan davranış ve görünümü uzaktan değiştirmeyi sağlayan servis." },
+        { "term": "Firebase AI Logic", "def": "Uygulamadan Gemini gibi yapay zekâ modellerini güvenli şekilde çağırmayı sağlayan Firebase hizmeti." },
+        { "term": "NoSQL", "def": "Verinin tablo yerine belge, anahtar-değer gibi esnek biçimlerde tutulduğu veritabanı türü." }
+      ]
+    }
+  ]
+}
