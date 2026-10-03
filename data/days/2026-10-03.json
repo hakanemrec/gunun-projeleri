@@ -1,0 +1,245 @@
+{
+  "date": "2026-10-03",
+  "projects": [
+    {
+      "name": "Tracer-Cloud/opensre",
+      "url": "https://github.com/Tracer-Cloud/opensre",
+      "stars": "11.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**OpenSRE**, canlı sistemlerdeki olayları (incident) teşhis edip çözmeye çalışan **yapay zekâ SRE ajanları** kurmanızı sağlayan açık kaynak bir çerçevedir.\n\nGece 3'te bir alarm çaldığında nöbetçi mühendis loglara, metriklere, son deploy'lara bakıp neyin bozulduğunu elle bulmak zorunda kalır. OpenSRE bu işi şöyle yapar:\n\n- Alarmı veya sizin tarifinizi alır, ilgili log/metrik/iz verisini çeker\n- Hipotezleri sınar ve **kanıta bağlı** bir teşhis sunar\n- İsterseniz düzeltme önerir veya çalıştırır, özeti Slack/PagerDuty'ye gönderir",
+        "tech": "Proje **Python** ile yazılmış; mantık, denetlenebilir (auditable) yapılandırılmış LLM prompt'ları etrafında kurulu.\n\n- **Entegrasyonlar:** 60'tan fazla araç: Grafana (Loki/Mimir/Tempo), Datadog, CloudWatch, Sentry, Kubernetes, AWS, ArgoCD; veritabanı tarafında PostgreSQL, MySQL, MongoDB, ClickHouse, Snowflake, Redis.\n- **Model bağımsızlığı:** Anthropic, OpenAI, Gemini, Ollama, Bedrock gibi sağlayıcılar seçilebilir; böylece veri dışarı çıkmadan yerel modelle de çalışır.\n- **Gizlilik:** Pod, cluster, ID gibi tanımlayıcılar dış LLM'e gitmeden önce **maskelenir**, çıktıda geri yüklenir.\n- **Arayüz ve dağıtım:** Etkileşimli REPL, headless CLI, Python API; yönetilen bulut, AWS EC2 veya konteynerle self-hosted. Paylaşılan durum için isteğe bağlı Postgres.\n- **MCP** desteği ile dış araçlara standart arayüzden bağlanır.",
+        "why": "- **Zamanlama:** Kodlama ajanları olgunlaştı; sıradaki alan \"üretimde yangın söndüren ajan\". Proje, SWE-bench'in kodlama için yaptığını olay müdahalesi için yapmayı hedefliyor.\n- **Kitle:** SRE/DevOps ekipleri, platform mühendisleri, nöbet yükünden bunalmış küçük ekipler.\n- **Güven faktörü:** Apache 2.0 lisansı, maskeleme ve yerel transkript varsayılanı kurumsal kullanım için kapıyı açıyor.\n- Bugünkü ivme (+24) düşük; proje daha çok genel yükselişiyle listede, yani ani patlama değil istikrarlı bir ilgi.",
+        "evolve": "- Proje hâlâ **public alpha**: API'ler değişebilir, Linear, Notion, Teams, Confluence entegrasyonları yol haritasında.\n- Otomatik düzeltmenin güvenliği kritik: onay mekanizmaları, dry-run ve geri alma (rollback) senaryoları güçlenmeli.\n- Gerçek olay verisiyle açık bir **değerlendirme benchmark'ı** yayımlanırsa farklı modeller karşılaştırılabilir.\n- Veritabanı entegrasyonları genişleyip yavaş sorgu, kilit ve bağlantı havuzu sorunlarını teşhis eden derin uzmanlık eklenirse DBA'lar için de değerli olur (ERP/Oracle tarafı için bile uyarlanabilir).\n- Telemetri varsayılan olarak açık (opt-out); kurumlar için varsayılanın kapalı olması tercih edilebilir."
+      },
+      "glossary": [
+        {
+          "term": "SRE",
+          "def": "Site Reliability Engineering: Sistemlerin güvenilir ve ayakta kalmasından sorumlu mühendislik disiplini."
+        },
+        {
+          "term": "Incident (olay)",
+          "def": "Üretim sisteminde kesinti veya ciddi bozulma yaratan, acil müdahale gerektiren durum."
+        },
+        {
+          "term": "Runbook",
+          "def": "Belirli bir sorun çıktığında izlenecek adımları anlatan operasyon el kitabı."
+        },
+        {
+          "term": "Observability (gözlemlenebilirlik)",
+          "def": "Bir sistemin içini log, metrik ve izler (trace) üzerinden anlayabilme yeteneği."
+        },
+        {
+          "term": "Loki / Mimir / Tempo",
+          "def": "Grafana'nın sırasıyla log, metrik ve dağıtık iz verisini saklayan açık kaynak araçları."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "REPL",
+          "def": "Komutu yazıp anında sonucunu aldığınız etkileşimli komut satırı ortamı."
+        },
+        {
+          "term": "Headless CLI",
+          "def": "Arayüzsüz, betiklerden ve otomasyondan çağrılabilen komut satırı kullanımı."
+        },
+        {
+          "term": "Public alpha",
+          "def": "Ürünün herkese açık ama henüz kararlı olmayan, değişebilir erken sürümü."
+        },
+        {
+          "term": "RL ortamı (reinforcement learning)",
+          "def": "Ajanın deneme-yanılmayla ödül alarak öğrendiği simülasyon veya eğitim ortamı."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Yazılımın kullanım verisini geliştiricisine otomatik göndermesi."
+        }
+      ]
+    },
+    {
+      "name": "D4Vinci/Scrapling",
+      "url": "https://github.com/D4Vinci/Scrapling",
+      "stars": "85.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Scrapling**, tek bir HTTP isteğinden büyük ölçekli site taramalarına kadar her işi kapsayan, **uyum sağlayabilen bir web kazıma (scraping) çerçevesi**dir.\n\nKlasik kazıyıcıların iki büyük derdi var: site tasarımı değişince seçiciler (selector) bozulur, ve anti-bot korumaları (Cloudflare gibi) isteği engeller. Scrapling ikisine de cevap verir:\n\n- `adaptive=True` ile site değişse bile aynı elementi bulur\n- Tarayıcı taklidi ve stealth modlarıyla korumaları aşmaya çalışır\n- Scrapy benzeri Spider API'siyle eşzamanlı tarama yapar",
+        "tech": "- **Ayrıştırıcı:** Parsel kodundan uyarlanmış, **lxml** tabanlı motor; CSS/XPath ve `::text`, `::attr()` gibi eklentileri destekler. Benchmark'ta 5000 elemanlı çıkarımda ~2 ms ile Parsel/Scrapy seviyesinde, BeautifulSoup'tan çok hızlı.\n- **Üç fetcher kademesi:** `Fetcher` (hızlı HTTP + tarayıcı taklidi), `StealthyFetcher` (TLS parmak izi ve header taklidiyle Cloudflare Turnstile aşma), `DynamicFetcher` (Playwright ile tam tarayıcı). Basitten ağıra doğru seçilir, böylece kaynak israf edilmez.\n- **Spider sistemi:** Eşzamanlı istek havuzu, alan adı başına hız sınırı, AutoThrottle, kontrol noktalı durdur/devam et, robots.txt desteği.\n- **Adaptif takip:** Elementin özelliklerini kaydedip benzerlik skoruyla yeniden bulur.\n- **Yapay zekâ entegrasyonu:** MCP sunucusu ve sayfayı LLM için Markdown'a çeviren çıktı.",
+        "why": "- **Zamanlama:** Ajanlar internetten veri okumak zorunda; güvenilir ve engellenmeyen kazıma altyapısına talep patladı. MCP sunucusu bunu doğrudan Claude/Cursor'a bağlıyor.\n- **Kitle:** Veri mühendisleri, fiyat takibi yapanlar, AI/RAG geliştiricileri, araştırmacılar.\n- **Fark:** \"Seçici bozuldu\" sorununu çözen adaptif yaklaşım ve tek kütüphanede HTTP + stealth + tarayıcı.\n- Bugün +241 yıldızla, zaten büyük bir projenin uzun soluklu ivmesini sürdürüyor.",
+        "evolve": "- Stealth teknikleri anti-bot sistemleriyle sürekli bir **kedi-fare oyunu**; hiçbir yöntem her korumayı aşmaz, bakım yükü sürekli.\n- Tarayıcı tabanlı fetcher'lar bellek ve disk açısından ağır; dağıtık çalıştırma (kuyruk, worker) eklenirse ölçek artar.\n- Yerleşik veri saklama (veritabanı pipeline'ları, deduplikasyon) ve şema doğrulama eklenebilir.\n- Etik/hukuki boyut: robots.txt ve kullanım şartlarına uyum varsayılan, daha görünür rehberlik olmalı.\n- LLM ile otomatik seçici üretimi (\"şu alanları çıkar\") yeni bir yön olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Web scraping (kazıma)",
+          "def": "Web sayfalarından otomatik olarak veri çekme işlemi."
+        },
+        {
+          "term": "Selector (seçici)",
+          "def": "Sayfadaki bir elementi bulmak için yazılan CSS veya XPath ifadesi."
+        },
+        {
+          "term": "XPath",
+          "def": "XML/HTML belgesinde yol tarif ederek eleman seçmeye yarayan sorgu dili."
+        },
+        {
+          "term": "lxml",
+          "def": "Python için hızlı bir XML/HTML ayrıştırma kütüphanesi."
+        },
+        {
+          "term": "Playwright",
+          "def": "Gerçek bir tarayıcıyı kodla yöneten otomasyon aracı."
+        },
+        {
+          "term": "Cloudflare Turnstile",
+          "def": "Cloudflare'in botları insanlardan ayırmak için kullandığı doğrulama sistemi."
+        },
+        {
+          "term": "TLS parmak izi",
+          "def": "Bağlantı kurarken istemcinin el sıkışma özelliklerinden tarayıcı türünün tahmin edilmesi; botlar bununla yakalanır."
+        },
+        {
+          "term": "Anti-bot",
+          "def": "Otomatik trafiği engellemek için sitelerin kullandığı koruma katmanları."
+        },
+        {
+          "term": "Spider",
+          "def": "Bir siteyi linklerden izleyerek sistematik gezen kazıma programı."
+        },
+        {
+          "term": "AutoThrottle",
+          "def": "Sunucunun yanıt hızına göre istek sıklığını otomatik ayarlayan mekanizma."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Checkpoint",
+          "def": "Uzun bir işin durumunun kaydedilmesi; kesilirse kaldığı yerden devam edilir."
+        }
+      ]
+    },
+    {
+      "name": "agentgateway/agentgateway",
+      "url": "https://github.com/agentgateway/agentgateway",
+      "stars": "5.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**agentgateway**, yapay zekâ ajanlarının, LLM'lerin ve araçların birbiriyle güvenli konuşmasını sağlayan açık kaynak bir **proxy (ağ geçidi)**dir.\n\nŞirketlerde onlarca ajan, farklı LLM sağlayıcıları ve MCP araçları birbirine bağlandığında kimlik, yetki, maliyet ve denetim dağınık kalır. agentgateway hepsini tek noktadan yönetir:\n\n- **LLM Gateway:** OpenAI uyumlu tek API ile OpenAI, Anthropic, Gemini, Bedrock'a yönlendirme; bütçe, yük dengeleme, yedekleme\n- **MCP Gateway:** Araçları birleştirir (federasyon) ve yetkilendirir\n- **A2A Gateway:** Ajanlar arası iletişim",
+        "tech": "- **Rust:** Proxy gibi gecikmeye ve eşzamanlılığa duyarlı bir bileşen için bellek güvenli ve hızlı bir seçim.\n- **İki yapay zekâ protokolü:** MCP (ajan↔araç; stdio/HTTP/SSE) ve A2A (ajan↔ajan; yetenek keşfi).\n- **Güvenlik:** JWT, API anahtarı, OAuth; ince taneli **RBAC**, hız sınırlama; guardrail olarak regex, OpenAI moderation ve AWS Bedrock filtreleri.\n- **Gözlemlenebilirlik:** OpenTelemetry ile izleme.\n- **Kubernetes:** Yerleşik denetleyici ve **Gateway API** uyumu; yapılandırma YAML ile, servisler arası tanım Protocol Buffers ile.\n- **Çıkarım yönlendirme:** Kendi barındırdığınız modellere GPU kullanımı gibi metriklere göre yönlendirme.",
+        "why": "- **Zamanlama:** Ajanlar üretime çıkıyor; \"hangi ajan hangi araca erişebilir, kim ne kadar harcadı\" soruları acil hale geldi.\n- **Güvenilirlik:** Linux Foundation projesi ve Apache 2.0 lisansı, tek bir şirkete bağımlılık endişesini azaltıyor.\n- **Kitle:** Platform ekipleri, güvenlik/uyum sorumluları, çok sağlayıcılı LLM kullanan kurumlar.\n- Bugün +16 yıldız: ivme bugünden çok genel konumlanmasından geliyor.",
+        "evolve": "- Proje aktif geliştirme aşamasında; performans sınırları ve ölçek verileri net belgelenmemiş. Açık benchmark'lar güven verir.\n- Prompt injection ve araç zehirlenmesi (tool poisoning) gibi ajan saldırılarına karşı daha güçlü yerleşik denetimler eklenebilir.\n- Maliyet panoları, kullanıcı/ekip bazlı kota ve fatura dağıtımı (chargeback) doğal bir sonraki adım.\n- Veritabanı araçlarına (örn. SQL MCP sunucuları) erişimde sorgu denetimi ve salt-okunur politika katmanı, kurumsal veri ortamları için değerli olur."
+      },
+      "glossary": [
+        {
+          "term": "Gateway (ağ geçidi)",
+          "def": "İstekleri tek noktada karşılayıp doğru hedefe yönlendiren ve kuralları uygulayan ara katman."
+        },
+        {
+          "term": "Proxy",
+          "def": "İstemci ile sunucu arasında durup trafiği ileten program."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Modellerin araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "A2A (Agent2Agent)",
+          "def": "Farklı ajanların birbirini keşfedip iletişim kurmasını sağlayan protokol."
+        },
+        {
+          "term": "Federasyon",
+          "def": "Birden çok kaynağı kullanıcıya tek bir bütünmüş gibi sunma."
+        },
+        {
+          "term": "RBAC",
+          "def": "Rol tabanlı erişim kontrolü: yetkilerin kullanıcıya değil role bağlanması."
+        },
+        {
+          "term": "JWT",
+          "def": "Kimlik bilgisini imzalı küçük bir token olarak taşıyan standart."
+        },
+        {
+          "term": "OAuth",
+          "def": "Şifre paylaşmadan başka bir uygulamaya erişim izni vermeyi sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Log, metrik ve izleri standart biçimde toplamaya yarayan açık gözlemlenebilirlik standardı."
+        },
+        {
+          "term": "Guardrail",
+          "def": "Model girdi/çıktısını zararlı veya istenmeyen içerik için filtreleyen güvenlik katmanı."
+        },
+        {
+          "term": "Gateway API",
+          "def": "Kubernetes'te trafik yönlendirmeyi tanımlayan resmi, yeni nesil API ailesi."
+        },
+        {
+          "term": "Protocol Buffers",
+          "def": "Google'ın hızlı ve kompakt ikili veri serileştirme biçimi."
+        },
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir modelin girdiye cevap üretmesi."
+        }
+      ]
+    },
+    {
+      "name": "Effect-TS/effect",
+      "url": "https://github.com/Effect-TS/effect",
+      "stars": "16.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Effect**, TypeScript ile **sağlam, tip güvenli, üretim seviyesi uygulamalar** yazmak için bir kütüphane ve ekosistemdir.\n\nTypeScript'te hatalar çoğunlukla `try/catch` ve `any` içinde kaybolur; bağımlılıklar elle taşınır; eşzamanlı işler kontrolden çıkar. Effect bunları tek bir modelde çözer:\n\n- **Tipli hatalar:** Bir fonksiyonun hangi hatalarla başarısız olabileceği tipinde yazılır\n- **Bağımlılık enjeksiyonu** yerleşiktir\n- **Yapısal eşzamanlılık**, zamanlama (retry/schedule) ve tracing hazır gelir\n- Şema doğrulama tek çatı altında",
+        "tech": "- **Çekirdek `effect` paketi + 30'dan fazla paket:** Node, Bun, Deno ve tarayıcı platform paketleri; PostgreSQL, MySQL, SQLite, ClickHouse, MSSQL için veritabanı istemcileri; Anthropic, OpenAI için AI sağlayıcı paketleri; React, Vue, SolidJS bağlayıcıları; OpenAPI kod üretimi.\n- **Modüler monorepo (PNPM):** Yalnızca ihtiyacınız olanı alırsınız.\n- **Fonksiyonel tasarım:** Bir iş (effect), çalıştırılmadan önce *tarif edilen bir değerdir*; bu sayede hata, bağımlılık ve iptal davranışı tip düzeyinde izlenir.\n- **Gereksinimler:** TypeScript 5.9+ (TS 7 öneriliyor), Node 18+; testler Vitest ile.\n- **4.x** için 3 yıldan uzun LTS sözü verilmiş.",
+        "why": "- **Zamanlama:** Büyük sürüm (4.x) ve LTS duyurusu ile kurumsal benimsemeye hazır görünüyor; AI paketleri de ajan/LLM uygulamalarında hata ve yeniden deneme yönetimine ilgiyi çekiyor.\n- **Kitle:** Backend TypeScript ekipleri, sağlamlığı tipten bekleyen mühendisler, karmaşık iş akışı yazanlar.\n- Bugün +80 yıldız; sürekli ve sakin bir ilgi, patlama değil.",
+        "evolve": "- **Öğrenme eğrisi** dik: fonksiyonel programlama kavramlarına yabancı ekipler için giriş maliyeti yüksek; daha iyi rehberler ve şablonlar kritik.\n- Katı TypeScript yapılandırması ve yeni Node sürümleri gerektiriyor, bu eski kod tabanlarına geçişi zorlaştırıyor.\n- Kararsız/deneysel API'ler major sürümler dışında da değişebilir.\n- Veritabanı paketleri üzerine tipli sorgu katmanı ve migrasyon araçları güçlenirse ORM alternatifi olabilir.\n- LLM ajan iş akışları (araç çağrısı, retry, iptal) için hazır kalıplar eklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Tip güvenliği",
+          "def": "Derleyicinin hataları çalışmadan önce, veri türlerine bakarak yakalaması."
+        },
+        {
+          "term": "Typed error (tipli hata)",
+          "def": "Bir fonksiyonun üretebileceği hataların dönüş tipinde açıkça belirtilmesi."
+        },
+        {
+          "term": "Dependency injection (bağımlılık enjeksiyonu)",
+          "def": "Bir kodun ihtiyaç duyduğu servislerin içeriden oluşturulmak yerine dışarıdan verilmesi."
+        },
+        {
+          "term": "Structured concurrency (yapısal eşzamanlılık)",
+          "def": "Eşzamanlı işlerin bir üst işe bağlı yaşaması; üst iş bitince/iptal olunca hepsinin temiz kapanması."
+        },
+        {
+          "term": "Tracing",
+          "def": "Bir isteğin sistemde hangi adımlardan geçtiğini izleme."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birçok paketin tek bir kod deposunda tutulması."
+        },
+        {
+          "term": "LTS",
+          "def": "Long-Term Support: Uzun süre güvenlik ve hata düzeltmesi alacağı garanti edilen sürüm."
+        },
+        {
+          "term": "Şema doğrulama",
+          "def": "Gelen verinin beklenen yapıya uyup uymadığını kontrol etme."
+        },
+        {
+          "term": "ORM",
+          "def": "Veritabanı tablolarını koddaki nesnelerle eşleştiren katman."
+        },
+        {
+          "term": "Fonksiyonel programlama",
+          "def": "Yan etkileri azaltıp programı fonksiyonların birleşimi olarak kuran programlama tarzı."
+        }
+      ]
+    }
+  ]
+}
