@@ -1,0 +1,209 @@
+{
+  "date": "2026-10-04",
+  "projects": [
+    {
+      "name": "cloudflare/cloudflare-os",
+      "url": "https://github.com/cloudflare/cloudflare-os",
+      "stars": "10.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Cloudflare OS**, Cloudflare'in kendi içinde geliştirdiği ve şimdi açık kaynak yaptığı, **yapay zekâ ile üretkenlik için bir \"işletim sistemi\"** denemesidir. Fikir şu: çalışan bir ajana \"şu raporu hazırla\" ya da \"şu işi yapan küçük bir uygulama yaz\" dersiniz; ajan şirketinizin nasıl çalıştığını önceden bilir ve işi güvenli sınırlar içinde yapar.\n\nÜç temel kavramı var:\n\n- **Gadget'lar:** İstek üzerine üretilen küçük uygulamalar. Her kullanıcı kendi gadget'ını **ayrı bir sandbox'ta** çalıştırır.\n- **Gatekeeper'lar:** Dış kaynaklara (e-posta, takvim, API) erişimi denetleyen yetki katmanı.\n- **Ajanlar:** Kod yazıp çalıştırabilen, gadget üretebilen yapay zekâ işçileri.\n\nYani \"herkes için tek bir SaaS\" yerine \"her çalışan için kendi küçük, güvenli yazılım dünyası\" yaklaşımı.",
+        "tech": "Proje tamamen **Cloudflare Workers** platformunun üstünde durur ve platformun kendi parçalarını sergiler.\n\n- **Durable Objects ve Dynamic Workers:** Her sandbox'ı ve her kullanıcının durumunu ayrı, kalıcı bir birim olarak tutmak için. Gerçek zamanlı çoklu kullanıcı işbirliği de buna dayanır.\n- **workshop-backend / workshop-frontend:** Adlandırma bilinçli olarak işletim sistemi benzetmesi: backend \"çekirdek\", frontend \"kabuk\".\n- **Capability tabanlı güvenlik:** Bir ajan yalnızca **kendisine açıkça tanıtılan** kaynaklara erişebilir; internet varsayılan olarak kapalıdır. Gatekeeper'lar \"güçlendirilmiş MCP sunucuları\" gibi çalışır: yetkilendirme, dar erişim, işlem günlüğü ve **human-in-the-loop** (ajan beklemeden devam eder, onay istekleri sıraya girer, insan sonra bakar).\n- **Pi** (çoklu LLM desteği), **CodeMirror** (editör), **isomorphic-git** (depolama), **Vite** (geliştirme) ve istemci-sunucu iletişimi için **Cap'n Web RPC**.\n- Çalışma zamanı olan **workerd** açık kaynak olduğundan, sistem ilke olarak kendi sunucularınızda da çalıştırılabilir (belgeleri \"yakında\").",
+        "why": "- **Zamanlama:** Kodlama ajanları olgunlaştı; şimdiki soru \"ajanı kurumda güvenle nasıl kullanırız?\" Bu proje bunun cevabını bir *ürün mimarisi* olarak veriyor.\n- **Marka etkisi:** Cloudflare'in kendi iç aracı olması, \"büyük bir şirket bunu gerçekten kullanıyor\" güveni yaratıyor.\n- **Kitle:** Platform mühendisleri, ajan güvenliğiyle uğraşan ekipler, Workers ekosistemindeki geliştiriciler.\n- **Fark:** Çoğu ajan çerçevesi \"ajanı güçlü yap\" der; burada vurgu **\"ajanı sınırla ve denetle\"**. Bu, kurumsal benimseme için daha kritik.\n- Bugün +85 yıldız ile ivme orta; toplam yıldız sayısı ise ilginin zaten yüksek olduğunu gösteriyor.",
+        "evolve": "- Proje **erken erişim** aşamasında; geliştiriciler de \"çok yetenekli ama pürüzlü\" diyor. Kararlılık ve belge eksikleri en büyük açık.\n- **Kendi sunucuda çalıştırma** belgeleri gelirse, Cloudflare'e bağımlılık kaygısı olan kurumlar için kapı açılır.\n- Gatekeeper'lar için **hazır bağlayıcı kataloğu** (ERP, CRM, veritabanı) büyük fark yaratır. IFS/ERP gibi sistemlerin bir gatekeeper arkasından ajana açılması doğal bir kullanım alanı olurdu.\n- **Blueprint** paylaşımı bir topluluk pazarına dönüşebilir; ancak orada da güvenlik denetimi (kötü niyetli şablonlar) gerekir.\n- Onay kuyruğunun kullanılabilirliği (insan yüzlerce isteği nasıl yönetir?) denenmesi gereken bir açık soru."
+      },
+      "glossary": [
+        {
+          "term": "Sandbox (kum havuzu)",
+          "def": "Bir programın diğer sistemlerden izole, sınırlı yetkiyle çalıştığı güvenli ortam. Hata ya da kötü niyet dışarı taşmaz."
+        },
+        {
+          "term": "Durable Objects",
+          "def": "Cloudflare'in, belirli bir kimliğe bağlı ve durumunu koruyan küçük sunucusuz birimleri. Aynı nesneye gelen istekler hep aynı yerde işlenir."
+        },
+        {
+          "term": "Capability tabanlı güvenlik",
+          "def": "Bir bileşenin yalnızca kendisine açıkça verilmiş \"yetki anahtarları\" kadar şey yapabildiği güvenlik modeli. Verilmeyen şeye erişim yoktur."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araç ve verilere standart bir arayüzle bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Human-in-the-loop",
+          "def": "Otomasyonun kritik adımlarda insan onayını araya koyduğu çalışma biçimi."
+        },
+        {
+          "term": "workerd",
+          "def": "Cloudflare Workers'ın açık kaynak çalışma zamanı. Aynı kodu Cloudflare dışında kendi sunucunuzda çalıştırmayı mümkün kılar."
+        },
+        {
+          "term": "RPC",
+          "def": "Başka bir makinedeki fonksiyonu sanki yerelmiş gibi çağırma yöntemi. Cap'n Web, bunun web için bir uygulamasıdır."
+        },
+        {
+          "term": "Blueprint",
+          "def": "Bir uygulamanın paylaşılabilir şablonu. Merkezi bir hizmet yerine kopyalanıp kişiselleştirilen başlangıç noktası."
+        }
+      ]
+    },
+    {
+      "name": "jamwithai/production-agentic-rag-course",
+      "url": "https://github.com/jamwithai/production-agentic-rag-course",
+      "stars": "9.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "Bu depo bir yazılım değil, **ücretsiz bir ders**: \"Üretim seviyesinde ajanlı RAG sistemi nasıl kurulur?\" sorusunu 7 haftada, çalışan bir proje üzerinden öğretiyor. Ders boyunca **arXiv Paper Curator** adlı bir araştırma asistanı inşa ediyorsunuz: akademik makaleleri otomatik çekiyor, indeksliyor ve sorularınızı kaynak göstererek cevaplıyor.\n\nÇözdüğü problem: internetteki çoğu RAG örneği \"PDF'i vektör veritabanına at, LLM'e sor\" seviyesinde kalıyor; gerçek sistemin ihtiyaç duyduğu altyapı, izleme, önbellek ve test kısmı atlanıyor.",
+        "tech": "Mimari bilerek **\"önce sağlam arama, sonra yapay zekâ\"** sırasıyla büyür:\n\n- **Hafta 1-3 (temel):** Docker Compose, **FastAPI**, **PostgreSQL** (üst veri), **OpenSearch** üzerinde klasik **BM25** anahtar kelime araması, **Apache Airflow 3** ile otomatik veri hattı.\n- **Hafta 4-5 (zekâ):** Belgeleri parçalama (chunking), **hibrit arama** (BM25 + vektör) ve sonuçları **RRF** ile birleştirme; **Ollama** ile yerel LLM, akışlı (streaming) cevaplar, Gradio arayüzü.\n- **Hafta 6-7 (üretim ve özerklik):** **Langfuse** ile izleme, **Redis** önbelleği (README 150-400 kat hızlanma iddia ediyor), **LangGraph** ile çok adımlı karar veren ajan, sorgu yeniden yazma, koruma kuralları ve Telegram botu.\n\nGerekçe: anahtar kelime araması ucuz, hızlı ve açıklanabilir; semantik aramayı onun *üstüne* eklemek, yalnızca vektöre güvenmekten daha sağlam.",
+        "why": "- **Kitle:** RAG'i prototipten üretime taşımaya çalışan geliştiriciler, veri mühendisleri, ajan işine geçmek isteyen backend ekipleri.\n- **Zamanlama:** Ajanlı RAG artık bir iş ilanı satırı; ders formatı bunu *uçtan uca* gösteren az sayıdaki kaynaktan biri.\n- **Format:** Her hafta bir not defteri, bir blog yazısı ve bir GitHub sürümü; tekrar edilebilir ve takip etmesi kolay.\n- **Maliyet:** Yerel LLM ile (Ollama) kredi kartı gerektirmeden denenebiliyor; MIT lisansı.\n- Bugün +193 yıldız, eğitim içeriklerinin tipik \"paylaşılıp kaydedilen\" ivmesi.",
+        "evolve": "- **Değerlendirme (eval) haftası** eksik: cevap kalitesini ölçen veri seti ve otomatik testler eklenirse \"üretim\" iddiası güçlenir.\n- **Yeniden sıralama (reranker)** ve daha gelişmiş parçalama stratejileri hibrit aramayı iyileştirir.\n- Gereksinimler yüksek (Docker, 8 GB+ RAM, 20 GB+ disk); hafif bir \"tek komut\" sürüm başlangıcı kolaylaştırır.\n- **Kurumsal veri** senaryoları (ERP belgeleri, veritabanı şemaları, SQL ajanı) için bir ek modül, ders kitlesini genişletir. Metin-SQL ajanı PL/SQL dünyası için doğal bir uzantı olurdu.\n- Güvenlik tarafı (prompt injection, yetkilendirme) ayrı bir hafta hak ediyor."
+      },
+      "glossary": [
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Modelin cevap vermeden önce ilgili belgeleri arayıp bulduğu parçaları cevabına kaynak olarak kullandığı yöntem."
+        },
+        {
+          "term": "Ajanlı RAG",
+          "def": "Arama adımlarını bir ajanın yönettiği RAG: ajan sorguyu yeniden yazabilir, yeniden arayabilir ve sonuç yetersizse başka yol deneyebilir."
+        },
+        {
+          "term": "BM25",
+          "def": "Anahtar kelimelerin geçiş sıklığına göre belgeleri puanlayan klasik arama algoritması. Hızlı ve açıklanabilirdir."
+        },
+        {
+          "term": "Hibrit arama",
+          "def": "Anahtar kelime aramasını ve anlam (vektör) aramasını birlikte kullanıp sonuçları birleştiren yöntem."
+        },
+        {
+          "term": "RRF (Reciprocal Rank Fusion)",
+          "def": "Birden fazla arama sonucunun sıralarını basit bir formülle birleştirerek tek bir liste üreten yöntem."
+        },
+        {
+          "term": "OpenSearch",
+          "def": "Elasticsearch'ten türemiş açık kaynak arama ve analitik motoru. Hem metin hem vektör araması yapabilir."
+        },
+        {
+          "term": "Apache Airflow",
+          "def": "Zamanlanmış veri iş akışlarını (hatları) kod olarak tanımlayıp çalıştıran orkestrasyon aracı."
+        },
+        {
+          "term": "LangGraph",
+          "def": "LLM uygulamalarını durum makinesi/graf olarak kurup çok adımlı ajan akışları yazmayı sağlayan çerçeve."
+        },
+        {
+          "term": "Langfuse",
+          "def": "LLM çağrılarını izleyen (tracing), maliyet ve gecikmeyi gösteren gözlemlenebilirlik aracı."
+        },
+        {
+          "term": "Ollama",
+          "def": "Büyük dil modellerini kendi bilgisayarınızda kolayca indirip çalıştırmanızı sağlayan araç."
+        },
+        {
+          "term": "Chunking (parçalama)",
+          "def": "Uzun belgeleri aranabilir küçük parçalara bölme işlemi. Parça boyutu arama kalitesini doğrudan etkiler."
+        },
+        {
+          "term": "Redis",
+          "def": "Bellekte çalışan çok hızlı anahtar-değer veritabanı; burada sık sorulan cevapları önbelleğe almak için kullanılıyor."
+        }
+      ]
+    },
+    {
+      "name": "getsentry/sentry",
+      "url": "https://github.com/getsentry/sentry",
+      "stars": "45.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Sentry**, uygulamanız bozulduğunda **neyin, nerede, hangi kullanıcıda ve neden** bozulduğunu size gösteren hata takibi ve performans izleme platformudur.\n\nKullanıcı \"çalışmıyor\" dediğinde elinizde genelde sadece belirsiz bir şikâyet olur. Sentry uygulamaya eklenen küçük bir SDK ile hatayı yığın izi (stack trace), sürüm, cihaz bilgisi ve kullanıcının son adımlarıyla birlikte toplar. Aynı hataları gruplar, size anlamlı tek bir \"issue\" olarak sunar.\n\nDiğer yetenekleri: performans izleme (trace), **oturum tekrarı (session replay)**, uptime izleme ve log toplama.",
+        "tech": "- **Backend:** Python ve **Django**; ön yüz **TypeScript/React**.\n- **Dağıtık veri hattı:** SDK'lardan gelen olayları **Relay** karşılar ve süzer; **Kafka** ile kuyruğa alınır; **Snuba** adlı sorgu katmanı olayları **ClickHouse** (sütun odaklı analitik veritabanı) üzerinde saklar ve sorgular. Meta veriler ise ilişkisel veritabanında durur.\n- **SDK ekosistemi:** 20'den fazla dil ve çerçeve (JavaScript, Python, mobil, Unity, Unreal, Godot).\n- **AI özellikleri:** **Seer** hata kök nedenini analiz edip düzeltme önerir; ayrıca **MCP** desteğiyle AI ajanları Sentry verisini sorgulayabilir.\n- **Lisans:** \"fair source\": kodu okuyup kendi sunucunuzda çalıştırabilirsiniz, ama rakip bir ticari hizmet olarak sunmanız kısıtlıdır.\n\nGerekçe: olay hacmi çok yüksek ve sorgular analitik; bu yüzden klasik veritabanı yerine kuyruk + sütunlu depo mimarisi seçilmiş.",
+        "why": "- **Genel ilgi:** Proje yeni değil; bugünkü +214 yıldız, daha çok AI özelliklerinin (Seer, MCP) yeniden gündem yaratmasından geliyor.\n- **Kitle:** Hemen her yazılım ekibi; web, mobil ve oyun geliştiricileri.\n- **Zamanlama:** Kodlama ajanları çoğaldıkça \"üretimde ne bozuldu\" verisi, ajanların düzeltme yapabilmesi için en değerli bağlam haline geldi. Sentry bu veriyi zaten elinde tutuyor.\n- **Kendi sunucuda çalıştırma seçeneği**, veriyi dışarı vermek istemeyen şirketler için çekici.",
+        "evolve": "- **Ajan döngüsü:** Hata yakalandı → kök neden → düzeltme PR'ı → doğrulama zincirinin daha otonom ve güvenilir hale gelmesi en büyük fırsat.\n- **Veritabanı gözlemlenebilirliği:** Yavaş sorgu ve N+1 tespitinin derinleşmesi; ERP/PL/SQL tarafındaki sorgu darboğazları için de ilginç bir alan.\n- Self-hosted kurulumun karmaşıklığı (Kafka, ClickHouse, Snuba) küçük ekipler için yüksek; daha hafif bir dağıtım seçeneği değer katar.\n- Fair-source lisansı topluluk katkısı ve \"gerçek açık kaynak\" beklentisi arasında süren bir tartışma konusu.\n- Maliyet kontrolü: yüksek olay hacminde örnekleme (sampling) ayarlarının daha akıllı ve otomatik olması."
+      },
+      "glossary": [
+        {
+          "term": "Stack trace (yığın izi)",
+          "def": "Hata anında hangi fonksiyonların hangi sırayla çağrıldığını gösteren kayıt. Hatanın kaynağını bulmak için temel veridir."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir hizmeti kendi uygulamanıza kolayca bağlamanızı sağlayan hazır kütüphane seti."
+        },
+        {
+          "term": "Session replay (oturum tekrarı)",
+          "def": "Kullanıcının hata öncesindeki ekran hareketlerini sonradan film gibi izlemeyi sağlayan özellik."
+        },
+        {
+          "term": "Kafka",
+          "def": "Yüksek hacimli olay akışlarını güvenilir biçimde kuyruğa alan ve dağıtan mesajlaşma sistemi."
+        },
+        {
+          "term": "ClickHouse",
+          "def": "Çok büyük veri üzerinde analitik sorguları çok hızlı çalıştıran, sütun odaklı açık kaynak veritabanı."
+        },
+        {
+          "term": "Snuba",
+          "def": "Sentry'nin olay verisini ClickHouse üzerinde sorgulamak için yazdığı kendi servis katmanı."
+        },
+        {
+          "term": "Relay",
+          "def": "Sentry'nin SDK'lardan gelen olayları karşılayıp doğrulayan, süzen ve ileten giriş servisi."
+        },
+        {
+          "term": "Fair source",
+          "def": "Kaynak kodu açık olan ama ticari kullanıma (özellikle rakip hizmet sunmaya) kısıtlama getiren lisans yaklaşımı."
+        },
+        {
+          "term": "Seer",
+          "def": "Sentry'nin hata kök nedenini analiz eden ve düzeltme öneren yapay zekâ özelliği."
+        },
+        {
+          "term": "Gözlemlenebilirlik (observability)",
+          "def": "Bir sistemin dışarıdan log, metrik ve izlerle ne yaptığının anlaşılabilmesi."
+        },
+        {
+          "term": "N+1 sorgu",
+          "def": "Bir liste için tek sorgu yerine her öğe başına ayrı sorgu atılması sonucu oluşan klasik performans sorunu."
+        }
+      ]
+    },
+    {
+      "name": "anthropics/claude-code",
+      "url": "https://github.com/anthropics/claude-code",
+      "stars": "149.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Claude Code**, terminalde yaşayan, kod tabanınızı anlayan ve doğal dille verdiğiniz görevleri yapan Anthropic'in **ajan tabanlı kodlama aracıdır**.\n\nBir hatayı düzeltmesini, bir kodu açıklamasını, testleri çalıştırıp başarısız olanı onarmasını ya da git işlemlerini (commit, dal, birleştirme) yapmasını isteyebilirsiniz. IDE içinden de kullanılabilir; GitHub'da `@claude` etiketiyle de çağrılabilir.\n\nBu depo ağırlıklı olarak **sorun takibi, belgeler ve eklentiler (plugins)** için kullanılıyor: kullanıcılar `/bug` komutuyla sorun bildiriyor, topluluk Discord'da buluşuyor.",
+        "tech": "- **Kurulum:** Önerilen yol tek satırlık betik (`curl ... | bash`, Windows için PowerShell), ayrıca Homebrew ve WinGet. **npm ile kurulum artık kullanımdan kalkmış (deprecated).**\n- **Eklenti sistemi:** Özel komutlar ve ajanlar ekleyen plugin'ler `/plugins` dizininde belgelenmiş; böylece araç çekirdeği değiştirmeden genişletilebiliyor.\n- **Ajan döngüsü:** Model komut çalıştırır, dosya okur/yazar, sonucu görüp bir sonraki adımı seçer. İzin kontrolleri ve hook'larla bu döngü sınırlanabilir.\n- **Gizlilik:** Oturum verisi için sınırlı saklama süresi, kısıtlı erişim ve **model eğitimine açıkça katılmama** seçeneği.\n\nGerekçe: terminal, geliştiricinin zaten çalıştığı yer; ayrı bir uygulama yerine mevcut iş akışına girmek benimsemeyi kolaylaştırıyor.",
+        "why": "- **Ekosistem etkisi:** Trendde görünen onlarca proje (skills, hafıza, context araçları, gateway'ler) Claude Code'un **etrafında** doğuyor; yani ürün bir platform haline geldi.\n- **Kitle:** Bireysel geliştiriciler, ekipler ve otomasyon kuran DevOps mühendisleri.\n- **Zamanlama:** Ajanlı kodlama ana akıma girdi; yeni özellik/sürüm duyuruları depoyu tekrar listeye taşıyor.\n- Bugün +128 yıldız, toplam 149k ile ivme düşük ama kalıcı ilgi çok yüksek; trendde olması \"yükselen\" değil \"sürekli referans\" olmasından.",
+        "evolve": "- **Şeffaflık:** Depo çekirdek kaynak kodunu değil, takip ve eklentileri barındırıyor; çekirdeğin daha açık olması topluluk katkısını artırırdı.\n- **Çok oturumlu çalışma:** Paralel ajanları yönetme, bütçe ve onay akışları (paperclip, OpenRig gibi projelerin doldurmaya çalıştığı boşluk) yerleşik hale gelebilir.\n- **Veritabanı/ERP bağlamı:** PL/SQL ve ERP kod tabanlarında şema ve bağımlılık farkındalığı için hazır eklentiler fırsat.\n- **Güvenli otomasyon:** Zamanlanmış ve gözetimsiz çalışmalar için daha ince taneli izin ve denetim kayıtları.\n- Kurulum yönteminin değişmesi (npm'den betiğe) sürüm ve güvenlik güncellemesi yönetiminde kurumsal ekipler için bir geçiş maliyeti."
+      },
+      "glossary": [
+        {
+          "term": "Ajan tabanlı kodlama (agentic coding)",
+          "def": "Yapay zekânın yalnızca kod önermekle kalmayıp dosya düzenleme, komut çalıştırma ve sonucu doğrulama adımlarını kendisinin yürüttüğü çalışma şekli."
+        },
+        {
+          "term": "Plugin (eklenti)",
+          "def": "Bir aracın çekirdeğine dokunmadan yeni komut veya yetenek ekleyen paket."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir olay (örneğin komut çalışmadan önce) gerçekleştiğinde otomatik tetiklenen, kullanıcının tanımladığı betik."
+        },
+        {
+          "term": "Deprecated (kullanımdan kalkmış)",
+          "def": "Hâlâ çalışan ama gelecekte kaldırılacağı için kullanılması önerilmeyen özellik veya yöntem."
+        },
+        {
+          "term": "IDE",
+          "def": "Kod yazmak için editör, hata ayıklayıcı ve araçları bir araya getiren geliştirme ortamı."
+        },
+        {
+          "term": "Homebrew / WinGet",
+          "def": "Sırasıyla macOS/Linux ve Windows için komut satırından yazılım kuran paket yöneticileri."
+        }
+      ]
+    }
+  ]
+}
