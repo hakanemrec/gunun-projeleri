@@ -1,0 +1,185 @@
+{
+  "date": "2026-10-05",
+  "projects": [
+    {
+      "name": "tester-army/e2e",
+      "url": "https://github.com/tester-army/e2e",
+      "stars": "3.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**e2e**, web ve mobil uygulamalar için **uçtan uca (end-to-end) test** yazmayı yapay zekâ ajanlarına devreden bir framework'tür. Test hedefini doğal dilde yazarsınız (\"sepete ürün ekle ve ödemeye geç\"), ajan bunu uygulamada dener.\n\nÇözdüğü problem: klasik UI testleri kırılgandır; arayüz biraz değişince seçiciler bozulur ve bakım yükü büyür. e2e, **klasik locator/assertion adımlarını** ve **doğal dilli ajan adımlarını** aynı testte karıştırmanıza izin verir.\n\nKurulum tek komut: `npx e2e init`.",
+        "tech": "- **Playwright** tabanı: Chromium, Firefox ve WebKit'te tarayıcı otomasyonu. Olgun, hızlı ve yaygın bir temel seçmek mantıklı.\n- **Mobil:** iOS/Android simülatör ve emülatörleri `agent-device` üzerinden sürülür; isteğe bağlı olarak Kernel ve EAS gibi barındırılan tarayıcı/cihaz seçenekleri var.\n- **Kaydet-ve-tekrar oynat:** Ajanın eylemleri kaydedilir; sonraki koşularda uygulama değişmediği sürece **model çağrısı yapılmadan** yeniden oynatılır. Bu hem maliyeti hem flakiness'ı düşürür.\n- **Model esnekliği:** Kendi aboneliğinizi, API anahtarınızı ya da yerel modelinizi getirebilirsiniz.\n- Ajan adımı içermeyen testler hiç model gerektirmez. TypeScript SDK + CLI, lisans **Apache-2.0**.",
+        "why": "Zamanlama güçlü: ekipler ajanla kod üretimini hızlandırdı, ama **üretilen kodun doğrulanması** darboğaz oldu. Test yazımı da aynı hızda ölçeklenmek zorunda.\n\nCazibesi \"AI test\" araçlarının en büyük korkusuna cevap vermesi: her çalıştırmada model parası ve belirsizlik yok, çünkü ajan yalnızca uygulama değişince devreye giriyor. GitHub PR yorumu entegrasyonu da CI akışına doğal oturuyor. Günlük +345 yıldız, görece küçük bir projeden gelen belirgin bir ivme.",
+        "evolve": "- **Kararlılık kanıtı:** Kayıtlı akışların ne sıklıkla \"kendini iyileştirdiğini\" gösteren raporlar ve dashboard'lar.\n- **Veri/DB doğrulama:** UI sonucunun veritabanı veya ERP tarafında da doğrulanması (örneğin IFS gibi büyük formlu iş uygulamalarının regresyon testi) güçlü bir kullanım alanı olabilir.\n- Görsel regresyon, erişilebilirlik ve performans kontrollerinin aynı akışa eklenmesi.\n- Kurumsal tarafta kayıtların denetlenebilirliği ve test verisi yönetimi."
+      },
+      "glossary": [
+        {
+          "term": "End-to-end (E2E) test",
+          "def": "Uygulamayı gerçek bir kullanıcı gibi baştan sona (arayüzden veritabanına) deneyen test türü."
+        },
+        {
+          "term": "Playwright",
+          "def": "Microsoft'un tarayıcıları kod ile kontrol etmeye yarayan otomasyon kütüphanesi."
+        },
+        {
+          "term": "Locator",
+          "def": "Test sırasında sayfadaki bir öğeyi (buton, alan vb.) bulmak için kullanılan seçici."
+        },
+        {
+          "term": "Flaky test",
+          "def": "Kod değişmediği halde bazen geçip bazen başarısız olan, güvenilmez test."
+        },
+        {
+          "term": "Simülatör/emülatör",
+          "def": "Telefonu bilgisayarda taklit eden yazılım; mobil uygulamayı fiziksel cihaz olmadan denemeye yarar."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırından kullanılan araç arayüzü."
+        },
+        {
+          "term": "Regresyon testi",
+          "def": "Yeni bir değişikliğin eski çalışan özellikleri bozup bozmadığını kontrol eden test."
+        }
+      ]
+    },
+    {
+      "name": "garrytan/gstack",
+      "url": "https://github.com/garrytan/gstack",
+      "stars": "135.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**gstack**, Y Combinator başkanı Garry Tan'in kendi Claude Code kurulumunu paylaştığı bir **yapay zekâ destekli yazılım geliştirme çerçevesidir**. Claude Code'u, markdown olarak yazılmış 23'ten fazla **slash komutu** ile sanal bir mühendislik ekibine çevirir: CEO, tasarımcı, mühendislik yöneticisi, QA, güvenlik sorumlusu, release mühendisi.\n\nİş akışı bir sprint gibidir: **Düşün → Planla → Yap → İncele → Test et → Yayınla → Geri bak**. Bir komutun çıktısı (örneğin `/office-hours` tasarım dokümanı) bir sonrakinin girdisi olur. Öne çıkanlar: `/autoplan`, `/review`, `/qa`, `/ship`, `/cso` (güvenlik denetimi), `/investigate`, `/retro`.",
+        "tech": "- **Skill'ler = markdown:** Her \"rol\" bir markdown talimat dosyası; araç, ajan platformunun doğal mekanizmasına yaslanıyor. Bu yüzden kurulumu ~30 saniye.\n- **TypeScript + Bun** ile yazılmış yardımcı araçlar; **Playwright** destekli Chromium (ya da Aside tarayıcısı) ile `/browse` ve `/qa` gerçek tarayıcıda doğrulama yapar.\n- **GBrain hafızası (isteğe bağlı):** Kod bilgisini oturumlar arası saklar; yerel PGLite, bulut Supabase veya uzak MCP uç noktası olabilir.\n- **Çoklu model:** Asıl motor Claude; `/codex` ve `/claude-code` ile rakip modelden ikinci görüş alınır.\n- **Çoklu host:** Claude Code'da tam destek, Codex, Cursor, OpenCode, Copilot vb. için deneysel.\n- Güvenlik: `/careful`, `/freeze`, `/guard` korumaları; telemetri varsayılan kapalı. Lisans **MIT**.",
+        "why": "Kitle çok net: ajanla kod yazan ama **süreç disiplinine** ihtiyaç duyan bireysel geliştiriciler ve küçük ekipler. Garry Tan'in tanınırlığı ve \"810× üretkenlik\" iddiası büyük merak yarattı; 135k yıldız bunun bir kısmının **ünlü isim etkisi** olduğunu gösteriyor.\n\nAsıl kalıcı değer: \"prompt yazmak\" yerine **tekrar kullanılabilir iş akışı** paylaşma trendi. Kendi kurulumunu açıp \"aynısını kullan\" diyebilmek, kopyalanabilir bir ürün haline geliyor. Bugün +125 yıldız ile ivme yavaşlamış; proje olgunlaşma evresinde.",
+        "evolve": "- **Ölçülebilirlik:** Hangi skill'in gerçekten hata yakaladığını gösteren metrikler; \"810×\" gibi iddiaların bağımsız doğrulanması.\n- **Alan uyarlaması:** PL/SQL, ERP/IFS gibi kurumsal ortamlar için özel review/QA skill'leri (örneğin şema değişikliği ve migrasyon incelemesi).\n- Skill'lerin ekip içi paylaşımı ve sürümlenmesi; maliyet/token raporlaması.\n- Risk: çok sayıda opinionated komut, öğrenme eğrisi ve ajan yetkilerinin büyümesi demek; korumaların varsayılan açık olması önemli."
+      },
+      "glossary": [
+        {
+          "term": "Slash komutu",
+          "def": "Sohbet arayüzünde `/` ile başlayan, hazır bir iş akışını tetikleyen kısayol."
+        },
+        {
+          "term": "Skill",
+          "def": "Ajanın belirli bir görevi nasıl yapacağını anlatan, yeniden kullanılabilir talimat paketi."
+        },
+        {
+          "term": "Claude Code",
+          "def": "Anthropic'in terminalde çalışan kodlama ajanı."
+        },
+        {
+          "term": "Bun",
+          "def": "Hızlı bir JavaScript/TypeScript çalışma ortamı ve paket yöneticisi."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zekâ modellerinin dış araç ve verilere bağlanması için açık standart."
+        },
+        {
+          "term": "PGLite",
+          "def": "PostgreSQL'in tarayıcıda/yerelde çalışan hafif, gömülü sürümü."
+        },
+        {
+          "term": "Supabase",
+          "def": "Postgres tabanlı, hazır kimlik doğrulama ve API sunan bulut arka uç platformu."
+        },
+        {
+          "term": "OWASP / STRIDE",
+          "def": "Web güvenliği risk listesi (OWASP) ve tehdit modelleme yöntemi (STRIDE)."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Kodun sisteme zarar veremeyeceği izole çalışma alanı."
+        }
+      ]
+    },
+    {
+      "name": "michael-denyer/pstack-claude",
+      "url": "https://github.com/michael-denyer/pstack-claude",
+      "stars": "1.2k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**pstack**, Lauren Tan'in (Poteto) Cursor için tasarladığı **görev odaklı skill yığınıdır**: kodlama ajanına \"şunu yap\" dediğinizde doğru iş akışını seçip sistematik uygular. **pstack-claude** bu fikri Claude Code, Codex, Pi, OpenCode, Gemini CLI ve Prime Agent gibi diğer ajan platformlarına taşıyan bir port'tur.\n\nGiriş noktası `poteto-mode`: hedefi verirsiniz, o da bug, planlama, özellik, refactor, performans veya araştırma playbook'larından uygun olanı seçer. Örneğin bug'da önce hatayı yeniden üretir, kök nedeni araştırır, düzeltmeyi devreder ve testleri tekrar koşar.",
+        "tech": "- Tamamen **skill ve slash komut** tabanlı; sunucu ve telemetri yok, betikler yerelde çalışır, GitHub işlemleri `gh` CLI kimliğini kullanır.\n- **Çoklu ajan rolleri:** architect, arena, swarm gibi uzmanlaşmış ajanlar görevin farklı evrelerini üstlenir.\n- Rol başına **model ve akıl yürütme seviyesi** ayarlanabilir; pahalı modeli yalnızca planlamaya, ucuzunu uygulamaya ayırmak mümkün.\n- Lisans **MIT** (orijinal pstack ve içe aktarılan Cursor skill'leri de MIT).",
+        "why": "Bugünkü +232 yıldız, gstack ve addyosmani/agent-skills gibi **\"ajan iş akışı paketleri\"** dalgasının devamı. Port, tek bir ajana kilitlenmek istemeyen geliştiricilere hitap ediyor: aynı disiplini Cursor'dan Claude Code'a taşıyabiliyorsunuz.\n\nKitle: birden fazla ajan aracı deneyen, taşınabilir iş akışı arayan ileri düzey kullanıcılar. Proje küçük ve yeni olduğu için ivmesi büyük ölçüde orijinal pstack'in itibarından geliyor.",
+        "evolve": "- Platformlar arası davranış farklarını kapsayan **uyumluluk testleri** ve örnek çıktılar.\n- Playbook'ların sonuçlarını ölçen küçük bir değerlendirme (eval) seti.\n- Veritabanı/PL-SQL migrasyonu gibi alan odaklı playbook'lar.\n- Risk: kaynak proje ile ayrışma; upstream değişikliklerini izleme yükü."
+      },
+      "glossary": [
+        {
+          "term": "Skill stack",
+          "def": "Birlikte çalışan ve bir ajana belirli iş akışlarını öğreten skill'ler topluluğu."
+        },
+        {
+          "term": "Port",
+          "def": "Bir yazılımın başka bir platformda çalışacak şekilde uyarlanmış sürümü."
+        },
+        {
+          "term": "Playbook",
+          "def": "Belirli bir görev türü (bug, refactor vb.) için adım adım izlenen yöntem."
+        },
+        {
+          "term": "Refactor",
+          "def": "Davranışı değiştirmeden kodun yapısını iyileştirme."
+        },
+        {
+          "term": "Kök neden analizi",
+          "def": "Bir hatanın belirtisini değil, asıl sebebini bulma süreci."
+        },
+        {
+          "term": "Eval",
+          "def": "Bir yapay zekâ sisteminin çıktı kalitesini ölçen test seti."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Yazılımın kullanım verisini geliştiriciye geri göndermesi."
+        }
+      ]
+    },
+    {
+      "name": "caddyserver/caddy",
+      "url": "https://github.com/caddyserver/caddy",
+      "stars": "76.7k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Caddy**, **otomatik HTTPS** ile gelen modern bir web sunucusu ve ters vekil (reverse proxy) yazılımıdır. Alan adını yazarsınız; Let's Encrypt ve ZeroSSL'den sertifikayı kendisi alır ve yeniler. Nginx/Apache'de bir ekip günü alan TLS kurulumunu birkaç satıra indirir.\n\nHTTP/1.1, HTTP/2 ve HTTP/3 destekler. Yapılandırma için basit **Caddyfile**, tam kontrol için **JSON** ve canlı değişiklik için **admin API** sunar. Matthew Holt 2014'te başlattı; bugün ZeroSSL (HID Global) projesi.",
+        "tech": "- **Go** ile yazılmış, bellek güvenli, **bağımlılıksız tek ikili dosya**; libc gerektirmez, her yerde çalışır.\n- **Modüler mimari:** `http` ve `tls` gibi \"uygulamalar\" Go modülleridir. Her şey tek bir JSON yapılandırma ağacına iner; Caddyfile, YAML veya hatta Nginx yapılandırması **config adapter**'larıyla bu JSON'a çevrilir.\n- **Admin API:** Sunucuyu yeniden başlatmadan, kesintisiz yapılandırma güncellemesi.\n- **Eklenti sistemi:** Çekirdeği şişirmeden DNS sağlayıcıları, auth vb. için derlenebilir modüller.\n- Lisans **Apache-2.0**.",
+        "why": "Caddy yeni bir proje değil; bugünkü +24 yıldız düşük ivme demek. Trending'e girişi, yıldız sayısı artışından çok **sürekli popülerliğin** göstergesi. Kitle: kendi sunucusunu yöneten geliştiriciler, homelab kullanıcıları, küçük SaaS ekipleri ve konteyner ortamlarında hızlı reverse proxy isteyenler.\n\nSebep net: sertifika yönetimi sıkıcı ve hata yapılan bir iştir; Caddy bunu varsayılan davranış haline getirdi. Bu çalışmada ivme kriterini en zayıf karşılayan proje; çeşitlilik ve altyapı kategorisi için dahil edildi.",
+        "evolve": "- Yerleşik gözlemlenebilirlik (metrik ve izleme) için daha zengin varsayılanlar.\n- Çok düğümlü küme (cluster) yapılandırma yönetiminin ve sertifika paylaşımının daha kolaylaşması.\n- Ajan çağında: admin API'yi güvenli şekilde ajanlara açan, yetkisi sınırlı bir yapılandırma arayüzü.\n- Kurumsal ortamda (ERP/IFS önünde reverse proxy olarak) TLS sonlandırma ve oturum yönetimi için hazır şablonlar."
+      },
+      "glossary": [
+        {
+          "term": "Reverse proxy",
+          "def": "İstemci ile arka uç sunucular arasında durup istekleri yönlendiren aracı sunucu."
+        },
+        {
+          "term": "HTTPS / TLS",
+          "def": "Web trafiğini şifreleyen protokol; sertifika ile sunucunun kimliğini doğrular."
+        },
+        {
+          "term": "Let's Encrypt",
+          "def": "Ücretsiz ve otomatik TLS sertifikası veren kuruluş."
+        },
+        {
+          "term": "HTTP/3",
+          "def": "QUIC üzerine kurulu, daha hızlı ve kayıplı ağlarda daha dayanıklı HTTP sürümü."
+        },
+        {
+          "term": "Caddyfile",
+          "def": "Caddy'nin sade, okunması kolay yapılandırma dosya biçimi."
+        },
+        {
+          "term": "Admin API",
+          "def": "Çalışan sunucunun ayarlarını HTTP isteğiyle değiştirmeye yarayan arayüz."
+        },
+        {
+          "term": "Config adapter",
+          "def": "Başka bir yapılandırma biçimini Caddy'nin JSON'una çeviren bileşen."
+        },
+        {
+          "term": "Homelab",
+          "def": "Kişisel olarak evde kurulup işletilen küçük sunucu/ağ ortamı."
+        }
+      ]
+    }
+  ]
+}
