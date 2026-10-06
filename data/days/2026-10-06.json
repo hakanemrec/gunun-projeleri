@@ -1,0 +1,209 @@
+{
+  "date": "2026-10-06",
+  "projects": [
+    {
+      "name": "Panniantong/Agent-Reach",
+      "url": "https://github.com/Panniantong/Agent-Reach",
+      "stars": "92.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Agent Reach**, AI ajanlarına (Claude Code, Cursor, Windsurf, OpenClaw vb.) internetin gerçek dünyasını **tek komutla** açan bir yetenek katmanıdır.\n\nAjanlar normalde şunları yapamaz: YouTube altyazısını çekmek, Twitter/X'te ücretsiz arama yapmak, Reddit'i okumak, Bilibili ya da Xiaohongshu gibi bölgesel platformlara ulaşmak. Her platform ayrı araç, ayrı kimlik doğrulama ve ayrı yapılandırma ister. Agent Reach bu dağınıklığı `agent-reach install` komutuyla tek seferde çözer.\n\n- Ücretli API anahtarı gerektirmeden web, YouTube, RSS, GitHub ve Bilibili'ye erişim\n- Twitter, Reddit, LinkedIn gibi girişli platformlar için kullanıcının kendi tarayıcı oturumunu kullanma\n- `agent-reach doctor` ile hangi platformun hangi araçla çalıştığını görme",
+        "tech": "Proje bir **sarmalayıcı (wrapper) değil, bir yetenek katmanıdır**: kurulumdan sonra ajan, yukarı akıştaki CLI araçlarını doğrudan çağırır; araya ek bir ara yazılım girmez.\n\n- **Sıralı backend yönlendirme:** Her kanal (`channels/twitter.py`, `youtube.py`, `reddit.py` ...) bir öncelik listesi tutar. Örneğin Twitter için `twitter-cli → OpenCLI → bird`. İlk çalışan seçenek kullanılır. Bir platform anti-bot önlemi alırsa sistem kullanıcı müdahalesi olmadan yedeğe geçer (Bilibili'de yt-dlp engellenince `bili-cli`'ye geçilmesi gibi).\n- **Araçlar:** `yt-dlp` (YouTube), Jina Reader (web içeriğini temiz metne çevirme), `feedparser` (RSS), Exa (MCP üzerinden arama).\n- **SKILL.md:** Ajanın okuyup neyi nasıl çağıracağını öğrendiği, ajan-okunur araç tanımı.\n- **Yerel güvenlik:** Kimlik bilgileri `~/.agent-reach/config.yaml` içinde `600` izinle saklanır, dışarı gönderilmez. Proje kullanıcı adına asla login olmaz, yalnızca mevcut oturumu kullanır. `--dry-run` ile ne yapılacağı önceden görülebilir.\n- Python 3.10+, MIT lisanslı. Kurulum bile ajana bir URL verilerek ajanın kendisi tarafından yapılır.",
+        "why": "- **Zamanlama:** Ajanlar kod yazmaktan \"araştırma yapıp dünyayı okumaya\" doğru genişliyor; ama her ajan için ayrı bağlayıcı yazmak yorucu. Agent Reach tam bu boşluğu dolduruyor.\n- **Sıfır maliyet vaadi:** Resmi API'ler pahalılaştıkça \"ücretsiz ve yerel\" yaklaşım çekici hale geliyor.\n- **Kitle:** Claude Code/Cursor kullanan geliştiriciler, araştırmacılar, içerik ve pazar analizi yapanlar; Çince platform desteği (Bilibili, Xiaohongshu) Asya topluluğunda ek ivme sağlıyor.\n- **Güvenilirlik hikâyesi:** Platformlar engellediğinde otomatik yedeğe geçme, \"bir kez kur, unut\" hissi veriyor. Bugün +1.1k yıldızla günün en hızlı yükselenlerinden.",
+        "evolve": "- **Kırılganlık riski:** Proje üçüncü taraf scraping araçlarına dayanıyor; platformlar kapıyı kapattıkça bakım yükü artar. Otomatik sağlık testleri ve topluluk tarafından yönetilen backend kayıt defteri bu riski azaltır.\n- **Platform ve ToS riski:** Çerez tabanlı erişim bazı platformların kullanım şartlarıyla çelişebilir; kurumsal kullanım için resmi API'ye geçiş modu faydalı olur.\n- **Kurumsal fırsat:** İç sistemlere (Jira, Confluence, ERP/IFS dokümantasyonu, veritabanı arayüzleri) aynı kanal mimarisiyle bağlanan bir \"kurumsal kanal\" seti eklenebilir.\n- **Çıktı standardı:** Tüm kanalların ortak bir şemada (başlık, metin, tarih, kaynak) dönmesi, ajan tarafında prompt tüketimini sadeleştirir."
+      },
+      "glossary": [
+        {
+          "term": "Backend",
+          "def": "Bir işin arka planda gerçekten yapıldığı araç ya da servis. Burada her platform için kullanılan CLI aracı."
+        },
+        {
+          "term": "Fallback (yedek)",
+          "def": "Birincil yöntem başarısız olduğunda otomatik denenen alternatif yöntem."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araç ve veri kaynaklarına standart bir biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırından çalıştırılan araç; grafik arayüzü olmayan program."
+        },
+        {
+          "term": "Scraping",
+          "def": "Web sayfalarından programla veri çekme işlemi."
+        },
+        {
+          "term": "Anti-bot",
+          "def": "Sitelerin otomatik trafiği (bot) engellemek için kullandığı önlemler."
+        },
+        {
+          "term": "Jina Reader",
+          "def": "Herhangi bir web sayfasını ajanların kolay okuyabileceği temiz metne çeviren servis."
+        },
+        {
+          "term": "yt-dlp",
+          "def": "YouTube ve benzeri sitelerden video, altyazı ve meta veri indiren açık kaynaklı araç."
+        },
+        {
+          "term": "RSS",
+          "def": "Sitelerin yeni içeriklerini makine-okunur biçimde yayınladığı besleme formatı."
+        },
+        {
+          "term": "Skill (SKILL.md)",
+          "def": "Ajana bir yeteneği nasıl kullanacağını anlatan, ajanın okuduğu talimat dosyası."
+        }
+      ]
+    },
+    {
+      "name": "pingdotgg/t3code",
+      "url": "https://github.com/pingdotgg/t3code",
+      "stars": "25.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**T3 Code**, farklı yapay zekâ kodlama ajanlarını (Claude Code, Codex, Cursor, OpenCode, Grok Build, Antigravity) **tek bir kontrol arayüzünden** yönetmeni sağlayan \"ajan harness kontrol yüzeyi\"dir.\n\nSorun şu: Her ajanın kendi terminali, kendi arayüzü var ve hepsi makinene bağlı. T3 Code bilgisayarında bir sunucu çalıştırır; sen de web, masaüstü (Electron), iOS veya Android uygulamasından bağlanıp ajanlara iş verirsin. Yani yatağından telefonla \"şu testi düzelt\" diyebilirsin.",
+        "tech": "- **İstemci-sunucu mimarisi:** Makinede çalışan Node.js sunucusu, yerelde kurulu ajan CLI'larını yönetir. Web, mobil ve masaüstü uygulamalar bu sunucuya bağlanan ince istemcilerdir.\n- **Sağlayıcıdan bağımsız meta katman:** Yeni bir ajan yazmak yerine mevcut abonelik ve oturumları kullanır; kullanıcı her ajanda bir kez giriş yapar.\n- **TypeScript monorepo:** `pnpm` çalışma alanı, `/apps`, `/packages`, `/native` klasörleri; Vite tabanlı derleme.\n- **Uzaktan erişim öncelikli tasarım**, `t3 service install` ile arka plan servisi olarak sürekli çalışabilir.\n- Kurulum: `npx t3@latest` ile deneme, Homebrew/winget/apt/AUR paketleri. MIT lisanslı.",
+        "why": "- **Marka ve topluluk:** Ping (Theo / T3 ekosistemi) geniş bir geliştirici kitlesine sahip; duyuru etkisi yüksek.\n- **Zamanlama:** Geliştiriciler artık birden fazla ajan abonelik kullanıyor (Claude, Codex, Cursor...). Hepsini tek yerden yönetme ihtiyacı doğdu.\n- **Mobil/uzaktan ajan kontrolü** hâlâ nadir; \"ajan çalışırken yürüyüşe çık\" senaryosu cazip.\n- **Açıklık vaadi:** Kapalı kaynak alternatiflere karşı \"kolayca fork'lanabilir, gerçekten açık\" duruşu. Bugün +485 yıldız.",
+        "evolve": "- **Erken aşama:** Proje \"hata bekleyin\" diyor ve şu an dışarıdan katkıyı sınırlıyor; olgunlaştıkça eklenti sistemi ve katkı akışı açılırsa ekosistem hızla büyür.\n- **Güvenlik:** Uzaktan erişimli bir ajan sunucusu çok kritik: kimlik doğrulama, ağ tüneli, iş onayı (kod çalıştırma izinleri) ve denetim günlüğü kritik özellikler olur.\n- **Ekip özellikleri:** Paylaşılan oturumlar, maliyet/token takibi, ajan çıktılarını yan yana karşılaştırma.\n- **Kurumsal kullanım:** Şirket içi sunucuda barındırılan, PL/SQL veya ERP kod tabanlarına yönelik ajanları merkezi yöneten bir \"ajan paneli\" olarak evrilebilir."
+      },
+      "glossary": [
+        {
+          "term": "Harness",
+          "def": "Bir yapay zekâ modelinin etrafındaki araç, izin ve döngü çerçevesi; ajanı çalıştıran kabuk."
+        },
+        {
+          "term": "Ajan (agent)",
+          "def": "Bir hedef verildiğinde araç kullanarak adım adım iş yapabilen yapay zekâ."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması yapmaya yarayan çerçeve."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden çok uygulama ve kütüphanenin tek bir depoda tutulması."
+        },
+        {
+          "term": "pnpm",
+          "def": "Node.js için hızlı, disk dostu paket yöneticisi."
+        },
+        {
+          "term": "Vite",
+          "def": "Hızlı çalışan modern web derleme ve geliştirme aracı."
+        },
+        {
+          "term": "Meta katman",
+          "def": "Mevcut araçların üstüne oturup onları ortak bir arayüzle yöneten katman."
+        },
+        {
+          "term": "Arka plan servisi",
+          "def": "Kullanıcı oturumu açık olmasa da sürekli çalışan program."
+        }
+      ]
+    },
+    {
+      "name": "msitarzewski/agency-agents",
+      "url": "https://github.com/msitarzewski/agency-agents",
+      "stars": "157.4k",
+      "language": "Shell",
+      "sections": {
+        "serves": "**Agency Agents**, \"tam bir ajans\" gibi çalışan **230'dan fazla uzman yapay zekâ ajan tanımının** derlemesidir. Mühendislik, tasarım, pazarlama, satış, ürün, güvenlik, finans, oyun geliştirme, GIS, sağlık gibi 17 bölüme ayrılmıştır.\n\nSorun: Genel bir \"yardımcı ol\" promptu ile uzmanlaşmış çıktı almak zordur. Hazır, kişilikli ve süreç odaklı uzman tanımları sana \"veritabanı optimizasyon uzmanı\" ya da \"SEO uzmanı\" gibi rolleri kopyala-yapıştır hazır verir.",
+        "tech": "- **Her ajan bir markdown dosyası:** Frontmatter (isim, renk, açıklama) + Kimlik ve Hafıza, Temel Görev, Kritik Kurallar, Teknik Çıktılar (kod örnekleri), İş Akışı ve Başarı Ölçütleri bölümleri.\n- **Çapraz araç uyumluluğu:** Claude Code ve GitHub Copilot'ta doğrudan çalışır; `convert.sh` ile Cursor, Gemini CLI, OpenCode, Aider, Windsurf, Codex, OpenClaw vb. 14+ aracın biçimine dönüştürülür.\n- **`install.sh`:** Etkileşimli veya otomatik kurulum, bölüm/ajan filtresi, paralel işlem. Ayrıca masaüstü uygulaması güncellemeyi otomatikleştirir.\n- Teknoloji kasıtlı olarak basit: Shell + Markdown. Düz metin olduğu için sürüm kontrolü ve katkı çok kolaydır. MIT lisanslı.",
+        "why": "- **Çok büyük kitle:** Yazılımcı olmayan roller (pazarlama, satış, finans) de kapsandığı için ilgi alanı geniş.\n- **Düşük giriş bariyeri:** Kod yok; kopyala ve kullan.\n- **Zamanlama:** Ajan ekosistemi parçalandıkça tek bir ajan kütüphanesinin 14+ araca dönüşmesi büyük değer.\n- **Ağdan ağa etki:** Reddit çıkışlı, topluluk katkılı büyüme; 157k yıldızla hâlâ günde +744 alıyor, yani sürekli keşfediliyor.",
+        "evolve": "- **Kalite denetimi:** 230+ ajanın gerçekten daha iyi sonuç verdiğini ölçen değerlendirme (eval) setleri eklenebilir; şu an çoğu kullanıcı deneyimine dayalı.\n- **Bağlam maliyeti:** Uzun persona dosyaları her oturumda token harcar; ihtiyaca göre yükleme (progressive disclosure) önemli.\n- **Orkestrasyon:** Ajanları birlikte çalıştıran hazır iş akışları (ürün keşfi için 8 ajan gibi) daha da resmileştirilebilir.\n- **Alan genişletme:** SQL/PL-SQL, ERP ve IFS gibi niş kurumsal alanlar için uzman ajanlar fırsat bırakıyor."
+      },
+      "glossary": [
+        {
+          "term": "Persona",
+          "def": "Ajana verilen rol, kişilik ve konuşma tarzı tanımı."
+        },
+        {
+          "term": "Frontmatter",
+          "def": "Markdown dosyasının başındaki, meta veri (isim, açıklama gibi) içeren küçük başlık bloğu."
+        },
+        {
+          "term": "Eval (değerlendirme)",
+          "def": "Bir ajanın veya promptun çıktı kalitesini ölçen test seti."
+        },
+        {
+          "term": "Orkestrasyon",
+          "def": "Birden çok ajanın birlikte, sıralı veya paralel çalışmasını yönetme."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modelinin işlediği metin birimi; maliyet ve bağlam sınırı bununla ölçülür."
+        },
+        {
+          "term": "Progressive disclosure",
+          "def": "Bilginin ihtiyaç oldukça kademeli olarak bağlama yüklenmesi."
+        },
+        {
+          "term": "GitHub Copilot",
+          "def": "GitHub'ın yapay zekâ kod asistanı."
+        },
+        {
+          "term": "Dönüştürücü script",
+          "def": "Bir araç biçimindeki dosyayı başka araç biçimine çeviren betik (burada convert.sh)."
+        }
+      ]
+    },
+    {
+      "name": "M-Abozaid/esp32-c3-adblock",
+      "url": "https://github.com/M-Abozaid/esp32-c3-adblock",
+      "stars": "1.5k",
+      "language": "C++",
+      "sections": {
+        "serves": "**ESP32-C3 AdBlock**, yaklaşık **2 dolarlık** bir ESP32-C3 mikrodenetleyicisini Pi-hole benzeri bir **DNS reklam engelleyiciye** çeviren projedir. Ev ağındaki cihazlar DNS sorgularını bu küçük karta sorar; reklam ve izleyici alan adları `0.0.0.0` ile yok edilir, diğerleri gerçek DNS sunucusuna iletilir.\n\nNormalde bu iş için Raspberry Pi gerekir. Burada 140 bin ile 537 bin arası alan adlık engelleme listesi, ek RAM (PSRAM) bile gerektirmeden bir çipe sığdırılıyor.",
+        "tech": "Projenin çekirdeği **belleği değil flash'ı kullanan veri yapısı**dır:\n\n- **Hash yaklaşımı:** Alan adları, 40 bit (5 bayt) FNV-1a hash'e çevrilip sıralı tabloda flash'ta saklanır. 141k alan adı ~0,67 MB tutar; tam metin olsa ~2,5 MB RAM gerekirdi.\n- **Sorgu akışı:** Alan adını ayıkla → hash'le (üst alan adı ekleriyle birlikte) → flash'ta **ikili arama** (~18 okuma, WiFi gecikmesi dahil ~10 ms) → engelle veya ilet.\n- **Neden 40 bit?** 32 bit ~250k alan adında yaklaşık 7 yanlış pozitif üretirdi; 64 bit gereksiz yer harcardı. 141k'da çakışma yok, 537k'da bir çakışma var.\n- **Bölümleme dengesi:** Tek uygulama bölümü ~537k alan adı ama firmware OTA yok; çift bölüm OTA verir ama ~250k ile sınırlı.\n- **Yığın:** Arduino/PlatformIO, HTTP panosu (Basic Auth), OTA ile blok listesi ve firmware güncelleme, Python blok listesi üretici betiği. Hosts, AdGuard ve Adblock söz dizimlerini okur. MIT lisanslı.\n- **Güvenlik:** Durum değiştiren uçlar (`/ban`, `/upload`, `/forgetwifi`) parola ister, CSRF için `X-Requested-With` başlığı kullanılır; ama şifreleme olmadığı için LAN güven sınırı varsayılır.",
+        "why": "- **\"$2'lık Pi-hole\" cazibesi:** Fiyat ve gösterişli mühendislik, donanım meraklıları için ideal paylaşım konusu.\n- **Kısıtlı kaynakta zarif çözüm:** Veri yapısı kararları (hash genişliği, flash araması) bu kitleyi çok sever.\n- **Gizlilik ve reklam engelleme eğilimi:** Ev ağında ağ düzeyinde engelleme isteği sürekli gündem.\n- **Küçük ama hızlı:** Toplam yıldızı küçük (1.5k) olsa da günlük +196 ile oransal olarak yüksek ivme.",
+        "evolve": "- **Daha fazla alan adı / daha iyi yapı:** Bloom filter veya Golomb-kodlu küme gibi sıkıştırmalarla aynı flash'a daha çok alan adı sığar, yanlış pozitif oranı hesaplanabilir kalır.\n- **DoH/DoT desteği:** Şifreli DNS yukarı akış (upstream) bağlantıları gizliliği artırır; ESP32-C3'ün TLS kapasitesi dikkatli kullanılmalı.\n- **Regex ve joker karakter desteği:** Şu an atlanıyor; kısıtlı biçimde desteklenebilir.\n- **Yönetilebilirlik:** Birden çok cihaz için merkezi pano, istatistik ve istemci bazlı kurallar.\n- **Eğitsel değer:** Gömülü sistemlerde \"bellek yerine hash+flash\" kalıbı için referans proje olabilir."
+      },
+      "glossary": [
+        {
+          "term": "DNS",
+          "def": "Alan adlarını (örn. site.com) IP adreslerine çeviren internet adres defteri sistemi."
+        },
+        {
+          "term": "DNS sinkhole",
+          "def": "Engellenen alan adlarına sahte (0.0.0.0) cevap vererek bağlantıyı boşa düşüren yöntem."
+        },
+        {
+          "term": "Pi-hole",
+          "def": "Raspberry Pi üzerinde çalışan, ağ düzeyinde reklam engelleyen popüler DNS çözümü."
+        },
+        {
+          "term": "ESP32-C3",
+          "def": "Espressif'in WiFi ve Bluetooth destekli, ucuz RISC-V tabanlı mikrodenetleyicisi."
+        },
+        {
+          "term": "PSRAM",
+          "def": "Mikrodenetleyicilere eklenen harici ek RAM belleği."
+        },
+        {
+          "term": "Flash",
+          "def": "Kalıcı saklama belleği; yazılım ve veriler burada durur."
+        },
+        {
+          "term": "FNV-1a",
+          "def": "Hızlı, kriptografik olmayan bir hash fonksiyonu; metinden sabit boyutlu sayı üretir."
+        },
+        {
+          "term": "İkili arama",
+          "def": "Sıralı bir listede, her adımda aralığı yarıya indirerek hızlı bulma yöntemi."
+        },
+        {
+          "term": "OTA (Over-the-Air)",
+          "def": "Yazılımı kablosuz ağ üzerinden uzaktan güncelleme."
+        },
+        {
+          "term": "CSRF",
+          "def": "Kullanıcının tarayıcısını kullanarak izinsiz işlem yaptırmaya yönelik saldırı türü."
+        },
+        {
+          "term": "Upstream resolver",
+          "def": "Engellenmeyen sorguların iletildiği gerçek DNS sunucusu."
+        }
+      ]
+    }
+  ]
+}
