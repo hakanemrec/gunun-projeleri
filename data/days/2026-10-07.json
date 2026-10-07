@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-07",
+  "projects": [
+    {
+      "name": "morluto/rea",
+      "url": "https://github.com/morluto/rea",
+      "stars": "10.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**REA (Reverse Engineer Anything)**, kaynak kodu olmayan uygulamaları AI ajanlarının ve terminal kullanıcılarının analiz edebilmesini sağlar.\n\nÖrnek senaryo: \"Notes uygulamasında arama nasıl çalışıyor, kanıtlarıyla göster ve benzerini kendi projemde kur.\" REA ikili dosyalardan okunabilir pseudocode, string, sembol ve ilişkileri çıkarır; ajan da bunu açıklamaya veya yeniden uygulamaya çevirir.\n\n- Yerel makinede çalışır, buluta dosya yüklenmez\n- Her bulgu **kanıt** olarak (artifact kimliği, güven düzeyi, sınırlamalar) kaydedilir\n- Native binary, Electron/JS, .NET, Android APK, web sitesi ve firmware katmanlarını kapsar",
+        "tech": "Proje **TypeScript/Node.js (22+)** ile yazılmış; aynı iş akışlarını hem bir **CLI** hem bir **MCP sunucusu** olarak sunar, yani insan ve ajan aynı kanıt sözleşmesini kullanır.\n\n- **Sağlayıcı (provider) mimarisi:** Derin analiz için Hopper, Ghidra 12.1 ve IDA Pro arasında deterministik seçim yapan bir kayıt defteri var. Aynı anda tek derin sağlayıcı kullanılır; belirsizse açıkça seçilir.\n- **Yardımcı sağlayıcılar:** JADX (APK), Binwalk/Unblob (firmware), Playwright ile CDP üzerinden pasif tarayıcı gözlemi, macOS yerel araçları.\n- **Hedefe bağlı oturum yönlendirici:** İstekler analiz edilen hedefe göre doğru sağlayıcıya gider.\n- 41+ düşük seviye inceleme aracı ve 14+ araştırma iş akışı sunar.\n\nGerekçe: Güçlü ters mühendislik araçlarını yeniden yazmak yerine onları ajanların kullanabileceği tek bir arayüzün arkasına koymak.",
+        "why": "- **Ajan çağının doğal ihtiyacı:** Kodlama ajanları kaynak kodu iyi okuyor ama kapalı ikililer kör nokta. REA bu boşluğu MCP ile kapatıyor.\n- **Tek komut kurulum:** `npx rea-agents setup` ile giriş bariyeri düşük.\n- **Kanıt odaklı yaklaşım** \"AI uydurdu\" endişesini azaltıyor; bu, güvenlik araştırmacıları ve uyumluluk ekipleri için önemli.\n- Bugün yaklaşık 3k yıldız aldı; listedeki en yüksek ivmeli proje.",
+        "evolve": "- **Windows desteği** kısmi (yalnızca salt-okunur x86-64 PE); tam destek ve süreç yakalama eklenebilir.\n- Tarayıcı gözlemi pasif; etkileşimli dinamik analiz (JS çalıştırma, IPC izleme) büyük bir fırsat.\n- Birden fazla derin sağlayıcıyı birlikte kullanıp sonuçları karşılaştırmak doğruluğu artırabilir.\n- Eski ERP/istemci uygulamalarının (kaynağı kaybolmuş) protokol ve iş mantığını çıkarmak için kullanılabilir; ancak lisans ve hukuki sınırlar dikkat ister."
+      },
+      "glossary": [
+        {
+          "term": "Ters mühendislik",
+          "def": "Kaynak kodu elde olmayan bir yazılımın derlenmiş halinden çalışma mantığını çıkarma işi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarının harici araç ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Pseudocode",
+          "def": "Derlenmiş makine kodunun decompiler tarafından üretilen, yüksek seviyeli koda benzeyen okunabilir karşılığı."
+        },
+        {
+          "term": "Ghidra",
+          "def": "NSA'in açık kaynak yazılım ters mühendislik ve decompile aracı."
+        },
+        {
+          "term": "Hopper / IDA Pro",
+          "def": "Ticari disassembler ve decompiler araçları; ikili dosyaları analiz etmek için kullanılır."
+        },
+        {
+          "term": "Mach-O / ELF / PE",
+          "def": "Sırasıyla macOS, Linux ve Windows'ta çalıştırılabilir dosya formatları."
+        },
+        {
+          "term": "CDP (Chrome DevTools Protocol)",
+          "def": "Tarayıcıyı programla gözlemlemeyi ve kontrol etmeyi sağlayan protokol."
+        },
+        {
+          "term": "Firmware",
+          "def": "Donanım cihazlarının içine gömülü çalışan düşük seviye yazılım."
+        },
+        {
+          "term": "Provider (sağlayıcı)",
+          "def": "Belirli bir analiz aracını ortak arayüzün arkasına saran modül."
+        }
+      ]
+    },
+    {
+      "name": "deepseek-ai/DeepGEMM",
+      "url": "https://github.com/deepseek-ai/DeepGEMM",
+      "stars": "8.8k",
+      "language": "Cuda",
+      "sections": {
+        "serves": "**DeepGEMM**, büyük dil modellerinin en pahalı işlemi olan **matris çarpımını** (GEMM) NVIDIA GPU'larda düşük hassasiyetle (FP8/FP4) ve çok hızlı yapan temiz bir kernel kütüphanesidir.\n\n- Yoğun (dense) GEMM, MoE için gruplu GEMM ve MQA dikkat skorlama kernel'ları tek kod tabanında\n- **Mega MoE:** dağıtım, iki lineer katman, SwiGLU ve birleştirme adımlarını tek kernel'da toplar; NVLink iletişimi hesapla örtüştürülür\n- Eğitim ve çıkarım (prefill/decode) senaryolarını kapsar",
+        "tech": "- **CUDA + Python/PyTorch** arayüzü; hedef mimariler NVIDIA **SM90 (Hopper)** ve **SM100 (Blackwell)**.\n- **Çalışma zamanı JIT derleme (DeepJIT):** Kernel'lar kurulumda değil, ilk kullanımda matris şekline göre derlenir; önbelleğe alınır. Böylece her şekle özel optimizasyon yapılabilir.\n- **İnce taneli ölçekleme:** SM90'da FP32, SM100'de paketlenmiş UE8M0 ölçek faktörleri.\n- **CUTLASS 4** bileşenlerinden yararlanır ama ağır şablon metaprogramlama kullanmaz; az sayıda çekirdek fonksiyonla sade tutulur.\n- Gruplu düzenler: M ekseni (contiguous), masked (CUDA graph ile decode) ve K ekseni (MoE ağırlık gradyanı).\n\nGerekçe: Bakım kolaylığı ve öğrenilebilirlikten ödün vermeden uzman ayarlı kütüphanelerle yarışmak. H800'de 1550 TFLOPS'a kadar performans bildiriliyor.",
+        "why": "- DeepSeek'in model ve altyapı çalışmalarına yönelik ilgi yüksek; V3.2 indexer desteği ve yeni Mega MoE kernel'ı güncel bir sürüm dalgası yarattı.\n- Maliyet baskısı: FP8/FP4 ile aynı donanımdan daha fazla token elde etmek.\n- GPU programlama öğrenenler için okunabilir bir referans olması.\n- Kitle: çıkarım motoru geliştiricileri, ML sistem mühendisleri, GPU kernel meraklıları.",
+        "evolve": "- Hopper/Blackwell dışı donanım (AMD, eski NVIDIA) desteği yok; taşınabilirlik fırsatı.\n- Otomatik ayar (autotuning) ve daha geniş şekil kapsamı.\n- vLLM/SGLang gibi çıkarım motorlarına hazır entegrasyonlar.\n- Daha fazla fused operatör (dikkat, normalizasyon) eklenerek bellek trafiği daha da azaltılabilir."
+      },
+      "glossary": [
+        {
+          "term": "GEMM",
+          "def": "General Matrix Multiply; iki matrisin çarpımı. Sinir ağlarının hesap yükünün büyük kısmını oluşturur."
+        },
+        {
+          "term": "Kernel (GPU)",
+          "def": "GPU üzerinde paralel çalışan tek bir hesaplama fonksiyonu."
+        },
+        {
+          "term": "FP8 / FP4",
+          "def": "8 ve 4 bitlik kayan nokta sayı formatları; daha az bellek ve daha hızlı hesap, biraz daha düşük hassasiyet sağlar."
+        },
+        {
+          "term": "MoE (Mixture of Experts)",
+          "def": "Her girdi için yalnızca bazı 'uzman' alt ağların çalıştığı model mimarisi."
+        },
+        {
+          "term": "JIT derleme",
+          "def": "Kodun kurulum yerine çalışma anında, ihtiyaç duyulan şekle göre derlenmesi."
+        },
+        {
+          "term": "SM90 / SM100",
+          "def": "NVIDIA Hopper ve Blackwell GPU mimarilerinin hesaplama yetenek kodları."
+        },
+        {
+          "term": "Tensor core",
+          "def": "GPU'daki matris çarpımına özelleşmiş donanım birimi."
+        },
+        {
+          "term": "NVLink",
+          "def": "GPU'lar arası yüksek hızlı NVIDIA bağlantısı."
+        },
+        {
+          "term": "MQA",
+          "def": "Multi-Query Attention; dikkat mekanizmasında anahtar/değerlerin paylaşıldığı hafif varyant."
+        },
+        {
+          "term": "TFLOPS",
+          "def": "Saniyede trilyon kayan nokta işlemi; GPU hızı ölçüsü."
+        },
+        {
+          "term": "CUTLASS",
+          "def": "NVIDIA'nın GPU matris işlemleri için C++ şablon kütüphanesi."
+        },
+        {
+          "term": "SwiGLU",
+          "def": "Modern dil modellerinde kullanılan bir aktivasyon fonksiyonu."
+        }
+      ]
+    },
+    {
+      "name": "DuarteSantos8/openGym",
+      "url": "https://github.com/DuarteSantos8/openGym",
+      "stars": "6.0k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**openGym**, verinin tamamen sizde kaldığı, kendi sunucunuzda çalıştırılan bir **antrenman ve vücut ağırlığı takip** uygulamasıdır.\n\n- Haftalık program planlama, antrenman kaydı, PR tespiti\n- 1.324 egzersizlik animasyonlu kütüphane; Push/Pull/Legs, Upper/Lower, Full Body, 5x5 hazır planları\n- Tahmini 1RM, kas haritası (hacim/toparlanma), yıllık aktivite ısı haritası\n- FitNotes, Strong, Hevy ve Apple Health'ten içe aktarma; JSON dışa aktarma\n- 17 dil, isteğe bağlı AI koç",
+        "tech": "- **Ön yüz:** React 19, Vite, React Router, Zustand; Docker içinde statik dosyaya derlenip **nginx** ile sunulur.\n- **Arka yüz:** Minimum bağımlılıkla Node.js (`@simplewebauthn/server`, `web-push`).\n- **Veritabanı yok, JSON dosyaları:** `db.json` (profiller, passkey'ler) ve kullanıcı başına `state-<user>.json`. Kurulumu ve yedeklemeyi çok basitleştirir.\n- **Kimlik doğrulama:** Passkey (WebAuthn) birincil; özel anahtar cihazda kalır. İsteğe bağlı parola ve davet usulü kayıt.\n- **Senkronizasyon:** İyimser eşzamanlılık; cihaz gördüğü revizyonu gönderir, araya başka yazım girmişse sunucu reddedip güncel belgeyi döner, istemci birleştirip yeniden dener. Çevrimdışı çalışma korunur.\n- Docker Compose ile amd64/arm64 hazır imajlar.",
+        "why": "- **Self-hosted ve gizlilik** akımı: sağlık verisini ticari uygulamalara vermek istemeyenler.\n- Hevy/Strong gibi uygulamalardan göç aracı sunması.\n- Tek komutla `docker compose up -d` kurulumu, passkey ile parolasız giriş.\n- Kitle: ev sunucusu (homelab) kullanıcıları ve fitness meraklıları.",
+        "evolve": "- Tek-yazıcı JSON depolama çok kullanıcılı büyümede sınırlı; SQLite gibi bir geçiş mantıklı olabilir.\n- Egzersiz görselleri üçüncü taraf ve lisans belirsiz; açık lisanslı bir set gerekir.\n- Giyilebilir cihaz verisi (nabız, uyku) ve iOS yerel uygulama dağıtımı.\n- AGPL lisansı ticari türevleri sınırlar; bu hem koruma hem engel."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir uygulamanın bulut hizmeti yerine kendi sunucunuzda çalıştırılması."
+        },
+        {
+          "term": "Passkey (WebAuthn)",
+          "def": "Parola yerine cihazın biyometrik/donanım anahtarıyla giriş yapmayı sağlayan standart."
+        },
+        {
+          "term": "PWA",
+          "def": "Tarayıcıdan yüklenip uygulama gibi çalışan web uygulaması."
+        },
+        {
+          "term": "1RM",
+          "def": "Bir harekette tek tekrarda kaldırılabilecek maksimum ağırlık."
+        },
+        {
+          "term": "RIR / RPE",
+          "def": "Efor ölçekleri: kalan tekrar sayısı (RIR) ve algılanan zorluk (RPE)."
+        },
+        {
+          "term": "Zustand",
+          "def": "React için küçük ve basit bir durum yönetimi kütüphanesi."
+        },
+        {
+          "term": "nginx",
+          "def": "Statik dosya sunan ve istekleri yönlendiren (reverse proxy) web sunucusu."
+        },
+        {
+          "term": "Docker Compose",
+          "def": "Birden çok konteyneri tek yapılandırma dosyasıyla çalıştıran araç."
+        },
+        {
+          "term": "İyimser eşzamanlılık",
+          "def": "Çakışma olmayacağını varsayıp yazan, çakışmayı revizyon numarasıyla sonradan yakalayan yaklaşım."
+        },
+        {
+          "term": "AGPL",
+          "def": "Ağ üzerinden sunulan değiştirilmiş sürümlerin de kaynak kodunun paylaşılmasını zorunlu kılan açık kaynak lisansı."
+        }
+      ]
+    }
+  ]
+}
