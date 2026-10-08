@@ -1,0 +1,205 @@
+{
+  "date": "2026-10-08",
+  "projects": [
+    {
+      "name": "EpicGames/raddebugger",
+      "url": "https://github.com/EpicGames/raddebugger",
+      "stars": "7.9k",
+      "language": "C",
+      "sections": {
+        "serves": "**RAD Debugger**, Epic Games'in geliştirdiği yerel (native), kullanıcı modunda çalışan, çok süreçli ve grafik arayüzlü bir **hata ayıklayıcıdır (debugger)**. Visual Studio debugger'ına hızlı ve hafif bir alternatif olmayı hedefler.\n\n- Aynı depo ayrıca **RAD Debug Info (RDI)** biçimini ve **RAD Linker**'ı içerir\n- Linker, MSVC komut satırıyla uyumludur; çok gigabaytlık debug bilgisi olan projelerde README'ye göre yaklaşık %50 daha hızlıdır\n- Lisans: MIT",
+        "tech": "Tamamı **C** ile yazılmış; derleme `build.bat` / `build.sh` ile yapılır.\n\n- **Katmanlı mimari:** Her katman kendi `src` klasöründe, kısa bir önek (`ctrl` → `CTRL_`) ile durur; katmanlar yönlü döngüsüz graf oluşturur. `lib_rdi` gibi katmanların başka bağımlılığı yoktur.\n- **Debug bilgisi dönüşümü:** PDB/COFF verisi isteğe bağlı olarak kendi **RDI** biçimine çevrilir; DWARF/ELF desteği yolda.\n- **Asenkron tasarım:** Süreç kontrolü (`ctrl`, `demon`) hedef süreçlerle adım adım çalışır, arayüz ayrı thread'de; debug bilgisi, dosya ve bellek önbellekleri asenkron.\n- **Ifade değerlendirici:** Derleyici tarzı bir `eval` katmanı.\n- **Immediate-mode UI** ve D3D11 çizimi; tablolar `metagen` ile Metadesk dosyalarından üretilir.",
+        "why": "Üç neden öne çıkıyor:\n\n- **Marka güveni:** Unreal Engine'in arkasındaki Epic Games'ten geliyor; oyun geliştiricileri ağır, yavaş debugger'lardan bıkmış durumda.\n- **Gerçek bir ağrı noktası:** Büyük C/C++ kod tabanlarında debug ve link süreleri saatlere varabiliyor.\n- **Şeffaflık:** Alpha aşamasında olmasına rağmen açık geliştirme ve MIT lisansı toplulukta merak uyandırdı. Günlük yıldız ivmesi (+90) ana akım sıçramalardan düşük ama istikrarlı.\n\nKitle: oyun/sistem programcıları, performans odaklı C/C++ geliştiricileri.",
+        "evolve": "- **Linux x64** desteği (ELF çözücü, DWARF→RDI dönüştürücü) yol haritasının ilk maddesi; gerçekleşirse kitle çok genişler\n- **Uzaktan debug**, başka mimariler ve daha zengin görselleştiriciler\n- Şu an yalnızca **Windows x64 + PDB** destekleniyor; bu en büyük sınır\n- Linker'da LTO ve ölü kod eleme (`/opt:ref`) eksik\n- Fırsat: RDI bir açık format olarak araç zincirinde (profiler, kod gezgini) ortak dil olabilir"
+      },
+      "glossary": [
+        {
+          "term": "Debugger (hata ayıklayıcı)",
+          "def": "Çalışan bir programı adım adım izleyip değişkenleri ve belleği incelemeyi sağlayan araç."
+        },
+        {
+          "term": "Linker (bağlayıcı)",
+          "def": "Derlenmiş nesne dosyalarını birleştirip çalıştırılabilir dosya üreten araç."
+        },
+        {
+          "term": "PDB",
+          "def": "Microsoft araçlarının ürettiği, programın sembol ve kaynak eşleme bilgisini tutan debug dosyası."
+        },
+        {
+          "term": "DWARF / ELF",
+          "def": "Linux dünyasının debug bilgisi biçimi (DWARF) ve çalıştırılabilir dosya biçimi (ELF)."
+        },
+        {
+          "term": "RDI",
+          "def": "RAD Debug Info; projenin PDB/DWARF'ı hızlı okunacak şekilde yeniden paketleyen kendi debug bilgisi biçimi."
+        },
+        {
+          "term": "Immediate-mode UI",
+          "def": "Arayüzün her karede kodla baştan çizildiği, durum tutmayan basit arayüz yaklaşımı."
+        },
+        {
+          "term": "Metaprogramlama (metagen)",
+          "def": "Kodun bir kısmını başka bir betik/araçla otomatik üretme tekniği."
+        },
+        {
+          "term": "LTO",
+          "def": "Link Time Optimization; derleme birimleri arası optimizasyonu bağlama aşamasında yapma."
+        },
+        {
+          "term": "Alpha",
+          "def": "Yazılımın henüz kararsız olabileceği erken test sürümü aşaması."
+        }
+      ]
+    },
+    {
+      "name": "manaflow-ai/cmux",
+      "url": "https://github.com/manaflow-ai/cmux",
+      "stars": "27.9k",
+      "language": "Swift",
+      "sections": {
+        "serves": "**cmux**, birden fazla yapay zekâ kodlama ajanını (Claude Code, Codex vb.) paralel çalıştıranlar için tasarlanmış, macOS'e özel bir **terminaldir**.\n\nSorun: 5 ajan açıkken hangisinin sana ihtiyaç duyduğunu anlamak zor. cmux, bekleyen ajanı **mavi halka** ve sol kenar çubuğu rozetiyle gösterir.\n\n- Dikey sekmeler: git dalı, PR durumu, dizin, dinlenen portlar, son bildirim\n- Bölünmüş paneller ve ajanların kullanabildiği yerleşik tarayıcı paneli\n- `cmux ssh` ile uzak makinede çalışma alanı",
+        "tech": "- **Swift + AppKit** ile yerel uygulama; README Electron tabanlı rakiplerle bilinçli kıyas yapıyor (daha az bellek, daha hızlı açılış)\n- Terminal motoru olarak **libghostty** kütüphane olarak kullanılıyor (Ghostty'nin fork'u değil), GPU hızlandırmalı çizim; Ghostty ayarlarını okur\n- **Bildirimler:** OSC 9/99/777 kaçış dizilerini yakalar; `cmux notify` komutu ajan hook'larına bağlanabilir\n- **Programlanabilirlik:** Her eylem hem CLI hem **Unix soketi** üzerinden; ekran okuma, girdi gönderme, tarayıcıyı sürme\n- Oturum geri yükleme: yerleşim, dizin, kısmi scrollback\n- Lisans: uygulama GPL-3.0, sunucu parçaları BSL 1.1",
+        "why": "- **Zamanlama:** Ajanları paralel koşturmak 2026'da olağan iş akışı oldu; asıl darboğaz artık insan dikkati\n- **Doğru soyutlama:** Yeni bir IDE değil, zaten kullanılan terminali ajan farkındalığıyla genişletiyor\n- Ghostty'nin popülerliğine ve mevcut ayarlarla uyumluluğa yaslanıyor\n- Bugünkü ivme (+44) düşük; toplam 27.9k yıldız birikimden geliyor, yani kalıcı bir ilgi\n\nKitle: Claude Code / Codex'i yoğun kullanan macOS'lu geliştiriciler.",
+        "evolve": "- Yalnızca **macOS**; Linux/Windows portu en büyük fırsat\n- Oturum geri yükleme rastgele canlı süreci saklayamıyor (tmux/vim yeniden başlar)\n- iOS uygulaması, bulut VM ve sesli mod 'Founder's Edition' vaatleri; açık kaynak çekirdek ile ücretli katman arasındaki denge izlenmeli\n- Ajan hook'ları için standart bir bildirim protokolü yaygınlaşırsa cmux referans istemci olabilir"
+      },
+      "glossary": [
+        {
+          "term": "Terminal emülatörü",
+          "def": "Komut satırı kabuğunu bir pencerede çizen ve klavye girdisini ileten uygulama."
+        },
+        {
+          "term": "libghostty",
+          "def": "Ghostty terminalinin çekirdek terminal/çizim mantığının kütüphane olarak sunulan hali."
+        },
+        {
+          "term": "AppKit",
+          "def": "Apple'ın macOS için yerel arayüz çerçevesi."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojisiyle masaüstü uygulaması yapma çerçevesi; genelde bellek açısından ağırdır."
+        },
+        {
+          "term": "OSC kaçış dizisi",
+          "def": "Terminale özel komut (ör. bildirim) göndermek için kullanılan özel karakter dizileri."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir olay olduğunda otomatik çalışan kullanıcı tanımlı komut veya betik."
+        },
+        {
+          "term": "Unix soketi",
+          "def": "Aynı makinedeki programların birbirine komut/veri gönderdiği yerel iletişim kanalı."
+        },
+        {
+          "term": "Scrollback",
+          "def": "Terminalde ekranın üstüne kaymış eski çıktı geçmişi."
+        },
+        {
+          "term": "GPL / BSL",
+          "def": "GPL türevleri de açık kalmaya zorlayan, BSL ise belirli ticari kullanımı kısıtlayan lisans türüdür."
+        }
+      ]
+    },
+    {
+      "name": "yetone/magpie",
+      "url": "https://github.com/yetone/magpie",
+      "stars": "6.2k",
+      "language": "Go",
+      "sections": {
+        "serves": "**magpie**, kodlama ajanlarının (Claude Code, Codex, Gemini CLI, OpenCode vb. ~40 araç) hangi yapay zekâ modelini kullanacağını **tek yerden** yönetmeni sağlayan yerel bir ağ geçidi ve menü çubuğu uygulamasıdır.\n\nÖrnek: Codex'i DeepSeek ile, Claude Code'u Kimi ile çalıştırmak. Her ajanın yapılandırma dosyasını elle düzenlemek yerine magpie model anahtarını senin için değiştirir.\n\n- Abonelik girişlerini (Claude, ChatGPT, Copilot vb.) ajanlar arasında paylaşır\n- Kullanım/maliyet takibi ve anahtar başına harcama limiti",
+        "tech": "- **Go** ile yazılmış; `127.0.0.1:3425` adresinde yerel gateway\n- **Protokol çevirisi:** OpenAI Chat, OpenAI Responses, Anthropic Messages ve Gemini formatlarını kendi aralarında dönüştürür (akış ve araç çağrıları dahil). Böylece bir ajan başka sağlayıcının modelini 'kendi dilinde' konuşur.\n- **Yönlendirme grupları:** `smart`, `order`, `rotate`, `usage`, `pace` modları; kota/oran sınırında sıradaki üyeye otomatik geçiş\n- **Niyet yönlendirme:** küçük model her turu okuyup güçlü ya da hızlı modele gönderir\n- Eklentiler **Bun** üzerinde çalışır (`onRequest/onEvent/onResponse` middleware)\n- Arayüz: tray, TUI, web UI, CLI; Docker imajı; MIT lisansı",
+        "why": "- **Model çeşitliliği patladı:** Ucuz/açık modeller (DeepSeek, Kimi, Qwen) ajanlarda gerçekten kullanılabilir hale geldi ve insanlar ajan başına model seçmek istiyor\n- **Kota ve maliyet acısı:** Rate limit'te sessiz yedeğe geçme ve harcama limitleri doğrudan para konuşuyor\n- Ajan-bağımsız olması, tek bir araca bağlı çözümlerden ayırıyor\n\nKitle: birden çok ajan ve çok sağlayıcı kullanan bireysel geliştiriciler ve küçük ekipler. 191 açık issue, hızlı büyümenin bedeli.",
+        "evolve": "- Tüm trafik tek noktadan geçtiği için **gözlemlenebilirlik** (iz sürme, önbellek, maliyet panoları) doğal bir sonraki adım\n- Ekip kullanımı: merkezi kimlik/anahtar yönetimi, denetim kaydı\n- Kurumsal ortamlarda (ör. ERP/IFS kod asistanları) şirket içi modele yönlendirme için yararlı bir ara katman olabilir\n- Güvenlik: aboneliğin oturum bilgilerini paylaşmak sağlayıcı kullanım şartları açısından dikkat gerektirir"
+      },
+      "glossary": [
+        {
+          "term": "Gateway (ağ geçidi)",
+          "def": "İstekleri alıp doğru hedefe ileten ara sunucu."
+        },
+        {
+          "term": "Protokol çevirisi",
+          "def": "Bir API formatındaki isteği diğer API formatına dönüştürme."
+        },
+        {
+          "term": "Rate limit",
+          "def": "Sağlayıcının belirli sürede kabul ettiği istek sayısı sınırı."
+        },
+        {
+          "term": "Kota",
+          "def": "Bir hesabın kullanabileceği toplam istek/token miktarı."
+        },
+        {
+          "term": "Streaming (akış)",
+          "def": "Cevabın parça parça, üretildikçe iletilmesi."
+        },
+        {
+          "term": "Tool call (araç çağrısı)",
+          "def": "Modelin bir fonksiyonu/araç çalıştırmak için yapılandırılmış çıktı üretmesi."
+        },
+        {
+          "term": "Middleware",
+          "def": "İstek ile cevap arasına giren, onu değiştirebilen ara katman kodu."
+        },
+        {
+          "term": "Intent routing",
+          "def": "Mesajın amacını anlayıp işi uygun modele yönlendirme."
+        },
+        {
+          "term": "OpenAI-uyumlu API",
+          "def": "OpenAI'ın istek/cevap biçimini taklit eden, bu yüzden aynı istemcilerle çalışan arayüz."
+        }
+      ]
+    },
+    {
+      "name": "dzhng/jevgrep",
+      "url": "https://github.com/dzhng/jevgrep",
+      "stars": "2.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**jevgrep** (`jg`), kodlama ajanlarının kullanması için yazılmış bir kod arama CLI'ıdır. Dosya adı veya regex yerine **'bu kod ne yapıyor?'** diye sorarsın: *'Telemetri olayları nasıl kaydedilip gönderiliyor?'*\n\nAjan büyük bir depoda doğru dosyaları bulmak için çok sayıda `grep`/okuma turu harcar; jevgrep bunu tek çağrıda ilgili dosyalar, satır numaralı kod parçaları ve özetle yanıtlar.\n\n- Çıktı kanıttır, nihai cevap değildir; çağıran ajan karar verir\n- MIT lisanslı",
+        "tech": "- **TypeScript**, Node.js 22+; kaynak tarafında Bun workspaces + Turborepo\n- **Hiyerarşik keşif:** Depoyu klasör → dosya → bildirim (declaration) sırasıyla gezer; dosya önizlemeleriyle seçim yapar. Embedding indeksi tarif edilmiyor, ilgililik değerlendirmesini bir LLM yapıyor (Vercel AI Gateway, OpenRouter vb. üzerinden).\n- **Bildirim ayrıştırma:** Python, TS/JS, Go, Rust için; diğer metinlerde yedek yöntem\n- `jg skill` komutu aracı bir ajan **skill**'i olarak kurar, `jg doctor` ayar kontrolü yapar\n- README'ye göre 10 SWE-bench görevinde çözüm oranı aynı (8/10), maliyet ~%26 düşük; tek çalıştırma, istatistiksel iddia yok",
+        "why": "- **Ajan maliyeti** gündemde: bağlam taramasını ucuz bir modele devretmek token faturasını düşürüyor\n- Arama kalitesi ajan başarısını belirleyen darboğaz haline geldi\n- Yazarın (Duc-Thien / dzhng) tanınırlığı ve 'ajan için araç' modasının tam zamanı\n- Skill olarak tek komutla kurulması benimsemeyi kolaylaştırıyor\n\nKitle: Claude Code/Codex ile büyük kod tabanlarında çalışanlar.",
+        "evolve": "- **Gizlilik:** Kod parçaları dış sağlayıcıya gidiyor; yerel/şirket içi model desteği kurumsal kullanım için kritik\n- Daha fazla dilde bildirim ayrıştırma (örn. **PL/SQL**, Java, C#; ERP/IFS gibi büyük kurumsal kod tabanları için çekici)\n- Daha geniş ve tekrarlanabilir benchmark (istatistiksel anlam için çok çalıştırma)\n- Sonuç önbelleği ve artımlı indeks ile hız kazancı; şu an hız avantajı iddia edilmiyor"
+      },
+      "glossary": [
+        {
+          "term": "Semantic search (anlamsal arama)",
+          "def": "Kelimeleri değil, anlamı eşleştirerek arama."
+        },
+        {
+          "term": "Embedding",
+          "def": "Metni anlamını temsil eden sayı vektörüne çeviren yöntem."
+        },
+        {
+          "term": "SWE-bench",
+          "def": "Yapay zekânın gerçek GitHub hatalarını çözme becerisini ölçen kıyas seti."
+        },
+        {
+          "term": "Agent skill",
+          "def": "Ajana yeni bir yetenek öğreten talimat+araç paketi."
+        },
+        {
+          "term": "AI Gateway",
+          "def": "Birden çok model sağlayıcısına tek noktadan erişim sunan servis."
+        },
+        {
+          "term": "Declaration (bildirim)",
+          "def": "Kodda fonksiyon, sınıf, değişken gibi tanımlanan öğeler."
+        },
+        {
+          "term": "Monorepo (Turborepo/Bun workspaces)",
+          "def": "Birden çok paketi tek depoda yönetme düzeni ve ona yardımcı araçlar."
+        },
+        {
+          "term": "Regex",
+          "def": "Metinde kalıp aramaya yarayan desen dili."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modelinin işlediği metin birimi; maliyet bununla ölçülür."
+        }
+      ]
+    }
+  ]
+}
