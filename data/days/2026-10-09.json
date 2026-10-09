@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-09",
+  "projects": [
+    {
+      "name": "cathrynlavery/diagram-design",
+      "url": "https://github.com/cathrynlavery/diagram-design",
+      "stars": "46.8k",
+      "language": "HTML",
+      "sections": {
+        "serves": "**diagram-design**, yapay zeka kodlama ajanlarına (Claude Code, Codex, GitHub Copilot, Factory Droid, Pi) **editoryal kalitede diyagram** çizmeyi öğreten bir **skill** (yetenek paketi) koleksiyonudur.\n\n- Çözdüğü problem: Ajanların ürettiği Mermaid diyagramları genelde sıkıcı, tutarsız ve markaya uyumsuz görünür\n- Çıktı: tek dosyalık, bağımsız **HTML + SVG** (gölge yok, harici bağımlılık yok)\n- 42 diyagram türü; her biri açık, koyu ve tam editoryal varyantlarla gelir\n- Lisans: MIT",
+        "tech": "Proje ağırlıklı olarak **Markdown talimat dosyaları, HTML ve SVG** üzerine kurulu; doğrulama ve dışa aktarma için **Python** betikleri var.\n\n- **Kademeli yükleme:** Ajan önce ana `SKILL.md` dosyasını okur, sonra yalnızca istenen diyagram türünün referans dosyalarını yükler. Böylece bağlam penceresi (context) gereksiz şişmez.\n- **Anlamsal desen önce, görsel sonra:** Ajan önce diyagramın ne anlattığına (akış, hiyerarşi, zaman çizelgesi) karar verir, sonra görsel türü seçer.\n- **Marka katmanı:** Bir web sitesinden renk ve fontları çıkarıp stil rehberi oluşturur; kontrast kontrolü yapar.\n- **İçe aktarma:** draw.io, Mermaid ve Excalidraw kaynaklarını yeniden çizer.\n- **Doğrulama:** Lint, geometri/yerleşim kontrolü ve **Playwright + headless Chromium** ile render testi; SVG/PNG dışa aktarım. CI üç işletim sisteminde (Linux, Windows, macOS) çalışır.\n- **Erişilebilirlik:** Erişilebilir isimler ve reduced-motion desteği; hareket varsayılan olarak kapalı.",
+        "why": "46.8k yıldız ve 3k fork, bir diyagram aracı için olağanüstü bir ivme. Nedenleri:\n\n- **Agent skills ekosisteminin patlaması:** Skill paketleri bu dönemde en sıcak konulardan biri; proje bu dalgaya tam oturuyor\n- **Gerçek bir acı noktası:** Mimari dokümantasyon ve sunumlarda ajanın çizdiği şemalar genelde kullanılamaz kalıyor\n- **Çoklu host desteği:** Tek bir araca bağlı değil, Agent Skills uyumlu her ortamda çalışır\n- Kitle: geliştiriciler, teknik yazarlar, mimari doküman hazırlayan ekipler",
+        "evolve": "- **ERP/IFS bağlantısı:** İş akışı, veri modeli ve entegrasyon haritaları gibi kurumsal diyagram şablonları (örn. PL/SQL paket bağımlılık haritası, ER diyagramı) eklenebilir\n- **Canlı veri:** Veritabanı şemasından veya kod tabanından otomatik diyagram üretimi\n- **Düzenlenebilirlik:** Çıktı SVG olduğu için sonradan elle düzenleme zor; draw.io'ya geri dışa aktarım değerli olurdu\n- **Doğrulama derinliği:** Görsel regresyon testleri ve otomatik okunabilirlik skoru\n- Risk: Estetik tercihler çok kişisel; farklı markalar için şablon çeşitliliği büyüdükçe bakım yükü artar"
+      },
+      "glossary": [
+        {
+          "term": "Skill (Agent Skill)",
+          "def": "Bir yapay zeka ajanına belirli bir işi nasıl yapacağını anlatan, Markdown ve yardımcı dosyalardan oluşan yükleyip kullanılabilir talimat paketi."
+        },
+        {
+          "term": "SVG",
+          "def": "Ölçeklenebilir vektör grafik biçimi. Çizimleri piksel yerine matematiksel şekillerle saklar, bu yüzden büyütünce bozulmaz."
+        },
+        {
+          "term": "Mermaid",
+          "def": "Metin yazarak akış şeması, sıra diyagramı gibi şemalar üreten popüler bir diyagram dili."
+        },
+        {
+          "term": "Excalidraw",
+          "def": "El çizimi görünümlü, tarayıcıda çalışan açık kaynak beyaz tahta ve diyagram aracı."
+        },
+        {
+          "term": "draw.io",
+          "def": "Tarayıcıda veya masaüstünde çalışan ücretsiz diyagram çizim aracı."
+        },
+        {
+          "term": "Context (bağlam penceresi)",
+          "def": "Bir yapay zeka modelinin aynı anda okuyup aklında tutabildiği metin miktarı. Gereksiz içerik yüklemek bu alanı boşa harcar."
+        },
+        {
+          "term": "Playwright",
+          "def": "Tarayıcıyı kodla kontrol ederek sayfaları açıp test etmeyi ve ekran görüntüsü almayı sağlayan otomasyon kütüphanesi."
+        },
+        {
+          "term": "Headless Chromium",
+          "def": "Ekranı olmadan arka planda çalışan Chromium tarayıcısı; otomatik render ve test için kullanılır."
+        },
+        {
+          "term": "Lint",
+          "def": "Dosyalardaki hataları ve kural ihlallerini çalıştırmadan otomatik denetleyen kontrol."
+        },
+        {
+          "term": "CI",
+          "def": "Sürekli entegrasyon: Her değişiklikte testlerin otomatik çalıştırıldığı sistem."
+        },
+        {
+          "term": "Fork",
+          "def": "Bir deponun kendi hesabına alınmış kopyası; genelde değişiklik yapmak veya katkı vermek için kullanılır."
+        }
+      ]
+    },
+    {
+      "name": "storytold/artcraft",
+      "url": "https://github.com/storytold/artcraft",
+      "stars": "8.8k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**ArtCraft**, kendini \"sanatçılar için IDE\" olarak tanımlayan bir **masaüstü yapay zeka görsel/video üretim aracıdır**.\n\n- Problem: Metin kutusuna prompt yazıp şansa güvenmek, sahne ve karakter tutarlılığını kontrol etmeyi zorlaştırıyor\n- Çözüm: Kompozisyonu 2B'de kurmak, sahneyi 3B'de yerleştirmek ve ardından modele vermek; yani üretimi daha görsel ve tekrarlanabilir yapmak\n- Hedef kitle: illüstratör, tasarımcı, film yapımcıları\n- Windows ve macOS için hazır sürüm var; Linux'ta kaynaktan derlenir",
+        "tech": "README teknoloji yığınını açıkça listelemiyor; kaynak dosyalar **Rust** ağırlıklı bir backend'e işaret ediyor.\n\n- **Masaüstü uygulama + servis katmanı:** `artcraft-services` altında model yapılandırmalarını (görsel, video, ses, mesh, splat) tutan bir web servisi bulunuyor\n- **Çoklu sağlayıcı soyutlaması:** Kendi model kataloğu (62 model: 16 görsel, 25 video, 5 müzik/ses, 11 3B mesh, 5 dünya/splat) ile Grok, Midjourney, Sora ve World Labs gibi dış sağlayıcılar aynı arayüzden kullanılıyor\n- **Hibrit iş akışı:** Görselden 3B mesh, karakter pozlandırma, maske ile inpainting, görselden videoya\n- Gerekçe: Model pazarı hızla değiştiği için sağlayıcıdan bağımsız bir katman uzun vadede esneklik sağlar\n\nLisans bilgisi README'de adlandırılmıyor; `LICENSE.md` dosyasına bakılmalı.",
+        "why": "- **Üretken video/görsel patlaması:** Modeller güçlendi ama kontrol araçları geride kaldı; ArtCraft bu boşluğu dolduruyor\n- **Günlük +2.1k yıldız:** Yaratıcı topluluklarda paylaşılan demo videoları ve \"tek yerde tüm modeller\" vaadi hızlı yayılıyor\n- **Zamanlama:** Sora, Midjourney video ve Marble gibi dünya modelleri yeni olgunlaştı; hepsini birleştiren bir arayüz cazip\n- Kitle: kod bilmeyen yaratıcılar; geliştirici ilgisi ise Rust masaüstü mimarisinden geliyor",
+        "evolve": "- **Planlanan:** Kling, Google, Runway, Luma entegrasyonları; OpenArt/Freepik gibi toplayıcılar üzerinden mevcut abonelikleri kullanma\n- **Eksikler:** Lisans ve mimari dokümantasyonu belirsiz; Linux için hazır paket yok\n- **Fırsatlar:** Proje dosyası/versiyonlama, ekip içi paylaşım, ComfyUI benzeri eklenti sistemi\n- **Risk:** Dış sağlayıcıların API ve fiyat değişikliklerine bağımlılık; bazı modellerin kısıtlı olması"
+      },
+      "glossary": [
+        {
+          "term": "IDE",
+          "def": "Kod yazmayı kolaylaştıran, editör ve araçları tek yerde toplayan geliştirme ortamı. Burada benzetme olarak sanatçı için bir çalışma ortamı."
+        },
+        {
+          "term": "Prompt",
+          "def": "Yapay zeka modeline verilen metin talimatı."
+        },
+        {
+          "term": "Inpainting",
+          "def": "Bir görselin maskelenen kısmını yapay zeka ile yeniden çizerek düzenleme tekniği."
+        },
+        {
+          "term": "Mesh (3B ağ)",
+          "def": "Bir 3B nesnenin yüzeyini oluşturan köşe ve yüzeylerin birleşimi."
+        },
+        {
+          "term": "Gaussian splat",
+          "def": "3B sahneleri milyonlarca küçük, bulanık renkli parçacıkla temsil eden ve hızlı çizilebilen yöntem."
+        },
+        {
+          "term": "Kitbashing",
+          "def": "Hazır parçaları birleştirerek hızlıca yeni bir sahne veya model oluşturma yöntemi."
+        },
+        {
+          "term": "Sağlayıcı (provider)",
+          "def": "Model hizmetini API üzerinden sunan şirket veya servis; örneğin Midjourney veya Sora."
+        },
+        {
+          "term": "Rust",
+          "def": "Bellek güvenliğini derleme aşamasında denetleyen, hızlı ve güvenli bir sistem programlama dili."
+        },
+        {
+          "term": "Backend",
+          "def": "Kullanıcının görmediği, veriyi işleyen ve servisleri yöneten sunucu tarafı."
+        }
+      ]
+    },
+    {
+      "name": "boykopovar/AnyPS5",
+      "url": "https://github.com/boykopovar/AnyPS5",
+      "stars": "16.8k",
+      "language": "C++",
+      "sections": {
+        "serves": "**AnyPS5**, PlayStation 5 çalıştırılabilir dosyalarını **emülasyon olmadan** Linux ve Windows için yerel biçime çeviren bir taşıma (porting) aracıdır.\n\n- Problem: Emülatörler tüm konsolu taklit ettiği için ağır ve kaynak tüketicidir\n- Fikir: Programı bir kez dönüştür, sonra masaüstünde yerel uygulama gibi çalıştır\n- Örnek performans: *Dreaming Sarah*, GTX 1050 Ti + i5-7500 ile sabit 60 fps\n- Lisans: GPLv2 (yalnızca)\n- **Not:** Oyun dosyaları projeyle gelmez; kullanıcı kendi yasal kopyasını sağlar. Proje birlikte çalışabilirlik, araştırma ve koruma amacını vurgular",
+        "tech": "**C++** ile yazılmış; üç ana parça var:\n\n- **Relinker:** PS5 yürütülebilir dosyasını hedef sistemin yerel biçimine dönüştürür\n- **Sistem PRX kütüphaneleri:** Oyunun bağlandığı sistem fonksiyonlarının yeniden yazılmış karşılıkları; dinamik bağlama (dynamic linking) böylece çalışır\n- **Shader recompiler:** PS5 gölgelendiricilerini **SPIR-V** ara diline çevirir (Vulkan tarafından kullanılır)\n- **Girdi:** SDL ile kontrolcü; klavye/fare `anyps5-input.ini` ile ayarlanır\n- **Katı hata politikası:** Beklenmeyen durumda `std::runtime_error` fırlatıp süreci sonlandırır; sessiz yanlış davranış yerine hızlı ve görünür çökme tercih edilmiş\n\nKapsam kısmi: ilerleme yalnızca şimdiye dek tanımlanan fonksiyonları sayar, toplam büyüyecek.",
+        "why": "- **Büyük vaat:** \"Emülasyonsuz\" yaklaşım, konsol oyunlarını düşük donanımda çalıştırma hayalini canlandırıyor\n- **Günlük +4.7k yıldız:** Oyun toplulukları ve tersine mühendislik meraklıları arasında hızla yayıldı\n- **Teknik merak:** Relinker + shader recompiler birleşimi, derleyici ve sistem programcıları için ilginç bir vaka\n- Kitle: oyuncular, emülasyon/koruma topluluğu, düşük seviye geliştiriciler\n- Hukuki tartışma ilgiyi artırıyor; ancak proje telifli içerik dağıtmadığını belirtiyor",
+        "evolve": "- **Kapsam:** Daha fazla sistem fonksiyonu, doğrulanmış oyun listesinin büyümesi\n- **Dayanıklılık:** Hatada tüm süreci sonlandırmak yerine eksik fonksiyonlar için stub (geçici boş uygulama) ve ayrıntılı günlükleme\n- **Test:** Oyun başına otomatik uyumluluk regresyon testleri\n- **Taşınabilirlik:** macOS veya ARM hedefleri\n- **Risk:** Hukuki belirsizlik, donanım/firmware değişiklikleri ve tek kişilik bakım yükü"
+      },
+      "glossary": [
+        {
+          "term": "Emülasyon",
+          "def": "Bir cihazın donanımını yazılımla taklit ederek onun programlarını başka cihazda çalıştırma; genelde yavaştır."
+        },
+        {
+          "term": "Porting (taşıma)",
+          "def": "Bir programı başka bir işletim sistemi veya donanımda çalışacak hale getirme."
+        },
+        {
+          "term": "Relinker",
+          "def": "Derlenmiş bir programın parçalarını yeniden bağlayarak hedef sistemin çalıştırılabilir biçimine çeviren araç."
+        },
+        {
+          "term": "PRX",
+          "def": "PlayStation sistemlerinde kullanılan, dinamik olarak yüklenen kütüphane modül biçimi."
+        },
+        {
+          "term": "Dynamic linking (dinamik bağlama)",
+          "def": "Programın ihtiyaç duyduğu kütüphanelerin derleme sırasında değil çalışma anında bağlanması."
+        },
+        {
+          "term": "Shader",
+          "def": "Ekran görüntüsünü çizerken ekran kartında çalışan küçük programlar; ışık ve renk hesaplarını yapar."
+        },
+        {
+          "term": "SPIR-V",
+          "def": "Vulkan ve OpenCL için kullanılan, shader'ların derlenmiş ara dil biçimi."
+        },
+        {
+          "term": "SDL",
+          "def": "Pencere, giriş cihazları ve ses için platformlar arası yaygın kullanılan C kütüphanesi."
+        },
+        {
+          "term": "GPLv2",
+          "def": "Kodu kullanana değişiklikleri aynı lisansla paylaşma yükümlülüğü getiren açık kaynak lisansı."
+        },
+        {
+          "term": "Stub",
+          "def": "Henüz gerçek işi yapmayan, yalnızca çağrıyı karşılayan geçici fonksiyon."
+        },
+        {
+          "term": "Tersine mühendislik",
+          "def": "Bir yazılımın çalışma mantığını kaynak kodu olmadan inceleyerek anlama süreci."
+        }
+      ]
+    }
+  ]
+}
