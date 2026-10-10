@@ -1,0 +1,143 @@
+{
+  "date": "2026-10-10",
+  "projects": [
+    {
+      "name": "BerriAI/litellm",
+      "url": "https://github.com/BerriAI/litellm",
+      "stars": "60.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**LiteLLM**, 100'den fazla LLM sağlayıcısına (OpenAI, Anthropic, Gemini, Bedrock, Azure, vLLM vb.) **tek bir OpenAI formatlı arayüzle** erişmeyi sağlayan açık kaynak bir **AI gateway**'dir.\n\n- Çözdüğü problem: Her sağlayıcının API'si farklı; ekipler her biri için ayrı kod ve ayrı faturalama yönetmek zorunda kalıyor\n- İki kullanım biçimi: Python SDK olarak kod içinde ya da kendi sunucunuzda çalışan **proxy** olarak\n- Proxy tarafında sanal anahtarlar (virtual keys), proje/kullanıcı bazlı harcama takibi, guardrail'ler, loglama ve yönetim paneli var\n- MCP sunucuları, A2A ajanları ve Claude Code / Codex gibi ajan araçlarını gateway üzerinden çalıştırmayı destekliyor",
+        "tech": "Proje **Rust çekirdeği ve Python SDK** bileşimine geçmiş durumda; sayfa iki katmanın nasıl konuştuğunu ayrıntılandırmıyor, ancak amaç belli: yüksek trafikte gecikmeyi düşürmek.\n\n- **Tek biçime çevirme:** Gelen istekler OpenAI formatına, oradan her sağlayıcının kendi formatına dönüştürülür; böylece istemci kodu sağlayıcıdan bağımsız kalır\n- **Yönlendirme ve yük dengeleme:** Aynı modelin birden çok dağıtımı arasında trafik dağıtılır, hata durumunda yedeğe geçilir\n- **Maliyet izleme:** Her istek token kullanımı ve maliyetiyle loglanır, harcama anahtar/proje/kullanıcı düzeyinde toplanır\n- **Dağıtım:** Docker imajları (Cosign ile imzalı), AWS ve GCP için Terraform modülleri; ayrıca yalnızca SDK içeren `litellm-core` dağıtımı\n- **Protokoller:** MCP gateway (OAuth rehberiyle) ve A2A ajan protokolü (1.0 ve 0.3 sürümleri)",
+        "why": "60.8k yıldız ve 12.2k fork ile zaten yerleşik bir proje; bugünkü hareket küçük (günlük ~95 yıldız) ama listeye giriş nedenleri açık:\n\n- **Rust çekirdeği duyurusu:** Python gateway'lerin performans eleştirisine karşılık gelen büyük bir mimari adım\n- **Ajan dalgası:** Claude Code, Codex, OpenCode gibi ajan araçlarının tek gateway'den geçirilip maliyetinin izlenebilmesi, kurumlar için ciddi bir ihtiyaç\n- **Kurumsal olgunluk:** İmzalı imajlar, Terraform modülleri, ticari lisanslı kurumsal özellikler\n- Kitle: platform ekipleri, birden çok model kullanan ürün geliştiriciler, maliyet kontrolü isteyen şirketler",
+        "evolve": "- **ERP/IFS bağlantısı:** IFS gibi ERP sistemlerine eklenen LLM özelliklerinin tek bir gateway'den geçirilip müşteri/modül bazında maliyetlendirilmesi doğal bir kullanım; hazır bir ERP entegrasyon şablonu eklenebilir\n- **Gözlemlenebilirlik:** Maliyet ve gecikmeyi kalite skorlarıyla birleştiren, model seçimini otomatik öneren yönlendirme\n- **Lisans netliği:** Açık çekirdek ile ticari özellikler arasındaki sınırın daha görünür olması\n- **Risk:** Tek bir gateway, tek hata noktasına ve geniş saldırı yüzeyine dönüşebilir; güvenlik ve izolasyon sürekli yatırım ister"
+      },
+      "glossary": [
+        {
+          "term": "AI gateway",
+          "def": "Uygulamalarla yapay zeka modelleri arasında duran, istekleri yönlendiren, kimlik doğrulayan ve maliyeti izleyen ara katman."
+        },
+        {
+          "term": "Proxy",
+          "def": "İstemci ile asıl servis arasında durup istekleri iletip yöneten sunucu. Burada uygulamanız ile LLM sağlayıcıları arasındaki köprüdür."
+        },
+        {
+          "term": "Sanal anahtar (virtual key)",
+          "def": "Gerçek sağlayıcı API anahtarını gizleyip kullanıcıya veya projeye verilen, kota ve yetkisi ayarlanabilen vekil anahtar."
+        },
+        {
+          "term": "Yük dengeleme",
+          "def": "Gelen istekleri birden çok sunucu ya da model dağıtımı arasında paylaştırarak aşırı yüklenmeyi ve kesintiyi önleme."
+        },
+        {
+          "term": "Guardrail",
+          "def": "Modelin girdi ve çıktılarını denetleyip istenmeyen içeriği, veri sızıntısını veya kural ihlalini engelleyen koruma kuralları."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zeka modellerinin dış araç ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "A2A",
+          "def": "Ajanların birbirleriyle konuşup iş devretmesi için tanımlanmış ajanlar arası iletişim protokolü."
+        },
+        {
+          "term": "Terraform",
+          "def": "Bulut altyapısını kodla tanımlayıp otomatik kuran araç."
+        },
+        {
+          "term": "Cosign",
+          "def": "Konteyner imajlarını dijital olarak imzalayıp doğrulayan araç; imajın değiştirilmediğini kanıtlar."
+        }
+      ]
+    },
+    {
+      "name": "Robbyant/lingbot-map",
+      "url": "https://github.com/Robbyant/lingbot-map",
+      "stars": "17.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**LingBot-Map**, bir video akışından (kameradan gelen kareler) **gerçek zamanlı 3B sahne ve kamera yolu çıkaran** bir model ve kod sürümüdür.\n\n- Çözdüğü problem: Klasik 3B yeniden kurma yöntemleri tüm görüntüleri toplayıp sonra yavaşça optimize eder; robot veya araç gibi canlı çalışan sistemlerde bu kullanışsız\n- Yaklaşım: Kareler geldikçe tek ileri geçişle (feed-forward) geometri tahmin eder\n- Hız: README'ye göre 518x378 çözünürlükte, 10.000 karenin üzerindeki uzun dizilerde yaklaşık 20 FPS\n- Makale ECCV 2026 en iyi makale adayı olarak belirtiliyor; lisans Apache-2.0",
+        "tech": "Model, **Geometric Context Transformer (GCT)** adlı bir mimariye dayanıyor ve üç bağlam mekanizmasını birleştiriyor:\n\n- **Anchor context:** Koordinat sistemini sabitleyen referans kareler\n- **Pose-reference window:** Yakın karelerden yoğun geometrik ipucu veren pencere\n- **Trajectory memory:** Uzun yolda biriken kaymayı (drift) düzelten uzun vadeli bellek\n\nAltyapı: **PyTorch 2.8 / CUDA 12.8**, sayfalı **KV cache** dikkat için **FlashInfer** (yoksa PyTorch SDPA'ya düşer), tarayıcı görüntüleyici için **viser**, gökyüzü maskeleme için **ONNX Runtime**. VGGT ve DINOv2 üzerine kurulu. Eğitimde 320 görünüm kullanıldığı için çok uzun dizilerde doğruluk düşebilir; bunun için pencereli mod var.",
+        "why": "- **Zamanlama:** Robotik, otonom sürüş ve AR/VR'da \"dünya modeli\" ve uzamsal zekâ ilgisi çok yüksek\n- **Rakamlar:** 20 FPS ve on binlerce karelik uzun dizi iddiası, akademik bir demodan öte pratik bir sinyal\n- **Prestij:** ECCV 2026 en iyi makale adaylığı\n- **Kolay deneme:** Hazır ağırlıklar (Hugging Face, ModelScope) ve tarayıcıda açılan 3B görüntüleyici\n- Kitle: bilgisayarlı görü araştırmacıları, robotik mühendisleri, 3B içerik üreticileri\n- Not: README karşılaştırma tablosu vermiyor; \"en iyi sonuç\" iddiası makaleden doğrulanmalı",
+        "evolve": "- **Ölçek sınırı:** 320 görünümlük eğitim ve uzun dizilerde pencere sıfırlama, sürekli haritalama için kalıcı çözüm değil\n- **Donanım:** CUDA GPU gerektirir; uç cihazlarda çalışacak küçültülmüş sürümler büyük fırsat\n- **Entegrasyon:** ROS gibi robotik çatılarla hazır köprü\n- **İş dünyası:** Saha envanteri, tesis ve depo dijital ikizi gibi kurumsal varlık yönetimi (ERP ile ilişkili bakım modülleri) senaryolarına uyarlanabilir"
+      },
+      "glossary": [
+        {
+          "term": "Feed-forward",
+          "def": "Girdiyi tek seferde ağdan geçirip sonuç üreten yöntem; yinelemeli optimizasyon gerektirmez, bu yüzden hızlıdır."
+        },
+        {
+          "term": "Transformer",
+          "def": "Girdinin parçaları arasındaki ilişkiyi dikkat (attention) mekanizmasıyla öğrenen yapay sinir ağı mimarisi."
+        },
+        {
+          "term": "KV cache",
+          "def": "Dikkat hesaplamasında önceki adımların ara sonuçlarını saklayıp yeniden hesaplamayı önleyen önbellek."
+        },
+        {
+          "term": "Drift (kayma)",
+          "def": "Kamera yolu tahmin edilirken küçük hataların birikip zamanla haritanın gerçekten uzaklaşması."
+        },
+        {
+          "term": "FPS",
+          "def": "Saniyede işlenen kare sayısı."
+        },
+        {
+          "term": "3B yeniden kurma",
+          "def": "Bir veya birden çok 2B görüntüden sahnenin üç boyutlu geometrisini çıkarma işlemi."
+        },
+        {
+          "term": "FlashInfer",
+          "def": "LLM ve transformer çıkarımı için hızlı dikkat çekirdekleri sunan GPU kütüphanesi."
+        },
+        {
+          "term": "ONNX Runtime",
+          "def": "Farklı çatılarda eğitilmiş modelleri standart ONNX biçiminde verimli çalıştıran motor."
+        }
+      ]
+    },
+    {
+      "name": "twostraws/SwiftUI-Agent-Skill",
+      "url": "https://github.com/twostraws/SwiftUI-Agent-Skill",
+      "stars": "5.6k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "**SwiftUI Pro**, yapay zeka kodlama ajanlarının daha modern, sade ve erişilebilir **SwiftUI** kodu yazmasını sağlayan bir **agent skill** paketidir.\n\n- Çözdüğü problem: LLM'ler eski veya kullanımdan kalkmış API'ler, VoiceOver'da görünmez butonlar ve performans hataları üretiyor\n- Kapsam: navigasyon, yerleşim, animasyon, durum yönetimi, erişilebilirlik, performans\n- Hedef: iOS 26+ ve Swift 6.4+; yazarı Hacking with Swift'ten Paul Hudson\n- Lisans MIT",
+        "tech": "Kod değil, **talimat paketi**: `swiftui-pro/` klasöründe ajanın okuduğu Markdown kuralları var.\n\n- **Çoklu ajan desteği:** `npx skills add ...` ile Claude Code, Codex, Gemini, Cursor ve benzerlerine kurulur\n- **Claude Code plugin:** `.claude-plugin/` ile marketplace üzerinden `/plugin install`\n- **Kullanım:** Claude Code'da `/swiftui-pro`, Codex'te `$swiftui-pro`; doğal dille de, örneğin yalnızca erişilebilirlik incelemesi diye çağrılabilir\n- **Gerekçe:** Kurallar, yazarın mevcut AGENTS.md dosyası ve LLM'lerin tipik hatalarına dayalı; modelin eğitim verisindeki eski bilgiyi geçersiz kılmak için",
+        "why": "- **Yazar güvenilirliği:** Paul Hudson Swift topluluğunda çok tanınan bir eğitimci\n- **Skill ekosisteminin yükselişi:** Alan-spesifik skill'ler (mattpocock/skills, addyosmani/agent-skills) bu dönemde çok ilgi görüyor\n- **Gerçek acı:** Apple API'leri hızlı değişir, modeller geride kalır\n- **Düşük sürtünme:** Tek komutla kurulum, 5.6k yıldız ve 197 fork\n- Kitle: iOS/macOS geliştiricileri ve ajanla çalışan Swift ekipleri",
+        "evolve": "- **Sürüm takibi:** Apple her yıl API değiştirir; otomatik güncel tutma veya sürüme göre kural setleri\n- **Doğrulama:** Kuralların gerçekten kalite artırdığını gösteren ölçülebilir karşılaştırma (benchmark)\n- **Kardeş skill'ler:** SwiftData Pro, Swift Concurrency Pro, Swift Testing Pro zaten var; birleşik bir paket olabilir\n- **Genelleme:** Aynı yaklaşım kurumsal framework'ler için (ör. IFS Cloud'a özel PL/SQL ve Aurena kuralları) uygulanabilir"
+      },
+      "glossary": [
+        {
+          "term": "Agent skill",
+          "def": "Bir yapay zeka ajanına belirli bir işi nasıl yapacağını anlatan, Markdown ve yardımcı dosyalardan oluşan yüklenebilir talimat paketi."
+        },
+        {
+          "term": "SwiftUI",
+          "def": "Apple'ın iOS, macOS ve diğer platformlar için bildirimsel arayüz geliştirme çatısı."
+        },
+        {
+          "term": "VoiceOver",
+          "def": "Apple cihazlarındaki, ekranı sesli okuyarak görme engelli kullanıcılara yardım eden erişilebilirlik özelliği."
+        },
+        {
+          "term": "Kullanımdan kalkmış API (deprecated)",
+          "def": "Hâlâ çalışan ama yerine yenisi geldiği için artık önerilmeyen ve ileride kaldırılabilecek arayüz."
+        },
+        {
+          "term": "AGENTS.md",
+          "def": "Bir projede yapay zeka ajanlarına rehberlik eden kuralları içeren, standartlaşan talimat dosyası."
+        },
+        {
+          "term": "Plugin marketplace",
+          "def": "Claude Code için eklentilerin listelenip tek komutla kurulabildiği dağıtım kataloğu."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Bir aracın veya modelin performansını ortak bir ölçüt üzerinde karşılaştırmalı ölçen test."
+        }
+      ]
+    }
+  ]
+}
