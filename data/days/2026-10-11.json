@@ -1,0 +1,209 @@
+{
+  "date": "2026-10-11",
+  "projects": [
+    {
+      "name": "hugohe3/ppt-master",
+      "url": "https://github.com/hugohe3/ppt-master",
+      "stars": "59.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "**PPT Master**, belge veya konu verdiğinizde **düzenlenebilir, yerel PowerPoint (.pptx)** sunumu üreten bir **agent skill**'idir. Çözdüğü problem: Yapay zekâ ile üretilen slaytların çoğu ya düz resimdir ya da kalıba doldurulmuş, elle düzeltilemeyen çıktıdır.\n\n- Çıktıda gerçek PowerPoint nesneleri vardır: şekiller, bağlayıcılar, veriye bağlı grafik ve tablolar, geçişler, animasyonlar\n- Konuşmacı notlarından sesli anlatım üretebilir\n- Kendi `.pptx` şablonunuzu kullanabilir veya mevcut bir sunumu tasarımını bozmadan düzenleyebilir\n- Çalışma yerelde yürür; dışarı yalnızca yapay zekâ modeliyle konuşma çıkar",
+        "tech": "**Skill biçimi:** Ayrı bir uygulama değil; Claude Code, Cursor, Codex CLI, Gemini CLI gibi ajanların içinde çalışan bir yetenek paketi (`SKILL.md`, `scripts/`, `workflows/`, `references/`, `templates/`). Ajan sohbetten yönlendirir, Python betikleri işi yapar.\n\n**Hat (pipeline):** Kaynak analizi → anlatı yapısı ve tasarım → **SVG** sayfa üretimi → **PPTX** dışa aktarım.\n\n**Neden SVG ara format?** Modeller SVG'yi iyi yazar, SVG önizlenebilir ve vektör şekillere dönüştürmek kolaydır. Dışa aktarımda SVG, PowerPoint'in **DrawingML** nesnelerine çevrilir; formüller **OMML** olur. Böylece sonuç resim değil, düzenlenebilir nesnedir.\n\n**Diğer parçalar:**\n- Python 3.10+, PDF için PyMuPDF, eski belge biçimleri için Pandoc\n- Görsel üretimi (`image_gen.py`) ve web'den lisans denetimli görsel arama (`image_search.py`; CC0, kamu malı, CC BY)\n- `--native-charts-and-tables` bayrağıyla veriye bağlı gerçek grafik ve tablo nesneleri\n- Hızlı mod: sormadan karar verir, tek geçişte bitirir",
+        "why": "- **Gerçek bir acıya dokunuyor:** Slayt hazırlamak herkesin zaman kaybı; ama \"yapay zekâ slaytı\"nın düzenlenemez olması hayal kırıklığıydı. \"Düzenlenebilir yerel PPTX\" vaadi net bir fark.\n- **Skill ekosisteminin ivmesi:** Agent skill'ler bu aylarda en sıcak dağıtım biçimi; `npx skills add` ve Claude Code eklenti pazaryeri ile kurulumu çok kolay.\n- **Kitle geniş:** Geliştirici olmayanlar da (finans, danışmanlık, eğitim) kullanabilir. Yazar finans geçmişinden geliyor ve \"araçtır, sihirli değnek değil\" dürüstlüğü güven veriyor.\n- **Model bağımsız ve ücretsiz:** Kilitlenme yok; tek maliyet model kullanımı.",
+        "evolve": "- **Kalite tavanı modelde:** Çıktı kalitesi seçilen modele çok bağlı. Otomatik görsel denetim (render edip modele geri gösterme döngüsü) tutarlılığı artırabilir.\n- **Eksik PowerPoint özellikleri:** SmartArt gibi alanlar bilerek dışarıda; kapsam genişledikçe kurumsal kullanım artar.\n- **Lisans dikkati:** PyMuPDF AGPL; ticari paketleme öncesi incelenmeli. Alternatif bir PDF okuyucu bu riski kaldırır.\n- **Kurumsal akış:** Marka şablonu kütüphanesi, ekip paylaşımı ve ERP/BI raporlarından (ör. IFS çıktılarından) otomatik haftalık yönetim sunumu üretimi doğal bir sonraki adım.\n- **Windows kurulumu** hâlâ sürtünme noktası; tek komutlu kurucu fark yaratır."
+      },
+      "glossary": [
+        {
+          "term": "Agent skill",
+          "def": "Bir yapay zekâ ajanına belirli bir işi nasıl yapacağını öğreten, talimat ve betiklerden oluşan paket. Ajan gerektiğinde bu paketi yükleyip izler."
+        },
+        {
+          "term": "SVG",
+          "def": "Vektör (büyütünce bozulmayan) grafik formatı. Metin tabanlı olduğu için yapay zekâ modelleri kolayca yazabilir."
+        },
+        {
+          "term": "DrawingML",
+          "def": "PowerPoint ve Word'ün şekilleri, çizimleri ve grafikleri tarif etmek için kullandığı XML tabanlı biçim. Bu biçimdeki nesneler PowerPoint'te tek tek düzenlenebilir."
+        },
+        {
+          "term": "OMML",
+          "def": "Office'in matematik formüllerini saklamak için kullandığı XML biçimi (Office Math Markup Language)."
+        },
+        {
+          "term": "Pandoc",
+          "def": "Belge biçimleri arasında (doc, odt, tex vb.) dönüştürme yapan komut satırı aracı."
+        },
+        {
+          "term": "PyMuPDF",
+          "def": "PDF dosyalarını okuyup işlemek için bir Python kütüphanesi. AGPL lisanslıdır; ticari dağıtımda lisans incelemesi gerekir."
+        },
+        {
+          "term": "AGPL",
+          "def": "Güçlü bir açık kaynak lisansı. Yazılımı ağ üzerinden hizmet olarak sunsanız bile kaynak kodunu paylaşmanızı şart koşar."
+        },
+        {
+          "term": "Şablon damıtma (template distillation)",
+          "def": "Mevcut bir sunumdan renk, yazı tipi ve yerleşim kurallarını çıkarıp yeniden kullanılabilir bir şablona dönüştürme."
+        }
+      ]
+    },
+    {
+      "name": "QuantumNous/new-api",
+      "url": "https://github.com/QuantumNous/new-api",
+      "stars": "49.7k",
+      "language": "Go",
+      "sections": {
+        "serves": "**New API**, kendi sunucunuza kurduğunuz bir **yapay zekâ model ağ geçididir**. Çözdüğü problem: OpenAI, Anthropic, Gemini, Bedrock, DeepSeek, Qwen gibi sağlayıcıların her birinin ayrı API'si, ayrı anahtarı ve ayrı faturası var; ekip veya kurum içinde bunları yönetmek dağınık.\n\n- Tek bir adres ve tek bir anahtar sistemiyle tüm modellere erişim\n- Kullanıcı, grup, kota, abonelik ve kullanım kaydı yönetimi\n- İstemci hangi protokolü konuşursa konuşsun (OpenAI, Claude, Gemini) arkadaki sağlayıcıya çeviri",
+        "tech": "**Arka uç:** Go + Gin. **Ön yüz:** React 19, TypeScript, Rsbuild, Tailwind 4; derlenmiş yüz Go ikilisinin içine gömülür, yani tek dosyayla kurulum mümkündür.\n\n**Veri:** Varsayılan SQLite; MySQL ve PostgreSQL desteklenir. Loglar ayrı bir veritabanına (ClickHouse dahil) gidebilir; böylece yoğun log yazımı ana veriyi yavaşlatmaz. Redis çok düğümlü kurulumda ortak hız sınırı için kullanılır.\n\n**Mimari:**\n- `relay/`: sağlayıcı adaptörleri ve yönlendirme\n- `relaykit/`: ayrı derlenebilen protokol dönüştürme modülü (OpenAI Chat/Responses, Anthropic Messages, Gemini arasında çeviri, akış dahil)\n- `plugins/tasks/`: uzun süren görevler (video/görsel üretimi) için sürümlü **JavaScript eklenti API'si**; çekirdek koda dokunmadan yeni sağlayıcı eklenir\n- Kanal öncelik/ağırlık, yeniden deneme, model eşleme ve ifadeye dayalı fiyatlandırma\n\n**Güvenlik:** OAuth/OIDC, passkey, iki aşamalı doğrulama, anahtar başına kısıtlar.",
+        "why": "- **Abonelik/proxy ekonomisi:** Birçok kişi ve küçük ekip birden fazla sağlayıcıyı bir arada kullanıp maliyeti paylaşmak istiyor; ajan araçlarının (Claude Code, Codex vb.) farklı protokollerle konuşması bu ihtiyacı büyüttü.\n- **Olgun ürün:** 6.500'den fazla commit, yönetim konsolu, 7 dil; One API'nin devamı olarak hazır bir kullanıcı tabanı var.\n- **Protokol köprüsü:** \"Claude Code'u başka bir modelle çalıştırma\" gibi popüler kullanım senaryolarını karşılıyor.\n- Bugünkü ivme (135 yıldız/gün) düşük; proje daha çok yerleşik bir lider olarak listede.",
+        "evolve": "- **Dönüşüm kayıpsız değil:** Protokoller arası çeviride araç çağrıları ve özel alanlar kaybolabilir; uyumluluk test seti ve şeffaf uyarılar güven artırır.\n- **Lisans:** AGPL-3.0 ve ek madde (kaynak bağlantısı zorunluluğu) bazı kurumlar için engel; ticari lisans seçeneği zaten var.\n- **Gözlemlenebilirlik:** OpenTelemetry çıktısı ve maliyet uyarıları kurumsal FinOps için güçlü olur.\n- **Güvenlik:** Birden çok yukarı akış anahtarı tuttuğu için sır yönetimi (vault entegrasyonu) kritik.\n- **Kurumsal fırsat:** IFS/ERP gibi sistemlerin yapay zekâ özelliklerini tek bir denetimli geçitten geçirmek için doğal bir temel."
+      },
+      "glossary": [
+        {
+          "term": "AI gateway (ağ geçidi)",
+          "def": "Uygulamalarla yapay zekâ sağlayıcıları arasına giren, erişim, kota, kayıt ve yönlendirmeyi tek noktada yöneten ara katman."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Yazılımın bir bulut hizmeti olarak değil, kendi sunucunuzda çalıştırılması; veri ve kontrol sizde kalır."
+        },
+        {
+          "term": "Protokol çevirisi",
+          "def": "Bir istemcinin konuştuğu API biçiminin (ör. OpenAI) başka bir sağlayıcının biçimine (ör. Anthropic) çevrilmesi."
+        },
+        {
+          "term": "Kanal (channel)",
+          "def": "New API'de bir yukarı akış sağlayıcıya ve anahtarına karşılık gelen bağlantı tanımı. Öncelik ve ağırlıkla yönlendirilir."
+        },
+        {
+          "term": "Kota",
+          "def": "Bir kullanıcı veya anahtarın harcayabileceği kullanım (token/para) üst sınırı."
+        },
+        {
+          "term": "Gin",
+          "def": "Go dili için hızlı ve hafif bir HTTP web çatısı."
+        },
+        {
+          "term": "ClickHouse",
+          "def": "Çok büyük log ve analitik verisini hızlı sorgulamak için tasarlanmış sütun tabanlı veritabanı."
+        },
+        {
+          "term": "OIDC",
+          "def": "OpenID Connect: Google, Microsoft gibi kimlik sağlayıcılarla 'bununla giriş yap' akışını standartlaştıran kimlik doğrulama protokolü."
+        },
+        {
+          "term": "Passkey",
+          "def": "Parola yerine cihazın biyometrisi veya PIN'iyle çalışan, kimlik avına dayanıklı giriş yöntemi (WebAuthn)."
+        }
+      ]
+    },
+    {
+      "name": "microsoft/mxc",
+      "url": "https://github.com/microsoft/mxc",
+      "stars": "2.6k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**MXC (Microsoft eXecution Container)**, güvenilmeyen kodu (model çıktısı, eklenti, araç) **izole bir ortamda çalıştırmak** için bir SDK'dır. Çözdüğü problem: Yapay zekâ ajanları artık kod yazıp çalıştırıyor; bu kod dosyalarınızı silebilir, ağa veri sızdırabilir veya panonuzu okuyabilir.\n\n- Uygulamanız tek bir **Launch API** çağırır; hangi dosyalara dokunabileceğini, ağa çıkıp çıkamayacağını ve arayüz erişimini bildirirsiniz\n- Windows, Linux ve macOS'te çalışır; aynı politika farklı izolasyon motorlarına uygulanır",
+        "tech": "**Çekirdek:** Rust (toolchain sabitlenmiş). **SDK'lar:** Rust (`mxc-sdk`), .NET (`Microsoft.Mxc.Sdk`), Node (`@microsoft/mxc-sdk`). SDK süreç içinde çalışır, seçilen arka ucu başlatır.\n\n**Arka uçlar (platforma göre):**\n- Windows: ProcessContainer (varsayılan), Windows Sandbox, WSLC, MicroVM, Hyperlight, IsolationSession\n- Linux: **Bubblewrap** (varsayılan), LXC, MicroVM, Hyperlight\n- macOS: **Seatbelt**\n\nHafif işletim sistemi sandbox'larından tam sanal makineye kadar bir yelpaze var; güvenlik ile hız arasında seçim yapılır.\n\n**Politika:** Sürümlü JSON şemasıyla dosya sistemi (salt okunur / yazılabilir / yasak yollar), ağ (varsayılan reddet çıkış, vekil) ve arayüz (pano, ekran) kuralları.\n\n**Tasarım kararları:** `--audit` modu gerçek erişimleri kaydedip politika yazmaya yardım eder (ama sandbox'ı kapatır, güvenilmeyen kodla kullanılmaz); telemetri üç kademeli onaya bağlı.",
+        "why": "- **Zamanlama:** Ajanların kod çalıştırması ana akım oldu; \"güvenli çalıştırma\" şimdi en acil boşluk. Önceki günlerde NVIDIA OpenShell gibi benzerleri de gündemdeydi.\n- **Marka güveni:** Microsoft'tan, MIT lisanslı ve üç dilde SDK.\n- **Çapraz platform:** Tek API ile Windows, Linux, macOS desteği nadirdir.\n- **Kitle:** Ajan platformu, IDE eklentisi ve CI aracı geliştiren mühendisler.",
+        "evolve": "- **Olgunluk:** Birçok arka uç deneysel; kararlılık sözü ve sürüm notları henüz yok.\n- **Politika kitaplığı:** \"Python çalıştır\", \"npm install\" gibi hazır profiller benimsemeyi hızlandırır.\n- **Entegrasyon:** MCP sunucuları ve popüler ajan araçlarıyla hazır köprüler.\n- **Gözlem:** Reddedilen erişimlerin okunaklı raporu, politika ayarını kolaylaştırır.\n- **Kurumsal kullanım:** ERP içindeki kullanıcı betikleri veya eklentileri sandbox'ta koşturmak için uygun."
+      },
+      "glossary": [
+        {
+          "term": "Sandbox (kum havuzu)",
+          "def": "Bir programı sistemin geri kalanından yalıtılmış, izinleri kısıtlı bir alanda çalıştıran güvenlik yöntemi."
+        },
+        {
+          "term": "Güvenilmeyen kod",
+          "def": "Kaynağı veya niyeti doğrulanamayan kod; örneğin yapay zekâ modelinin ürettiği betik veya üçüncü taraf eklenti."
+        },
+        {
+          "term": "Bubblewrap",
+          "def": "Linux'ta çekirdeğin ad alanı (namespace) özelliklerini kullanarak hafif sandbox kuran araç."
+        },
+        {
+          "term": "Seatbelt",
+          "def": "macOS'un uygulamaları kısıtlamak için kullandığı yerleşik sandbox mekanizması."
+        },
+        {
+          "term": "MicroVM",
+          "def": "Çok küçük ve hızlı açılan sanal makine; konteynerden güçlü, klasik VM'den hafif izolasyon sağlar."
+        },
+        {
+          "term": "Hyperlight",
+          "def": "Microsoft'un çok hızlı açılan, hafif sanal makine tabanlı yalıtım teknolojisi."
+        },
+        {
+          "term": "Egress (çıkış trafiği)",
+          "def": "Bir ortamdan dışarıya giden ağ trafiği. 'Varsayılan reddet' ancak izin verilen adreslere çıkışa izin verir."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir hizmeti veya kütüphaneyi kendi yazılımınıza gömmek için hazır kodlar ve arayüzler seti."
+        },
+        {
+          "term": "Denetim modu (audit mode)",
+          "def": "Kuralları uygulamak yerine yalnızca program nelere eriştiğini kaydeden mod; politika yazmak için kullanılır."
+        }
+      ]
+    },
+    {
+      "name": "datawhalechina/hello-agents",
+      "url": "https://github.com/datawhalechina/hello-agents",
+      "stars": "82.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Hello-Agents**, Datawhale topluluğunun hazırladığı, ücretsiz ve açık bir **\"Sıfırdan Ajan Geliştirme\" kitabı ve eğitimidir**. Hedef: Yapay zekâ modellerini sadece kullanan kişiyi, ajan sistemlerini **kuran** kişiye dönüştürmek.\n\n- Teori ve uygulamayı birleştirir; her bölümün çalışan kodu vardır\n- Dify, Coze, n8n gibi düşük kodlu akışlarla yapay zekânın asıl davranışı yönettiği \"AI-native\" ajanları ayırarak ikincisine odaklanır\n- Çince ve İngilizce okunabilir; çevrim içi, yerel veya PDF",
+        "tech": "**İçerik yapısı (16 bölüm, 5 kısım):**\n- Temeller: ajanın tarihi, LLM'ler (Transformer, istem)\n- Kurma: **ReAct, Plan-and-Solve, Reflection** kalıpları elle; düşük kodlu araçlar; AutoGen, AgentScope, LangGraph; ve **kendi ajan çatınız (HelloAgents)** yalın OpenAI API üzerine\n- İleri konular: bellek ve RAG, **bağlam mühendisliği**, iletişim protokolleri (MCP, A2A, ANP), **Agentic RL** (SFT'den GRPO'ya), değerlendirme\n- Vaka çalışmaları: akıllı seyahat asistanı, otomatik derin araştırma ajanı, \"siber kasaba\" simülasyonu\n- Bitirme projesi: çok ajanlı uygulama\n\n**Neden kendi çatını yazdırıyor?** Çatıları kullanmak yerine içini anlatmak, kavramları (araç çağrısı döngüsü, bellek, mesaj geçişi) kalıcı öğretir ve bir çata bağımlı kalmayı önler.\n\nGereksinim: temel Python ve bir LLM'i API ile çağırma bilgisi.",
+        "why": "- **Ajan çağında net bir müfredat:** Konu hızlı değişiyor; dağınık blog yazıları yerine sıralı, güncel bir yol haritası arayanlar çok.\n- **Topluluk gücü:** Datawhale'in video dersleri, katkıcıları ve ek bölümleri (Skills vs MCP, GUI ajanları, kendi kendini geliştiren ajanlar) sürekli yenileniyor.\n- **Çin ekosistemi ve küresel okur:** Çince dokümantasyonun büyük kitlesi, İngilizce sürümle birleşince yıldızlar hızlandı.\n- **Ücretsiz:** CC BY-NC-SA 4.0 ile serbest okuma.",
+        "evolve": "- **Güncellik:** Ajan dünyası aylar içinde değişiyor; sürümlenmiş bölümler ve \"bu bölüm hâlâ geçerli mi\" işaretleri değerli olur.\n- **Çeşitlilik:** Daha fazla dilde tam çeviri ve kurumsal vaka (veritabanı sorgulama, ERP otomasyonu) ekleyebilir.\n- **Değerlendirme:** Her bölüm sonunda otomatik doğrulanan alıştırmalar öğrenmeyi pekiştirir.\n- **Planlanan devam:** \"Ajan Eğitmeyi Sıfırdan\" kitabı, model eğitimi tarafını kapatacak.\n- **Lisans:** Ticari kullanım yasak (NC); şirket içi eğitimde kullanım için netleştirme gerekir."
+      },
+      "glossary": [
+        {
+          "term": "Ajan (agent)",
+          "def": "Hedef verilince kendi başına plan yapıp araç çağıran ve sonuca göre ilerleyen yapay zekâ sistemi."
+        },
+        {
+          "term": "ReAct",
+          "def": "Modelin 'düşün, eylem yap, sonucu gözle' döngüsüyle ilerlediği ajan kalıbı."
+        },
+        {
+          "term": "Plan-and-Solve",
+          "def": "Önce adım adım plan çıkarıp sonra planı uygulayan ajan yaklaşımı."
+        },
+        {
+          "term": "Reflection (öz-yansıtma)",
+          "def": "Ajanın kendi çıktısını eleştirip düzelttiği yaklaşım."
+        },
+        {
+          "term": "RAG",
+          "def": "Modelin yanıt vermeden önce dış belgelerden ilgili parçaları getirip kullanması (Retrieval-Augmented Generation)."
+        },
+        {
+          "term": "Bağlam mühendisliği (context engineering)",
+          "def": "Modele hangi bilginin, hangi sırayla ve ne kadar verileceğini tasarlama pratiği."
+        },
+        {
+          "term": "MCP / A2A / ANP",
+          "def": "Ajanların araçlarla (MCP) ve birbirleriyle (A2A, ANP) konuşması için önerilen iletişim protokolleri."
+        },
+        {
+          "term": "Agentic RL",
+          "def": "Ajan davranışını pekiştirmeli öğrenmeyle (ödül sinyaliyle) eğitme yaklaşımı."
+        },
+        {
+          "term": "SFT",
+          "def": "Supervised Fine-Tuning: Modeli etiketli örneklerle ince ayarlama."
+        },
+        {
+          "term": "GRPO",
+          "def": "Pekiştirmeli öğrenmede model yanıtlarını grup içinde kıyaslayarak ödüllendiren bir eğitim algoritması."
+        },
+        {
+          "term": "Düşük kodlu (low-code)",
+          "def": "Az kodla veya görsel arayüzle iş akışı kurmaya yarayan platform yaklaşımı; Dify, Coze, n8n örnekleri."
+        }
+      ]
+    }
+  ]
+}
