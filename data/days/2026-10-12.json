@@ -1,0 +1,189 @@
+{
+  "date": "2026-10-12",
+  "projects": [
+    {
+      "name": "getnao/nao",
+      "url": "https://github.com/getnao/nao",
+      "stars": "1.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**nao**, veri ekiplerinin kendi verisi üzerinde çalışan bir **analitik ajan** kurmasını ve bunu iş birimi kullanıcılarına bir sohbet arayüzüyle açmasını sağlayan açık kaynak bir çerçevedir.\n\nÇözdüğü problem: Teknik olmayan kişiler her soru için analiste gitmek zorunda kalır; genel amaçlı bir LLM ise şirketin tablolarını, iş kurallarını ve metriklerini bilmediği için yanlış SQL üretir.\n\n- Veri ekibi ajanın \"bağlamını\" (tablo şemaları, dokümanlar, kurallar, MCP araçları) dosya sistemi gibi bir yapıda hazırlar\n- İş kullanıcısı düz Türkçe/İngilizce soru sorar, grafik ve gerekçeli cevap alır\n- Cevaplar doğru/yanlış diye işaretlenip veri ekibine geri bildirim olur\n- Kendi sunucunuzda ve kendi LLM anahtarınızla çalışır",
+        "tech": "**Akış:** `pip install nao-core` → `nao init` (proje iskeleti, `nao_config.yaml`, `RULES.md`) → `nao sync` (veritabanı/repo'dan bağlam çekme) → `nao chat` (yerel sohbet arayüzü).\n\n**Mimari kararlar:**\n- **Bağlam = dosya sistemi:** Ajanın bildiği her şey düz dosya olarak durur; bu sayede bağlam **git ile sürümlenebilir** ve gözden geçirilebilir.\n- **Test odaklı güvenilirlik:** `tests/` altında YAML ile \"soru + beklenen SQL\" tanımlanır, `nao test` ajanın doğruluğunu ölçer. Bağlamı değiştirince gerileme olup olmadığını görürsünüz.\n- **Backend:** Fastify + Drizzle ORM + tRPC; **Frontend:** TanStack Query + shadcn/ui.\n- **Dağıtım:** Docker imajı, Compose, Helm şeması ve Caddy ters vekil yapılandırması.\n- **Entegrasyonlar:** BigQuery, Databricks, PostgreSQL, Snowflake gibi ambarlar, Slack botu, MCP sunucuları.\n- Lisans: Apache 2.0.",
+        "why": "- **Zamanlama:** \"Veriyle sohbet\" fikri herkesin denediği ama güvenilirliği tutmayan bir alan; nao asıl vurguyu *güvenilirliğe* (test, sürümleme, geri bildirim) koyuyor.\n- **Kitle:** Küçük veri ekipleri; analiste gelen tekrarlı soruları azaltmak isteyen şirketler.\n- **Konum:** Y Combinator destekli bir şirketin açık çekirdeği; kendi sunucuda çalıştırma güvenlik kaygılı kurumlar için cazip.\n- Günlük ivme küçük görünse de repo, ajan + veri kesişimindeki hızlı büyüyen ilgiye oturuyor.",
+        "evolve": "- **Kurumsal ERP/PL-SQL dünyası:** Oracle bağlayıcısı ve IFS gibi ERP şemalarını anlayan hazır bağlam paketleri çok değerli olur.\n- **Yetki katmanı:** Satır/sütun bazlı erişim kontrolünün ajan seviyesinde zorunlu kılınması.\n- **Anlamsal katman:** Metrik tanımlarının (dbt/semantic layer) birinci sınıf desteklenmesi.\n- **Maliyet ve sorgu güvenliği:** Pahalı sorgulara limit, salt-okunur zorlama, onay adımı.\n- Test setini kullanıcı geri bildirimlerinden otomatik büyütmek."
+      },
+      "glossary": [
+        {
+          "term": "Analitik ajan",
+          "def": "Veri sorularını doğal dille alıp SQL yazan, çalıştıran ve sonucu yorumlayan yapay zekâ programı."
+        },
+        {
+          "term": "Bağlam (context)",
+          "def": "Modelin cevap verirken elinde bulunan bilgi: şemalar, dokümanlar, kurallar gibi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Veri ambarı",
+          "def": "Analiz için farklı kaynaklardan toplanan verinin tutulduğu büyük veritabanı (ör. BigQuery, Snowflake)."
+        },
+        {
+          "term": "tRPC",
+          "def": "TypeScript'te sunucu ve istemci arasında tip güvenli çağrı yapmayı sağlayan kütüphane."
+        },
+        {
+          "term": "Drizzle ORM",
+          "def": "Veritabanı tablolarını TypeScript kodu üzerinden tip güvenli sorgulamaya yarayan araç."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes üzerine uygulama kurulumunu paketleyen ve yöneten araç."
+        },
+        {
+          "term": "Ters vekil (reverse proxy)",
+          "def": "Dışarıdan gelen istekleri karşılayıp içerideki sunuculara ileten ara sunucu; Caddy buna örnektir."
+        }
+      ]
+    },
+    {
+      "name": "repowise-dev/repowise",
+      "url": "https://github.com/repowise-dev/repowise",
+      "stars": "7.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Repowise**, bir kod deposunu bir kez yerelde indeksleyip hem geliştiricilerin hem de kodlama ajanlarının sorabileceği bir **kod tabanı zekâsı** katmanı kurar.\n\nÇözdüğü problem: Ajanlar her oturumda koda sıfırdan arama ve dosya okuma yaparak \"yeniden keşfeder\"; bu hem yavaş hem pahalı hem de hataya açıktır.\n\n- \"Bu fonksiyonu kim çağırıyor?\", \"Değiştirirsem ne bozulur?\", \"Ölü kod nerede?\" gibi sorulara cevap\n- Kodun neden öyle yazıldığına dair kararları (ADR, commit, yorum) çıkarır\n- Dosya başına 1-10 sağlık puanı ve \"önce bunu düzelt\" listesi üretir",
+        "tech": "**Beş katmanlı indeks:** (1) bağımlılık/çağrı grafiği, (2) git geçmişi (sıcak noktalar, sahiplik), (3) otomatik wiki, (4) karar kayıtları, (5) sağlık ve değişiklik riski.\n\n**Kararlar ve gerekçeleri:**\n- **LLM'siz çekirdek:** Grafik, git ve sağlık analizi sıfır model çağrısıyla çalışır; yani ucuz, deterministik, anahtar gerektirmez. Model yalnızca isteğe bağlı açıklayıcı metin için.\n- **Yerel ve gizlilik odaklı:** Kaynak kod bellekte ayrıştırılır, kalıcı saklanmaz; Ollama ile tamamen çevrimdışı çalışabilir.\n- **MCP sunucusu:** `get_overview`, `get_answer`, `get_risk`, `get_change_risk`, `get_why`, `get_dead_code`, `get_health` gibi 10 görev odaklı araç.\n- 53 deterministik dedektör, ~26 dilde AST ayrıştırma, SQL/dbt/OpenAPI/Terraform için özel işleyiciler.\n- Python (`uv`/`pipx`), yerel web paneli, GitHub Action/App ve VS Code eklentisi. Lisans AGPL-3.0.",
+        "why": "- **Zamanlama:** Ajanla kod yazma yaygınlaştıkça asıl darboğaz \"ajana doğru bağlamı vermek\" oldu; token maliyeti ve tutarlılık herkesin derdi.\n- **Kitle:** Büyük/eski kod tabanıyla uğraşan ekipler, ajan kullanan geliştiriciler, kod sağlığı ölçmek isteyenler.\n- Kendi kıyas sonuçlarında kaybettiği yerleri de açıkça yazması güven veriyor (bu sonuçlar projenin kendi ölçümleri, bağımsız doğrulanmadı).",
+        "evolve": "- **PL/SQL ve ERP:** COBOL ve SQL desteği var; PL/SQL paketleri, tetikleyiciler ve IFS gibi büyük ERP özelleştirmeleri için çağrı grafiği çok işe yarar.\n- Veritabanı nesneleri (tablo, görünüm, prosedür) ile uygulama kodu arasındaki bağımlılığın tek grafikte birleşmesi.\n- AGPL lisansı bazı şirketlerde engel olabilir; ticari model netleştikçe benimseme artar.\n- Çok büyük depolarda indeksleme süresi (dotnet/runtime için 2 saat) iyileştirilebilir."
+      },
+      "glossary": [
+        {
+          "term": "Çağrı grafiği (call graph)",
+          "def": "Hangi fonksiyonun hangisini çağırdığını gösteren bağlantı haritası."
+        },
+        {
+          "term": "Blast radius",
+          "def": "Bir değişikliğin kodun ne kadarını etkileyeceğinin kapsamı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının araçlara ve verilere standart biçimde erişmesini sağlayan protokol."
+        },
+        {
+          "term": "AST",
+          "def": "Kodun yapısını ağaç biçiminde gösteren ara temsil; kodu metin olarak değil yapı olarak anlamayı sağlar."
+        },
+        {
+          "term": "ADR",
+          "def": "Mimari kararların nedenleriyle birlikte yazıldığı kısa karar kayıt belgesi."
+        },
+        {
+          "term": "Bus factor",
+          "def": "Projenin bilgisi birkaç kişide toplanmışsa, o kişiler giderse projenin ne kadar zarar göreceğinin ölçüsü."
+        },
+        {
+          "term": "Ölü kod",
+          "def": "Hiçbir yerden çağrılmayan, artık kullanılmayan kod."
+        },
+        {
+          "term": "Ollama",
+          "def": "Dil modellerini kendi bilgisayarınızda çalıştırmaya yarayan araç."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Kodu ağ üzerinden hizmet olarak sunsanız bile değişikliklerin açılmasını şart koşan güçlü bir açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "CopilotKit/OpenIntelligentUI",
+      "url": "https://github.com/CopilotKit/OpenIntelligentUI",
+      "stars": "2.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Open Intelligent UI**, yapay zekâ cevabının yalnızca metin olmadığı, **etkileşimli arayüz** olarak geldiği açık kaynak bir sohbet uygulamasıdır (\"Answers you can interact with\").\n\nÇözdüğü problem: Bir şeyi anlamak, karşılaştırmak veya hesaplamak için düz metin yetersiz kalır; kullanıcı bir değişkeni oynatıp sonucu görmek ister.\n\n- **Anla:** mekanizmayı adım adım keşfet, değişken değiştir\n- **Karşılaştır:** kriterleri yan yana gör, tabloyu grafiğe çevir\n- **Araç yap:** hesap makinesi, planlayıcı, kontrollü model üret\n- Kendi modelinize ve iş akışınıza uyarlamak için klonlanıp değiştirilmek üzere tasarlanmış",
+        "tech": "**Yığın:** Next.js + CopilotKit ön yüz, Python (FastAPI) üzerinde bir \"Deep Agent\", isteğe bağlı bağımsız MCP sunucusu, ortak tasarım sistemi paketi; pnpm + Turborepo + uv ile monorepo.\n\n**Kararlar:**\n- **Görselleştirme yönlendirici (router):** Basit tablolar için A2UI, grafik/diyagram/hesap makinesi/harita için Open Generative UI seçilir.\n- **Sandbox'lı iframe:** Model üretimi HTML/CSS/JS izole bir iframe'e akıtılır; güvenlik için dış dünyayla yalnızca doğrulanmış bir köprü üzerinden konuşur.\n- **AG-UI protokolü** ajan akışını arayüze taşır.\n- Kendi API anahtarını getir (BYOK); sağlayıcı hatası sessizce başka modele düşürülmez, kullanıcıya gösterilir.\n- Lisans MIT.",
+        "why": "- **Zamanlama:** \"Üretken arayüz\" (generative UI) 2026'nın sıcak konusu; sohbet kutusunun ötesine geçme isteği yaygın.\n- **Kitle:** AI ürünü geliştiren frontend ekipleri; CopilotKit ekosistemi hazır bir kitle ve dağıtım kanalı sağlıyor.\n- Canlı demolar (3B uçak, hesap bölüştürücü, harita) paylaşıma çok uygun, bu da yıldız ivmesini besliyor.",
+        "evolve": "- Üretilen arayüzlerin kaydedilip paylaşılabilir mini uygulamalara dönüşmesi.\n- İç araçlar için veritabanı/ERP verisine güvenli bağlanan şablonlar (ör. rapor ve onay ekranları).\n- iframe sandbox'ın güvenlik denetimi ve içerik politikalarının sıkılaştırılması.\n- Hata ayıklama için üretilen arayüzün izlenebilirliği ve test araçları.\n- Mobil ve erişilebilirlik (ekran okuyucu) desteği."
+      },
+      "glossary": [
+        {
+          "term": "Generative UI",
+          "def": "Arayüzün önceden çizilmiş olması yerine yapay zekâ tarafından isteğe göre üretilmesi."
+        },
+        {
+          "term": "AG-UI",
+          "def": "Yapay zekâ ajanları ile kullanıcı arayüzleri arasındaki olay akışını standartlaştıran protokol."
+        },
+        {
+          "term": "A2UI",
+          "def": "Ajanların tablo gibi yapısal arayüz bileşenlerini bildirimsel biçimde tarif etmesini sağlayan format."
+        },
+        {
+          "term": "iframe sandbox",
+          "def": "Bir sayfa içinde izole çalışan kutu; içindeki kodun ana uygulamaya erişimini kısıtlar."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Ajanların araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python'da hızlı web servisi yazmaya yarayan kütüphane."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden çok uygulama ve paketin tek bir depoda tutulması."
+        },
+        {
+          "term": "BYOK",
+          "def": "\"Kendi anahtarını getir\": kullanıcının kendi API anahtarıyla servisi kullanması."
+        }
+      ]
+    },
+    {
+      "name": "ranxianglei/billion-context",
+      "url": "https://github.com/ranxianglei/billion-context",
+      "stars": "971",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**billion-context**, kodlama ajanlarının uzun oturumlarda bağlam penceresini doldurmadan çalışmasını sağlayan bir **bağlam sıkıştırma eklentisi/vekilidir**.\n\nÇözdüğü problem: Uzun oturumda konuşma geçmişi şişer; model ya eski bilgiyi unutur, ya da her istekte aşırı token ödersiniz.\n\n- Geçmiş konuşmayı katmanlı özetlere katlar, gerektiğinde geri açar\n- Küçük bağlam penceresiyle (100K yeter) uzun süre çalışmaya imkân verir\n- README'ye göre ~5 kat daha az token (projenin kendi uzun süreli ölçümü; bağımsız doğrulanmadı)",
+        "tech": "**Mimari:** Ajan ile model API'si arasına oturan bir vekil (proxy): isteği (Anthropic/OpenAI biçimi) ayrıştırır, sıkıştırır, dört bağlam aracı ekler, gerçek API'ye iletir ve akan cevabı yeniden yazar. Çekirdek sıkıştırma `acp-kernel` bağımlılığındadır.\n\n**Kararlar:**\n- **Modelin kendisi karar verir:** `compress`, `decompress`, `search_context`, `acp_status` araçlarıyla ne zaman/neyi sıkıştıracağını model seçer; sert kesme yok. Hızlı büyümede nazik uyarılar, aşımda zorunlu ön kontrol.\n- **Önbellek dostu:** İstek önekini bozmadığı için prefix cache isabeti %95+ tutulur; sıkıştırma maliyeti ≤%2 olarak iddia ediliyor.\n- **Üç entegrasyon biçimi:** yerel eklenti, başlatıcı (sertifikalı MITM veya `/bili/` adres yeniden yazma), sadece URL değişikliği.\n- 127.0.0.1'e bağlanır, kimlik doğrulaması yok. TypeScript/npm, CLI `bili`. MIT + atıf şartı.",
+        "why": "- **Zamanlama:** Ajan oturumları uzadıkça token faturası ve \"bağlam çürümesi\" ana şikâyet oldu; birçok araç (Claude Code, Codex, Aider, Goose...) aynı sorunu yaşıyor.\n- **Kitle:** Günlerce süren oturumlar çalıştıran ve maliyet/limit baskısı hisseden ajan kullanıcıları.\n- Tek bir vekil ile onlarca istemciye uyması geniş bir kitle açıyor. Yıldız sayısı küçük ama haftalık ivmesi yüksek.",
+        "evolve": "- Vekilde kimlik doğrulama ve TLS; çok kullanıcılı ortamda güvenlik.\n- Sıkıştırma kalitesinin bağımsız kıyas testleriyle ölçülmesi (özet bilgi kaybı riski).\n- Kurumsal kullanımda özetlerin hassas veri sızdırmaması için maskeleme.\n- Sıkıştırılmış oturum geçmişinin ekip içinde paylaşılabilir, aranabilir hâle gelmesi.\n- Atıf şartı lisansı bazı ürünlerde kullanımı zorlaştırabilir."
+      },
+      "glossary": [
+        {
+          "term": "Bağlam penceresi",
+          "def": "Modelin tek seferde görebildiği metin miktarı (token cinsinden)."
+        },
+        {
+          "term": "Token",
+          "def": "Modelin metni işlerken kullandığı küçük parça; ücretlendirme ve limitler bununla ölçülür."
+        },
+        {
+          "term": "Prefix cache",
+          "def": "İsteğin değişmeyen başlangıç kısmının sağlayıcıda önbelleğe alınıp ucuz ve hızlı yeniden kullanılması."
+        },
+        {
+          "term": "Vekil (proxy)",
+          "def": "İki program arasına girip trafiği ileten, gerekirse değiştiren ara katman."
+        },
+        {
+          "term": "MITM",
+          "def": "Trafiğin ortasına girip okuyan/değiştiren bağlantı biçimi; burada kullanıcının kendi izniyle istemciyi yönlendirmek için kullanılır."
+        },
+        {
+          "term": "Bağlam sıkıştırma",
+          "def": "Eski konuşmayı kısa özetlere çevirerek pencerede yer açma yöntemi."
+        },
+        {
+          "term": "Kodlama ajanı",
+          "def": "Kod yazan, dosya düzenleyen ve komut çalıştıran yapay zekâ asistanı (ör. Claude Code, Codex)."
+        }
+      ]
+    }
+  ]
+}
