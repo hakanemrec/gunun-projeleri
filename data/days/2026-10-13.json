@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-13",
+  "projects": [
+    {
+      "name": "open-webui/open-webui",
+      "url": "https://github.com/open-webui/open-webui",
+      "stars": "155.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Open WebUI**, yerel (Ollama) veya OpenAI uyumlu herhangi bir API üzerinden çalışan modellerle konuşmak için **kendi sunucunuzda barındırabileceğiniz bir sohbet arayüzüdür**.\n\nÇözdüğü problem: Her model sağlayıcısının ayrı bir arayüzü var; şirketler ise verilerini üçüncü taraf bir SaaS'a göndermek istemiyor.\n\n- Tek bir arayüzden birden çok modele bağlanma\n- Verinin kendi altyapınızda kalması\n- Ekip kullanımı için kullanıcı ve yetki yönetimi",
+        "tech": "**Genel yapı:** Python tabanlı bir arka uç ve web arayüzü; modellerle **OpenAI uyumlu API** üzerinden konuşur, bu yüzden Ollama, vLLM veya bulut sağlayıcıları aynı şekilde bağlanabilir.\n\n**Mimari kararlar:**\n- **Standart API'ye yaslanmak:** Model değişse de arayüz değişmez; bağlayıcı yazma maliyeti düşer.\n- **Kendi kendine barındırma:** Docker ile kurulum hedeflenir, veri dışarı çıkmaz.\n- **Eklenti yaklaşımı:** Araçlar ve ek işlevler genişletilebilir tutulur.",
+        "why": "**Neden ilgi görüyor:** Yerel LLM çalıştıran herkesin ihtiyaç duyduğu \"ChatGPT benzeri ama bizim\" arayüzü sunuyor. Bugünkü yıldız ivmesi düşük (günde ~157) ama toplam yıldız sayısı çok yüksek: yani yeni bir patlama değil, **oturmuş bir standart**.\n\n**Kime hitap ediyor:** Veri gizliliği önemseyen ekipler, kurum içi yapay zekâ platformu kuranlar, hobi amaçlı yerel model kullananlar.",
+        "evolve": "**Fırsatlar:**\n- Kurumsal veritabanları (örn. Oracle/PL/SQL, ERP verisi) için hazır bağlayıcılar ve yetkili sorgulama\n- Daha güçlü denetim kaydı (kim ne sordu) ve kurumsal kimlik doğrulama entegrasyonları\n- Ajan iş akışlarının arayüzde görsel olarak tasarlanması\n\n**Eksik/risk:** Büyük bir kod tabanı olduğundan sürüm yükseltmeleri ve eklenti güvenliği dikkat ister."
+      },
+      "glossary": [
+        {
+          "term": "Ollama",
+          "def": "Açık kaynak modelleri kendi bilgisayarınızda kolayca indirip çalıştırmanızı sağlayan araç."
+        },
+        {
+          "term": "OpenAI uyumlu API",
+          "def": "OpenAI'nin istek/yanıt biçimini taklit eden arayüz; bu sayede farklı modeller aynı istemciyle kullanılabilir."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Yazılımın bir bulut hizmetinden alınmayıp kendi sunucunuzda çalıştırılması."
+        },
+        {
+          "term": "LLM",
+          "def": "Büyük dil modeli; metni anlayıp üreten yapay zekâ modeli."
+        }
+      ]
+    },
+    {
+      "name": "microsoft/BitNet",
+      "url": "https://github.com/microsoft/BitNet",
+      "stars": "41.0k",
+      "language": "C++",
+      "sections": {
+        "serves": "**BitNet**, **1 bit (aslında ~1,58 bit) ağırlıklı** büyük dil modellerini sıradan CPU'larda hızlı ve düşük enerjiyle çalıştırmak için Microsoft'un resmi çıkarım (inference) çerçevesidir.\n\nÇözdüğü problem: LLM'ler pahalı GPU ve çok bellek ister. BitNet, modeli çok daha küçük sayılarla temsil ederek bunu laptop/CPU seviyesine indirmeyi hedefler.",
+        "tech": "**Temel fikir:** Ağırlıklar yalnızca {-1, 0, +1} gibi çok az değer alır; çarpma işlemleri büyük oranda toplamaya dönüşür.\n\n**Mimari kararlar:**\n- **C++ ile özel çekirdekler (kernel):** CPU üzerinde bu düşük bitli hesaplar için optimize edilmiş kod\n- **llama.cpp tarzı yerel çıkarım:** Bağımlılıksız, taşınabilir çalışma\n- **Önceden bu yöntemle eğitilmiş modellere ihtiyaç:** Sıradan bir modeli sonradan 1 bite çevirmek aynı kaliteyi vermez",
+        "why": "**Neden ilgi görüyor:** Yapay zekâyı GPU'suz çalıştırma vaadi, yerel/uç cihaz (edge) eğilimiyle örtüşüyor. Günlük ivme düşük (~97 yıldız) ama proje uzun süredir takip edilen bir referans.\n\n**Kime hitap ediyor:** Araştırmacılar, gömülü/uç cihaz geliştiricileri, maliyet odaklı çıkarım yapmak isteyenler.",
+        "evolve": "**Fırsatlar:**\n- Daha fazla ve daha büyük BitNet-yerel model\n- GPU/NPU desteği ve daha kolay kurulum\n- Mevcut modelleri kaliteyi koruyarak dönüştüren araçlar\n\n**Kısıt:** Model seçeneği sınırlı; ekosistem henüz olgun değil."
+      },
+      "glossary": [
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir modelin yeni girdiler için cevap üretmesi."
+        },
+        {
+          "term": "Kuantizasyon",
+          "def": "Model ağırlıklarını daha az bitle saklayarak boyut ve hesap maliyetini düşürme."
+        },
+        {
+          "term": "Kernel",
+          "def": "Belirli bir hesabı donanımda çok hızlı yapmak için yazılmış düşük seviyeli optimize kod."
+        },
+        {
+          "term": "CPU",
+          "def": "Bilgisayarın genel amaçlı işlemcisi; GPU'nun aksine her bilgisayarda bulunur."
+        }
+      ]
+    },
+    {
+      "name": "breferrari/obsidian-mind",
+      "url": "https://github.com/breferrari/obsidian-mind",
+      "stars": "5.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**obsidian-mind**, AI kodlama ajanlarına **kalıcı hafıza** veren, kendi kendini düzenleyen bir **Obsidian** not kasasıdır (vault).\n\nÇözdüğü problem: Ajanlar her oturumda sıfırdan başlar; kararlar, bağlam ve öğrenilenler kaybolur. Burada bilgi, insanın da okuyup düzenleyebildiği markdown notlarında birikir.",
+        "tech": "**Yaklaşım:** Bellek bir veritabanı yerine **düz markdown dosyaları** olarak tutulur; Obsidian bunları bağlantılı bir bilgi ağı olarak gösterir.\n\n**Mimari kararlar:**\n- **İnsan okunabilir hafıza:** Ajanın bildiği şey denetlenebilir ve elle düzeltilebilir\n- **Git ile sürümleme** mümkün\n- Ajan, kasaya notlar yazıp sonraki oturumlarda geri okur",
+        "why": "**Neden ilgi görüyor:** Ajan hafızası şu an en sıcak başlıklardan biri (benzeri claude-mem gibi projeler de yükselişte). Obsidian'ı zaten kullanan geliştirici kitlesine hazır bir çözüm sunuyor.\n\n**Kime hitap ediyor:** Claude Code vb. ajanları günlük kullanan, notlarını Obsidian'da tutan kişiler.",
+        "evolve": "**Fırsatlar:**\n- Notların otomatik özetlenmesi, eskiyen bilginin temizlenmesi\n- Arama için vektör indeksi desteği\n- Ekip içi paylaşımlı hafıza\n\n**Risk:** Hafıza şişerse bağlam kirlenebilir; nelerin saklanacağına dair kurallar gerekir."
+      },
+      "glossary": [
+        {
+          "term": "Obsidian",
+          "def": "Markdown dosyalarını birbirine bağlayarak not tutmayı sağlayan masaüstü uygulaması."
+        },
+        {
+          "term": "Vault",
+          "def": "Obsidian'da notların bulunduğu klasör."
+        },
+        {
+          "term": "Ajan (agent)",
+          "def": "Bir hedef için araç kullanıp adım adım iş yapabilen yapay zekâ sistemi."
+        },
+        {
+          "term": "Bağlam penceresi",
+          "def": "Modelin tek seferde görebildiği metin miktarı."
+        }
+      ]
+    },
+    {
+      "name": "rmyndharis/OpenWA",
+      "url": "https://github.com/rmyndharis/OpenWA",
+      "stars": "15.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**OpenWA**, WhatsApp'ı programatik olarak kullanmak için **kendi sunucunuzda çalışan bir API ağ geçididir**.\n\nÇözdüğü problem: Mesaj göndermek/almak isteyen uygulamalar için resmi yollar maliyetli veya kısıtlı olabilir; bu proje basit bir HTTP API ile otomasyon yapmayı sağlar.\n\n**Dikkat:** Resmî olmayan WhatsApp entegrasyonları platform kullanım şartlarını ihlal edebilir ve hesap engelleme riski taşır.",
+        "tech": "**Yaklaşım:** Node/TypeScript ile yazılmış bir sunucu; WhatsApp Web oturumunu sürerek mesajları REST API ve olaylar (webhook) olarak dışarı açar.\n\n**Mimari kararlar:**\n- **Self-hosted:** Mesaj verisi kendi altyapınızda\n- **API ağ geçidi deseni:** Uygulamalar WhatsApp'ın iç işleyişini bilmeden HTTP ile konuşur\n- **Webhook:** Gelen mesajlar uygulamanıza itilir",
+        "why": "**Neden ilgi görüyor:** Chatbot ve AI ajanlarını WhatsApp'a bağlama ihtiyacı çok yüksek; ücretsiz ve self-hosted olması cazip. Günlük ~168 yıldız, istikrarlı ilgi.\n\n**Kime hitap ediyor:** Küçük işletmeler, bot geliştiricileri, bildirim otomasyonu kuranlar.",
+        "evolve": "**Fırsatlar:**\n- ERP/iş sistemlerinden (örn. sipariş, bakım uyarısı) otomatik bildirim akışları\n- Ajan/LLM entegrasyonu için hazır şablonlar\n- Çoklu hesap ve izleme paneli\n\n**Risk:** Resmî olmayan yapı olduğu için WhatsApp tarafındaki değişiklikler entegrasyonu bozabilir."
+      },
+      "glossary": [
+        {
+          "term": "API ağ geçidi",
+          "def": "Dış uygulamaların bir hizmete tek bir tutarlı API üzerinden erişmesini sağlayan ara katman."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda sistemin sizin adresinize otomatik HTTP isteği göndermesi."
+        },
+        {
+          "term": "REST API",
+          "def": "HTTP üzerinden kaynaklara standart yöntemlerle erişilen arayüz tarzı."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Yazılımın kendi sunucunuzda çalıştırılması."
+        }
+      ]
+    }
+  ]
+}
