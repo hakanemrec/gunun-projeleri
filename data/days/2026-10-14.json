@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-14",
+  "projects": [
+    {
+      "name": "xtool-org/xtool",
+      "url": "https://github.com/xtool-org/xtool",
+      "stars": "9.7k",
+      "language": "Swift",
+      "sections": {
+        "serves": "**xtool**, iOS uygulamalarını **Xcode ve Mac olmadan** derleyip imzalayarak cihaza kurmanızı sağlayan çapraz platform bir komut satırı aracıdır.\n\nÇözdüğü problem: iOS geliştirmek normalde bir Mac ve Xcode gerektirir. xtool, **SwiftPM** projelerini Linux, Windows (WSL üzerinden) ve macOS'ta derleyip Apple Developer Services ile konuşarak imzalar ve bağlı iPhone'a yükler.\n\n- Mac'siz iOS geliştirme\n- Derle, imzala, kur, çalıştır akışı tek araçta\n- Başka araçların kullanabilmesi için `XKit` kütüphanesi",
+        "tech": "**Genel yapı:** Swift ile yazılmış, SwiftPM tabanlı bir CLI. Alt komutlar amaca göre gruplanır: kurulum/kimlik (`setup`, `auth`, `sdk`), geliştirme (`new`, `dev`, `ds`) ve cihaz işlemleri (`devices`, `install`, `uninstall`, `launch`).\n\n**Mimari kararlar:**\n- **Darwin Swift SDK:** Linux'ta iOS hedefi için derleme yapabilmek üzere ayrı bir SDK yönetilir (`xtool sdk`).\n- **Apple Developer Services istemcisi:** Sertifika ve provisioning işlemleri Apple'ın servisleriyle programatik konuşularak yapılır (`xtool auth`).\n- **Kütüphane olarak sunum:** Aynı işlevler `XKit` adıyla SwiftPM bağımlılığı olarak kullanılabilir.\n- Dokümantasyon xtool.sh adresinde; depoda Docker ve platforma özel (Linux/macOS) dizinler var.\n\n*Not: İmzalama mekanizmasının iç ayrıntıları README'de anlatılmıyor; burada yalnızca depodan görünenler aktarıldı.*",
+        "why": "**Neden ilgi görüyor:** Mac sahibi olmayan ya da CI/konteyner ortamında çalışan Swift geliştiricileri için uzun süredir var olan bir engeli kaldırıyor. Günlük trendde ~1,2k yıldız aldı; toplam 9,7k yıldızlık bir projeye göre belirgin bir ivme.\n\n**Kitle:** Linux/Windows kullanan Swift meraklıları, bağımsız (indie) geliştiriciler, Mac'siz CI hattı kurmak isteyen ekipler. MIT lisanslı olması benimsemeyi kolaylaştırıyor.",
+        "evolve": "**Eksikler:** Apple Developer hesabı gerekliliği kalıyor; Apple servislerinin değişmesi aracı kırabilir. Windows desteği WSL'e bağlı.\n\n**Fırsatlar:**\n- Bulut CI için hazır GitHub Action / konteyner imajları\n- Kapsamlı hata teşhisi (`doctor` benzeri komut)\n- Simülatörsüz hızlı geri bildirim döngüsü için canlı yeniden yükleme\n- AI kod ajanlarının Linux üzerinde iOS uygulamasını derleyip cihazda deneyebilmesi"
+      },
+      "glossary": [
+        {
+          "term": "SwiftPM",
+          "def": "Swift Package Manager; Swift projelerinde bağımlılıkları ve derlemeyi yöneten resmi paket yöneticisi."
+        },
+        {
+          "term": "Xcode",
+          "def": "Apple'ın iOS/macOS uygulamaları geliştirmek için sunduğu resmi geliştirme ortamı; yalnızca Mac'te çalışır."
+        },
+        {
+          "term": "WSL",
+          "def": "Windows Subsystem for Linux; Windows içinde Linux ortamı çalıştırmayı sağlayan bileşen."
+        },
+        {
+          "term": "İmzalama (code signing)",
+          "def": "Uygulamanın kimin tarafından üretildiğini kanıtlayan dijital imza; iOS cihazlar imzasız uygulamayı çalıştırmaz."
+        },
+        {
+          "term": "Provisioning",
+          "def": "Bir uygulamanın hangi cihazlarda ve hangi hesapla çalışabileceğini belirleyen Apple tanım dosyası."
+        },
+        {
+          "term": "SDK",
+          "def": "Belirli bir platform için derleme yapmaya yarayan kütüphane ve araç paketi."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırı arayüzü; programı grafik yerine terminalden komutlarla kullanma biçimi."
+        },
+        {
+          "term": "CI",
+          "def": "Sürekli entegrasyon; kod her değiştiğinde derleme ve testleri otomatik çalıştıran sistem."
+        }
+      ]
+    },
+    {
+      "name": "sqlfluff/sqlfluff",
+      "url": "https://github.com/sqlfluff/sqlfluff",
+      "stars": "10.0k",
+      "language": "Python",
+      "sections": {
+        "serves": "**SQLFluff**, SQL kodu için **linter (stil/hata denetleyici) ve otomatik biçimlendirici**dir.\n\nÇözdüğü problem: SQL'de herkesin yazım stili farklıdır; büyük sorgu tabanlarında kod incelemeleri biçim tartışmalarına boğulur. SQLFluff kuralları yapılandırılabilir biçimde denetler ve `sqlfluff fix` ile çoğunu otomatik düzeltir.\n\n- 28 SQL lehçesi (Oracle dahil)\n- Jinja ve dbt gibi şablonlu SQL desteği\n- CI ve pre-commit entegrasyonu",
+        "tech": "**Genel yapı:** Python paketi; `lint` ve `fix` komutlarıyla çalışır, her ihlali satır, konum ve kural koduyla (örn. `LT01`) raporlar.\n\n**Mimari kararlar:**\n- **Lehçeye duyarlı ayrıştırma:** `--dialect` ile seçilen gramer kullanılır; böylece BigQuery, Snowflake, Oracle gibi farklı sözdizimleri ayrı ele alınır.\n- **Şablon desteği:** Jinja, SQL yer tutucuları, Python format dizgeleri; dbt için ayrı eklenti.\n- **İsteğe bağlı Rust hızlandırması:** `sqlfluff[rs]` ekstrasıyla Rust tabanlı lexer/parser.\n- Geliştirme tarafında Ruff, tox, pre-commit ve GitHub Actions.\n\n*Not: Lexer/parser/kural iç yapısı README'de değil ayrı mimari dokümanında anlatılıyor; burada ayrıntıya girilmedi.*",
+        "why": "**Neden ilgi görüyor:** Günlük trendde yalnızca birkaç yıldız aldığı için bu bir 'ivme' hikâyesi değil; listede yer almasının sebebi büyük olasılıkla genel yaygınlığı ve kalıcı kullanımıdır. Dürüst not: yıldız ivmesi düşük, seçimde ilgi alanı uyumu (veritabanı, Oracle lehçesi) belirleyici oldu.\n\n**Kitle:** Veri mühendisleri, dbt kullanan analitik ekipler, SQL kod kalitesini CI'a bağlamak isteyen herkes. MIT lisanslı, aylık sürümlerle aktif.",
+        "evolve": "**Eksikler:** Lehçe kapsamı 'tam' değil; README PL/SQL'den hiç söz etmiyor, yani Oracle'ın prosedürel dili (paket, tetikleyici, blok yapıları) büyük olasılıkla zayıf kapsanıyor (doğrulanmadı). Python API'si CLI'dan daha az kararlı.\n\n**Fırsatlar:**\n- PL/SQL ve ERP/IFS tarzı büyük Oracle kod tabanları için gramer genişletmesi\n- Şirket içi kural setleri ve paylaşılabilir yapılandırma\n- Rust ayrıştırıcının varsayılan hale gelmesiyle büyük repolarda hız kazancı\n- AI ile üretilen SQL'i otomatik denetleyen ajan kancaları"
+      },
+      "glossary": [
+        {
+          "term": "Linter",
+          "def": "Kodu çalıştırmadan stil ve olası hatalar açısından denetleyen araç."
+        },
+        {
+          "term": "SQL lehçesi (dialect)",
+          "def": "Her veritabanının SQL'e eklediği kendine özgü sözdizimi farklılıkları; örn. Oracle, PostgreSQL, T-SQL."
+        },
+        {
+          "term": "PL/SQL",
+          "def": "Oracle'ın SQL'i değişken, döngü ve prosedürlerle genişleten programlama dili."
+        },
+        {
+          "term": "Jinja",
+          "def": "Metin içine değişken ve koşul yerleştirmeye yarayan şablon dili; SQL üretiminde sık kullanılır."
+        },
+        {
+          "term": "dbt",
+          "def": "Veri ambarında SQL ile dönüşümleri yönetmeye yarayan araç."
+        },
+        {
+          "term": "Lexer / parser",
+          "def": "Lexer metni parçalara (token) böler, parser bu parçalardan dil yapısını çıkarır."
+        },
+        {
+          "term": "pre-commit",
+          "def": "Commit atılmadan önce otomatik kontrolleri çalıştıran Git mekanizması."
+        },
+        {
+          "term": "ELT",
+          "def": "Veriyi önce hedef sisteme yükleyip dönüşümü orada yapan veri işleme yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "mitmproxy/mitmproxy",
+      "url": "https://github.com/mitmproxy/mitmproxy",
+      "stars": "45.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**mitmproxy**, HTTP/HTTPS trafiğini araya girerek **izlemenizi, durdurmanızı ve değiştirmenizi** sağlayan, TLS destekli etkileşimli bir proxy'dir.\n\nÇözdüğü problem: Bir uygulamanın ağda gerçekte ne konuştuğunu görmek zordur. mitmproxy trafiği okunur hale getirir; API hata ayıklama, güvenlik testi ve istemci davranışı analizi için kullanılır.\n\n- Terminalde etkileşimli arayüz\n- İstek/yanıtları yakalama ve değiştirme\n- Betikle otomasyon",
+        "tech": "**Genel yapı:** Python ile yazılmış bir ara-adam (man-in-the-middle) proxy'si. Proje üç arayüzüyle bilinir: `mitmproxy` (terminal), `mitmweb` (web arayüzü), `mitmdump` (betiklenebilir, komut satırı).\n\n**Mimari kararlar (genel bilgi, bu çalıştırmada README'den doğrulanmadı):**\n- **Kendi CA sertifikası:** HTTPS trafiğini çözmek için istemcinin güvendiği özel bir sertifika kurulur.\n- **Eklenti (addon) modeli:** Python betikleriyle trafik akışına kanca takılır.\n- Birden çok protokol desteği (HTTP/1-2, WebSocket vb.).",
+        "why": "**Neden listede:** Günlük ivmesi çok düşük (~62 yıldız); yani 'bugün patlayan' bir proje değil, kalıcı ve yaygın bir geliştirici aracı. Seçim nedeni, yeni gün için yeterli sayıda taze aday olmaması ve API/dev-tools ilgi alanına uyması.\n\n**Kitle:** Backend ve mobil geliştiriciler, güvenlik araştırmacıları, API tersine mühendisliği yapanlar, ajan/LLM istemcilerinin giden isteklerini incelemek isteyenler.",
+        "evolve": "**Eksikler:** HTTPS çözme sertifika kurulumu gerektirir; sertifika sabitleme (pinning) yapan uygulamalarda ek çaba gerekir.\n\n**Fırsatlar:**\n- LLM API trafiğini (istem, token, maliyet) otomatik ayrıştıran hazır eklentiler\n- AI ajanlarının yakalanan trafiği analiz edip test üretmesi\n- IFS/ERP entegrasyonlarında REST/SOAP çağrılarını hata ayıklama için kullanma"
+      },
+      "glossary": [
+        {
+          "term": "Proxy",
+          "def": "İstemci ile sunucu arasında duran, trafiği ileten aracı sunucu."
+        },
+        {
+          "term": "Man-in-the-middle",
+          "def": "İki taraf arasındaki trafiğe araya girerek erişme; burada meşru bir hata ayıklama amacıyla kullanılır."
+        },
+        {
+          "term": "TLS",
+          "def": "HTTPS bağlantılarını şifreleyen protokol."
+        },
+        {
+          "term": "CA sertifikası",
+          "def": "Başka sertifikaları imzalayan güvenilir otorite; mitmproxy kendi CA'sını istemciye tanıtarak trafiği çözer."
+        },
+        {
+          "term": "Addon (eklenti)",
+          "def": "Programın davranışını betikle genişleten küçük modül."
+        },
+        {
+          "term": "WebSocket",
+          "def": "İstemci ile sunucu arasında sürekli açık, iki yönlü iletişim kanalı."
+        },
+        {
+          "term": "Certificate pinning",
+          "def": "Uygulamanın yalnızca belirli sertifikalara güvenmesi; araya girmeyi zorlaştırır."
+        }
+      ]
+    }
+  ]
+}
