@@ -1,0 +1,197 @@
+{
+  "date": "2026-10-15",
+  "projects": [
+    {
+      "name": "ifixai-ai/iFixAi",
+      "url": "https://github.com/ifixai-ai/iFixAi",
+      "stars": "27.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**iFixAi**, bir AI ajanının **kendisinden beklenen işi gerçekten yapıp yapmadığını** bağımsız olarak denetleyen açık kaynaklı bir Python aracıdır.\n\nÇözdüğü problem: Mevcut değerlendirme ve gözlemlenebilirlik araçları çoğunlukla teknik metriklere (gecikme, token verimliliği, prompt injection) bakar; ajanın **iş hedeflerine ve kurumsal yapıya uygun davranıp davranmadığını** ise ölçmez.\n\n- Ajan, bir dizi \"inspection\" (denetim testi) ile sınanır ve A-F arası not alır\n- Hem geliştiriciye hem risk/uyum ekiplerine hitap eder\n- Apache 2.0 lisanslı",
+        "tech": "**Genel yapı:** Python 3.10+, PyPI'dan `ifixai` olarak kurulur; sağlayıcıya göre isteğe bağlı ekler vardır (`anthropic`, `openai`, `gemini`). Yapılandırma `ifixai.yaml` dosyasındadır ve gizli anahtarlar yerine **ortam değişkeni adlarını** saklar.\n\n**Mimari kararlar:**\n- **Ayrı yargıç (judge) modeli:** Test edilen sistem (SUT) kendi kendini notlamaz; en güvenilir sonuç için yargıç farklı bir sağlayıcıdan seçilir.\n- **25 kategori:** 5 çekirdek sütun (Fabrication, Manipulation, Deception, Unpredictability, Opacity) nota girer; Manipulation ağırlığı 0.35 ile en yüksektir. 20 \"premium\" kategori ayrı raporlanır.\n- **Zorunlu asgariler:** B01, B08, P01 eşiğin altında kalırsa toplam skor %60'ta kesilir.\n- **Adaptör modeli:** `ChatProvider.send_message` uygulanarak her ajan test edilebilir; `list_tools`, `get_audit_trail` gibi isteğe bağlı kancalar daha fazla denetimi açar. OpenAI uyumlu HTTP uç noktaları ek kod olmadan test edilir.\n- **YAML fixture'lar** ve JSON/Markdown raporlar; Claude Code/Codex eklentisi ve `uvx` ile kurulumsuz çalıştırma.",
+        "why": "**Zamanlama:** Ajanlar üretime girdikçe \"çalışıyor mu\"dan \"doğru davranıyor mu\" sorusuna geçiş yaşanıyor. AB Yapay Zeka Yasası, NIST AI RMF, ISO 42001 ve OWASP LLM gibi çerçeveler uyum ekiplerini bu tür araçlara yöneltiyor.\n\n**Kitle:** Ajan geliştiren ekipler, AI güvenliği ve yönetişim/risk sorumluları.\n\n**İvme:** Deponun bugün çok yüksek yıldız ivmesi gösterdiğini trending listesi gösteriyor; nedenini kaynaklar açıkça belirtmiyor. Güçlü bir konumlandırma (\"bağımsız denetim\"), hazır vaka çalışmaları ve Claude Code/Codex eklentisi kolay benimsemeyi destekliyor olabilir.",
+        "evolve": "**Eksikler ve riskler:**\n- Kendi kendini yargılayan çalıştırmalar yalnızca duman testi sayılır, alıntılanabilir not için iki farklı sağlayıcının anahtarı gerekir.\n- Tam paket yaklaşık 5.500 ajan ve 4.700 yargıç çağrısı yapar; maliyet ve süre ciddi olabilir.\n- Kapsam, adaptörün ne kadar bilgi açığa çıkardığına bağlıdır; yetersiz görünürlükte `insufficient_evidence` döner.\n- Hız ve doğruluk iddiaları projenin kendi beyanıdır, bağımsız doğrulama sunulmuyor.\n\n**Fırsatlar:** Kurumsal ERP/iş akışı ajanları için yetki ve denetim izi testleri, CI'a entegre regresyon denetimi. Ayrıca ücretli Pro katmanı var; açık kaynak çekirdekle sınırı net tutulmalı."
+      },
+      "glossary": [
+        {
+          "term": "Ajan (AI agent)",
+          "def": "Bir hedef doğrultusunda araç çağırabilen ve adım adım karar verebilen yapay zeka sistemi."
+        },
+        {
+          "term": "SUT",
+          "def": "System Under Test; test edilen sistem. Burada notlanan ajan veya model."
+        },
+        {
+          "term": "Judge (yargıç) modeli",
+          "def": "Test edilen sistemin cevaplarını değerlendirip puanlayan ayrı bir yapay zeka modeli."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Girdiye gizlenmiş talimatlarla bir yapay zeka modelinin asıl görevinden saptırılması saldırısı."
+        },
+        {
+          "term": "Observability (gözlemlenebilirlik)",
+          "def": "Bir sistemin içinde ne olduğunu log, metrik ve izlerle görebilme yeteneği."
+        },
+        {
+          "term": "Adaptör",
+          "def": "Farklı bir sistemi ortak bir arayüze bağlayan küçük uyarlama katmanı."
+        },
+        {
+          "term": "Fixture",
+          "def": "Testlerde kullanılan, önceden hazırlanmış senaryo ve veri tanımı."
+        },
+        {
+          "term": "Audit trail (denetim izi)",
+          "def": "Kimin neyi ne zaman yaptığını geriye dönük izlemeye yarayan kayıt."
+        },
+        {
+          "term": "CI",
+          "def": "Continuous Integration; kod değişince testlerin otomatik çalıştığı süreç."
+        }
+      ]
+    },
+    {
+      "name": "nvm-sh/nvm",
+      "url": "https://github.com/nvm-sh/nvm",
+      "stars": "95.5k",
+      "language": "Shell",
+      "sections": {
+        "serves": "**nvm**, birden fazla **Node.js** sürümünü kurup komut satırından aralarında geçiş yapmanızı sağlayan bir sürüm yöneticisidir.\n\nÇözdüğü problem: Farklı projeler farklı Node sürümü ister. nvm, `sudo` gerektirmeden kullanıcı bazında kurulur ve her kabuk oturumunda ayrı sürüm kullanılabilmesini sağlar.\n\n- `nvm install 24`, `nvm use 22` gibi basit komutlar\n- Proje klasöründeki `.nvmrc` dosyasıyla sürüm sabitleme\n- Sürüm v0.40.8; yalnızca en son sürüm destekleniyor",
+        "tech": "**Genel yapı:** nvm bir ikili program değil, **POSIX uyumlu bash betiğinden oluşan bir kabuk fonksiyonudur**; bu yüzden `which nvm` çalışmaz, `command -v nvm` kullanılır. Kurulum betiği depoyu `~/.nvm` içine klonlar ve profil dosyasına `nvm.sh`'yi yükleyen satırlar ekler.\n\n**Mimari kararlar:**\n- **PATH manipülasyonu:** Sürüm değiştirmek `PATH`'i (ve varsa `MANPATH`, `NODE_PATH`) değiştirir; `NVM_DIR`, `NVM_BIN` gibi değişkenler dışa aktarılır. Böylece her kabuk bağımsız kalır.\n- **Önceden derlenmiş ikililer:** nodejs.org'dan indirir, sağlama toplamını doğrular; ikili yoksa kaynaktan derlemeye düşer.\n- **Sürüm başına kilit:** Aynı sürümün iki kabukta aynı anda kurulup bozulması engellenir.\n- **Kısmi sürüm çözümü ve alias'lar:** `18` yazmak kurulu en yeni 18.x'e, `lts/*` en son LTS'e çözülür.\n- **Sınırlar:** sh, dash, ksh, zsh, bash çalışır; fish desteklenmez; yerel Windows desteklenmez.",
+        "why": "**Zamanlama:** Bugünkü ivmenin nedeni kaynaklarda belirtilmiyor. Node.js ekosistemindeki sürüm geçişleri ve yeni sürüm duyuruları gibi olaylar ilgiyi artırıyor olabilir, ancak bu bir tahmindir.\n\n**Kitle:** Birden fazla Node projesi yöneten web/backend geliştiriciler, CI ve Docker kullanıcıları. Yıllardır fiilî standartlardan biri olduğu için geniş bir tabanı var.\n\n**Güçlü yan:** Kurulum için yönetici yetkisi gerekmemesi ve `.nvmrc` ile ekip içinde sürüm tutarlılığı.",
+        "evolve": "**Eksikler:**\n- Fish kabuğu ve yerel Windows desteklenmiyor; topluluk alternatifleri (nvm-windows, nvm.fish) ayrı projeler.\n- Kabuk fonksiyonu olduğu için her yeni kabuk açılışında yükleme süresi ekler.\n- Alpine ve bazı mimarilerde kaynaktan derleme gerekebilir.\n- `.nvmrc` ile otomatik geçiş için topluluk tarifleri gerekir, resmî olarak bakımı yapılmıyor.\n- Tek bakımcı (@ljharb) olması sürdürülebilirlik riski.\n\n**Yönler:** Gölge (shim) tabanlı yaklaşımlarla hız, daha geniş kabuk desteği."
+      },
+      "glossary": [
+        {
+          "term": "Sürüm yöneticisi",
+          "def": "Aynı yazılımın birden çok sürümünü kurup aralarında geçiş yapmaya yarayan araç."
+        },
+        {
+          "term": "POSIX",
+          "def": "Unix benzeri sistemlerde kabuk ve araçların uyması gereken ortak standart."
+        },
+        {
+          "term": "PATH",
+          "def": "Kabuğun çalıştırılabilir dosyaları hangi klasörlerde arayacağını belirleyen ortam değişkeni."
+        },
+        {
+          "term": "Kabuk fonksiyonu",
+          "def": "Kabuk oturumuna yüklenen ve komut gibi çağrılan betik parçası; ayrı bir program değildir."
+        },
+        {
+          "term": ".nvmrc",
+          "def": "Projenin kullanacağı Node sürümünü yazan küçük metin dosyası."
+        },
+        {
+          "term": "LTS",
+          "def": "Long Term Support; uzun süre güvenlik ve hata düzeltmesi alan kararlı sürüm hattı."
+        },
+        {
+          "term": "Shim",
+          "def": "Asıl komutun yerine geçip doğru sürüme yönlendiren küçük sarmalayıcı."
+        },
+        {
+          "term": "Sağlama toplamı (checksum)",
+          "def": "İndirilen dosyanın bozulmadığını doğrulamak için hesaplanan kısa değer."
+        }
+      ]
+    },
+    {
+      "name": "ntdevlabs/tiny11builder",
+      "url": "https://github.com/ntdevlabs/tiny11builder",
+      "stars": "20.4k",
+      "language": "C#",
+      "sections": {
+        "serves": "**Tiny11 Builder**, Windows 11 imajını **küçültüp özelleştirerek yeni bir ISO üreten** bir WinUI masaüstü uygulamasıdır.\n\nÇözdüğü problem: Standart Windows kurulumu birçok önyüklü uygulama ve özellik içerir. Bu araç, resmî veya kendi imajınızdan başlayıp neyin çıkarılacağını seçmenizi sağlar.\n\n- Üç mod: **Tiny11**, **Tiny11 Core**, **Custom**\n- x64 ve ARM64 sürümleri\n- Eski PowerShell betikleri depoda hâlâ duruyor",
+        "tech": "**Genel yapı:** Yerel bir **WinUI** uygulaması (`Tiny11Builder.exe`, yönetici izni ister). Kaynak imajdan seçilen bileşenleri çıkarır ve ISO oluşturur.\n\n**Kararlar ve özellikler:**\n- **Modlar:** Tiny11 uygulamaları/özellikleri kaldırır, güncelleme, Defender ve kurtarmayı korur. Core çok daha fazlasını kaldırır, Defender'ı kapatır, servis ve kurtarma desteğini çıkarır.\n- **Eski kurulum programı:** Core ve bileşen deposu kaldırmaları otomatik olarak eski Windows yükleyicisini kullanır.\n- **Kaldığı yerden devam:** Kesilen derlemeler, imaj commit/sıkıştırma aşamasından sonra sürdürülebilir.\n- **Turbo modu** ile hızlı işleme.\n\n*Not: Sayfa, altta yatan araç zincirini (ör. DISM) açıklamıyor; bu ayrıntı doğrulanamadı.*",
+        "why": "**Kitle:** Düşük kaynaklı veya eski donanımda, sanal makinede ya da test ortamında hafif Windows isteyenler; gereksiz yazılımlardan arınmış temiz kurulum isteyenler.\n\n**Zamanlama ve ivme:** Bugünkü artışın nedeni kaynaklarda belirtilmiyor. Projenin yeni bir WinUI arayüzüne geçişi (`winui-preview` dalı) ilgiyi canlandırmış olabilir; bu bir çıkarımdır.\n\n**Değer önerisi:** Betik yerine grafik arayüz, ISO üretimini teknik olmayan kullanıcıya da açıyor.",
+        "evolve": "**Riskler ve eksikler:**\n- Core modu güncellenemez ve onarılamaz; Defender kapatılır.\n- Korunan bileşenleri Custom modda silmek Windows'u bozabilir.\n- Kaynak imajın nasıl indirilip doğrulandığı belirsiz; güvenilir kaynak şart.\n- Kaynak `winui-preview` dalında, yani değişken olabilir; lisans bilgisi sayfada net değil (`NOTICE.md` var).\n\n**Fırsatlar:** İmaj imza/bütünlük doğrulaması, profil dışa/içe aktarma, kurumsal dağıtım senaryoları. Üretime almadan önce mutlaka sanal makinede test edilmeli."
+      },
+      "glossary": [
+        {
+          "term": "WinUI",
+          "def": "Microsoft'un Windows için yerel arayüz geliştirme çerçevesi."
+        },
+        {
+          "term": "ISO",
+          "def": "Bir diskin birebir kopyası olan, kurulum ortamı olarak kullanılan imaj dosyası."
+        },
+        {
+          "term": "Windows imajı",
+          "def": "Windows kurulum dosyalarını içeren paketlenmiş görüntü."
+        },
+        {
+          "term": "Defender",
+          "def": "Windows'un yerleşik virüsten koruma bileşeni."
+        },
+        {
+          "term": "Servis (servicing)",
+          "def": "Windows'a güncelleme ve onarım uygulayabilme yeteneği."
+        },
+        {
+          "term": "Bileşen deposu",
+          "def": "Windows'un sistem bileşenlerini ve güncelleme dosyalarını tuttuğu iç depo."
+        },
+        {
+          "term": "ARM64",
+          "def": "Telefon ve bazı yeni dizüstülerde kullanılan işlemci mimarisi; x64'ten farklıdır."
+        },
+        {
+          "term": "Sanal makine",
+          "def": "Bir bilgisayarın içinde yazılımla çalıştırılan, gerçek donanımı etkilemeyen sanal bilgisayar."
+        }
+      ]
+    },
+    {
+      "name": "rust-lang/rust",
+      "url": "https://github.com/rust-lang/rust",
+      "stars": "120.2k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**rust-lang/rust**, Rust programlama dilinin derleyicisini, standart kütüphanesini ve belgelerini barındıran ana depodur. Amacı: *\"Herkesin güvenilir ve verimli yazılım geliştirebilmesi\"*.\n\n- **Performans**, **güvenilirlik** (sahiplik ve tip sistemiyle derleme anında hataları azaltma) ve **üretkenlik** (Cargo, rustfmt, Clippy, rust-analyzer)\n- Çoğu kullanıcı için kaynaktan derlemek önerilmiyor; resmî kurulum yolu tercih edilir",
+        "tech": "**Depo yapısı:** Üst düzeyde `compiler/`, `library/`, `src/` ve `tests/` dizinleri bulunur. Derleyici mimarisi için rustc-dev-guide'a yönlendirilir.\n\n**Derleme sistemi:** `x` sürücüsü (`x.py`, `x.ps1` ve kabuk sarmalayıcısı) ve `bootstrap.example.toml` ile yapılandırma kullanılır.\n\n**Süreç araçları:** `triagebot.toml` ve `rust-bors.toml` ile otomatik triyaj ve birleştirme; MIT ve Apache-2.0 çift lisans; Rust markaları Rust Vakfı'na aittir.\n\n*Not: Okunan sayfa LLVM, borrow checker veya MIR gibi iç ayrıntıları anlatmıyor; bu yüzden burada yer verilmedi.* Kökte bir `AGENTS.md` dosyası var; muhtemelen AI kodlama ajanları için yönerge içerir ama içeriği doğrulanamadı.",
+        "why": "**Kitle:** Sistem programcıları, güvenlik odaklı ekipler, altyapı ve CLI aracı geliştiricileri.\n\n**İvme:** Yaklaşık 120 bin yıldız, 18.7 bin fork ve çok büyük commit geçmişiyle olgun bir proje; bugünkü artış görece küçük (günlük yaklaşık 200 yıldız). Kalıcı bir ilgi var, ani bir patlama değil.\n\n**Neden önemli:** Rust, sistem ve geliştirici araçları alanında yaygın kullanılan bir dil; bu depo o ekosistemin temelini oluşturuyor.",
+        "evolve": "**Dikkat edilecekler:**\n- 5 binden fazla açık issue ve 1.400 civarı açık PR; bakım yükü büyük.\n- Kaynaktan derlemek ağır; yeni katkıcılar için rustc-dev-guide şart.\n\n**Yönler:** Kökteki `AGENTS.md`, AI ajanlarının derleyici gibi büyük kod tabanlarında çalışmasını kolaylaştırma eğilimini gösteriyor olabilir. PL/SQL veya ERP dünyası için doğrudan kesişim yok; dolaylı olarak veritabanı ve dev-tool projelerinin Rust'a kayışı izlenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Derleyici",
+          "def": "Yazdığınız kodu makinenin çalıştırabileceği programa çeviren yazılım."
+        },
+        {
+          "term": "Standart kütüphane",
+          "def": "Dille birlikte gelen temel veri yapıları ve işlevler."
+        },
+        {
+          "term": "Sahiplik (ownership)",
+          "def": "Rust'ta her değerin tek bir sahibi olduğu ve bellek hatalarını derleme anında yakalayan kural sistemi."
+        },
+        {
+          "term": "Cargo",
+          "def": "Rust'ın paket ve derleme yöneticisi."
+        },
+        {
+          "term": "Clippy",
+          "def": "Rust kodundaki yaygın hataları ve kötü kalıpları öneren denetleyici."
+        },
+        {
+          "term": "rustfmt",
+          "def": "Rust kodunu standart biçime sokan araç."
+        },
+        {
+          "term": "rust-analyzer",
+          "def": "Editörlere otomatik tamamlama ve hata gösterimi sağlayan Rust dil sunucusu."
+        },
+        {
+          "term": "Bootstrap",
+          "def": "Bir derleyicinin kendini derlemek için önceki sürümünü kullanması süreci."
+        },
+        {
+          "term": "Triyaj",
+          "def": "Gelen issue ve PR'ları sınıflandırıp önceliklendirme işi."
+        }
+      ]
+    }
+  ]
+}
