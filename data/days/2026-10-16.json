@@ -1,0 +1,187 @@
+{
+  "date": "2026-10-16",
+  "projects": [
+    {
+      "name": "xerj-org/xerj",
+      "url": "https://github.com/xerj-org/xerj",
+      "stars": "5.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**XERJ**, yapay zekâ ajanlarının veriye dosya dosya okumadan erişebilmesi için geliştirilmiş **yerel bir arama motorudur**.\n\nTek komutla (`xerj autoindex <klasör>`) kod, doküman, log ve PDF'leri indeksler.\n\n- Ajan, `grep` ile onlarca dosya açmak yerine ilgili parçayı doğrudan bulur\n- Ana senaryo \"referans kodlama\": ajan kod yazmadan önce açık kaynak projelerin benzer problemi nasıl çözdüğüne bakar\n- RAG, güvenlik denetimi ve ajan hafızası için de kullanılır\n- Apache-2.0 lisanslı",
+        "tech": "**Çekirdek:** Tek bir statik **Rust** binary'si; JVM veya çalışma zamanı bağımlılığı yok.\n\n**Mimari kararlar:**\n- **Autoindex:** Dosya tipini kendisi tanır, şema yazmaya gerek kalmadan veri kümesi başına indeks açar.\n- **tree-sitter** ile kaynak kod ayrıştırılır; sadece düz metin değil semboller ve satır numaraları da indekslenir.\n- **Artımlı indeksleme:** İçeriği değişmeyen dosyalar yeniden işlenmez.\n- **Elasticsearch uyumlu REST API:** Mevcut istemciler değişiklik olmadan bağlanabilir (1369 uyumluluk testinin 1366'sı geçiyor).\n- **MCP sunucusu:** `xerj mcp` ile arama, vektör/hibrit sorgu, hafıza ve bilgi grafı dahil 13 araç sunulur.\n- Varsayılan gömme (embedding) modeli sözcük tabanlıdır ve çevrimdışı çalışır; sinirsel model isteğe bağlıdır.\n\n**Dikkat:** `--insecure` modu kimlik doğrulamayı kapatır; yalnızca tek kullanıcılı geliştirme makinesi içindir.",
+        "why": "- **Zamanlama:** Kodlama ajanlarında token maliyeti ve bağlam penceresi en büyük dert; XERJ doğrudan bunu hedefliyor.\n- **Somut sayılar:** Kendi çalışmasında grep'li ajana göre yaklaşık 2,7 kat, yalnızca hafızaya göre 26 kat daha az çıktı token'ı; maliyet 3,27 $ yerine 1,58 $.\n- **Düşük giriş eşiği:** Tek komut, `xerj init` ile Claude Code/Cursor'a bağlanma.\n- **Elasticsearch uyumu** mevcut altyapısı olan ekiplere kolay geçiş sağlıyor.\n\n**Temkin:** Benchmark'lar projenin kendi ölçümleri. Repo açıklamasındaki \"40x\" iddiası README gövdesindeki sonuçlarla örtüşmüyor; popüler kütüphanelerde kazanç sınırlı olabilir.",
+        "evolve": "- Bağımsız ve tekrarlanabilir benchmark'lar güveni artırır.\n- Varsayılan güvenli mod ve rol bazlı yetkilendirme, ekip kullanımına açılmanın şartı.\n- **IFS/ERP dünyası için fırsat:** PL/SQL paketleri, SQL scriptleri ve iş akışı loglarını indeksleyip ajanlara \"bu projede şu tablo nerede kullanılıyor\" sorusunu yanıtlatmak.\n- Yazma yükü altında okuma p99 gecikmesi (tek zayıf alan) iyileştirilebilir.\n- Sinirsel gömme ve reranker'ın tamamen yerel çalışan varsayılanları."
+      },
+      "glossary": [
+        {
+          "term": "Arama motoru (indeks)",
+          "def": "Verinin hızlı aranabilmesi için önceden düzenlenmiş kopyası. Kitabın arkasındaki dizin gibi düşünülebilir."
+        },
+        {
+          "term": "RAG",
+          "def": "Bir yapay zekâ modelinin cevap vermeden önce harici belgelerden ilgili parçaları bulup kullanması yöntemi."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlerken kullandığı küçük parça birimi; maliyet ve bağlam sınırı token ile ölçülür."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araç ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "tree-sitter",
+          "def": "Kaynak kodu dile özgü şekilde ayrıştırıp fonksiyon, sınıf gibi yapıları çıkaran hızlı bir ayrıştırıcı kütüphanesi."
+        },
+        {
+          "term": "Elasticsearch",
+          "def": "Yaygın kullanılan, metin ve log aramasında öne çıkan açık kaynaklı arama ve analiz motoru."
+        },
+        {
+          "term": "Vektör (kNN) arama",
+          "def": "Metinleri sayı dizilerine çevirip anlamca en yakın olanları bulan arama türü."
+        },
+        {
+          "term": "Hibrit arama",
+          "def": "Anahtar kelime aramasıyla vektör aramasının sonuçlarını birleştiren yaklaşım."
+        },
+        {
+          "term": "Embedding (gömme)",
+          "def": "Bir metnin anlamını temsil eden sayı dizisi. Benzer anlamlı metinlerin dizileri birbirine yakındır."
+        },
+        {
+          "term": "Reranker",
+          "def": "İlk aramadan gelen sonuçları daha hassas bir modelle yeniden sıralayan ek adım."
+        },
+        {
+          "term": "nDCG@10",
+          "def": "Arama kalitesi ölçütü; ilk 10 sonuçta doğru belgelerin ne kadar üstte olduğunu 0-1 arasında gösterir."
+        },
+        {
+          "term": "p99 gecikme",
+          "def": "İsteklerin %99'unun bu süreden hızlı yanıtlandığı değer; en yavaş uçları gösterir."
+        },
+        {
+          "term": "Statik binary",
+          "def": "Tüm bağımlılıklarını içinde taşıyan, ayrıca bir şey kurmadan çalışan tek çalıştırılabilir dosya."
+        }
+      ]
+    },
+    {
+      "name": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "stars": "2.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**TokenSpeed**, büyük dil modellerini üretimde sunmak için yazılmış, özellikle **ajan iş yükleri** için optimize edilmiş bir **çıkarım (inference) motorudur**.\n\nHedefi: TensorRT-LLM seviyesinde performans, vLLM seviyesinde kullanım kolaylığı.\n\n- Ajanlar uzun, çok adımlı ve araç çağıran konuşmalar üretir; bu, klasik sohbet yükünden farklıdır\n- NVIDIA B200/B300/GB200/GB300 ve AMD MI355X/MI455X donanımlarını destekler\n- DeepSeek, GLM, GPT-OSS, Kimi, MiniMax, Qwen gibi model aileleri\n- MIT lisanslı, LightSeek Vakfı destekli",
+        "tech": "**Dil:** C++ (kontrol düzlemi) ve Python (yürütme düzlemi).\n\n**Mimari kararlar:**\n- **Sonlu durum makinesi:** İstek yaşam döngüsü, KV önbellek sahipliği ve zamanlama örtüşmesi FSM olarak modellenir; KV kaynağının güvenli yeniden kullanımı derleme zamanında zorlanır.\n- **Katmanlı kernel sistemi:** Taşınabilir genel API, merkezi kayıt defteri ve seçim modeli. NVIDIA, AMD ve NPU için ayrı paketler var.\n- **MLA attention** uygulaması Blackwell GPU'larda en hızlılardan biri olarak sunuluyor.\n- **SMG entegre AsyncLLM** girişi, CPU tarafı istek işlemeyi hafifletir.",
+        "why": "- Ajan çağında çıkarım hızı (kullanıcı başına token/sn) ürün deneyimini belirliyor.\n- Yeni modeller için \"day-0\" destek duyuruları ilgiyi canlı tutuyor.\n- Raporlanan sonuçlar: Qwen3.5-397B-A17B'de 580 TPS, GB300 üzerinde Qwen3.8-Flash-Next'te kullanıcı başına 685 token/sn.\n- PyTorch Ecosystem Landscape'te listeleniyor.\n\n**Temkin:** Performans iddiaları projenin ve ortaklarının; README'de bağımsız doğrulama ve bilinen sınırlamalar yok.",
+        "evolve": "- Tekrarlanabilir, sayısal benchmark tabloları (grafik yerine).\n- Daha geniş donanım desteği (eski NVIDIA kuşakları, tüketici GPU'ları).\n- Kendi sunucusunda model barındıran kurumlar için daha basit kurulum ve gözlemlenebilirlik.\n- Ajan iş yüküne özel önbellek politikaları (uzun ortak ön ek paylaşımı gibi)."
+      },
+      "glossary": [
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir modelin yeni girdiye cevap üretme aşaması; eğitimin tersine, modelin kullanıldığı kısım."
+        },
+        {
+          "term": "Ajan iş yükü",
+          "def": "Modelin birçok adımda araç çağırıp sonuçlara göre devam ettiği uzun ve parçalı kullanım biçimi."
+        },
+        {
+          "term": "KV önbellek",
+          "def": "Modelin önceki token'lar için hesapladığı ara değerleri saklayan bellek; tekrar hesaplamayı önler."
+        },
+        {
+          "term": "Kontrol düzlemi / yürütme düzlemi",
+          "def": "Kontrol düzlemi neyin ne zaman çalışacağına karar verir, yürütme düzlemi işi fiilen yapar."
+        },
+        {
+          "term": "Sonlu durum makinesi (FSM)",
+          "def": "Bir sistemin yalnızca tanımlı durumlar ve geçişlerle ilerlediği model; hataları öngörülebilir kılar."
+        },
+        {
+          "term": "Kernel (GPU)",
+          "def": "GPU üzerinde çalışan küçük, yüksek optimize hesaplama programı."
+        },
+        {
+          "term": "MLA (Multi-head Latent Attention)",
+          "def": "Dikkat mekanizmasının bellek kullanımını azaltan bir türü; KV önbelleği sıkıştırır."
+        },
+        {
+          "term": "TPS",
+          "def": "Saniyedeki token sayısı; üretim hızının ölçüsü."
+        },
+        {
+          "term": "Pareto eğrisi",
+          "def": "İki hedef (örn. hız ve toplam verim) arasındaki en iyi dengeleri gösteren grafik."
+        },
+        {
+          "term": "TensorRT-LLM / vLLM",
+          "def": "Sırasıyla NVIDIA'nın performans odaklı ve topluluğun kullanımı kolay LLM sunum motorları."
+        },
+        {
+          "term": "NPU",
+          "def": "Yapay zekâ hesaplamaları için tasarlanmış özel işlemci."
+        },
+        {
+          "term": "Day-0 destek",
+          "def": "Bir model yayımlandığı gün motorun onu çalıştırabiliyor olması."
+        }
+      ]
+    },
+    {
+      "name": "LibreSpark/LibreTV",
+      "url": "https://github.com/LibreSpark/LibreTV",
+      "stars": "18.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**LibreTV**, birkaç dakikada kurulan, kendi kendine barındırılan bir **video arama ve oynatma sitesidir**. Üçüncü taraf kaynakları paralel arar, sonuçları tek yerde oynatır; M3U ile canlı TV (IPTV) da destekler.\n\n- Kendi içeriği yoktur; kaynaklar kullanıcı tarafından eklenir\n- Docker Compose ile tek komutla kurulur\n- AGPL-3.0 lisanslı\n\n**Not:** İçeriğin yasallığı kaynakların sorumluluğundadır; kullanım öncesi bu konuya dikkat edilmelidir.",
+        "tech": "**Yığın:** Next.js 15 (App Router), TypeScript, Tailwind CSS, ArtPlayer ve hls.js, Docker, Vitest.\n\n**Mimari kararlar:**\n- **Sunucu tarafı toplu arama:** Birden çok Apple CMS kaynağı paralel sorgulanır, aynı isimli sonuçlar tek kartta birleşir.\n- **Sunucu proxy'si:** Yukarı akış istekleri ve canlı yayınlar için ayrı uzun bağlantı proxy'si; abonelik çekmede **SSRF** kontrolleri.\n- **Yerel durum:** İzleme geçmişi tarayıcıda IndexedDB'de tutulur, sunucuda kullanıcı verisi yok.\n- **Kaynak sağlığı:** Tekrar tekrar hata veren kaynaklar artan sürelerle otomatik devre dışı bırakılır.\n- Reklam segmentlerini filtreleyen HLS oynatma.",
+        "why": "- \"Kendi sunucunda kur\" (self-hosted) eğilimi ve parasal abonelik yorgunluğu.\n- Kurulumun kolaylığı: Docker + `PASSWORD` değişkeni.\n- PWA, koyu tema, TVBOX yapılandırma içe aktarma gibi kullanışlı detaylar.\n\n**Kısıtlar:** Üretimde HTTPS şart (çerezler `Secure`); TVBOX Spider türü kaynaklar atlanır, bu yüzden bazı içe aktarmalarda çok az kaynak kalır.",
+        "evolve": "- Kaynak yönetimi için daha net yasal çerçeve ve içerik filtreleri.\n- Çok kullanıcılı hesaplar ve kişiselleştirilmiş geçmiş senkronu.\n- Desteklenmeyen TVBOX türleri için eklenti mekanizması.\n- Kaynak listelerinin güncellenebilir (sürümlenebilir) paylaşımı."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir uygulamanın bulut hizmeti yerine kullanıcının kendi sunucusunda çalıştırılması."
+        },
+        {
+          "term": "IPTV / M3U",
+          "def": "İnternet üzerinden TV yayını; M3U, kanal bağlantılarını listeleyen basit oynatma listesi biçimi."
+        },
+        {
+          "term": "HLS",
+          "def": "Videoyu küçük parçalara bölerek HTTP üzerinden akıtan yayın protokolü."
+        },
+        {
+          "term": "Proxy",
+          "def": "İstemci ile hedef sunucu arasında aracılık eden ara sunucu."
+        },
+        {
+          "term": "SSRF",
+          "def": "Sunucuyu, iç ağdaki adreslere istek atmaya kandıran güvenlik açığı türü."
+        },
+        {
+          "term": "IndexedDB",
+          "def": "Tarayıcının içinde büyük miktarda veri saklayan yerel veritabanı."
+        },
+        {
+          "term": "PWA",
+          "def": "Telefona uygulama gibi kurulabilen, çevrimdışı çalışabilen web uygulaması."
+        },
+        {
+          "term": "Next.js App Router",
+          "def": "React tabanlı Next.js çatısının sayfaları klasör yapısıyla tanımlayan yeni yönlendirme sistemi."
+        },
+        {
+          "term": "XMLTV / EPG",
+          "def": "Elektronik program rehberi; kanalların yayın akışı bilgisini taşıyan biçim."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Kodu ağ üzerinden hizmet olarak sunan kişilere de kaynak kodu paylaşma zorunluluğu getiren lisans."
+        }
+      ]
+    }
+  ]
+}
