@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-17",
+  "projects": [
+    {
+      "name": "android/skills",
+      "url": "https://github.com/android/skills",
+      "stars": "8.1k",
+      "language": "Kotlin",
+      "sections": {
+        "serves": "**android/skills**, Google'ın Android geliştirme için hazırladığı **yapay zekâ ajanı talimat kütüphanesidir**.\n\nLLM'ler Android'de bazı işlerde (AGP 9 yükseltmesi, R8 analizi, CameraX, Media3 Cast gibi) hâlâ hata yapıyor. Bu repo, tam o zayıf noktalar için ajana adım adım rehber verir.\n\n- Her beceri, tek bir `SKILL.md` dosyasıdır\n- Ajan, görev konuyla eşleşince beceriyi kendiliğinden devreye alır (örn. \"uygulamayı edge-to-edge yap\")\n- Apache-2.0 lisanslı",
+        "tech": "**Biçim:** Açık **agent skills** standardına uyan Markdown dosyaları; kod yok, bilgi var.\n\n**Mimari kararlar:**\n- **Alan bazlı klasörler:** `build-system`, `camera`, `jetpack-compose`, `performance`, `security`, `wear`, `xr` gibi. Ajanın doğru beceriyi bulması kolaylaşır.\n- **Değerlendirme odaklı seçim:** Yalnızca LLM'lerin ölçümlerde başarısız olduğu iş akışları yazılır; iyi bilinen Compose temelleri bilerek dışarıda bırakılır.\n- **Çoklu ajan desteği:** `.claude-plugin`, `.codex-plugin` ve `.agents/plugins` manifestleri ile Claude Code, Codex ve Gemini tarafında çalışır.\n- **Android CLI ile kurulum:** `android skills add --all` ve `android skills update` komutları.",
+        "why": "- **Resmî kaynak:** Google'dan geliyor; topluluk derlemelerinden daha güvenilir kabul ediliyor.\n- **Beceri (skill) dalgası:** Ajan becerileri ekosistemi hızla büyüyor, platform sahipleri kendi becerilerini yayınlamaya başladı.\n- **Kitle:** Android geliştiricileri ve Claude Code / Codex kullanıcıları.\n- Yıldız ivmesi düşük (günde ~36) ama toplam ilgi yüksek; haber döngüsünden çok kalıcı bir referans olarak büyüyor.",
+        "evolve": "- Her becerinin kalitesini gösteren herkese açık değerlendirme (eval) sonuçları\n- Topluluk katkısı (şu an kapalı) ve versiyonlama\n- Kotlin Multiplatform, Gradle ve Play Console iş akışları için daha fazla beceri\n- Becerilerin eskime riski: API'ler değiştikçe otomatik güncelleme ve test mekanizması gerekir"
+      },
+      "glossary": [
+        { "term": "Agent skill", "def": "Yapay zekâ ajanına belirli bir görevi nasıl yapacağını anlatan, `SKILL.md` adlı Markdown talimat dosyası. Ajan görev eşleşince okur." },
+        { "term": "AGP", "def": "Android Gradle Plugin. Android uygulamalarını derleyen Gradle eklentisi; sürüm yükseltmeleri sık sık kodu bozar." },
+        { "term": "R8", "def": "Android'de kodu küçülten, gizleyen ve optimize eden araç. Yanlış ayarı uygulamayı çökertebilir." },
+        { "term": "Jetpack Compose", "def": "Android'de arayüzü XML yerine Kotlin koduyla bildirimsel biçimde yazma kütüphanesi." },
+        { "term": "Eval", "def": "Bir yapay zekâ modelinin belirli görevlerde ne kadar başarılı olduğunu ölçen standart test seti." },
+        { "term": "Plugin manifest", "def": "Bir eklentinin adını, içeriğini ve nasıl yükleneceğini anlatan tanım dosyası." }
+      ]
+    },
+    {
+      "name": "superdesigndev/superdesign",
+      "url": "https://github.com/superdesigndev/superdesign",
+      "stars": "7.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**SuperDesign**, yazılımcıların tasarımcı olmadan **tek bir cümleyle arayüz taslağı** üretmesini sağlayan bir yapay zekâ tasarım ajanıdır.\n\n- Tam ekran ürün mockup'ları, bileşenler ve wireframe'ler üretir\n- Üretilen tasarımı yeni sürümler olarak çatallayıp geliştirmeye izin verir\n- Prompt'u Cursor, Windsurf veya Claude Code'a kopyalayarak tasarımı koda dönüştürür\n\n**Önemli not:** Bu repo 2025'in orijinal IDE eklentisidir ve **artık bakımı yapılmıyor**; ürün superdesign.dev adresinde web uygulamasına taşındı.",
+        "tech": "**Biçim:** Cursor, Windsurf ve VS Code içinde yan panelde çalışan bir **VS Code eklentisi**.\n\n**Mimari kararlar:**\n- **Yerel depolama:** Tasarımlar projedeki `.superdesign/` klasörüne yazılır; bulut hesabı gerekmez.\n- **Kural dosyaları:** Kurulum, projeye Cursor ve Claude Code kuralları ekler; böylece ajan tasarım bağlamını bilir.\n- **Model esnekliği:** OpenAI uyumlu herhangi bir sunucu (örn. LM Studio) taban adresi verilerek kullanılabilir.\n- Yapılandırma dosyalarından anlaşıldığı kadarıyla TypeScript ve esbuild kullanılıyor (README açıkça belirtmiyor).",
+        "why": "- **\"Vibe coding\" sorunu:** Ajanlarla kod yazan kişiler çirkin arayüzlerle karşılaşıyor; tasarım aşaması boşluktu.\n- **Zamanlama:** Aracın hâlâ yıldız toplaması, trend listesine geri dönüşünün bir yeniden keşif olduğunu düşündürüyor.\n- **Kitle:** Bağımsız geliştiriciler, tasarımcısı olmayan ekipler.\n- Bakımsız olması, yıldız sayısının güncel kullanımı değil geçmiş ilgiyi yansıttığını gösteriyor.",
+        "evolve": "- Bakım durduğu için asıl yön, ürünün web uygulamasına ve **superdesign-skill** reposuna kayması\n- Tasarım sistemi (renk, tipografi) tutarlılığı için proje bazlı belleğin eklenmesi\n- Figma içe/dışa aktarma ve doğrudan bileşen kütüphanesi çıktısı\n- Topluluk için çatallanıp sürdürülmesi mümkün; lisans adı README'de görünmediği için önce LICENSE dosyası kontrol edilmeli"
+      },
+      "glossary": [
+        { "term": "Wireframe", "def": "Bir ekranın renksiz, ayrıntısız iskelet taslağı. Yerleşimi hızlıca denemek için kullanılır." },
+        { "term": "Mockup", "def": "Ekranın renk ve görsellerle gerçeğe yakın görünen statik tasarımı." },
+        { "term": "VS Code eklentisi", "def": "Visual Studio Code ve türevlerine (Cursor, Windsurf) özellik ekleyen küçük uygulama." },
+        { "term": "Vibe coding", "def": "Kodu büyük ölçüde yapay zekâya tarif ederek, satır satır yazmadan yazılım geliştirme tarzı." },
+        { "term": "OpenAI uyumlu API", "def": "OpenAI'nin istek formatını taklit eden sunucu. Yerel modeller bu sayede aynı araçlarla kullanılabilir." },
+        { "term": "LM Studio", "def": "Dil modellerini kendi bilgisayarında çalıştırmaya yarayan masaüstü uygulaması." }
+      ]
+    },
+    {
+      "name": "krillinai/OpenCreator",
+      "url": "https://github.com/krillinai/OpenCreator",
+      "stars": "13.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**OpenCreator** (eski adı KrillinAI), içerik üreticileri için **yerel çalışan, açık kaynaklı bir yapay zekâ çalışma alanıdır**.\n\nGörsel araçlar ile doğal dil sohbetini aynı görev durumunda birleştirir.\n\n- 10 araç: video çevirisi (14 kaynak, 101 hedef dil), video indirici, küçük resim üretici, görsel/video üretimi, makale, dublaj vb.\n- Hazır şablonlar ve video iş akışı becerileri\n- Her revizyon yeni sürüm olarak saklanır, eski çıktılar kaybolmaz\n- Apache-2.0 lisanslı",
+        "tech": "**Çekirdek karar:** Kendi ajan döngüsünü yazmak yerine **Codex CLI**'yi yürütme motoru olarak kullanır.\n\n**Katmanlar:**\n- **Web:** React 18, Vite, TypeScript\n- **Yerel daemon:** Fastify, olaylar için SSE; yalnızca loopback'te dinler ve çoğu API için Bearer token ister\n- **Masaüstü:** Electron\n- **Medya:** FFmpeg, yt-dlp, çeşitli Whisper sürümleri\n- **Depolama:** SQLite ve dosya sistemi; anahtarlar sistem kimlik deposunda\n\n**Neden böyle:** Arayüz Codex'i doğrudan çalıştırmaz, daemon süreç yaşam döngüsünü, onayları ve zamanlamaları yönetir. Böylece çalışma alanı ve sohbet aynı durum makinesini kullanır.",
+        "why": "- **Marka dönüşümü:** KrillinAI'nin 13k yıldızlık kitlesi yeni adla yeniden gündeme geldi.\n- **Gerçek ihtiyaç:** Video çevirisi ve dublaj, içerik üreticilerinin en çok zaman harcadığı işler.\n- **Moda:** Becerilerle genişleyen ajan çalışma alanları şu an trend.\n- **Kitle:** Çok dilli içerik üreticileri, Çince konuşan topluluk, yerel çalışmayı tercih edenler.",
+        "evolve": "- Geliştirme aşamasındaki Otomatik Kesim ve Dijital Avatar araçlarının tamamlanması\n- Codex'e bağımlılığı azaltıp başka ajan motorlarını desteklemek\n- Paketleme, imzalama ve notarizasyon sürecinin sadeleşmesi\n- Eski KrillinAI örneklerinin yenilenmesi ve yerel model seçeneklerinin artması"
+      },
+      "glossary": [
+        { "term": "Codex CLI", "def": "OpenAI'nin terminalde çalışan kodlama ajanı. Burada ajan motoru olarak kullanılıyor." },
+        { "term": "Daemon", "def": "Arka planda sürekli çalışan, diğer arayüzlere hizmet veren yerel program." },
+        { "term": "SSE", "def": "Server-Sent Events. Sunucunun tarayıcıya tek yönlü, canlı olay akışı göndermesini sağlayan yöntem." },
+        { "term": "Fastify", "def": "Node.js için hızlı ve hafif bir web sunucusu çerçevesi." },
+        { "term": "FFmpeg", "def": "Ses ve video dönüştürme, kesme, birleştirme için kullanılan açık kaynaklı komut satırı aracı." },
+        { "term": "yt-dlp", "def": "Birçok video sitesinden video ve ses indiren komut satırı aracı." },
+        { "term": "Whisper", "def": "OpenAI'nin konuşmayı yazıya çeviren (transkripsiyon) modeli; whisper.cpp ve faster-whisper hızlı uygulamalarıdır." },
+        { "term": "Electron", "def": "Web teknolojileriyle masaüstü uygulaması yapmaya yarayan çerçeve." },
+        { "term": "Notarizasyon", "def": "Apple'ın macOS uygulamalarını tarayıp onayladığı güvenlik süreci." }
+      ]
+    },
+    {
+      "name": "hmjz100/LinkSwift",
+      "url": "https://github.com/hmjz100/LinkSwift",
+      "stars": "24.0k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**LinkSwift**, Çin'deki bulut depolama hizmetlerinde (Baidu, Alibaba, Quark, Xunlei, 123 vb.) dosyaların **doğrudan indirme bağlantısını** çıkaran bir tarayıcı betiğidir.\n\nBu hizmetler genelde kendi istemcisini dayatır. Betik, bağlantıyı alıp aria2, Motrix, IDM gibi indirme yöneticilerine gönderir.\n\n- 8-9 bulut hizmetini destekler (README sayıyı tutarsız veriyor)\n- aria2, cURL ve bağlantı listesi olarak kopyalama\n- AGPL-3.0 lisanslı",
+        "tech": "**Biçim:** Tampermonkey veya ScriptCat gibi eklentilerde çalışan bir **userscript**.\n\n**Mimari kararlar:**\n- **Sayfaya yerleşen arayüz:** Desteklenen sayfalara indirme yardımcısı paneli eklenir.\n- **Sağlayıcıların API'leri:** Bağlantılar hizmetlerin kendi API'leriyle alınır; hız sınırı aşılmaz, README bunu açıkça belirtir.\n- **Kimlik doğrulama:** Baidu için BDUSS çerez kodu kaldırılıp AccessToken'a geçilmiş; yazar bunu daha güvenli buluyor.\n- Bağlantı önbelleği ve çok parçalı, çok iş parçacıklı \"gelişmiş indirme\" modu.\n- SweetAlert2 ve Font Awesome ile arayüz, ESLint ile kod denetimi.",
+        "why": "- **Gerçek ağrı noktası:** Yavaş ve kısıtlı resmî istemcilerden kurtulmak isteyen çok sayıda kullanıcı.\n- **Orijinal betiğin mirası:** 【网盘直链下载助手】 kullanıcıları bu geliştirilmiş çatalı benimsedi.\n- **Sık güncelleme:** Hizmetler arayüzünü değiştirdikçe hızlı yama gelmesi güven yarattı.\n- **Kitle:** Çinli bulut depolama kullanıcıları.",
+        "evolve": "- Hizmetler API'lerini sık değiştirdiği için dayanıklılık: otomatik testler ve modüler sağlayıcı bağdaştırıcıları\n- Güvenlik: userscript'ler sayfa erişimiyle çalışır, kaynak kodu denetlenebilir ve yalnızca resmî kaynaklardan kurulmalı\n- Resmî kanallar dışındaki sahte kopyalar ve yanıltıcı \"hız kırma\" reklamları sürekli risk\n- Platformlar tarafından engellenme ve hizmet şartları ihlali riski kalıcı bir belirsizlik"
+      },
+      "glossary": [
+        { "term": "Userscript", "def": "Tarayıcıda belirli sitelere özellik ekleyen küçük JavaScript betiği. Tampermonkey gibi bir eklentiyle çalışır." },
+        { "term": "Tampermonkey", "def": "Tarayıcı için en yaygın userscript yöneticisi eklentisi." },
+        { "term": "ScriptCat", "def": "Tampermonkey benzeri, userscript çalıştıran başka bir eklenti." },
+        { "term": "Doğrudan bağlantı", "def": "Bir dosyayı sitenin arayüzünden geçmeden doğrudan indiren URL." },
+        { "term": "aria2", "def": "Çok parçalı, hızlı indirme yapan komut satırı indirme yöneticisi." },
+        { "term": "AGPL-3.0", "def": "Kodu değiştirip ağ üzerinden hizmet verenin de kaynağı paylaşmasını zorunlu kılan güçlü bir açık kaynak lisansı." },
+        { "term": "AccessToken", "def": "Kullanıcı adına yapılan işlemler için hizmetin verdiği geçici erişim anahtarı; çerezlerden daha sınırlı yetki taşır." }
+      ]
+    }
+  ]
+}
