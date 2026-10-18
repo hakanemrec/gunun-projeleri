@@ -1,0 +1,201 @@
+{
+  "date": "2026-10-18",
+  "projects": [
+    {
+      "name": "gastownhall/beads",
+      "url": "https://github.com/gastownhall/beads",
+      "stars": "28.0k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Beads** (`bd`), kodlama ajanları için geliştirilmiş **dağıtık, graf tabanlı bir görev (issue) takipçisidir**.\n\nÇözdüğü problem: Ajanlar uzun işlerde bağlamı kaybeder ve markdown ile tutulan planlar büyüdükçe yönetilemez hale gelir. Beads, işleri birbirine bağımlı bir graf olarak saklar; ajan \"şu an kimse engellemiyor\" diyen işi bulur, sahiplenir, bitirir ve sonraki iş otomatik açılır.\n\n- `bd create` → iş ekle\n- `bd ready` → engelsiz işleri listele\n- `bd update --claim` → işi atomik olarak sahiplen\n- `bd close` → bitir, bağımlı işleri serbest bırak",
+        "tech": "**Depolama: Dolt.** Sürüm kontrollü bir SQL veritabanı; hücre düzeyinde birleştirme (merge), dallanma ve git uzak deposu üzerinden senkronizasyon (`bd dolt push/pull`) sağlar. Varsayılan mod gömülü ve tek yazarlıdır; birden fazla yazar için `dolt sql-server` ile sunucu modu vardır.\n\n**Mimari kararlar:**\n- **Hash tabanlı kimlikler** (`bd-a1b2`): farklı dallarda ve ajanlarda üretilen kayıtlar çakışmaz. Epic'ler için hiyerarşik kimlik (`bd-a1b2.1`).\n- **Kaynak gerçek Dolt'tur**, `issues.jsonl` yalnızca dışa aktarımdır.\n- **Ajan dostu çıktı:** JSON, otomatik \"ready\" hesabı, `bd prime` ile oturum başında hafıza enjekte etme.\n- **Bellek çürütme (compaction):** eski kapalı işler özetlenerek bağlam penceresinden tasarruf edilir.\n- Claude Code, Codex, Cursor gibi araçlar için `bd setup` ile kanca (hook) kurulumu; Homebrew, npm ve PyPI dağıtımı.",
+        "why": "- **Ajan çağında \"plan\" sorunu:** Herkes ajanını uzun görevlerde yönetmeye çalışıyor; markdown plan dosyaları bu noktada tıkanıyor.\n- **Dolt'un git benzeri modeli** ajan iş akışlarına doğal oturuyor: dallan, birleştir, geri al.\n- **Kitle:** Çoklu ajan çalıştıranlar, uzun soluklu refaktör ve migrasyon işleri yapan geliştiriciler.\n- Toplam 28k yıldızla zaten yerleşik bir proje; bugünkü ivme, ajan hafızası/koordinasyonu konusundaki genel dalganın parçası.",
+        "evolve": "- **HTTP modunun olgunlaşması:** Şu an deneysel ve yerel modla birebir aynı değil (örn. `--claim-next` farkı).\n- **İnsan arayüzü:** Grafı görsel olarak izlemek ve ajan işlerini onaylamak için web paneli.\n- **ERP / IFS bağlantısı:** İş emri veya değişiklik talebi sistemleriyle iki yönlü senkron, ajan işlerini kurumsal süreçlere bağlamak için fırsat.\n- Çok yazarlı kullanımda kurulum karmaşıklığını azaltmak (sunucu modu, şema yükseltmeleri)."
+      },
+      "glossary": [
+        {
+          "term": "Issue tracker",
+          "def": "Yapılacak işlerin, hataların ve görevlerin kaydedildiği ve takip edildiği araç."
+        },
+        {
+          "term": "Dolt",
+          "def": "Git gibi dallanma, birleştirme ve geçmişe sahip, SQL ile sorgulanan bir veritabanı."
+        },
+        {
+          "term": "Bağımlılık grafı",
+          "def": "Hangi işin hangi işi engellediğini düğümler ve oklarla gösteren yapı. Engelsiz işler hemen yapılabilir."
+        },
+        {
+          "term": "Atomik sahiplenme (claim)",
+          "def": "Bir işin aynı anda iki ajan tarafından alınmasını engelleyen, tek adımda gerçekleşen kilit işlemi."
+        },
+        {
+          "term": "Hash tabanlı kimlik",
+          "def": "Rastgele benzeri bir özetten üretilen kimlik; farklı kişi veya ajanların ürettiği kayıtların çakışmasını önler."
+        },
+        {
+          "term": "Bağlam penceresi",
+          "def": "Bir yapay zekâ modelinin tek seferde görebildiği metin miktarı."
+        },
+        {
+          "term": "Compaction (sıkıştırma)",
+          "def": "Eski kayıtları kısa özetlere çevirerek yer ve bağlam tasarrufu sağlamak."
+        },
+        {
+          "term": "Hook (kanca)",
+          "def": "Bir araçta belirli bir olay olduğunda otomatik çalışan küçük betik."
+        },
+        {
+          "term": "JSONL",
+          "def": "Her satırında bir JSON nesnesi bulunan metin formatı; veri aktarımında yaygın."
+        }
+      ]
+    },
+    {
+      "name": "Gentleman-Programming/engram",
+      "url": "https://github.com/Gentleman-Programming/engram",
+      "stars": "7.4k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Engram**, kodlama ajanlarına **oturumlar arası kalıcı hafıza** veren yerel bir sistemdir.\n\nÇözdüğü problem: Oturum bitince ajan kararları, bulduğu hataları ve proje kurallarını unutur; her seferinde aynı şeyi yeniden anlatmanız gerekir. Engram bunları kaydeder, sonraki oturumda arar ve devir teslim (handoff) özetleri tutar.\n\n- Tek bir Go ikilisi; Node, Python veya Docker gerekmez\n- Claude Code, Codex, Cursor, Gemini CLI, OpenCode vb. ~14 hedef için `engram setup <ajan>`",
+        "tech": "**Tek ikili, tek dosya:** Hafıza yerel bir **SQLite** veritabanında (`~/.engram/engram.db`) tutulur; arama **FTS5** tam metin indeksiyle yapılır.\n\n**Arayüzler:** MCP sunucusu (stdio, 26 araç), HTTP API, CLI ve terminal arayüzü (TUI) aynı hafızayı paylaşır.\n\n**Mimari kararlar:**\n- **Yerel öncelikli:** Yerel veritabanı gerçeğin kaynağı; paylaşım için isteğe bağlı Git Sync (sıkıştırılmış parçalar) ve Engram Cloud.\n- **Proje farkındalığı:** Okumalar açık proje, `ENGRAM_PROJECT` ortam değişkeni, sonra çalışma dizini sırasıyla çözülür; global okuma bilinçli olarak istenir.\n- **Çelişki gösterme:** İlişkili veya çelişen anılar ajana işaretlenir.\n- Kalıcı konu anahtarları (topic key) ile gelişen konular tek kayıtta güncellenir.",
+        "why": "- **\"Ajan unutuyor\" şikâyeti** artık ana akım; hafıza araçları günün en sıcak alt kategorisi.\n- **Sıfır bağımlılık** ve çok ajanlı destek, kurulum sürtünmesini düşürüyor.\n- Gentleman Programming topluluğunun geniş takipçi kitlesi yayılmayı hızlandırıyor.\n- **Kitle:** Birden fazla ajan aracı kullanan bireysel geliştiriciler.\n- Bugünkü ivme sınırlı (~66 yıldız); sürekli büyüyen, olgunlaşan bir proje.",
+        "evolve": "- Proje tespiti kenar durumları (ilk git kimliği, sembolik bağlantılar) için otomatik birleştirme.\n- Anıların kalitesi için otomatik temizlik ve eskime politikaları.\n- Ekip düzeyinde izinli paylaşım ve denetim kaydı.\n- Obsidian Brain (beta) dışa aktarımının olgunlaşması ve görsel bilgi grafı.\n- Karşılaştırmalı ölçümler: hafıza kullanımı gerçekten görev başarısını artırıyor mu?"
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araç ve verilere standart bir şekilde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "SQLite",
+          "def": "Tek dosyada çalışan, sunucu gerektirmeyen hafif bir SQL veritabanı."
+        },
+        {
+          "term": "FTS5",
+          "def": "SQLite'ın tam metin arama (full-text search) modülü; kelimelere göre hızlı arama yapar."
+        },
+        {
+          "term": "Handoff (devir teslim)",
+          "def": "Bir oturumun sonunda, sonrakinin devam edebilmesi için yazılan özet."
+        },
+        {
+          "term": "TUI",
+          "def": "Terminal içinde çalışan, metin tabanlı etkileşimli arayüz."
+        },
+        {
+          "term": "Bağlam sıkıştırma (compaction)",
+          "def": "Uzayan konuşma geçmişinin özetlenerek kısaltılması; bu sırada ayrıntılar kaybolabilir."
+        },
+        {
+          "term": "Git Sync",
+          "def": "Verinin git üzerinden makineler arasında taşınması."
+        },
+        {
+          "term": "Obsidian",
+          "def": "Markdown notlarını birbirine bağlayarak bilgi ağı kuran not uygulaması."
+        }
+      ]
+    },
+    {
+      "name": "google/artemis",
+      "url": "https://github.com/google/artemis",
+      "stars": "12.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**ARTEMIS**, yapay zekâ asistanlarının ve test paketlerinin **gerçek Android telefon veya emülatörü doğal dil talimatlarıyla** kullanmasını sağlar.\n\nÇözdüğü problem: Mobil arayüz testleri kırılgan betiklerle yazılır; uygulamalar arası akışları otomatikleştirmek zordur. ARTEMIS \"Ayarlar'dan karanlık modu aç, sonra şu uygulamada oturum aç\" gibi isteği ekranı görerek insan gibi yürütür.\n\n- Kullanım alanları: UI testi, hata yeniden üretme, keşif ve kararlılık testi\n- Web konsolu, CLI, MCP sunucusu ve Python SDK ile erişilir",
+        "tech": "**Çekirdek:** Python 3.12+, `uv`, Pydantic; cihaz tarafında ADB, scrcpy ve FFmpeg.\n\n**Algılama:** Erişilebilirlik hiyerarşisi + OCR + görsel modeller birlikte kullanılır; Canvas/Compose/Flutter gibi özel arayüzlerde koordinata ve görsel konumlamaya düşer. Cihaza bir erişilebilirlik yardımcısı kurulur, arızada UIAutomator2'ye geri dönülür.\n\n**İki çalışma profili (önemli karar):**\n- **Flash:** tek model, gözle-düşün-uygula döngüsü, adım başı ~3-5 sn. Rutin işler için.\n- **Pro:** çok ajanlı yapı: Planlayıcı (markdown plan), Operatör (eylem), Gezgin (zemin), eylem öncesi Güvenlik Ağı ve salt okunur Denetleyici. Adım başı ~15-40 sn ama doğrulamalı.\n\n**Bağlam yönetimi:** Eski ekran görüntüleri görsel özetlere, tamamlanan adımlar aranabilir geçmiş parçalarına dönüştürülür.",
+        "why": "- **Google imzası** ve kullanıma hazır MCP desteği: Claude Code, Codex, Windsurf gibi araçlara tek tıkla bağlanıyor.\n- **Mobil test acısı** çok yaygın; \"telefonu ajan kullansın\" fikri somut ve demo edilebilir.\n- AndroidWorld üzerinde %99+ tamamlama iddiası ilgi çekti (kendi bildirdikleri sonuç, bağımsız doğrulama yok).\n- **Kitle:** Mobil QA mühendisleri, Android geliştiricileri, ajan araç yapıcıları.",
+        "evolve": "- **iOS desteği** (yol haritasında): pazarın diğer yarısı.\n- Cihaz üstünde çalışan hafif görsel modeller: gecikme ve gizlilik kazancı.\n- Flash modu için hafif güvenlik denetimi.\n- Bağımsız kıyaslamalar ve test sonuçlarının CI raporlarına bağlanması.\n- Kurumsal mobil uygulamalar (ERP saha uygulamaları dahil) için kayıt-tekrar oynatma senaryoları."
+      },
+      "glossary": [
+        {
+          "term": "ADB",
+          "def": "Android Debug Bridge. Bilgisayardan Android cihaza komut göndermeyi sağlayan araç."
+        },
+        {
+          "term": "Emülatör",
+          "def": "Bilgisayarda çalışan sanal telefon."
+        },
+        {
+          "term": "Erişilebilirlik hiyerarşisi",
+          "def": "Ekrandaki öğelerin (düğme, metin vb.) ağaç yapısında, makine tarafından okunabilir tanımı."
+        },
+        {
+          "term": "OCR",
+          "def": "Görüntüdeki yazıyı metne çeviren teknoloji."
+        },
+        {
+          "term": "UIAutomator2",
+          "def": "Android'de arayüz öğelerini otomatik kullanmak için Google'ın test çerçevesi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının araçlara standart bir biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Pydantic",
+          "def": "Python'da veriyi tip kurallarıyla doğrulayan ve yapılandıran kütüphane."
+        },
+        {
+          "term": "AndroidWorld",
+          "def": "Ajanların gerçek Android görevlerindeki başarısını ölçen kıyaslama ortamı."
+        },
+        {
+          "term": "Çok ajanlı graf",
+          "def": "Birden fazla yapay zekâ ajanının (planlayıcı, uygulayıcı, denetleyici) belirli bir akışta birlikte çalıştığı yapı."
+        }
+      ]
+    },
+    {
+      "name": "bmad-code-org/BMAD-METHOD",
+      "url": "https://github.com/bmad-code-org/BMAD-METHOD",
+      "stars": "54.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**BMAD-METHOD** (Breakthrough Method for Agile AI-Driven Development), AI kodlama asistanlarını fikirden çalışan yazılıma kadar yönlendiren açık kaynaklı bir **süreç çerçevesidir**.\n\nÇözdüğü problem: Asistanlar kod yazmada iyidir ama varsayımları sessizce koda döker ve kararlar sohbetten sohbete kaybolur. BMAD ürün, mimari ve tasarım kararlarını açık hale getirip sonraki oturumlara bağlam olarak taşır.\n\n- Küçük değişiklikler doğrudan uygulanır, büyük işler daha fazla planlama alır\n- Yeni ve mevcut (brownfield) projelerde çalışır",
+        "tech": "**Biçim:** Esas olarak yapay zekâ araçlarının çağıracağı **beceriler (skills)** ve iş akışları; Node.js 20+, Python 3.10+ ve `uv` ile kurulum (`npx bmad-method install`).\n\n**Mimari kararlar:**\n- **Uzmanlaşmış roller:** ürün, mimari, UX, geliştirme ve test ajanları ve çok ajanlı tartışmalar.\n- **Ölçeklenen süreç:** İşin büyüklüğüne göre planlama derinliği değişir.\n- **Dayanıklı bağlam:** Kararlar dosyalarda saklanır, oturum bağımsızdır.\n- **İki sürüm hattı:** v6.12 kararlı (yalnızca hata düzeltme); V7 önizleme (alpha) ve beceri tabanlı paketleme (`bmad-build`, `bmad-help`).\n- Eklenti modülleri: Builder, Test Architect, Loop (bir epic'i denetimsiz inşa/doğrula/retro), Game Dev Studio.",
+        "why": "- **Belirsizlik yönetimi:** \"Vibe coding\" sonrası ekipler yapının ve belgelerin geri gelmesini istiyor.\n- **V7 çıkış tarihi (16 Ekim)** yakın olduğu için duyuru ve güncelleme dalgası yıldızları hareketlendirdi.\n- Claude Code ve Codex eklenti pazarlarıyla kolay kurulum.\n- **Kitle:** Küçük ekipler, solo geliştiriciler ve çevik süreç alışkanlığı olanlar.\n- Bugünkü ivme düşük (~39); yerleşik bir referans proje.",
+        "evolve": "- V7'nin kararlı hale gelmesi ve v6'dan göç rehberi.\n- Ajanların birbirini nasıl koordine ettiğine dair daha derin mimari belgeler.\n- Sürecin işe yaradığını gösteren ölçülebilir sonuçlar (hata sayısı, teslim süresi).\n- Jira / Azure DevOps gibi kurumsal izleme araçlarıyla entegrasyon.\n- Kurumsal paket yazılım (ERP özelleştirmeleri) için alan şablonları."
+      },
+      "glossary": [
+        {
+          "term": "Agile (çevik)",
+          "def": "Yazılımı küçük adımlarla, sürekli geri bildirimle geliştirme yaklaşımı."
+        },
+        {
+          "term": "Skill (beceri)",
+          "def": "Yapay zekâ ajanına belirli bir görevi nasıl yapacağını anlatan, gerektiğinde çağrılan talimat paketi."
+        },
+        {
+          "term": "Brownfield",
+          "def": "Sıfırdan değil, var olan bir kod tabanı üzerinde yapılan geliştirme."
+        },
+        {
+          "term": "Epic",
+          "def": "Birçok küçük görevden oluşan büyük iş kalemi."
+        },
+        {
+          "term": "Spec-driven development",
+          "def": "Önce ayrıntılı belirtim (spec) yazılıp kodun ona göre üretildiği yöntem."
+        },
+        {
+          "term": "Context engineering",
+          "def": "Modele doğru bilgiyi doğru zamanda vermek için bağlamı tasarlama pratiği."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Ayrıntılı planlama yerine yapay zekâya doğal dille yön vererek kod yazdırma."
+        },
+        {
+          "term": "Retrospektif",
+          "def": "İş bittikten sonra neyin iyi/kötü gittiğinin gözden geçirilmesi."
+        },
+        {
+          "term": "Alpha",
+          "def": "Henüz kararsız, sık değişen erken yazılım sürümü."
+        }
+      ]
+    }
+  ]
+}
