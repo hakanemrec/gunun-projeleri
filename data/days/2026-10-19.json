@@ -1,0 +1,189 @@
+{
+  "date": "2026-10-19",
+  "projects": [
+    {
+      "name": "mozilla-ai/otari",
+      "url": "https://github.com/mozilla-ai/otari",
+      "stars": "672",
+      "language": "Python",
+      "sections": {
+        "serves": "**Otari**, kendi sunucunuzda çalıştırdığınız, **OpenAI uyumlu bir LLM ağ geçididir (gateway)**. Uygulamalarınız tek bir adrese istek atar; Otari bu isteği 40'tan fazla model sağlayıcısına yönlendirir.\n\nÇözdüğü problem: Her uygulamaya ayrı sağlayıcı anahtarı dağıtmak güvenlik riski yaratır, harcamayı izlemek zorlaşır ve sağlayıcı değiştirmek kod değişikliği gerektirir.\n\n- Sağlayıcı anahtarları yalnızca gateway'de durur\n- Kullanıcı/çalışma alanı/model bazlı **sanal anahtarlar** üretilir\n- **Bütçe** istek gönderilmeden önce kontrol edilir, kullanım sonra kaydedilir",
+        "tech": "**Dil ve araçlar:** Python 3.13+, paket yönetimi `uv`, veritabanı olarak PostgreSQL (geliştirmede SQLite), şema göçleri için Alembic.\n\n**Sağlayıcı katmanı:** Gerçek model çağrıları Mozilla'nın ayrı `any-llm` kütüphanesine bırakılmış; gateway yalnızca kimlik doğrulama, bütçe, yönlendirme ve kayıt işini yapar. Bu ayrım, sağlayıcı desteğini gateway'den bağımsız geliştirmeyi sağlar.\n\n**Rotalar:** `/api/v1/chat/completions`, `/api/v1/messages` (Anthropic uyumlu) ve `/api/v1/responses`. Model adları `provider:model` biçimindedir.\n\n**Çalışma kipleri:** *standalone* (tek süreç), *hosted* (çok kiracılı kontrol düzlemi) ve *hybrid* (veri düzlemi sizde, raporlama merkezde).\n\n**Opsiyonel eklentiler:** Kod çalıştırma, web arama, MCP, guardrail ve dosya anlama; Docker Compose profilleri olarak açılır. Dağıtım için Docker, Railway şablonu ve Homebrew mevcut.",
+        "why": "Kurumlarda LLM kullanımı dağıldıkça \"kim, hangi modele, ne kadar harcadı\" sorusu ve **anahtar güvenliği** ana ağrı noktası oldu. Otari bunu Mozilla markasının güveni ve Apache 2.0 lisansıyla self-hosted sunuyor.\n\nİvme sebepleri: OpenAI **ve** Anthropic uyumlu uç noktaların birlikte gelmesi, `otari import claude-code` gibi kodlama ajanlarına dönük CLI'ler ve bütçe/sanal anahtar gibi \"kurumsal\" özelliklerin açık kaynakta bulunması. Hedef kitle: platform ekipleri, ajan kullanan geliştirici ekipleri ve veri dışarı çıkarmak istemeyen şirketler.",
+        "evolve": "**Eksikler:** 255 açık issue ve 64 açık PR, projenin hızlı büyüdüğünü ama olgunlaşmakta olduğunu gösteriyor. Hosted/hybrid modlar merkezi bir otari.ai servisine bağlı olduğu için tamamen bağımsız kullanım isteyenler standalone ile sınırlı.\n\n**Fırsatlar:**\n- Önbellekleme ve anlamsal yönlendirme ile maliyet düşürme\n- Ekip bazlı kullanım raporları ve uyarılar\n- Kurum içi ERP/IFS gibi sistemlere yönelik denetlenebilir LLM erişimi için audit log ve SSO\n- Guardrail'lerin kural motoruna dönüşmesi"
+      },
+      "glossary": [
+        {
+          "term": "LLM gateway",
+          "def": "Uygulamalarla yapay zekâ model sağlayıcıları arasına oturan, istekleri tek noktadan yönlendiren ve denetleyen ara sunucu."
+        },
+        {
+          "term": "Sanal anahtar",
+          "def": "Gerçek sağlayıcı anahtarını gizleyip yerine verilen, sınırlandırılabilir ve iptal edilebilir takma API anahtarı."
+        },
+        {
+          "term": "OpenAI uyumlu",
+          "def": "OpenAI'ın API biçimini taklit eden; böylece OpenAI için yazılmış istemcilerin değişiklik yapmadan çalışabildiği arayüz."
+        },
+        {
+          "term": "Failover",
+          "def": "Bir sağlayıcı hata verdiğinde isteği otomatik olarak yedeğe aktarma."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zekâ modellerinin dış araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Guardrail",
+          "def": "Model girdi ve çıktılarını güvenlik/politika kurallarına göre denetleyen koruma katmanı."
+        },
+        {
+          "term": "Alembic",
+          "def": "Python'da veritabanı şema değişikliklerini sürümleyip uygulayan göç (migration) aracı."
+        },
+        {
+          "term": "Kontrol düzlemi / veri düzlemi",
+          "def": "Kontrol düzlemi ayarları ve yönetimi, veri düzlemi gerçek istek trafiğini taşıyan kısımdır."
+        }
+      ]
+    },
+    {
+      "name": "alvinunreal/lazyskills",
+      "url": "https://github.com/alvinunreal/lazyskills",
+      "stars": "569",
+      "language": "Go",
+      "sections": {
+        "serves": "**LazySkills**, kodlama ajanları için kurulan \"skill\"leri (SKILL.md tabanlı yetenek paketleri) yönetmek üzere yapılmış bir **terminal arayüzüdür (TUI)**. Slogan: \"ajan skill'leri için kontrol merkezi\".\n\nÇözdüğü problem: Claude Code, Codex, Cursor, OpenCode gibi ajanların her birinde farklı klasörlerde dağınık skill'ler birikiyor; hangisinin nerede kurulu, hangisinin neden görünmediği belirsiz.\n\n- Proje, global ve ajana özel skill'leri tek ekranda gösterir\n- Bozuk kurulumları (eksik SKILL.md, kırık symlink, lock kaydı yok) tespit eder\n- skills.sh üzerinden arama ve kurulum yapar",
+        "tech": "**Dil:** Go; tek bir derlenmiş ikili dosya, `lazyskills` TUI'si ve `find`, `doctor`, `restore`, `update` alt komutlarını aynı çekirdeği paylaşarak sunar. Betikler ve başka ajanlar için `--json` çıktısı var.\n\n**Güvenlik kararları:**\n- `doctor` tamamen salt okunur; hiçbir şeyi değiştirmez\n- Yıkıcı eylemlerden önce tam komut önizlemesi ve onay istenir\n- `restore`, her kurulumdan önce lock kaydındaki kimliği ve komutu yeniden doğrular\n\n**Dağıtım:** GoReleaser, Homebrew tap, kurulum betikleri ve `go install`. Depo kendi `AGENTS.md` ve `skills-lock.json` dosyalarıyla skill kurallarını kendi üzerinde de kullanıyor.",
+        "why": "Skill ekosistemi 2026'da hızla büyüdü (anthropics/skills, mattpocock/skills, vercel-labs/skills gibi depolar trend oldu) ve bir **paket yöneticisi ihtiyacı** doğdu. LazySkills, `lazygit`/`lazydocker` ailesinin ergonomisini bu alana taşıyor.\n\nKitle: birden fazla ajanı yan yana kullanan geliştiriciler. Bugün 138 yıldızlık ivme, küçük ama net bir boşluğu doldurduğunu gösteriyor.",
+        "evolve": "**Eksikler:** Mimari belgelenmemiş; TUI kütüphanesi ve iç paketler README'den anlaşılmıyor. Yalnızca skills.sh kaynağına yaslanması bir bağımlılık.\n\n**Olası yönler:**\n- Skill'lerde güvenlik taraması (prompt injection, tehlikeli komut) – trend olan SkillSpector gibi araçlarla entegrasyon\n- Takım için paylaşılan lock dosyası ve sürüm sabitleme\n- Skill bağımlılık grafı ve çakışma uyarıları\n- Kurumsal skill deposu (ör. IFS/ERP iş akışları için iç skill'ler) yönetimi"
+      },
+      "glossary": [
+        {
+          "term": "Skill",
+          "def": "Bir kodlama ajanına belirli bir işi nasıl yapacağını anlatan, SKILL.md dosyası içeren yetenek paketi."
+        },
+        {
+          "term": "TUI",
+          "def": "Terminal User Interface; terminalde çalışan, klavye odaklı metin tabanlı arayüz."
+        },
+        {
+          "term": "Symlink",
+          "def": "Bir dosya veya klasöre işaret eden kısayol türü dosya (sembolik bağ)."
+        },
+        {
+          "term": "Lock dosyası",
+          "def": "Kurulu paketlerin tam sürüm ve kaynağını kaydeden, kurulumun yeniden üretilebilir olmasını sağlayan dosya."
+        },
+        {
+          "term": "Frontmatter",
+          "def": "Markdown dosyasının en başında yer alan, YAML biçimli meta veri bloğu."
+        },
+        {
+          "term": "GoReleaser",
+          "def": "Go projeleri için çoklu platform ikili dosyası derleyip yayınlayan sürüm otomasyon aracı."
+        },
+        {
+          "term": "Registry",
+          "def": "Paketlerin/skill'lerin yayınlandığı ve aranabildiği merkezi katalog."
+        }
+      ]
+    },
+    {
+      "name": "dolthub/dolt",
+      "url": "https://github.com/dolthub/dolt",
+      "stars": "24.7k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Dolt**, verinin kendisine **Git benzeri sürüm kontrolü** getiren bir SQL veritabanıdır: \"Git dosyaları sürümler, Dolt tabloları sürümler.\" Veritabanını fork'layabilir, klonlayabilir, dallandırabilir, birleştirebilir, push/pull yapabilirsiniz.\n\nÇözdüğü problem: Veride \"bu hücre ne zaman, kim tarafından, neden değişti?\" sorusu normalde yanıtsızdır; hatalı bir toplu güncellemeyi geri almak da zordur.\n\nMySQL istemcileriyle doğrudan konuşur; böylece mevcut araçlar çalışmaya devam eder.",
+        "tech": "**Dil:** Go; sunucu, istemci ve sürüm kontrolü tek bir ~103 MB'lık ikili dosyada. Kaynaktan derlemek için cgo gerekiyor.\n\n**Arayüzler:**\n- Git'i taklit eden CLI: `dolt add/commit/branch/merge/push/pull/blame`\n- SQL içinde saklı yordamlar (`dolt_commit`, `dolt_merge`), sistem tabloları (`dolt_log`, `dolt_status`) ve tablo fonksiyonları (`dolt_diff`)\n- Zamanda yolculuk: `AS OF` sorguları ve `dolt_history_<tablo>` ile hücre düzeyinde geçmiş\n\n**Köken:** Noms projesinin fikirlerine dayanır. README iç depolama yapısını anlatmıyor; yaygın bilgiye göre içerik-adreslemeli ağaç yapıları kullanılıyor, ancak bu burada doğrulanmadı.\n\n**Ekosistem:** DoltHub, DoltLab, Hosted Dolt ve Postgres uyumlu Doltgres (beta).",
+        "why": "Dolt yeni değil, ama **ajan hafızası** anlatısıyla yeniden ivme kazandı: README, Dolt'un Beads ve Gas Town'ı beslediğini ve \"ajan hafızası için en iyi veritabanı\" olduğunu söylüyor. Bu repo daha önce trend olan `gastownhall/beads`ın altında yatan depolama katmanı.\n\nÇok ajanlı çalışmada herkesin kendi dalında yazıp sonra birleştirmesi ihtiyacı, Git modelini veriye taşımayı cazip kılıyor. Kitle: veri mühendisleri, ajan geliştiriciler ve denetim izi isteyen ekipler.",
+        "evolve": "**Eksikler:** Hâlâ MySQL uyumluluğu kenar durumları ve 553 açık issue var; büyük analitik iş yüklerinde klasik motorlarla performans karşılaştırması dikkat ister. Postgres tarafı (Doltgres) henüz beta.\n\n**Fırsatlar:**\n- Oracle/PL-SQL dünyası için: ERP verisinin test kopyalarını dallandırıp değişiklikleri birleştirmeden önce diff ile incelemek\n- Ajanların veritabanına yazdığı değişiklikleri insan onayına sunan \"pull request for data\" akışı\n- Veri kalitesi CI/CD'si: her dağıtımda şema ve veri diff'i"
+      },
+      "glossary": [
+        {
+          "term": "Sürüm kontrollü veritabanı",
+          "def": "Verideki her değişikliği commit olarak saklayan, geçmişe dönüp bakmaya ve geri almaya izin veren veritabanı."
+        },
+        {
+          "term": "Branch / merge",
+          "def": "Verinin paralel kopyasında çalışıp sonra değişiklikleri ana kopyayla birleştirme."
+        },
+        {
+          "term": "AS OF sorgusu",
+          "def": "Verinin geçmişteki bir anındaki veya başka bir daldaki halini okuyan SQL ifadesi."
+        },
+        {
+          "term": "Saklı yordam",
+          "def": "Veritabanı içinde saklanan ve SQL'den çağrılabilen hazır iş mantığı."
+        },
+        {
+          "term": "MySQL uyumluluğu",
+          "def": "MySQL'in istemci protokolünü ve SQL lehçesini konuşabilme; mevcut MySQL araçlarının doğrudan bağlanabilmesi."
+        },
+        {
+          "term": "cgo",
+          "def": "Go kodunun C kodunu çağırmasını sağlayan mekanizma; derlerken C derleyicisi gerektirir."
+        },
+        {
+          "term": "Ajan hafızası",
+          "def": "Yapay zekâ ajanlarının oturumlar arasında bilgi ve görev durumunu sakladığı kalıcı depo."
+        },
+        {
+          "term": "Hücre düzeyinde diff",
+          "def": "Satır değil, tek bir hücredeki değişimi gösteren fark karşılaştırması."
+        }
+      ]
+    },
+    {
+      "name": "VersusControl/versus-incident",
+      "url": "https://github.com/VersusControl/versus-incident",
+      "stars": "875",
+      "language": "Go",
+      "sections": {
+        "serves": "**Versus Incident**, kendi sunucunuzda çalışan, \"yapay zekâ SRE takım arkadaşı\" olarak sunulan bir **olay (incident) yönetim aracıdır**. Log, metrik ve Kubernetes ortamını izler, yeni veya beklenmedik sorunları fark eder ve ekibe kanıtla birlikte bildirir.\n\nÇözdüğü problem: Alarm kurallarını elle yazıp bakımını yapmak yorucudur; kurallara girmeyen yeni hatalar kaçar. Versus, \"normal logun neye benzediğini\" öğrenir ve sadece yeni örüntüde olay açar.\n\nAyrıca mevcut izleme araçlarından (Alertmanager, Grafana, Sentry) gelen alarmları Slack, Teams, Telegram, e-posta gibi kanallara ve nöbet sistemlerine yönlendirir.",
+        "tech": "**Dil:** Go; durum için Redis, katalog ve olay geçmişi için dosya tabanlı depolama (Redis/DB arka uçları henüz taslak).\n\n**İki giriş yolu:**\n1. **AI ajanı:** Log kaynaklarını yoklar, hassas veriyi maskeler, regex ile süzer, benzer satırları **log örüntü madencisiyle** kümeler ve bilinen örüntüleri katalogda tutar.\n2. **Webhook:** `POST /api/incidents` ile gelen alarmlar şablonlanıp dağıtılır.\n\n**Güvenli kullanıma geçiş:** Ajan `training` (sadece öğren), `shadow` (ne alarm vereceğini logla) ve `detect` (alarm gönder) kiplerinden geçer. Bu kademeli yaklaşım yanlış alarm riskini düşürür.\n\nDağıtım: Docker, Kubernetes manifestleri ve Helm chart. Mesaj şablonları Go template. Not: config yorumlarına göre `detect` kipinde yapay zekâ çıktısı sonraki kilometre taşında geliyor; README ile durum farklı olabilir.",
+        "why": "SRE alanında \"alarm yorgunluğu\" ve kural bakımı eski bir dert; LLM ajanlarının operasyona girmesiyle **kuralsız anomali tespiti** çekici hale geldi. Proje self-hosted, MIT lisanslı ve Kubernetes panosu ile sohbet arayüzünü bir arada sunuyor.\n\nKitle: küçük-orta platform ekipleri, pahalı SaaS gözlemlenebilirlik araçlarına alternatif arayanlar. Yıldız ivmesi (günlük 8) düşük; yani trendde ama henüz erken aşamada.",
+        "evolve": "**Eksikler:** Yalnızca dosya ve Elasticsearch log kaynakları; metrik/trace ve çapraz sinyal korelasyonu yol haritasında. Depolama yalnızca dosya tabanlı olduğundan yatay ölçekleme zor.\n\n**Fırsatlar:**\n- Oracle/uygulama sunucusu logları için hazır kaynak bağlayıcıları (ERP ortamlarında ORA- hataları örüntüleri)\n- Olay kök neden önerisinin runbook'larla bağlanması\n- Geçmiş olaylardan öğrenen otomatik düzeltme önerileri, insan onayıyla"
+      },
+      "glossary": [
+        {
+          "term": "SRE",
+          "def": "Site Reliability Engineering; yazılım sistemlerinin güvenilirliğini mühendislik yöntemleriyle sağlama disiplini."
+        },
+        {
+          "term": "Incident",
+          "def": "Hizmeti aksatan veya aksatma riski taşıyan, müdahale gerektiren olay."
+        },
+        {
+          "term": "Log örüntü madenciliği",
+          "def": "Çok sayıda log satırını benzerliklerine göre kümeleyip ortak şablonlara indirgeme yöntemi."
+        },
+        {
+          "term": "Anomali tespiti",
+          "def": "Normal davranıştan sapan, yeni veya beklenmedik durumları otomatik bulma."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda bir sistemin başka bir sisteme HTTP isteği göndermesi."
+        },
+        {
+          "term": "Nöbet (on-call)",
+          "def": "Belirli kişilerin sırayla acil olaylara müdahale etmek üzere hazırda beklemesi."
+        },
+        {
+          "term": "Alarm yorgunluğu",
+          "def": "Çok fazla gereksiz alarm yüzünden ekibin önemli alarmları da ciddiye almaz hale gelmesi."
+        },
+        {
+          "term": "Helm chart",
+          "def": "Kubernetes uygulamalarını paketleyip tek komutla kurmayı sağlayan şablon paketi."
+        },
+        {
+          "term": "Redis",
+          "def": "Bellekte çalışan, hızlı anahtar-değer veri deposu."
+        }
+      ]
+    }
+  ]
+}
