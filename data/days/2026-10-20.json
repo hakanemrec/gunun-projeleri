@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-20",
+  "projects": [
+    {
+      "name": "headroomlabs-ai/headroom",
+      "url": "https://github.com/headroomlabs-ai/headroom",
+      "stars": "76.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Headroom**, AI agent'larının ve LLM uygulamalarının modele göndermeden önce **bağlamı sıkıştıran** açık kaynak (Apache 2.0) bir katman.\n\nAgent'lar her turda araç çıktılarını, logları, dosyaları ve RAG parçalarını modele yollar; bunların çoğu tekrar ve gürültüdür. Sonuç: pahalı token faturası ve dolan bağlam penceresi. Headroom bu içeriği modele ulaşmadan küçültür, cevap kalitesini korumayı hedefler.\n\n- Proje, kodlama agent'ları için yaklaşık **%20**, JSON çıktıları için **%60-95** daha az token vaat ediyor (kendi raporladığı değerler).\n- Sıkıştırma yerelde çalışır; içerik üçüncü tarafa gönderilmez.\n- Orijinal metin yerelde saklanır, model gerekirse geri isteyebilir.",
+        "tech": "İstek bir **boru hattından** geçer:\n\n1. **CacheAligner**: sağlayıcının KV-cache önekini bozacak değişken içeriği işaretler, prompt'u yeniden yazmaz.\n2. **ContentRouter**: içerik tipini algılar ve uygun sıkıştırıcıyı seçer.\n3. **Sıkıştırıcılar**: JSON için **SmartCrusher** (hata kayıtlarını, istatistiksel aykırıları ve sınır elemanlarını korur), kod için AST-farkında **CodeCompressor**, metin için projenin kendi Hugging Face modeli **Kompress-v2-base**.\n4. **CCR**: orijinalleri yerel önbellekte tutan, geri döndürülebilir sıkıştırma katmanı.\n\nÖnemli mimari karar: sıkıştırma yalnızca **\"canlı bölgeye\"** (yeni araç çıktısı ve son tur) uygulanır. Eski önek bayt bayt aynı kalır; böylece sağlayıcı önbellek isabetleri kaybolmaz.\n\n**Yığın:** Python çekirdek/CLI/proxy, **Rust** çekirdek (maturin ile wheel), npm'de TypeScript SDK, içerik tespiti için **ONNX Runtime**, Docker imajları. LangChain, LiteLLM, Vercel AI SDK, Agno ve Strands entegrasyonları var.\n\n**Kullanım biçimleri:** satır içi kütüphane (`compress(messages, model=...)`), OpenAI/Anthropic uyumlu proxy, `headroom wrap <agent>` ile agent sarmalama ve MCP sunucusu.",
+        "why": "Token maliyeti, agent çağının en somut acısı: uzun oturumlar hem pahalı hem de bağlam sınırına çarpıyor. Headroom bunu **tek satırlık bir proxy** ile çözdüğü için benimsemesi kolay.\n\n- Claude Code, Codex, Aider, Cline, Goose gibi yaklaşık 20 agent'ı destekliyor; kitle çok geniş.\n- Önbellek dostu tasarımı, \"sıkıştırırken cache'i bozma\" kaygısını gideriyor.\n- Doğruluk kıyasları (GSM8K, SQuAD v2, BFCL) kaliteden ödün verilmediğini göstermeye çalışıyor.\n- Kurumsal sürüm (yönlendirme, prompt-injection tespiti, SSO) ticari yol haritasına da işaret ediyor.\n\nDikkat: rakamlar kendi raporladığı kıyaslar; düz yazıda ve zaten yoğun içerikte kazanç düşük. Anonim telemetri varsayılan olarak **açık** (`HEADROOM_TELEMETRY=off` ile kapanır).",
+        "evolve": "- **Bağımsız doğrulama:** üçüncü taraf, gerçek iş yüklerine dayalı kıyaslar güveni artırır.\n- **Veritabanı/ERP çıktıları:** SQL sonuç kümeleri, PL/SQL logları ve ERP (ör. IFS) API yanıtları gibi yapılandırılmış, tekrarlı içerik için özel sıkıştırıcılar iyi bir fırsat.\n- **Telemetri varsayılanı:** kurumsal ortamlarda varsayılan kapalı olması benimsemeyi kolaylaştırır.\n- **Şeffaf maliyet panosu:** tasarruf ile kalite kaybı riskini birlikte gösteren görünürlük.\n- **Çıktı token'ı azaltma** (verbosity steering) şu an opt-in; olgunlaştıkça varsayılan olabilir."
+      },
+      "glossary": [
+        { "term": "Token", "def": "Dil modellerinin metni işlediği küçük parçalar (kelime ya da kelime parçası). API ücreti ve bağlam sınırı token sayısına göre belirlenir." },
+        { "term": "Bağlam penceresi", "def": "Bir modelin tek seferde görebildiği en fazla metin miktarı. Dolduğunda eski içerik atılır veya istek başarısız olur." },
+        { "term": "RAG", "def": "Retrieval-Augmented Generation. Modele cevap vermeden önce harici belgelerden ilgili parçaların bulunup prompt'a eklenmesi yöntemi." },
+        { "term": "KV-cache", "def": "Modelin önceki token'lar için hesapladığı ara sonuçların saklandığı önbellek. Prompt'un başı aynı kalırsa yeniden hesaplanmaz, hem hızlı hem ucuz olur." },
+        { "term": "Proxy", "def": "Uygulama ile model API'si arasına giren ara sunucu. İstekleri iletirken değiştirebilir veya ölçebilir." },
+        { "term": "AST", "def": "Abstract Syntax Tree. Kodun yapısını ağaç olarak temsil eden biçim; kodu düz metin yerine yapısına göre işlemeyi sağlar." },
+        { "term": "MCP", "def": "Model Context Protocol. AI agent'larının harici araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan açık protokol." },
+        { "term": "ONNX Runtime", "def": "Farklı çerçevelerde eğitilmiş makine öğrenmesi modellerini taşınabilir biçimde ve hızlı çalıştıran motor." },
+        { "term": "Telemetri", "def": "Yazılımın kullanım istatistiklerini üreticiye otomatik göndermesi. Headroom'da anonim ve kapatılabilir." }
+      ]
+    },
+    {
+      "name": "Comfy-Org/ComfyUI",
+      "url": "https://github.com/Comfy-Org/ComfyUI",
+      "stars": "140k",
+      "language": "Python",
+      "sections": {
+        "serves": "**ComfyUI**, görsel, video, ses, 3D ve metin üreten difüzyon modelleri için **düğüm (node) grafiği tabanlı** bir arayüz, API ve arka uç motoru (GPL-3.0).\n\nKullanıcı, model yükleme, prompt, örnekleme, upscale gibi adımları düğümler olarak sürükleyip birbirine bağlar. Böylece \"tek prompt, tek buton\" arayüzlerin sınırını aşan, **tekrarlanabilir ve paylaşılabilir** üretim hatları kurulur.\n\n- İş akışları JSON olarak kaydedilir; üretilen PNG'yi sürüklemek tüm iş akışını (seed dahil) geri yükler.\n- Aynı motor, API uçları üzerinden uygulamalara ve üretim hatlarına gömülebilir.",
+        "tech": "- **Arka uç:** Python + **PyTorch**. `execution.py`, `server.py`, `comfy_execution/` ve `comfy_api/` gibi dizinler çekirdeği oluşturur.\n- **Akıllı yürütme:** Yalnızca gerekli girdileri tam olan düğümler çalışır; girdisi değişmeyen düğümler yeniden hesaplanmaz. Aynı grafiği tekrar göndermek işi baştan yapmaz.\n- **Bellek yönetimi:** Model offload ve asenkron ağırlık akışı ile en büyük modeller bile düşük VRAM'li kartlarda (README'ye göre 4GB VRAM + 8GB RAM) çalışabilir.\n- **Ön yüz:** Ayrı depoda TypeScript/Vue; PyPI paketi olarak dağıtılır.\n- **Donanım:** NVIDIA (CUDA), AMD (ROCm), Intel Arc (XPU), Apple Silicon ve çeşitli NPU'lar.\n- **Genişletilebilirlik:** `custom_nodes/` ve ComfyUI-Manager ile topluluk düğümleri; yerel API için `openapi.yaml`.\n- **Partner düğümleri:** Kapalı kaynaklı barındırılan modellere bağlanır; `--offline` ile tamamen yerel çalışılır.",
+        "why": "Modelle birlikte araç zinciri de hızla değişiyor (Flux, Qwen Image, Wan, LTX-Video vb.); ComfyUI yeni modelleri çoğunlukla ilk destekleyen yer olduğu için **fiilî standart** haline geldi.\n\n- Sanatçılar için görsel kontrol, geliştiriciler için API ve betiklenebilirlik sunuyor.\n- Modüler yapı sayesinde topluluk ekosistemi (özel düğümler, iş akışı kütüphanesi) çok büyük.\n- İki haftalık düzenli sürüm ritmi ve Desktop/Cloud seçenekleri girişi kolaylaştırıyor.\n\nBugünkü ivme (günlük ~1k yıldız) büyük olasılıkla yeni model desteği ve sürümlerle ilişkili; README bunu açıkça belirtmiyor.",
+        "evolve": "- **Ortam yönetimi:** Özel düğümlerin bağımlılık çakışmaları bilinen bir sorun; izole/kilitli bağımlılıklar değer katar.\n- **Üretim kullanımı:** Kuyruk, çok kullanıcılı ve yetkilendirme özellikleri, ekiplerin sunucu olarak kullanımını kolaylaştırır.\n- **Agent entegrasyonu:** İş akışlarının MCP veya araç olarak agent'lara sunulması doğal bir yön.\n- **Lisans:** GPL-3.0, ticari gömme senaryolarında dikkat gerektirir.\n- **Sürümleme/test:** İş akışlarının sürümler arası uyumluluğunu garanti eden test araçları."
+      },
+      "glossary": [
+        { "term": "Difüzyon modeli", "def": "Rastgele gürültüden adım adım görsel (veya video, ses) üreten yapay zeka model ailesi. Stable Diffusion ve Flux bu gruptandır." },
+        { "term": "Node (düğüm) grafiği", "def": "Her kutunun bir işlemi temsil ettiği, kutuların çıktı-girdi bağlantılarıyla birleştiği görsel programlama biçimi." },
+        { "term": "VRAM", "def": "Ekran kartının kendi belleği. Büyük modeller bu belleğe sığmadığında çalışmaz veya yavaşlar." },
+        { "term": "PyTorch", "def": "Yapay zeka modellerini eğitmek ve çalıştırmak için en yaygın Python çerçevelerinden biri." },
+        { "term": "CUDA / ROCm", "def": "Sırasıyla NVIDIA ve AMD ekran kartlarında genel amaçlı hesaplama yapmayı sağlayan yazılım katmanları." },
+        { "term": "LoRA", "def": "Büyük bir modele küçük ek ağırlıklarla yeni stil veya kavram öğreten hafif ince ayar yöntemi." },
+        { "term": "ControlNet", "def": "Üretimi poz, kenar çizgisi, derinlik gibi ek bir girdiyle yönlendiren difüzyon eklentisi." },
+        { "term": "Inpainting / Outpainting", "def": "Görselin seçilen bölgesini yeniden üretme (inpainting) veya görseli kenarlarından genişletme (outpainting) işlemi." },
+        { "term": "Seed", "def": "Rastgele üretimi başlatan sayı. Aynı seed ve ayarlarla aynı sonuç yeniden elde edilir." },
+        { "term": "Offload", "def": "Model parçalarını ekran kartı belleğinden sistem RAM'ine geçici taşıyarak bellek sınırını aşma tekniği." }
+      ]
+    },
+    {
+      "name": "withmarbleapp/os-taxonomy",
+      "url": "https://github.com/withmarbleapp/os-taxonomy",
+      "stars": "6.3k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**Marble Skill Taxonomy**, ilkokul çağındaki çocukların öğrendiklerini **bağlantılı bir graf** olarak haritalayan açık bir veri seti.\n\nMüfredat standartları genelde düz listeler halindedir veya ürünlerin içinde kilitlidir. Bu proje öğrenmeyi küçük **mikro-konulara** böler ve aralarında \"önce bunu bilmek gerekir\" ilişkileri kurar.\n\n- **1.591 mikro-konu** (düğüm) ve **3.225 önkoşul kenarı**\n- NGSS, Common Core ve UK National Curriculum ile eşleştirme\n- Fen ve Matematik için 1.051 konuda öğretim araştırması\n- 176 veli dostu küme özeti\n\nEğitim teknolojisi geliştiricileri, uyarlanabilir öğrenme ve yapay zeka öğretmen uygulamaları için hazır bir omurga elde eder.",
+        "tech": "Kod değil **veri** projesi: sıfır bağımlılıkla düz UTF-8 **JSON** dosyaları.\n\n- `topics.json` düğümleri, `dependencies.json` kenarları (`topicId` → `prerequisiteId`, `hard`/`soft` ve gerekçe) tutar. Yapı bir **DAG**'dır (döngüsüz yönlü graf).\n- `curriculum-standards.json` anahtarları `\"<müfredat>:<kod>\"` biçimindedir.\n- `teaching-research.json` (~24 MB) `topicId` ile eşlenir ve `topicFileSha256` ile tam bir topics sürümüne **bağlanır**; veri tutarlılığı kriptografik özetle korunur.\n- `schema/` altında **JSON Schema** dosyaları, `scripts/validate.mjs` ve `node --test` ile doğrulama.\n- `manifest.json` sayıları ve dosya sağlama toplamlarını içerir.\n\n**Lisans:** veritabanı yapısı ODbL 1.0, Marble'ın yazdığı metinler CC BY-SA 4.0, standartlar kendi üst lisanslarında.",
+        "why": "Eğitimde yapay zeka tutkusu yükselirken, kaliteli ve **ilişkisel** müfredat verisi kıt. Bu set, kendi bilgi grafını sıfırdan kurmak isteyen ekiplerin aylarca süren işini kısaltıyor.\n\n- Veli, öğretmen ve eğitim girişimlerinden geliştiricilere geniş kitle.\n- Açık lisans ve doğrulama araçları ciddi bir kaynak izlenimi veriyor.\n- Yıldız ivmesinin tam sebebi sayfada belirtilmiyor; dağıtım ve veri setinin yapay zeka öğretmenleri için kullanışlı olması makul açıklamalardır.\n\n**Uyarı:** Öğretim araştırması ajanlarla yazıldı, kaynaklar bu sürümde yeniden doğrulanmadı ve etkinlikler ampirik olarak sınanmadı.",
+        "evolve": "- **Kapsam:** 540 konu henüz araştırma içermiyor; ortaokul/lise yaşlarına genişleme doğal yön.\n- **Çok dilli** konu adları ve ülke müfredatları (ör. Türkiye).\n- **Doğrulama:** öğretmen incelemesi ve gerçek öğrenci verisiyle etkinliklerin sınanması.\n- **Araçlar:** graf gezgini, SQL/graf veritabanı dışa aktarımı ve öğrenme yolu öneren hazır kütüphaneler.\n- **Veritabanı bakışı:** Özyinelemeli sorgularla (önkoşul zincirleri) bir ilişkisel veya graf veritabanına yüklenmesi iyi bir örnek çalışma olur."
+      },
+      "glossary": [
+        { "term": "Taksonomi", "def": "Bir alandaki kavramları sistemli biçimde sınıflayıp düzenleyen yapı." },
+        { "term": "Mikro-konu", "def": "Öğrenmenin ölçülebilecek kadar küçük bir birimi; ör. pasta grafiği okuma." },
+        { "term": "Önkoşul", "def": "Bir konuyu öğrenmeden önce bilinmesi gereken başka konu." },
+        { "term": "DAG", "def": "Directed Acyclic Graph. Okları olan ve hiçbir yolu başladığı noktaya dönmeyen graf; önkoşul ilişkileri için uygundur." },
+        { "term": "JSON Schema", "def": "JSON dosyalarının hangi alanlara ve tiplere sahip olması gerektiğini tanımlayan doğrulama standardı." },
+        { "term": "SHA-256", "def": "Bir dosyadan sabit uzunlukta parmak izi üreten özet fonksiyonu. Dosya değişirse özet de değişir." },
+        { "term": "ODbL", "def": "Open Database License. Veritabanı kullanımında atıf ve aynı lisansla paylaşım (share-alike) şartı getiren açık lisans." },
+        { "term": "CC BY-SA 4.0", "def": "Creative Commons lisansı. Atıf verildiği sürece kullanılır, türev işler aynı lisansla paylaşılmalıdır." },
+        { "term": "NGSS / Common Core", "def": "ABD'de sırasıyla fen ve matematik/İngilizce öğretimi için kullanılan ulusal standart setleri." }
+      ]
+    }
+  ]
+}
