@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-21",
+  "projects": [
+    {
+      "name": "wshobson/agents",
+      "url": "https://github.com/wshobson/agents",
+      "stars": "41.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**wshobson/agents**, tek bir paylaşımlı **plugin pazaryeri** sunar: aynı agent, skill ve komut koleksiyonu Claude Code, Codex CLI, Cursor, OpenCode, GitHub Copilot gibi birçok kodlama aracında kullanılabilir.\n\nÇözdüğü problem: her araç kendi formatını istediği için aynı \"uzman agent\" tarifini her yerde yeniden yazmak gerekiyordu. Burada tek kaynak yazılıyor, gerisi otomatik üretiliyor.\n\n- Yaklaşık **94 plugin, 202 agent, 185 skill, 105 komut** (README'ye göre)\n- MIT lisanslı\n- Örnek: `python-development` plugin'i 3 agent, 16 skill ve bir iskelet komutu paketliyor",
+        "tech": "Mimari **tek kaynak + adaptör** fikrine dayanır:\n\n- **Kaynak:** Claude Code plugin formatında Markdown dosyaları\n- **Adaptörler:** Her harness için gereken formatı üretir; kaynaktaki model takma adlarını (`opus`, `sonnet`, `haiku`, `inherit`) hedef aracın model ayarına çevirir\n- **Skill'ler** yalnızca ilgili olduğunda yüklenir; bu, bağlam penceresini şişirmeyen **kademeli yükleme** mantığıdır\n- Kurulum: `/plugin marketplace add wshobson/agents`; diğer araçlar için `make install-*` hedefleri veya `npx skills`\n\nGerekçe: Markdown düz metin olduğu için bakımı kolay, adaptör katmanı da yeni bir harness eklemeyi ucuz tutuyor.",
+        "why": "Agent ekosistemi parçalandı: her araç farklı plugin biçimi kullanıyor. Proje, \"bir kere yaz, her yerde kullan\" vaadiyle bu sürtünmeyi azaltıyor.\n\n- Geliştiriciler araç değiştirse de birikmiş agent ve skill'lerini taşıyabiliyor\n- Hazır, kategorize edilmiş uzmanlar sıfırdan prompt yazma yükünü kaldırıyor\n- Bugünkü yıldız ivmesi düşük (günde ~93); proje daha çok yerleşik ve olgun bir referans olarak listede",
+        "evolve": "- **Kalite kontrol:** Kalite değerlendirme araçları deneysel; plugin'lerin gerçekten işe yaradığını ölçen otomatik testler en büyük fırsat\n- **Güven ve güvenlik:** Üçüncü taraf plugin'ler için imza/denetim mekanizması\n- **Keşfedilebilirlik:** 94 plugin arasında doğru olanı öneren arama veya öneri katmanı\n- **Bakım:** Harici bir bellek entegrasyonunun hizmetinin kapanması, dış bağımlılıkların kırılganlığını gösteriyor"
+      },
+      "glossary": [
+        {
+          "term": "Plugin pazaryeri (marketplace)",
+          "def": "Bir kodlama aracına tek komutla eklenebilen agent, skill ve komut paketlerinin listelendiği katalog."
+        },
+        {
+          "term": "Harness",
+          "def": "Bir yapay zeka modelini araçlarla birlikte çalıştıran sarmalayıcı uygulama; örn. Claude Code veya Codex CLI."
+        },
+        {
+          "term": "Subagent",
+          "def": "Ana agent'ın belirli bir işi devrettiği, kendi talimatları olan uzman yardımcı agent."
+        },
+        {
+          "term": "Skill",
+          "def": "Agent'ın ilgili olduğunda okuduğu, bir işin nasıl yapılacağını anlatan Markdown başvuru dosyası."
+        },
+        {
+          "term": "Adaptör",
+          "def": "Tek bir kaynak formatı farklı araçların beklediği formata çeviren kod katmanı."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zeka uygulamalarının araç ve veri kaynaklarına bağlanması için açık standart."
+        }
+      ]
+    },
+    {
+      "name": "sickn33/agentic-awesome-skills",
+      "url": "https://github.com/sickn33/agentic-awesome-skills",
+      "stars": "48.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**AAS Core (Agentic Awesome Skills)**, 2.700'den fazla kurulabilir `SKILL.md` oyun kitabını yerel bir katalog olarak sunar ve agent'ın hangi skill'leri seçtiğini kaydedip değişiklik yapılmadan önce **plan önizlemesi** göstermesini sağlar.\n\nProblem: binlerce skill arasından doğru olanları seçmek ve bunu denetlenebilir kılmak zor. Proje kendisini sıralayıcı değil, \"agent-first kontrol düzlemi\" olarak konumlar; seçimi agent yapar, Core doğrular.\n\n- MIT lisanslı, içerik için ayrı `LICENSE-CONTENT`\n- Codex, Claude, Cursor, Gemini CLI, Kiro, Copilot, OpenCode destekli",
+        "tech": "- **CLI (`aas`):** `aas stack validate` bildirimi doğrular, `aas stack plan` değişmez (immutable) bir önizleme yazar, `aas mcp configure` yerel MCP sunucusunu kurar\n- **Yerel MCP:** Salt okunur `compose_stack` aracı, seçilen skill kimliklerini bellekte doğrular\n- **Bildirim (manifest):** En fazla 128 skill; `aas-stack.json` olarak kaydedilir\n- **Workbench:** Dosya sistemine dokunmadan tarayıcıda plan görüntüleyici\n- **Paketleme:** npm, `skills_index.json` ve JSON şemaları\n\nTasarım gerekçesi: yapısal geçerlilik anlamsal uygunluğu garanti etmez; bu yüzden uygulama (apply) deneysel ve açıkça onaya bağlı tutuluyor.",
+        "why": "Skill sayısı patladıkça \"hangisini kullanayım?\" sorusu asıl darboğaz oldu. Proje hem devasa bir katalog hem de güvenli seçim süreci sunuyor.\n\n- Skill'leri bağlayan güvenlik kaygısı (kim yazdı, ne yapıyor) için önizleme + onay özeti yaklaşımı güven veriyor\n- Çoklu araç desteği geniş kitleye hitap ediyor\n- Bugün ivme düşük (günde ~83 yıldız); yıldızlar büyük ölçüde birikmiş",
+        "evolve": "- **Anlamsal doğrulama:** Skill'in gerçekten amaca uygun olup olmadığını test eden değerlendirme katmanı\n- **Kaynak güveni:** Üçüncü taraf skill'ler için imza ve atıf (attribution) doğrulaması\n- **Kullanım telemetrisi:** Hangi skill'ler gerçekten işe yarıyor verisi\n- **Tutarsızlık:** README'deki 2.724 ile About'taki 2.600 sayısı gibi küçük belge farkları giderilmeli"
+      },
+      "glossary": [
+        {
+          "term": "SKILL.md",
+          "def": "Bir agent'a belirli bir görevi nasıl yapacağını anlatan Markdown talimat dosyası."
+        },
+        {
+          "term": "Kontrol düzlemi (control plane)",
+          "def": "Sistemin ne yapacağına karar veren ve denetleyen yönetim katmanı; işi yapan katmandan ayrıdır."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "Model Context Protocol üzerinden agent'a araç sunan yerel veya uzak servis."
+        },
+        {
+          "term": "Manifest",
+          "def": "Hangi bileşenlerin kurulacağını listeleyen yapılandırma dosyası."
+        },
+        {
+          "term": "Immutable (değişmez) plan",
+          "def": "Oluşturulduktan sonra değiştirilemeyen, bu yüzden denetlenebilir önizleme."
+        },
+        {
+          "term": "Dry-run",
+          "def": "Gerçek değişiklik yapmadan ne olacağını gösteren deneme çalıştırması."
+        }
+      ]
+    },
+    {
+      "name": "vllm-project/vllm",
+      "url": "https://github.com/vllm-project/vllm",
+      "stars": "94.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**vLLM**, büyük dil modellerini (LLM) hızlı ve bellek-verimli şekilde **sunmak (inference/serving)** için açık kaynak bir motor. UC Berkeley Sky Computing Lab'da doğdu, 2.000'den fazla katılımcısı var, Apache-2.0 lisanslı.\n\nProblem: modeli GPU'da çalıştırmak kolay, ama aynı donanımla çok kullanıcıya düşük gecikme ve yüksek verim sağlamak zor. vLLM bunu bellek yönetimi ve akıllı toplu işleme ile çözer.\n\n- OpenAI uyumlu API sunucusu; ayrıca Anthropic Messages API ve gRPC\n- 200'den fazla Hugging Face mimarisi (Llama, Qwen, Gemma, DeepSeek-V3, Mamba vb.)",
+        "tech": "- **PagedAttention:** Dikkat mekanizmasının KV önbelleğini sayfalara bölerek bellek israfını azaltır\n- **Continuous batching, chunked prefill, prefix caching:** İstekleri dinamik birleştirir, tekrar eden önekleri yeniden kullanır\n- **Nicemleme:** FP8, NVFP4, INT4/INT8, GPTQ, AWQ, GGUF\n- **Spekülatif çözümleme:** n-gram, EAGLE vb.\n- **Paralellik:** tensor, pipeline, veri, uzman ve bağlam paralelliği\n- **Donanım:** NVIDIA, AMD, Intel, TPU, Gaudi, Ascend, Apple Silicon ve CPU'lar (eklentilerle)\n- **Yapılandırılmış çıktı:** xgrammar veya guidance; araç çağırma ve akıl yürütme ayrıştırıcıları",
+        "why": "LLM'i kendi altyapısında çalıştırmak isteyen herkes için fiili standart. Yıldız ivmesi bugün ılımlı (~128) ama toplam 94k ile devasa bir yerleşik kitleye sahip.\n\n- Yeni model mimarilerine hızlı destek (örn. Qwen3.5)\n- OpenAI ve Anthropic uyumlu API'ler, mevcut istemci kodunu değiştirmeden geçişi mümkün kılıyor\n- Geniş donanım desteği satıcıya bağımlılığı azaltıyor",
+        "evolve": "- **Operasyon kolaylığı:** Çok sayıda seçenek yapılandırmayı zorlaştırıyor; otomatik ayar önerileri değerli olur\n- **Disaggregated serving:** Prefill/decode ayrıştırmasının olgunlaşması büyük ölçekte maliyeti düşürür\n- **Gözlemlenebilirlik:** Daha iyi metrik ve maliyet-başına-token raporlaması\n- **Kurumsal kullanım:** Çok kiracılı güvenlik ve kota yönetimi"
+      },
+      "glossary": [
+        {
+          "term": "Inference / serving",
+          "def": "Eğitilmiş bir modeli çalıştırıp kullanıcı isteklerine yanıt üretme işi."
+        },
+        {
+          "term": "PagedAttention",
+          "def": "KV önbelleğini işletim sistemi sayfalaması gibi küçük bloklarda tutarak GPU belleğini verimli kullanan teknik."
+        },
+        {
+          "term": "KV cache",
+          "def": "Modelin önceki token'lar için hesapladığı ara değerleri tekrar hesaplamamak için sakladığı önbellek."
+        },
+        {
+          "term": "Continuous batching",
+          "def": "Gelen istekleri bir parti bitmesini beklemeden sürekli olarak çalışan gruba katma yöntemi."
+        },
+        {
+          "term": "Nicemleme (quantization)",
+          "def": "Model ağırlıklarını daha az bitle saklayarak bellek ve hızdan kazanma, küçük doğruluk kaybı pahasına."
+        },
+        {
+          "term": "Spekülatif çözümleme",
+          "def": "Küçük bir tahmin mekanizmasının önerdiği token'ları büyük modelin toplu doğrulaması ile hızlanma."
+        },
+        {
+          "term": "Tensor paralelliği",
+          "def": "Tek bir katmanın hesabını birden fazla GPU'ya bölme yöntemi."
+        },
+        {
+          "term": "Prefill / decode",
+          "def": "Prefill: girdiyi işleme aşaması; decode: token token yanıt üretme aşaması."
+        }
+      ]
+    }
+  ]
+}
