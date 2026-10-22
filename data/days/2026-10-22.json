@@ -1,0 +1,239 @@
+{
+  "date": "2026-10-22",
+  "projects": [
+    {
+      "name": "twentyhq/twenty",
+      "url": "https://github.com/twentyhq/twenty",
+      "stars": "59.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Twenty**, kendini \"yapay zekâ için tasarlanmış, Salesforce'a açık kaynak alternatif\" olarak konumlandıran bir **CRM** (müşteri ilişkileri yönetimi) platformudur.\n\nÇözdüğü problem: Salesforce gibi kapalı ve pahalı CRM'ler teknik ekipler için esnek değil. Twenty, CRM'i hazır bir ürün yerine **özelleştirilebilir yapı taşları** olarak sunar.\n\n- Nesneler, görünümler, iş akışları ve AI agent'ları **kod olarak** genişletilebilir\n- Twenty Cloud, Docker Compose ile self-hosting veya yerel geliştirme seçenekleri\n- ERP/IFS dünyasındaki müşteri ve sipariş verisiyle entegrasyon için ilgi çekici bir taban",
+        "tech": "Mimari bir **Nx monorepo**'dur:\n\n- **Backend:** TypeScript + NestJS, kuyruk işleri için BullMQ, veri için PostgreSQL ve Redis\n- **Frontend:** React; durum yönetimi Jotai, stil Linaria, çeviri Lingui\n- **API:** GraphQL\n- **Uygulama modeli:** `npx create-twenty-app` ile sürüm kontrollü uygulamalar iskeletlenir\n- Depoda `CLAUDE.md`, `AGENTS.md`, `SKILLS.md` bulunur; yani proje kodlama agent'larıyla çalışmaya göre hazırlanmış\n\nGerekçe: tek monorepo içinde ortak tipler kullanılır, TypeScript ile uçtan uca tip güvenliği sağlanır.",
+        "why": "- **Zamanlama:** Şirketler SaaS lisans maliyetlerini ve veri kilidini sorguluyor; AI agent'ları CRM verisine bağlamak istiyor\n- **Kitle:** Kendi sunucusunda çalıştırmak isteyen startup'lar, geliştiriciler ve veri egemenliği arayan ekipler\n- Hacktoberfest ve \"good first issue\" etiketleri katkıcı akışını artırıyor\n- Bugünkü ivme (günlük ~112 yıldız) göreli olarak düşük; proje zaten büyük bir kitleye ulaşmış durumda",
+        "evolve": "- Daha derin ERP entegrasyonları (IFS, SAP gibi) için hazır bağlayıcılar\n- Agent'lar için daha sıkı yetki ve denetim kayıtları\n- Raporlama/BI katmanı ve veri ambarı bağlantıları\n- Eklenti pazaryeri ile topluluk uygulamalarının paylaşılması\n- Risk: çok geniş kapsam, bakım yükünü ve kalite tutarlılığını zorlayabilir"
+      },
+      "glossary": [
+        {
+          "term": "CRM",
+          "def": "Müşteri ilişkileri yönetimi; müşteri, fırsat ve satış süreçlerinin tutulduğu yazılım."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden çok paketin tek bir depoda tutulması; ortak kod paylaşımını kolaylaştırır."
+        },
+        {
+          "term": "Nx",
+          "def": "Monorepo'larda derleme ve testleri sadece değişen kısımlar için çalıştıran araç."
+        },
+        {
+          "term": "NestJS",
+          "def": "Node.js üzerinde, modüler ve kurumsal tarzda sunucu uygulamaları yazmak için bir çatı."
+        },
+        {
+          "term": "BullMQ",
+          "def": "Redis tabanlı iş kuyruğu kütüphanesi; arka planda çalışacak görevleri sıraya koyar."
+        },
+        {
+          "term": "GraphQL",
+          "def": "İstemcinin tam olarak ihtiyaç duyduğu veriyi tek sorguda istediği bir API sorgu dili."
+        },
+        {
+          "term": "Self-hosting",
+          "def": "Yazılımı bulut hizmeti yerine kendi sunucunuzda çalıştırmak."
+        },
+        {
+          "term": "AI agent",
+          "def": "Hedef verildiğinde araçları kullanarak adım adım iş yapabilen yapay zekâ programı."
+        }
+      ]
+    },
+    {
+      "name": "thesysdev/openui",
+      "url": "https://github.com/thesysdev/openui",
+      "stars": "13.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**OpenUI**, bir yapay zekâ modelinin düz metin yerine **canlı arayüz bileşenleri** (grafik, form, tablo) üretmesini sağlayan, açık standart olarak tanıtılan bir **Generative UI** çerçevesidir.\n\nÇözdüğü problem: Chatbot cevapları metin olunca kullanıcı etkileşimi sınırlı kalıyor. OpenUI ile model, izin verdiğiniz bileşenlerden oluşan bir arayüzü akış halinde (stream) çizdirebiliyor.\n\n- MIT lisanslı\n- React, Vue, Svelte ve Angular çalışma zamanları\n- Sohbet ve uygulama yüzeyleri, e-posta üretimi",
+        "tech": "Çekirdek fikir **OpenUI Lang**: akışa uygun, kompakt bir arayüz tanım dili.\n\n- Geliştirici bir **bileşen kütüphanesi** tanımlar (Zod şemalarıyla); bundan LLM için sistem prompt'u otomatik üretilir\n- Model çıktıyı OpenUI Lang olarak akıtır, istemci token geldikçe arayüzü **kademeli** çizer\n- Paketler: `lang-core` (ayrıştırma), `react-lang` (render), hazır bileşen setleri\n- LangChain/LangGraph ve AG-UI akış protokolü entegrasyonu\n- README'ye göre JSON'a kıyasla **%50-67 daha az token** (projenin kendi ölçümü)\n\nGerekçe: JSON kapanana kadar çizilemez; özel dil ise yarım çıktıyı bile işleyebilir ve maliyeti düşürür.",
+        "why": "- **Zamanlama:** Agent'lar yaygınlaşınca \"cevabı metin yerine arayüz olarak ver\" ihtiyacı arttı; json-render, A2UI gibi rakip yaklaşımlar tartışılıyor\n- **Kitle:** AI ürünü geliştiren frontend ve full-stack ekipler\n- Token tasarrufu iddiası doğrudan maliyet argümanı sağlıyor\n- Not: README'deki karşılaştırmalar projenin kendi benchmark'ları",
+        "evolve": "- Bağımsız benchmark'larla token ve doğruluk iddialarının doğrulanması\n- Daha fazla çerçeve ve mobil (React Native, SwiftUI) desteği\n- Erişilebilirlik ve güvenlik denetimi (model hangi bileşeni, hangi veriyle çağırabilir)\n- Standart olma yolunda rakip protokollerle birlikte çalışabilirlik\n- Risk: dil yeni olduğu için modellerin onu güvenilir üretmesi prompt'a bağımlı"
+      },
+      "glossary": [
+        {
+          "term": "Generative UI",
+          "def": "Yapay zekânın cevabı metin yerine çalışan arayüz bileşenleri olarak üretmesi."
+        },
+        {
+          "term": "Streaming (akış)",
+          "def": "Çıktının tamamlanmasını beklemeden parça parça iletilip gösterilmesi."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlediği küçük birim; maliyet ve hız token sayısıyla ölçülür."
+        },
+        {
+          "term": "Zod",
+          "def": "TypeScript'te veri şekillerini tanımlayıp doğrulamaya yarayan kütüphane."
+        },
+        {
+          "term": "System prompt",
+          "def": "Modele davranışını ve kurallarını anlatan başlangıç talimatı."
+        },
+        {
+          "term": "LangGraph",
+          "def": "LangChain ekibinin agent iş akışlarını graf olarak kurmaya yarayan çerçevesi."
+        },
+        {
+          "term": "AG-UI",
+          "def": "Agent ile kullanıcı arayüzü arasındaki olay akışı için önerilen protokol."
+        },
+        {
+          "term": "Bileşen kütüphanesi",
+          "def": "Grafik, form, tablo gibi yeniden kullanılabilir arayüz parçalarının koleksiyonu."
+        }
+      ]
+    },
+    {
+      "name": "cline/cline",
+      "url": "https://github.com/cline/cline",
+      "stars": "70.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Cline**, IDE'nizde, terminalinizde ve masaüstünde çalışan açık kaynaklı bir **otonom kodlama agent'ıdır**. Kodu okur, dosyaları düzenler, terminal komutları çalıştırır ve her adımı isterseniz onayınıza sunar.\n\nÇözdüğü problem: Kodlama agent'ı kullanmak isteyen ama tek bir satıcıya ve modele bağlı kalmak istemeyen geliştiriciler.\n\n- SDK, CLI, masaüstü uygulaması, VS Code eklentisi ve JetBrains eklentisi (JetBrains kapalı kaynak)\n- Apache-2.0 lisanslı",
+        "tech": "- **Dil/çalışma zamanı:** TypeScript, Node.js ve Bun; masaüstü kabuğu Tauri, arayüz Next.js\n- **Mimari:** `sdk/`, `apps/cli/`, `apps/vscode/` içeren monorepo. Tüm istemciler **tek paylaşımlı agent motoru** üzerinde çalışır, SDK aynı motoru dışarı açar\n- **Modlar:** Plan (keşif) ve Act (uygulama); checkpoint ve geri alma\n- **Model desteği:** Anthropic, OpenAI, Google, OpenRouter, Bedrock, Ollama/LM Studio\n- **Genişletme:** `.clinerules`, skill'ler, MCP sunucuları, çoklu agent takımları, cron ile zamanlanmış agent'lar\n- Headless CLI modu JSON çıktı verir; CI/CD'ye uygun\n\nGerekçe: tek motor, yüzeyler arası tutarlılık sağlar.",
+        "why": "- **Zamanlama:** Cline, VS Code agent eklentilerinin öncülerindendi; şimdi SDK ve çok yüzeyli yapıya geçerek yeniden ivme kazandı\n- **Kitle:** Model seçimini kendi elinde tutmak isteyen bireysel geliştiriciler ve ekipler\n- Kendi API anahtarınızı getirme modeli, abonelik kilidini önlüyor\n- Rakipler (opencode, Claude Code, Codex) yoğun; bu yüzden günlük yıldız artışı mütevazı",
+        "evolve": "- Zamanlanmış ve çoklu agent akışlarının güvenlik/yetki modelinin güçlendirilmesi\n- Kurumsal özellikler: merkezî politika, denetim kaydı\n- JetBrains eklentisinin açılması\n- Değerlendirme (`evals/`) sonuçlarının herkese açık yayımlanması\n- Veritabanı/ERP görevleri için hazır skill ve MCP paketleri"
+      },
+      "glossary": [
+        {
+          "term": "Otonom agent",
+          "def": "Hedef verildiğinde adımları kendisi planlayıp araç kullanarak ilerleyen yapay zekâ."
+        },
+        {
+          "term": "IDE",
+          "def": "Kod yazmak için kullanılan geliştirme ortamı (VS Code, JetBrains gibi)."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zekâ modellerini harici araç ve veri kaynaklarına bağlayan açık protokol."
+        },
+        {
+          "term": "Checkpoint",
+          "def": "Çalışma durumunun kaydedilip gerektiğinde geri dönülebilen anlık görüntüsü."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle hafif masaüstü uygulaması yapmaya yarayan çatı."
+        },
+        {
+          "term": "Headless",
+          "def": "Arayüzsüz çalışma; komut satırı veya otomasyon ortamında kullanım."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerinin otomatik test edilip dağıtıldığı süreç."
+        },
+        {
+          "term": "Ollama",
+          "def": "Dil modellerini kendi bilgisayarınızda çalıştırmayı sağlayan araç."
+        }
+      ]
+    },
+    {
+      "name": "croffasia/itsaplan",
+      "url": "https://github.com/croffasia/itsaplan",
+      "stars": "1.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**It's a Plan**, Linear, Jira, Trello ve Plane'e alternatif, **kendi sunucunuzda çalışan** açık kaynak proje yönetimi ve iş takip aracıdır. Ayırt edici yanı: **AI agent'lar ekip üyesi** olarak aynı panolarda insanlarla birlikte çalışır.\n\n- Kanban, tablo, zaman çizelgesi, takvim görünümleri; döngüler, özel alanlar, dokümanlar\n- Agent'lar rol ve yetkiyle atanabilir; @mention, atama veya zamanlama ile çalışır\n- Koltuk başı ücret yok, satıcı kilidi yok\n\nREADME, projenin aktif geliştirildiğini ve kararlı sürümden önce kırıcı değişiklikler olabileceğini belirtiyor.",
+        "tech": "- **Çalışma zamanı:** Bun + Turborepo\n- **Backend:** Elysia; REST API (OpenAPI), MCP sunucusu, giden webhook'lar\n- **Frontend:** Next.js (App Router), shadcn/ui, Tailwind v4\n- **Kimlik doğrulama:** better-auth (parola, passkey, Google)\n- **Veri:** PostgreSQL + Drizzle ORM; dosyalar S3 uyumlu depoda (RustFS)\n- **Agent'lar:** Mastra. İç agent'lar sunucuda, dış agent'lar `@itsaplan/runner` ile kullanıcının kendi makinesinde ve kendi hesabıyla (Claude Code, Codex sürebilir)\n- Git sağlayıcı entegrasyonu: \"Fixes KEY-42\" ile PR-iş bağlantısı\n\nLisans AGPL-3.0; runner Apache-2.0, ticari lisans istenebilir.",
+        "why": "- **Zamanlama:** \"Agent'ı iş takipçisinden iş alan bir çalışan gibi kullan\" fikri yükselişte\n- **Kitle:** Kendi altyapısını tercih eden küçük ekipler, agent iş akışları deneyenler\n- Dağıtım kolaylığı (Railway, Docker, Coolify, Helm) benimsemeyi hızlandırıyor\n- Küçük proje (1.8k yıldız); günlük listede yeni görünmesi taze ilgiye işaret",
+        "evolve": "- Kararlı sürüm, göç araçları ve yedekleme/geri yükleme dokümantasyonu\n- Agent maliyet ve token kullanımı raporları\n- Linear/Jira'dan içe aktarma sihirbazları\n- Agent eylemleri için onay kapıları ve denetim izi\n- Risk: AGPL lisansı bazı kurumlar için engel olabilir"
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Yazılımın kendi sunucunuzda çalıştırılması."
+        },
+        {
+          "term": "Kanban",
+          "def": "İşlerin sütunlar halinde (yapılacak, sürüyor, bitti) kartlarla gösterildiği pano."
+        },
+        {
+          "term": "ORM",
+          "def": "Veritabanı tablolarını programlama dilindeki nesnelerle yönetmeye yarayan katman."
+        },
+        {
+          "term": "Drizzle",
+          "def": "TypeScript için hafif, tip güvenli bir ORM."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Güçlü, açık kaynaklı ilişkisel veritabanı."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda başka bir sisteme otomatik gönderilen HTTP bildirimi."
+        },
+        {
+          "term": "Passkey",
+          "def": "Parola yerine cihaz kimliğiyle giriş yapmayı sağlayan doğrulama yöntemi."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Ağ üzerinden hizmet verilse bile kaynak kodun paylaşılmasını zorunlu kılan açık kaynak lisansı."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes üzerinde uygulama kurulumunu paketleyen araç."
+        }
+      ]
+    },
+    {
+      "name": "luongnv89/claude-howto",
+      "url": "https://github.com/luongnv89/claude-howto",
+      "stars": "42.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**claude-howto**, Claude Code için \"görsel ve örnek odaklı\" bir öğrenme rehberidir; temel kullanımdan gelişmiş agent'lara kadar adım adım ilerletir.\n\nÇözdüğü problem: Claude Code'un slash komutları, hook'lar, skill'ler, MCP, subagent gibi özellikleri dağınık dokümanlarda; yeni başlayan hangisini ne zaman kullanacağını bilemiyor.\n\n- 10 modül: Slash Commands, Memory, Checkpoints, CLI, Skills, Hooks, MCP, Subagents, Advanced, Plugins\n- Kopyala-yapıştır şablonlar, özellik kataloğu (`CATALOG.md`), öğrenme yol haritası (11-13 saat)\n- MIT lisanslı",
+        "tech": "Bu bir yazılım kütüphanesinden çok bir **içerik deposu**:\n\n- Markdown modülleri ve **Mermaid** diyagramlarıyla iç işleyiş görselleştirilir\n- Şablonlar: slash komutları, `CLAUDE.md` bellek dosyaları, hook betikleri, MCP yapılandırmaları, subagent tanımları\n- `/self-assessment` ve `/lesson-quiz` komutlarıyla öz değerlendirme\n- EPUB üretimi (çevrimdışı okuma)\n- Python tarafı: pytest, Ruff, Bandit, mypy, GitHub Actions ile kalite denetimi\n- Beş dilde dokümantasyon (İngilizce, Vietnamca, Çince, Ukraynaca, Japonca)\n\nGerekçe: şablonların da test ve lint edilmesi, rehberin güncel ve çalışır kalmasını sağlar. Not: README'deki bazı model adlarını doğrulayamadım.",
+        "why": "- **Zamanlama:** Claude Code özellik yüzeyi hızla büyüdü; kullanıcılar toparlayıcı bir kaynak arıyor\n- **Kitle:** Yeni başlayanlar, ekibine standart kurmak isteyen teknik liderler\n- Çok dilli içerik küresel erişim sağlıyor\n- Kopyalanabilir şablonlar \"hemen kullan\" değeri veriyor",
+        "evolve": "- Resmî dokümanla sürüm uyumunu otomatik denetleyen CI\n- Türkçe dahil daha fazla dil\n- Sektöre özel örnekler (veritabanı, PL/SQL, ERP otomasyonu)\n- İnteraktif laboratuvar ortamı\n- Risk: hızlı değişen bir ürünü takip ederken içerik eskiyebilir"
+      },
+      "glossary": [
+        {
+          "term": "Slash komutu",
+          "def": "Claude Code'da `/` ile başlayan, belirli bir işi tetikleyen kısayol komutu."
+        },
+        {
+          "term": "Hook",
+          "def": "Belirli olaylarda (ör. araç çalışmadan önce) otomatik çalışan betik."
+        },
+        {
+          "term": "Skill",
+          "def": "Agent'ın ihtiyaç duyduğunda yüklediği, belirli bir görevi anlatan talimat paketi."
+        },
+        {
+          "term": "Subagent",
+          "def": "Ana agent'ın belirli bir iş için başlattığı yardımcı, bağımsız bağlamlı agent."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; modelleri harici araç ve veri kaynaklarına bağlayan protokol."
+        },
+        {
+          "term": "CLAUDE.md",
+          "def": "Claude Code'un proje hakkında kalıcı bilgi olarak okuduğu bellek dosyası."
+        },
+        {
+          "term": "Mermaid",
+          "def": "Metinle diyagram çizmeyi sağlayan sözdizimi."
+        },
+        {
+          "term": "Ruff",
+          "def": "Python için çok hızlı bir lint ve biçimlendirme aracı."
+        }
+      ]
+    }
+  ]
+}
