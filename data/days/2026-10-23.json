@@ -1,0 +1,135 @@
+{
+  "date": "2026-10-23",
+  "projects": [
+    {
+      "name": "deepseek-ai/DeepInfer",
+      "url": "https://github.com/deepseek-ai/DeepInfer",
+      "stars": "20.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**DeepInfer**, DeepSeek'in kendi üretim servislerini çalıştırdığını söylediği **çıkarım (inference) çerçevesinin** açık kaynak sürümüdür. Çözdüğü problem: DeepSeek-V4.1-Flash gibi çok büyük **MoE** modellerini çok sayıda GPU/NPU üzerinde hızlı ve ucuz çalıştırmak.\n\n- Şimdilik çevrimdışı (offline) çıkarım ve ölçekli servis için gereken çekirdek özellikleri içerir\n- KV cache sistemi ve prefill/decode ayrıştırması bu sürümde **yok**\n- Kendi modelini barındıran ekipler için, bulut API'sine bağımlılığı azaltan bir yol sunar",
+        "tech": "- **Dil/araç zinciri:** Python 3.12, GCC 13+, `build.sh` ile derleme; `csrc` altında C++ çekirdekleri\n- **Donanım:** NVIDIA SM100 (CUDA 13) ve Huawei Ascend 950 (CANN 9.2)\n- **Paralellik:** attention için veri paralelliği, dengeli bağlam paralelliği, MoE için uzman paralelliği (**EPLB** ile)\n- **Zamanlayıcı:** CPU planlamasını cihaz çalışmasıyla üst üste bindiren asenkron, sıfır-yük batch scheduler\n- **DSpark:** taslak token üretip güven skoruna göre doğrulayan spekülatif kod çözme\n- **Çekirdekler:** FlashMLA, DeepGEMM, DeepEP, TileLang\n- **Çıktı kontrolü:** regex, JSON şeması veya EBNF ile yapılandırılmış çıktı; deterministik ve batch-bağımsız örnekleme\n\nGerekçe: vLLM üzerine kurulup SGLang ve TensorRT-LLM'den fikir alınarak, sıfırdan yazmak yerine olgun bir tabanda DeepSeek'e özgü optimizasyonlar yapılmış.",
+        "why": "- **Kaynak güvenilirliği:** Modeli yapan laboratuvarın kendi üretim kodu; 'resmi' ve 'gerçek ölçek' etiketi çok çekici\n- **Zamanlama:** V4.1 modelinin yayımlanmasıyla aynı döneme denk geliyor; yıldızlar kısa sürede 20 bini aştı\n- **Kitle:** LLM altyapı mühendisleri, kendi GPU kümesini işleten şirketler, Ascend ekosistemi\n- Çok az commit'e rağmen yoğun ilgi, ilginin koddan çok **marka ve beklentiden** geldiğini gösteriyor",
+        "evolve": "- KV cache sistemi ve prefill/decode ayrıştırmasının açılması prodüksiyon kullanımı için kritik\n- Veri-paralel replikalar arası yük dengeleme eklenebilir\n- NVIDIA SM100 dışı (eski GPU'lar) için destek ve daha geniş model kapsamı kullanıcı tabanını büyütür\n- OpenAI uyumlu bir HTTP sunucu katmanı ve daha sade kurulum, kurumsal ekipler için eşiği düşürür\n- Kurumsal kullanımda (ERP içi AI asistanlar gibi) şirket içi barındırma senaryosu için hafif konfigürasyonlar faydalı olur"
+      },
+      "glossary": [
+        {
+          "term": "Inference (çıkarım)",
+          "def": "Eğitilmiş bir yapay zekâ modelinin yeni girdilere cevap üretmek için çalıştırılması. Eğitimden farklı olarak ağırlıklar değişmez."
+        },
+        {
+          "term": "MoE (Mixture of Experts)",
+          "def": "Modelin birçok 'uzman' alt ağdan oluştuğu ve her token için yalnızca birkaçının çalıştığı mimari. Büyük modeli daha az hesapla çalıştırmayı sağlar."
+        },
+        {
+          "term": "EPLB",
+          "def": "Expert Parallelism Load Balancer. Uzmanların GPU'lara dengeli dağıtılmasını sağlayan, bazı GPU'ların boşta kalmasını önleyen yük dengeleyici."
+        },
+        {
+          "term": "Spekülatif kod çözme",
+          "def": "Küçük/hızlı bir mekanizmanın birkaç token'ı önceden tahmin etmesi, büyük modelin bunları tek seferde doğrulaması. Doğruluk korunurken hız artar."
+        },
+        {
+          "term": "KV cache",
+          "def": "Modelin önceki token'lar için hesapladığı ara değerlerin saklanması. Aynı hesabı tekrarlamayı önler ama çok bellek yer."
+        },
+        {
+          "term": "Prefill / Decode",
+          "def": "Prefill, giriş metninin topluca işlendiği aşama; decode ise cevabın token token üretildiği aşama. İkisinin kaynak ihtiyacı farklıdır."
+        },
+        {
+          "term": "Batch scheduler",
+          "def": "Gelen istekleri gruplayıp cihaza gönderilme sırasını belirleyen bileşen. İyi çalışırsa GPU boş kalmaz."
+        },
+        {
+          "term": "TileLang",
+          "def": "GPU çekirdeklerini yüksek seviyede yazmayı sağlayan, performans odaklı bir programlama dili/derleyici."
+        },
+        {
+          "term": "Yapılandırılmış çıktı",
+          "def": "Modelin cevabını regex, JSON şeması veya gramer gibi kurallara uymaya zorlamak. Programların cevabı güvenle ayrıştırabilmesini sağlar."
+        }
+      ]
+    },
+    {
+      "name": "php/php-src",
+      "url": "https://github.com/php/php-src",
+      "stars": "41.3k",
+      "language": "C",
+      "sections": {
+        "serves": "**php-src**, PHP programlama dilinin resmi kaynak deposudur: yorumlayıcı (Zend Engine), standart uzantılar ve derleme/test altyapısı burada.\n\nÇözdüğü problem: web sunucusunda hızlıca dinamik sayfa ve API üretmek. WordPress, Laravel ve sayısız kurumsal uygulama bu koddan çalışır.\n\n- Veritabanı uzantıları (PDO, OCI, MySQL, PostgreSQL) ile Oracle/PL-SQL tabanlı ERP sistemlerine bağlanmak için de yaygın bir yol",
+        "tech": "- **Dil:** Çekirdek C ile yazılmış; `Zend` motoru, `main`, `ext` (uzantılar) ve `TSRM` (thread güvenliği) ana dizinler\n- **Derleme:** `./buildconf`, `./configure`, `make`; bison ve re2c ile ayrıştırıcı/lexer üretilir\n- **Test:** `make test` ile paralel çalışan `.phpt` test seti\n- **Mimari karar:** Her istekte temiz bir durumla başlayıp bitiren 'paylaşılan hiçbir şey' modeli; basit ve dayanıklı ölçekleme sağlar\n\nGerekçe: 30 yıllık geriye uyumluluk önceliği, yavaş ama güvenli evrim.",
+        "why": "- **Zamanlama:** Büyük sürüm döngüsü ve yoğun commit trafiği; depo yaklaşık 150 bin commit'e ulaştı\n- **Kitle:** Web geliştiricileri, WordPress/Laravel ekosistemi, dil iç yapısını merak edenler\n- PHP'nin 'öldü' söylentilerine rağmen hâlâ webin büyük bölümünü çalıştırması, ilgiyi canlı tutuyor\n- Trending'e girişi tek bir özellikten çok genel bir ilgi artışı gibi görünüyor",
+        "evolve": "- JIT derleyicinin olgunlaşması ve CPU yoğun işlerde hız kazancı\n- Daha güçlü tip sistemi (genel tipler, daha katı varsayılanlar)\n- Yerleşik asenkron/eşzamanlılık desteğinin dile gömülmesi\n- Katkı eşiğini düşüren daha iyi geliştirici dokümantasyonu ve CI geri bildirimi\n- Modern veritabanı sürücüleri ile kurumsal ERP entegrasyonlarında bağlantı havuzu iyileştirmeleri"
+      },
+      "glossary": [
+        {
+          "term": "Zend Engine",
+          "def": "PHP kodunu derleyip çalıştıran çekirdek motor."
+        },
+        {
+          "term": "Yorumlayıcı (interpreter)",
+          "def": "Kaynak kodu satır satır ya da ara koda çevirerek doğrudan çalıştıran program."
+        },
+        {
+          "term": "JIT",
+          "def": "Just-In-Time derleme. Kod çalışırken makine koduna çevrilir, böylece yoğun hesaplamalarda hız artar."
+        },
+        {
+          "term": "PDO",
+          "def": "PHP Data Objects. Farklı veritabanlarına tek bir arayüzle bağlanmayı sağlayan PHP uzantısı."
+        },
+        {
+          "term": "bison / re2c",
+          "def": "Dil ayrıştırıcıları (parser) ve sözcük çözümleyicileri (lexer) üreten araçlar."
+        },
+        {
+          "term": "phpt",
+          "def": "PHP'nin kendi test dosyası biçimi; kod, beklenen çıktı ve açıklamayı tek dosyada tutar."
+        },
+        {
+          "term": "Geriye uyumluluk",
+          "def": "Yeni sürümün eski kodu bozmadan çalıştırabilmesi."
+        }
+      ]
+    },
+    {
+      "name": "fastapi/fastapi",
+      "url": "https://github.com/fastapi/fastapi",
+      "stars": "103.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "**FastAPI**, Python ile hızlı, tip tanımlı **API** yazmak için bir web çerçevesidir. Fonksiyon imzalarındaki tip bilgisinden doğrulama, dönüşüm ve otomatik dokümantasyon üretir.\n\n- Çözdüğü problem: API yazarken tekrar eden doğrulama, serileştirme ve dokümantasyon işi\n- Özellikle AI servislerini ve veritabanı destekli iç servisleri HTTP üzerinden açmak için ffiilî standart",
+        "tech": "- **Starlette** üzerine kurulu ASGI çerçevesi (web katmanı)\n- **Pydantic** ile veri doğrulama ve şema üretimi\n- Python tip ipuçları (type hints) tek doğruluk kaynağı; **OpenAPI** ve Swagger arayüzü otomatik üretilir\n- `async`/`await` desteği, bağımlılık enjeksiyonu (`Depends`)\n\nGerekçe: ayrı şema dosyası yazmadan kod = sözleşme = dokümantasyon eşitliği sağlamak.",
+        "why": "- **Zamanlama:** LLM ve agent servislerinin çoğu Python; bunları HTTP'ye açmanın en kısa yolu FastAPI\n- **Kitle:** ML mühendisleri, backend geliştiriciler, startup'lar\n- Trending'de günlük artışı küçük (~100) ama toplam 100 bini aşmış olgun bir proje; ilgi sürekli ve kalıcı",
+        "evolve": "- Pydantic v2 ile daha da hızlı serileştirme ve daha net hata mesajları\n- Yerleşik arka plan görev kuyruğu ve akış (streaming) yardımcıları\n- Agent/MCP sunucuları için hazır şablonlar\n- Oracle gibi kurumsal veritabanları için resmi örnek şablonlar"
+      },
+      "glossary": [
+        {
+          "term": "ASGI",
+          "def": "Python'da asenkron web sunucuları ile uygulamalar arasındaki standart arayüz."
+        },
+        {
+          "term": "Pydantic",
+          "def": "Python tip bilgisine göre veri doğrulayan ve dönüştüren kütüphane."
+        },
+        {
+          "term": "OpenAPI",
+          "def": "REST API'lerini makine okunur biçimde tanımlayan standart; doküman ve istemci kodu üretiminde kullanılır."
+        },
+        {
+          "term": "Bağımlılık enjeksiyonu",
+          "def": "Bir fonksiyonun ihtiyaç duyduğu nesnelerin (ör. veritabanı bağlantısı) dışarıdan verilmesi."
+        },
+        {
+          "term": "Starlette",
+          "def": "Hafif bir Python ASGI web araç takımı; FastAPI'nin temeli."
+        },
+        {
+          "term": "Type hints",
+          "def": "Python'da değişken ve fonksiyonların tiplerini belirten isteğe bağlı notasyon."
+        }
+      ]
+    }
+  ]
+}
