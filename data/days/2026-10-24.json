@@ -1,0 +1,185 @@
+{
+  "date": "2026-10-24",
+  "projects": [
+    {
+      "name": "OpenBMB/VoxCPM",
+      "url": "https://github.com/OpenBMB/VoxCPM",
+      "stars": "40.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "**VoxCPM2**, metinden konuşma üreten (**TTS**) açık kaynaklı bir modeldir. Üç şey vaadediyor: 30 dilde çok dilli ses üretimi, referans ses olmadan yalnızca metin tarifinden **ses tasarımı** (\"genç, sakin bir kadın sesi\" gibi) ve birkaç saniyelik bir kayıttan **ses klonlama**.\n\n- Geliştiriciler ve araştırmacılar için; seslendirme, dublaj, sesli asistan gibi işlerde ticari lisansla (Apache-2.0) kullanılabilir\n- Pip paketi, CLI ve yerel web arayüzü ile hemen denenebilir",
+        "tech": "- **Tokenizer-free yaklaşım:** Sesi ayrık token'lara bölmek yerine sürekli temsiller üretir; difüzyon + otoregresif tasarım kullanır\n- **Model:** Yaklaşık 2 milyar parametre, MiniCPM-4 omurgası, AudioVAE V2 gizli uzayı; hat: LocEnc → TSLM → RALM → LocDiT (**Flow Matching**)\n- **Çıktı:** Doğal 48 kHz ses; yaklaşık 8 GB VRAM\n- **Hız:** README'ye göre RTX 4090'da RTF ~0.30, Nano-vLLM/vLLM-Omni ile ~0.13 (kendi bildirdikleri değerler)\n- **Uyarlama:** Tam SFT ve **LoRA**; 5-10 dakikalık ses yeni bir konuşmacıya uyum için yeterli\n- **Sunum:** Python API, FastAPI sunucusu, OpenAI uyumlu `/v1/audio/speech` ucu, llama.cpp ile GGUF/CPU çalıştırma",
+        "why": "- Ses klonlama ve ses tasarımı birleşik, açık ve ticari kullanıma uygun hâlde nadir bulunuyor; kapalı servislere (ElevenLabs gibi) karşı yerel alternatif arayanlara hitap ediyor\n- 30 dil ve Çince lehçeleri geniş bir kitleyi kapsıyor\n- Topluluk hızla ekosistem kurdu: ComfyUI düğümleri, Rust portu, ONNX ve GGML sürümleri\n- Günün yıldız artışı (~150) görece sakin; asıl ivme VoxCPM2 duyurusundan sonra birikmiş bir popülerlik",
+        "evolve": "- Üretken ses kötüye kullanıma açık; filigran ve otomatik sahtecilik tespiti entegrasyonu önemli bir eksik\n- Ses tasarımı sonuçları çalıştırmadan çalıştırmaya değişiyor; daha kararlı kontrol mümkün olabilir\n- Desteklenmeyen diller ve düşük kaynaklı lehçeler için topluluk fine-tune'ları büyüyebilir\n- Gerçek zamanlı, düşük gecikmeli konuşma (sesli ajanlar) için akış modunun iyileştirilmesi doğal bir sonraki adım"
+      },
+      "glossary": [
+        {
+          "term": "TTS (Text-to-Speech)",
+          "def": "Yazılı metni yapay olarak konuşmaya çeviren sistem."
+        },
+        {
+          "term": "Tokenizer-free",
+          "def": "Sesi önceden ayrık parçalara (token) bölmeden, sürekli sayısal temsiller üzerinden çalışan yaklaşım."
+        },
+        {
+          "term": "Difüzyon (diffusion)",
+          "def": "Gürültüden adım adım anlamlı bir çıktı (ses, görüntü) üreten model ailesi."
+        },
+        {
+          "term": "Otoregresif",
+          "def": "Çıktıyı parça parça, her parçayı öncekilere bakarak üretme yöntemi."
+        },
+        {
+          "term": "Flow Matching",
+          "def": "Gürültüyü hedef veriye düzgün bir yol boyunca dönüştürmeyi öğrenen, difüzyona yakın bir eğitim tekniği."
+        },
+        {
+          "term": "LoRA",
+          "def": "Büyük bir modelin tamamını değil, küçük ek katmanlarını eğiterek ucuza uyarlama yöntemi."
+        },
+        {
+          "term": "SFT (Supervised Fine-Tuning)",
+          "def": "Modeli etiketli örneklerle ek eğitime tabi tutarak belirli bir göreve uyarlamak."
+        },
+        {
+          "term": "RTF (Real-Time Factor)",
+          "def": "1 saniyelik sesi üretmenin kaç saniye sürdüğü; 1'in altı gerçek zamandan hızlı demektir."
+        },
+        {
+          "term": "GGUF",
+          "def": "llama.cpp ile CPU veya GPU'da yerel çalıştırmak için kullanılan model dosya biçimi."
+        }
+      ]
+    },
+    {
+      "name": "elie222/rakazo",
+      "url": "https://github.com/elie222/rakazo",
+      "stars": "5.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Rakazo**, kendi sunucunda barındırdığın, kalıcı **AI yardımcı botları** çalıştıran açık kaynaklı bir platformdur (\"gerçekten sahip olduğun AI takım arkadaşları\"). Her botun kendi sohbetleri, hafızası, rutinleri ve bilgisayarı (sandbox) vardır.\n\n- Kendi model anahtarını ve sandbox sağlayıcını getirirsin; istersen her şey yerelde çalışır\n- Web, masaüstü (Electron), iOS ve Android istemcileri var; proje beta aşamasında",
+        "tech": "- **Monorepo:** `apps/` (web, api, worker, desktop, mobile) ve `packages/`\n- **Ön yüz:** React 19, Vite, Tailwind; masaüstü için Electron, mobil için Expo\n- **Arka yüz:** Hono + oRPC API, Graphile Worker ile arka plan işleri, PostgreSQL + Prisma, Better Auth; uygulama rolünde **Row-Level Security**\n- **Sandbox:** Yerelde Docker; uzakta E2B, Daytona, Railway gibi sağlayıcılar. Durdurulan bilgisayarın ev dizini saklanır, sonraki başlangıçta yeni sandbox'a geri yüklenir\n- **Entegrasyon:** MCP, OpenAPI, Composio, Pipedream Connect; bağlayıcı kimlik bilgileri sunucu tarafında şifrelenir",
+        "why": "- Kapalı ürünler (Grok Bot, OpenAI Dots vb.) çıkarken \"verim bende kalsın\" diyen kullanıcılar için açık alternatif\n- Docker Compose ile tek komutla kurulum ve Railway tek tık şablonu giriş bariyerini düşürüyor\n- Ajanların kalıcı hafıza ve kendi bilgisayarına sahip olması güncel bir trend; ürün bunu sohbet uygulaması deneyimiyle paketliyor\n- Haftalık ~1.1k yıldız; yükselen \"kişisel ajan\" kategorisinde zamanlaması iyi",
+        "evolve": "- Beta olduğu için kararlılık ve güvenlik denetimi (özellikle sandbox izolasyonu) en kritik gelişim alanı\n- Kurumsal kullanım için rol bazlı yetki, denetim kaydı ve kota yönetimi eklenebilir\n- Bot başına maliyet ve token takibi gösterilirse kendi barındıranlar için değer artar\n- İş akışı şablonları (örneğin ERP/veritabanı raporlama botları) topluluk pazaryeri olarak büyüyebilir"
+      },
+      "glossary": [
+        {
+          "term": "Sandbox",
+          "def": "Çalıştırılan kodun ana sisteme zarar veremeyeceği, izole bir ortam."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Servisin başkasının bulutunda değil, kendi sunucunda barındırılması."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden çok uygulama ve paketin tek bir depoda tutulması."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI ajanlarını araçlara ve veri kaynaklarına bağlayan açık protokol."
+        },
+        {
+          "term": "OpenAPI",
+          "def": "REST servislerini makine tarafından okunabilir biçimde tarif eden standart."
+        },
+        {
+          "term": "Row-Level Security (RLS)",
+          "def": "Veritabanında her kullanıcının yalnızca kendi satırlarını görmesini sağlayan güvenlik mekanizması."
+        },
+        {
+          "term": "oRPC",
+          "def": "Tip güvenli API çağrıları sağlayan TypeScript kütüphanesi."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması yazmaya yarayan çatı."
+        }
+      ]
+    },
+    {
+      "name": "nodejs/node",
+      "url": "https://github.com/nodejs/node",
+      "stars": "123.0k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**Node.js**, JavaScript'i tarayıcı dışında, sunucuda ve komut satırında çalıştıran açık kaynaklı, platformlar arası çalışma ortamıdır. Web sunucuları, araçlar ve build sistemlerinin büyük kısmı bunun üstünde koşar.\n\n- Bugünkü yıldız artışı küçük; README yeni sürüm takvimini öne çıkarıyor ve ilgi muhtemelen buna dönük",
+        "tech": "- **Depo yapısı:** `lib` (JS çekirdek modülleri), `src` (C++ katmanı), `deps` (bağımlılıklar), `test`, `tools`, `benchmark`\n- **Derleme:** GYP ve GN dosyaları, `configure` + `Makefile`, Windows için `vcbuild.bat`, Android desteği\n- **Sürüm hatları:** Alpha (her Ekim `main`'den dallanır), Current (Nisan'da yıllık majör), LTS (30 ay destek), Nightly (24 saatte bir otomatik)\n- **Yönetişim:** OpenJS Foundation altında açık yönetişim, Teknik Yönlendirme Komitesi, GPG ile imzalı sürümler\n- **Lisans:** MIT",
+        "why": "- Sürüm takvimi değişti: Node 26'ya kadar yılda iki majör vardı; yeni modelde yılda bir majör ve her sürüm LTS olacak\n- Bu karar, kurumsal ekiplerin yükseltme planlarını doğrudan etkilediği için geniş kitleye hitap ediyor\n- Yıldız ivmesi küçük (günde ~66); haber değeri sürüm politikasında, proje zaten olgun",
+        "evolve": "- Alpha hattı sayesinde köklü değişiklikler daha erken test edilebilir; ekosistem uyumluluğu için otomatik denemeler artabilir\n- Yerleşik test koşucusu, TypeScript çalıştırma ve izin modeli gibi alanlar genişleyerek bağımsız araç ihtiyacını azaltabilir\n- Güvenlik sürümlerinin tek sürüm çizgisine inmesi bakım yükünü azaltır, ancak yükseltme disiplini gerektirir"
+      },
+      "glossary": [
+        {
+          "term": "Runtime (çalışma ortamı)",
+          "def": "Kodun çalıştığı ve gereken sistem kaynaklarını sağlayan yazılım katmanı."
+        },
+        {
+          "term": "LTS (Long Term Support)",
+          "def": "Uzun süre güvenlik ve hata düzeltmesi alan, üretimde güvenle kullanılan sürüm."
+        },
+        {
+          "term": "Semver-major",
+          "def": "Geriye dönük uyumu bozabilen büyük sürüm değişikliği (örn. 26 → 27)."
+        },
+        {
+          "term": "Nightly build",
+          "def": "Her gün otomatik üretilen, test edilmemiş geliştirme sürümü."
+        },
+        {
+          "term": "GYP / GN",
+          "def": "C++ projelerinde derleme dosyalarını üreten yapılandırma araçları."
+        },
+        {
+          "term": "TSC (Technical Steering Committee)",
+          "def": "Projenin teknik yönünü belirleyen yönetim kurulu."
+        },
+        {
+          "term": "OpenJS Foundation",
+          "def": "Node.js gibi JavaScript projelerini barındıran tarafsız vakıf."
+        }
+      ]
+    },
+    {
+      "name": "Renhuai123/ziwei-doushu",
+      "url": "https://github.com/Renhuai123/ziwei-doushu",
+      "stars": "7.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**ziwei-doushu**, geleneksel Çin astrolojisi **Zi Wei Dou Shu (Mor Yıldız)** için açık kaynaklı bir doğum haritası hesaplama motorudur. Doğum tarihi ve saatinden harita çıkarır; yıldız konumları, parlaklık seviyeleri ve dönüşümleri hesaplar.\n\n- Hesaplama tarayıcıda çalışır, API anahtarı gerekmez\n- Yorum katmanı (AI ve tam kural kütüphanesi) açık değil; bu bir \"açık anlık görüntü\"",
+        "tech": "- **Çatı:** Next.js 16 (App Router), TypeScript, Tailwind, Framer Motion\n- **Hesap kütüphaneleri:** iztro ve lunar-javascript\n- **Motor (`lib/ziwei/`):** Boylama göre gerçek güneş zamanı düzeltmesi, 1986-1991 Çin yaz saati, dört artık ay yöntemi, yedi seviyeli yıldız parlaklığı ve okul seçenekleri\n- **Test:** 768 haritalık regresyon paketi (`npm test`), CI'da her push'ta çalışır\n- **Veri:** 674 bin haritalık yorum veri seti (CC BY 4.0) ve klasik metinler (kamu malı)",
+        "why": "- Geleneksel bilgiyi \"duvarların ardında kilitli kalmasın\" söylemiyle açan nadir, titiz bir motor; kurallar kaynak gösteriyor\n- Büyük veri seti (v4.0, ~20 milyar karakter) dil modeli eğitimi ve araştırma için çekici\n- Çince konuşan geniş kitlenin yanı sıra metin üretimi için veri arayanlara hitap ediyor\n- Ticari siteye trafik çeken bir vitrin; bu da yıldız artışını besliyor olabilir",
+        "evolve": "- Yorum kurallarının açık hâle gelmesi veya topluluk kural kütüphanesi eksiklerini kapatır\n- Okullar arası farkları (parlaklık, artık ay) karşılaştıran bir test görselleştirmesi eklenebilir\n- Veri setinin dil modeliyle ince ayarda kullanımı için temizlik (geçersiz tarihler) ve sürümleme önemli\n- Falcılık sonuçları bilimsel değil; arayüzde bunun açık bir uyarısı ve eğlence amaçlı çerçevesi önerilir"
+      },
+      "glossary": [
+        {
+          "term": "Zi Wei Dou Shu",
+          "def": "Doğum zamanına göre yıldızların on iki saraya yerleştirildiği geleneksel Çin falcılık sistemi."
+        },
+        {
+          "term": "Gerçek güneş zamanı",
+          "def": "Saat dilimi yerine doğum yerinin boylamına göre düzeltilmiş yerel güneş saati."
+        },
+        {
+          "term": "Regresyon testi",
+          "def": "Eskiden doğru çalışan davranışın yeni değişikliklerle bozulmadığını doğrulayan test."
+        },
+        {
+          "term": "App Router",
+          "def": "Next.js'te klasör yapısına dayalı sayfa yönlendirme sistemi."
+        },
+        {
+          "term": "CC BY 4.0",
+          "def": "Atıf yapıldığı sürece ticari kullanıma da izin veren açık veri lisansı."
+        },
+        {
+          "term": "zstd",
+          "def": "Hızlı ve yüksek oranlı sıkıştırma algoritması."
+        },
+        {
+          "term": "Veri seti (dataset)",
+          "def": "Modelleri eğitmek veya test etmek için derlenmiş büyük kayıt koleksiyonu."
+        }
+      ]
+    }
+  ]
+}
