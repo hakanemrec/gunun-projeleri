@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-25",
+  "projects": [
+    {
+      "name": "makecindy/cindy",
+      "url": "https://github.com/makecindy/cindy",
+      "stars": "4.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Cindy**, bilgisayarınızda yerel çalışan, açık kaynaklı bir **AI agent** istemcisidir. Amaç \"kurulum derdi olmadan çalışsın\": dosyalarınızla ve açık oturumlu uygulamalarınızla çalışır, tarayıcıyı, bilgisayarı ve telefonu sürebilir, görevleri mesajlaşma uygulamalarından veya zamanlayıcıdan alabilir.\n\n- Claude Code ve Codex gibi mevcut agent'ları tek bir masaüstü/mobil arayüzde toplamak isteyenlere hitap eder\n- Not: bu repo yalnızca **istemci** (masaüstü + mobil); arka uç servisi ayrı bir repoda",
+        "tech": "- **Monorepo:** pnpm ile `apps/desktop` (**Electron**), `apps/mobile` (Expo / React Native) ve ortak `packages/*` (kimlik doğrulama, cihaz bağlama, agent orkestrasyonu, model sağlayıcıları)\n- **Harness sarmalama:** Kendi agent döngüsünü yazmak yerine Claude Code ve Codex'i **harness** olarak sarar; model ve harness görev ortasında değiştirilebilir, çalışma alanı, hafıza ve skill'ler korunur. Gerekçe: en iyi agent'lar hızla değişiyor, bağımlılık yerine uyumluluk katmanı kurmak daha dayanıklı\n- **Çoklu agent:** Görev planlanır, farklı harness/model kombinasyonlarıyla paralel yürütülür ve gözden geçirilir\n- **Araç dağıtımı:** claude-code, codex, ripgrep ikilileri repoya girmez, `pnpm install` sırasında platforma göre indirilir\n- Node.js 22, pnpm 10 (11 henüz desteklenmiyor), Git LFS",
+        "why": "- \"Consider it done\" vaadi: ajan kullanımını terminalden çıkarıp sıradan kullanıcıya açma isteği\n- Tek arayüzde birden çok model/harness, \"hangisine bağlanayım\" kararsızlığını azaltıyor\n- Günlük ~477 yıldız ile ivme yüksek; küçük ve yeni bir proje için dikkat çekici, ancak büyük kısmı ürün lansman heyecanı olabilir\n- Çin ve global bölge seçeneği, iki pazara birden hedeflendiğini gösteriyor",
+        "evolve": "- Arka uç ayrı repoda olduğu için topluluk tam yığını çalıştıramıyor; tam self-host seçeneği güveni artırır\n- Resmi build'lerde analitik ve çevrimiçi heartbeat var; varsayılanda gizlilik odaklı bir mod beklenir\n- Yerel agent'ın tarayıcı ve telefon kontrolü güçlü ama risklidir; izin modeli ve sandbox şart\n- Native harness, skill paylaşımı ve plugin marketplace henüz yolda; olgunlaşırsa gerçek bir platform olabilir"
+      },
+      "glossary": [
+        { "term": "AI agent", "def": "Hedef verildiğinde adımları kendisi planlayıp araçları (dosya, tarayıcı, terminal) kullanarak işi yürüten yapay zekâ programı." },
+        { "term": "Harness", "def": "Bir dil modelini araçlara ve döngüye bağlayan çalışma çerçevesi; Claude Code ve Codex birer harness'tır." },
+        { "term": "Electron", "def": "Web teknolojileriyle (HTML/JS) masaüstü uygulaması yapmaya yarayan çerçeve." },
+        { "term": "Expo / React Native", "def": "Tek kod tabanıyla iOS ve Android uygulaması geliştirmeyi sağlayan mobil çerçeve." },
+        { "term": "Monorepo", "def": "Birden çok uygulama ve paketin tek bir depoda tutulması." },
+        { "term": "Skill (beceri)", "def": "Agent'a bir işi nasıl yapacağını anlatan, gerektiğinde yüklenen talimat paketi." },
+        { "term": "Git LFS", "def": "Büyük dosyaları Git'te verimli saklamaya yarayan eklenti." }
+      ]
+    },
+    {
+      "name": "aws/agent-toolkit-for-aws",
+      "url": "https://github.com/aws/agent-toolkit-for-aws",
+      "stars": "3.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "AWS'nin resmi olarak desteklediği; **MCP sunucuları, skill'ler ve plugin'lerden** oluşan bir araç seti. Kodlama agent'larının (Claude Code, Codex, Cursor, Devin vb.) AWS üzerinde doğru servisi seçip, doğru şekilde kurup dağıtmasını sağlamayı hedefler. Eski \"AWS Labs\" MCP sunucularının halefidir.\n\n- AWS'de altyapı kuran ya da agent geliştiren ekipler için\n- Dokümantasyon araması kimlik bilgisi gerektirmez; API çağrıları için yerel AWS kimlik bilgisi gerekir",
+        "tech": "İki bağımsız katman var:\n\n- **Çalışma zamanı erişimi:** Yönetilen **AWS MCP Server**; kimlik doğrulamalı API erişimi, korumalı Python betiği çalıştırma ve dokümantasyon arama. Yerelde `uvx mcp-proxy-for-aws-cli` ile bölgesel uç noktaya bağlanır\n- **Rehberlik:** `SKILL.md` + `references/` yapısında skill'ler; MCP olmadan da çalışır. `rules/` dizini agent'a \"önce dokümana bak\" gibi proje kuralları verir\n- **Plugin paketleri:** `aws-core`, `aws-agents` (Bedrock/AgentCore), `aws-data-analytics` (S3 Tables, Glue, Athena), `aws-agents-for-devsecops`, `aws-startup-advisor`; Claude Code, Codex, Cursor ve Devin için manifest'ler\n- Gerekçe: bilgiyi (skill) ve eylemi (MCP) ayırmak, her birinin ayrı sürümlenmesini ve ayrı güvenlik sınırı taşımasını sağlıyor",
+        "why": "- Büyük bir bulut sağlayıcısının agent ekosistemine resmi girişi: \"AWS'yi agent'a nasıl öğretirim\" sorusuna tek adres\n- Birden çok agent aracı için tek paket; kurulum `aws configure agent-toolkit` gibi tek komut\n- Bugünkü artış düşük (~13 yıldız), yani trend değil, kurumsal bir lansman/GA etkisi; yine de AWS kullanan ekipler için pratik değeri yüksek",
+        "evolve": "- Skill'ler MCP sunucusundan sunulmuyor; iki katmanın ayrı yapılandırılması sürtünme yaratıyor, tek kurulum akışı iyi olurdu\n- Plugin kurulumu yalnızca dört agent için; diğerleri elle yapılandırma gerektiriyor\n- Veritabanı tarafı (RDS/Aurora, Oracle iş yükleri) için özel skill'ler eklenirse ERP/PL-SQL dünyası için de anlamlı hale gelir\n- Maliyet korkuluğu: agent'ın kontrolsüz kaynak açmasını engelleyecek bütçe ve onay politikaları"
+      },
+      "glossary": [
+        { "term": "MCP (Model Context Protocol)", "def": "Agent'ları dış araç ve verilere bağlayan ortak protokol." },
+        { "term": "Skill (beceri)", "def": "Agent'a belirli bir işi nasıl yapacağını anlatan Markdown talimat paketi (SKILL.md)." },
+        { "term": "Plugin", "def": "Birden çok bileşeni (MCP ayarı, skill) tek seferde kurulabilir paket haline getiren eklenti." },
+        { "term": "CDK / CloudFormation", "def": "AWS altyapısını kodla tanımlamaya yarayan araçlar." },
+        { "term": "Amazon Bedrock / AgentCore", "def": "AWS'nin yönetilen model ve agent çalıştırma servisleri." },
+        { "term": "Glue / Athena", "def": "AWS'de veri hazırlama (ETL) ve veri gölünde SQL sorgulama servisleri." },
+        { "term": "uv / uvx", "def": "Python paketlerini hızlı kurup çalıştıran araç." },
+        { "term": "Proxy", "def": "İstekleri arada karşılayıp hedefe ileten aracı katman." }
+      ]
+    },
+    {
+      "name": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "stars": "86.6k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Impeccable**, AI agent'ların ürettiği arayüzlerin \"yapay zekâ işi\" görünmesini (varsayılan fontlar, mordan maviye gradyanlar, iç içe kartlar) engellemeyi amaçlayan bir tasarım rehberi ve denetim paketidir. Agent'a ortak bir tasarım dili ve komutlar verir.\n\n- Frontend'i agent'la üreten geliştirici ve girişimciler için\n- Tek `/impeccable` skill'i; `critique`, `audit`, `polish`, `animate`, `harden` gibi 24 komut sunar",
+        "tech": "- **Rust motoru:** Skill'in yanında küçük bir başlatıcı betik, kendi kendine yeten bir motor ikilisini çalıştırır (yanında gelir ya da `~/.impeccable/bin/` altına indirilir); `npx impeccable` aynı ikilinin ince bir sarmalayıcısı\n- **Deterministik dedektör:** 62 kural, LLM ve API anahtarı olmadan kodu ya da render edilmiş sayfayı tarar; bu sayede hızlı, ucuz ve tekrarlanabilir\n- **Bağlam dosyaları:** `PRODUCT.md` (kitle, amaç, ton) ve `DESIGN.md` (görsel yön) ayrı tutulur\n- **Hook:** Desteklenen harness'larda, UI dosyası düzenlenince dedektör otomatik çalışıp bulguları agent'a geri besler\n- Yaklaşık 20 agent harness'ına dağıtılır; ayrıca tarayıcı ve VS Code eklentisi var",
+        "why": "- \"AI slop\" şikâyeti geniş bir kitlenin ortak sorunu; çözüm hem estetik hem ölçülebilir\n- Tek skill, çok araç: Claude Code, Cursor, Codex, Copilot, Gemini CLI hepsinde çalışıyor\n- 86 bin yıldıza ulaşmış olgun bir proje; bugün ~619 yıldız ek, yani yeni sürüm/duyuru etkisiyle ivme sürüyor\n- Aynı gün trendde Nutlope/hallmark gibi benzer iddialı projeler olması, tasarım denetiminin agent dünyasında yeni bir kategori olduğunu gösteriyor",
+        "evolve": "- Temiz dedektör çıktısı görsel ya da erişilebilirlik kalitesinin kanıtı değil; ekran görüntüsü tabanlı otomatik değerlendirme eklenebilir\n- Canlı mod yalnızca yerel checkout'ta çalışıyor ve `package.json` betiği çalıştırabiliyor; izin sınırları sıkılaştırılabilir\n- Anonim telemetri varsayılan açık; çıkış yolları var ama varsayılanın kapalı olması güveni artırır\n- Kurumsal tasarım sistemlerini (marka token'ları) içe aktaran kural paketleri ekleyerek şirket içi kullanıma uyarlanabilir"
+      },
+      "glossary": [
+        { "term": "AI slop", "def": "Yapay zekânın ürettiği, jenerik ve özensiz görünen içerik ya da tasarım." },
+        { "term": "Skill (beceri)", "def": "Agent'a belirli bir işi nasıl yapacağını anlatan talimat paketi." },
+        { "term": "Harness", "def": "Bir dil modelini araç ve döngüye bağlayan çalışma çerçevesi (Claude Code, Codex vb.)." },
+        { "term": "Deterministik", "def": "Aynı girdiyle her zaman aynı sonucu veren; yapay zekâ tahmini içermeyen." },
+        { "term": "Hook (kanca)", "def": "Bir olay (ör. dosya düzenleme) olduğunda otomatik tetiklenen betik." },
+        { "term": "Telemetri", "def": "Kullanım hakkında toplanan anonim ölçüm verisi." },
+        { "term": "Gradyan", "def": "Bir rengin başka bir renge yumuşak geçişi." },
+        { "term": "Erişilebilirlik (a11y)", "def": "Arayüzün engelli kullanıcılar dahil herkes tarafından kullanılabilir olması." }
+      ]
+    }
+  ]
+}
