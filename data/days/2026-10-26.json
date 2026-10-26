@@ -1,0 +1,147 @@
+{
+  "date": "2026-10-26",
+  "projects": [
+    {
+      "name": "JetBrains/thinkrail",
+      "url": "https://github.com/JetBrains/thinkrail",
+      "stars": "2.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**ThinkRail**, JetBrains'in açık kaynaklı \"agentic IDE\" denemesidir. Amaç, bir kod agent'ını (`pi`) sohbet penceresinde bırakmak yerine tam bir geliştirme ortamına oturtmaktır: editör, diff, terminal, GitHub PR akışı ve agent aynı yerde.\n\n- Aynı repoda birden fazla agent'ı birbirine karışmadan paralel çalıştırmak isteyenlere hitap eder\n- Her iş ayrı bir **git worktree** içinde yürür; ana checkout'a dokunulmaz\n- Diff üzerine yorum bırakıp agent'a geri gönderme gibi kod inceleme döngüsünü IDE'ye taşır",
+        "tech": "- **Üç katman:** Motor (`packages/server`, `Bun.serve` ile HTTP + WebSocket, sohbet başına süreç içi bir `pi` oturumu), kablo protokolü (`packages/contracts`, tipli ve sürümlü) ve UI istemcisi (`apps/web`, React 19 + Zustand + Tailwind v4 + Monaco)\n- **Gerekçe:** UI yalnızca sözleşmeye bağımlı olduğu için bağımsız yayınlanabilir ve uzaktaki bir host'a bağlanabilir\n- **Tasarım ilkesi:** Modeller, skill'ler, bağlam sıkıştırma ve maliyet `pi`'ye aittir; uygulama kullanıcı adına prompt kurmaz\n- **Spec-first:** Her modülün yanında `SPEC.md` bulunur; agent bunları `spec_*` araçlarıyla okur ve günceller\n- **Masaüstü:** Electrobun; araç zinciri Bun, Turborepo, Biome, Playwright\n- **MCP** desteği: salt okunur olmayan çağrılar onay ister, repo içinde tanımlı sunucular onaylanana kadar kapalıdır",
+        "why": "- **Marka güveni:** JetBrains adı, \"vibe coding\" araçlarının kalabalığında dikkat çeker\n- **Zamanlama:** Paralel agent'lar ve worktree tabanlı akışlar şu an geliştiricilerin asıl sorunu; tek sohbet kutusu yetmiyor\n- **Hesap yok:** JetBrains AI veya `pi`'nin desteklediği herhangi bir sağlayıcıyla girilir; bağımlılık hissi düşüktür\n- Yıldız sayısı görece mütevazı (2.0k) ama günlük ivme yüksek; erken evre bir inkübatör projesi",
+        "evolve": "- Genişletme (extension) desteği tamamlanırsa agent kullanıcının çalışma şekline göre kendi araçlarını üretebilir; vaat edilen \"her kullanımda iyileşen IDE\" burada belli olacak\n- Oracle/PL-SQL gibi kurumsal dillerde spec grafı ve veritabanı şeması farkındalığı için fırsat var\n- Eksikler: macOS'ta Intel build yok, Linux paketleri imzasız, 168 açık issue olgunlaşma gerektiğini gösteriyor\n- Spec grafının büyük kod tabanlarında ölçeklenmesi ve bayatlayan spec'lerin yönetimi asıl zorluk olacak"
+      },
+      "glossary": [
+        {
+          "term": "Agentic IDE",
+          "def": "Yapay zeka agent'ının kod yazma, test ve PR açma gibi işleri kendisinin yürüttüğü, insanın ise yönlendirip denetlediği geliştirme ortamı."
+        },
+        {
+          "term": "git worktree",
+          "def": "Aynı git deposunun birden fazla klasörde, her biri kendi dalıyla aynı anda açılmasını sağlayan özellik. Paralel işler birbirini bozmaz."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine yapay zekaya niyeti anlatıp çıkan sonucu yönlendirerek yazılım geliştirme biçimi."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zeka uygulamalarının dış araç ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Monaco",
+          "def": "VS Code'un editör bileşeni; tarayıcıda çalışan, sözdizimi renklendirme ve diff gösterebilen kod editörü."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Tarayıcı ile sunucu arasında açık kalan çift yönlü bağlantı; canlı akan agent çıktısı için uygundur."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla uygulama ve paketin tek bir git deposunda tutulması."
+        },
+        {
+          "term": "Skill",
+          "def": "Agent'a belirli bir işi nasıl yapacağını anlatan, gerektiğinde yüklenen taşınabilir talimat paketi."
+        }
+      ]
+    },
+    {
+      "name": "coollabsio/coolify",
+      "url": "https://github.com/coollabsio/coolify",
+      "stars": "64.6k",
+      "language": "PHP",
+      "sections": {
+        "serves": "**Coolify**, kendi sunucunuzda çalıştırabileceğiniz açık kaynaklı bir PaaS'tır; Heroku, Vercel ve Netlify'a alternatiftir. Tek gereksinim SSH erişimi olan bir makinedir (VPS, bare-metal, hatta Raspberry Pi).\n\n- Uygulama, veritabanı ve servisleri tek panelden dağıtıp yönetir\n- Yapılandırmalar sizin sunucunuzda kalır; Coolify'ı bıraksanız bile çalışan kaynaklar durmaz\n- Bulut faturasından kaçınmak ve veriyi kontrol etmek isteyen ekiplere hitap eder",
+        "tech": "- **Arka uç:** Laravel / PHP; ön yüz Inertia.js + Svelte, derleme Vite\n- **Kapsayıcılar:** Her şey Docker ve Docker Compose üzerinden dağıtılır; sunuculara SSH ile bağlanılıp komutlar uzaktan çalıştırılır (ajan kurulumu gerektirmez)\n- **Derleme seçenekleri:** Nixpacks, Railpack, Dockerfile, Docker Compose veya hazır imaj; Git push'ta otomatik deploy, PR önizlemeleri ve geri alma\n- **Ağ:** Ters vekil (reverse proxy) ile otomatik HTTPS ve özel alan adları\n- **Veri:** PostgreSQL, MySQL, MariaDB, Redis; yönetilen veritabanları ve yedekleme\n- **Arayüzler:** Pano, API (OpenAPI), CLI ve MCP desteği\n- **Gerekçe:** SSH tabanlı mimari, kurulumu basit tutar ve hedef sunucuyu temiz bırakır",
+        "why": "- 64.6k yıldızlı olgun bir proje; bugünkü sıçrama büyük olasılıkla yeni özellikler (MCP desteği, Railpack) ve bulut maliyetlerine tepkiyle ilgili\n- **Kitle:** Bağımsız geliştiriciler, küçük ekipler, homelab meraklıları\n- 360'tan fazla tek tıkla servis şablonu, \"kendi Heroku'm\" hissini hızlı verir\n- Apache 2.0 lisansı ve bağış/sponsor modeli güven sağlar",
+        "evolve": "- Çok sunuculu yönetim var, ancak yüksek erişilebilirlik (HA) ve Kubernetes düzeyinde orkestrasyon sınırlı; Cloud sürümü bunu ücretli sunuyor\n- Veritabanı yedekleme/geri yükleme ve izleme, Oracle/PL-SQL gibi kurumsal veritabanları için şablonlarla genişletilebilir\n- MCP ve API üzerinden agent'ların deploy yönetmesi doğal bir sonraki adım; yetkilendirme ve denetim izi kritik olur\n- 241 açık issue ve geniş yüzey alanı bakım yükünü artırıyor"
+      },
+      "glossary": [
+        {
+          "term": "PaaS",
+          "def": "Platform as a Service; kodu verdiğinizde sunucu, ağ ve ölçeklemeyi sizin yerinize yöneten dağıtım platformu."
+        },
+        {
+          "term": "SSH",
+          "def": "Uzak bir sunucuya şifreli bağlanıp komut çalıştırmayı sağlayan protokol."
+        },
+        {
+          "term": "Nixpacks",
+          "def": "Kaynak kodu inceleyip Dockerfile yazmadan otomatik olarak çalıştırılabilir kapsayıcı imajı üreten derleme aracı."
+        },
+        {
+          "term": "Reverse proxy",
+          "def": "Dış dünyadan gelen istekleri doğru uygulamaya yönlendiren ve genelde HTTPS sertifikasını yöneten ara sunucu."
+        },
+        {
+          "term": "Docker Compose",
+          "def": "Birden fazla kapsayıcıyı tek bir yapılandırma dosyasıyla tanımlayıp birlikte çalıştırma aracı."
+        },
+        {
+          "term": "Inertia.js",
+          "def": "Klasik sunucu tarafı çerçevelerle (örn. Laravel) modern JavaScript arayüzlerini API yazmadan birleştiren katman."
+        },
+        {
+          "term": "PR önizlemesi",
+          "def": "Her pull request için ayrı, geçici bir yayın ortamı açılarak değişikliğin canlıda görülmesi."
+        },
+        {
+          "term": "Bare-metal",
+          "def": "Sanallaştırma olmadan doğrudan fiziksel sunucu."
+        }
+      ]
+    },
+    {
+      "name": "AgriciDaniel/claude-seo",
+      "url": "https://github.com/AgriciDaniel/claude-seo",
+      "stars": "21.3k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Claude SEO**, Claude Code için yazılmış açık kaynaklı bir SEO eklentisidir. Bir web sitesi verildiğinde teknik SEO, içerik kalitesi, yapılandırılmış veri ve yapay zeka arama görünürlüğünü denetler; yaklaşık 10-15 dakikada önceliklendirilmiş bir eylem planı çıkarır.\n\n- SEO ajansları, şirket içi ekipler ve freelance danışmanlar hedef kitledir\n- Klasik SEO'nun yanı sıra **GEO** (ChatGPT, Perplexity, Gemini gibi yapay zeka yanıtlarında görünme) kontrolü içerir",
+        "tech": "- **Ev sahibi:** Claude Code eklenti mimarisi; 26 alt-skill ve 19 alt-agent (teknik, içerik, şema, performans, yerel SEO vb.)\n- **Paralel denetim:** Site türü tespit edilir, uzman agent'lar aynı anda (17'ye kadar) çalışır, bulgular puanlanıp eylem planına çevrilir\n- **Model dağılımı:** Muhakeme isteyen içerik/GEO agent'ları Opus, diğerleri Sonnet; her agent'ın modeli `agents/` altında değiştirilebilir\n- **Python 3.11+** (`uv` ile), JavaScript gerektiren sayfalar için headless Chromium, drift izleme için **SQLite** anlık görüntüleri\n- **Veri kaynakları:** PageSpeed Insights, CrUX, Search Console, GA4 ve opsiyonel SE Ranking/Bing eklentileri\n- Çıktılar Markdown, JSON ve PDF; CI'da 1077 test",
+        "why": "- Claude Code eklenti ekosisteminin hızla büyümesi ve SEO'nun \"AI arama\" ile yeniden önem kazanması\n- Pahalı SaaS SEO araçlarına MIT lisanslı, komutla çalışan bir alternatif\n- Bilgi: kendi sitesinin 12 haftada 10.8K tıklama aldığı iddiası projenin yazarı tarafından bildiriliyor, bağımsız doğrulanmış değil\n- Özel bir topluluk sürümüne yönlendirme, projenin aynı zamanda bir pazarlama hunisi olduğunu gösteriyor",
+        "evolve": "- Yerel (Claude Code'a bağımlı) yapıyı diğer agent istemcileri için de taşınabilir yapmak kitleyi büyütür\n- Düzenli zamanlanmış denetim ve drift uyarıları ile sürekli izleme servisine dönüşebilir\n- Bulguların otomatik düzeltme PR'larına çevrilmesi (şema, sitemap, hreflang) doğal sonraki adım\n- Risk: LLM tabanlı yorumlar sahte kesinlik üretebilir; bulgu başına kanıt ve doğrulama adımı önemli"
+      },
+      "glossary": [
+        {
+          "term": "SEO",
+          "def": "Arama motoru optimizasyonu; bir sitenin arama sonuçlarında daha üst sıralarda çıkmasını sağlayan çalışmalar."
+        },
+        {
+          "term": "GEO",
+          "def": "Generative Engine Optimization; içeriğin ChatGPT, Gemini gibi yapay zeka yanıtlarında kaynak olarak gösterilme olasılığını artırma çabası."
+        },
+        {
+          "term": "E-E-A-T",
+          "def": "Google'ın içerik kalitesini değerlendirirken baktığı deneyim, uzmanlık, otorite ve güvenilirlik ölçütleri."
+        },
+        {
+          "term": "Schema.org",
+          "def": "Sayfa içeriğini arama motorlarına makine okunur biçimde anlatan yapılandırılmış veri sözlüğü."
+        },
+        {
+          "term": "hreflang",
+          "def": "Aynı sayfanın farklı dil/bölge sürümlerini arama motoruna bildiren etiket."
+        },
+        {
+          "term": "Core Web Vitals",
+          "def": "Google'ın yükleme hızı, etkileşim ve görsel kararlılığı ölçen kullanıcı deneyimi metrikleri."
+        },
+        {
+          "term": "llms.txt",
+          "def": "Sitenin yapay zeka modellerine hangi içeriğin nasıl okunacağını anlatan, robots.txt benzeri öneri dosyası."
+        },
+        {
+          "term": "Headless browser",
+          "def": "Ekran arayüzü olmadan arka planda çalışan, JavaScript'li sayfaları işleyebilen tarayıcı."
+        },
+        {
+          "term": "Sub-agent",
+          "def": "Ana agent'ın belirli bir alt görevi devrettiği, kendi talimat ve modeliyle çalışan yardımcı agent."
+        }
+      ]
+    }
+  ]
+}
