@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-27",
+  "projects": [
+    {
+      "name": "nightly-labs/openbot",
+      "url": "https://github.com/nightly-labs/openbot",
+      "stars": "1.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**OpenBot**, kalıcı yapay zekâ \"takım arkadaşları\" barındıran, yerel öncelikli (local-first) bir masaüstü çalışma alanıdır. Her agent'ın kendi çalışma alanı, sohbeti ve görev kuyruğu vardır.\n\n- Codex, Claude (Claude Code / Agent SDK) ve Grok CLI gibi farklı kod agent'larını tek uygulamada yönetmek isteyenlere hitap eder\n- Agent'lar birbirine mesaj, dosya ve görev devredebilir; ortak kanallarda çalışabilir\n- Geliştirme önizleme aşamasındadır: agent'lar dosya sistemi, komut, ağ ve tarayıcıya **onaysız tam erişimle** çalışır",
+        "tech": "- **Kabuk:** Electron (Tauri değil), arayüz SolidJS + TypeScript; araç zinciri Bun, Node.js 24, Biome, Vitest, electron-vite\n- **Veri:** SQLite üzerinde **olay günlüğü (event log)** ve bunlardan türetilen okuma projeksiyonları (agent, sohbet, kuyruk, ek dosya indeksi)\n- **Sağlayıcı bağlantısı:** Codex App Server stdio JSONL ile, Claude oturumları stream JSON ile; diğerleri **ACP** (Agent Client Protocol) üzerinden. Ek olarak Ollama / LM Studio gibi yerel model sunucuları algılanır\n- **Güvenlik sınırı:** Preload katmanı renderer'a yalnızca tipli bir `window.openbot` API'si açar; gömülü tarayıcı ayrı bir Electron oturumunda sandbox'lanır\n- **Uzaktan ekip:** WebRTC veri kanalları, bağlantı kurulumu için Signal servisi, yedek olarak coturn TURN rölesi\n- **Hesap API'si:** Cloudflare Workers + TanStack Start, D1 ve R2",
+        "why": "Agent CLI'ları çoğaldıkça asıl sorun \"hangisi iyi\" olmaktan çıkıp **birden fazla agent'ı düzenli yönetmek**e kaydı. OpenBot bunu tek arayüzde, kalıcı bellek, çökmeye dayanıklı FIFO kuyruk ve agent'lar arası mesajlaşmayla çözüyor. Bugün 176 civarı yeni yıldız alması, kitlenin hâlâ küçük ama niş bir ihtiyaca denk geldiğini gösteriyor. Türkçe dahil çok dilli arayüz de ilgiyi artırıyor.",
+        "evolve": "- **Onay ve izin modeli:** Şu an \"tam erişim\" bilinçli bir ürün kararı; eylem başına onay, klasör kısıtı ve denetim günlüğü kurumsal kullanım için şart olur\n- **Lisans:** PolyForm Noncommercial ticari kullanımı kapatıyor; sahiplik devri (CAA) toplulukta çekince yaratabilir\n- **Gözlemlenebilirlik:** Agent başına maliyet, token ve hata panosu\n- **ERP/IFS bağlamı:** Agent'ları rutin raporlama ve veri kontrolü işlerine webhook ile bağlamak ilginç bir yön olabilir"
+      },
+      "glossary": [
+        {
+          "term": "Local-first",
+          "def": "Verinin ve işlemin öncelikle kullanıcının kendi bilgisayarında tutulduğu, bulut servisine bağımlılığı en aza indiren yaklaşım."
+        },
+        {
+          "term": "ACP (Agent Client Protocol)",
+          "def": "Bir uygulamanın farklı kod agent'larıyla ortak bir dille konuşmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Event log (olay günlüğü)",
+          "def": "Durumu doğrudan güncellemek yerine olanları sırayla kaydeden veri modeli; güncel durum bu kayıtlardan türetilir."
+        },
+        {
+          "term": "FIFO kuyruk",
+          "def": "İlk giren ilk çıkar sırasıyla çalışan bekleme listesi; mesajlar geliş sırasıyla işlenir."
+        },
+        {
+          "term": "WebRTC",
+          "def": "Tarayıcı ve uygulamaların aralarında doğrudan, aracı sunucu olmadan veri ve görüntü alışverişi yapmasını sağlayan teknoloji."
+        },
+        {
+          "term": "TURN rölesi (coturn)",
+          "def": "İki cihaz doğrudan bağlanamadığında trafiği aktaran yedek sunucu."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Bir kodun sistemin geri kalanına zarar veremeyeceği şekilde yalıtılmış çalışma ortamı."
+        },
+        {
+          "term": "Cloudflare Workers",
+          "def": "Cloudflare'in dünya genelindeki sunucularında küçük JavaScript fonksiyonları çalıştıran sunucusuz platform."
+        }
+      ]
+    },
+    {
+      "name": "gitroomhq/postiz-app",
+      "url": "https://github.com/gitroomhq/postiz-app",
+      "stars": "38.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Postiz**, açık kaynaklı bir sosyal medya yönetim ve zamanlama platformudur. Ortak takvimden Instagram, YouTube, LinkedIn, X, Reddit, TikTok, Bluesky gibi birçok kanala gönderi planlamayı, çapraz paylaşımı ve analitiği tek yerde toplar.\n\n- Buffer/Hootsuite benzeri araçlara **kendi sunucunda çalışan** alternatif arayanlara hitap eder\n- AI Copilot, görsel/video üretimi ve \"Smart Agent\" ile içerik üretimini otomatikleştirir\n- Kendi barındırmada kanal, gönderi veya üye sayısı sınırı yoktur",
+        "tech": "- **Monorepo:** pnpm workspaces (`apps` ve `libraries`)\n- **Ön yüz:** Next.js (React); **arka uç:** NestJS\n- **Veri:** Prisma ile varsayılan PostgreSQL, Redis; e-posta için Resend\n- **İş akışı:** **Temporal** ile zamanlanmış, yeniden denenebilir gönderi akışları — sosyal API'ler sık hata verdiği için dayanıklı iş akışı motoru mantıklı bir seçim\n- **Entegrasyon:** Genel API, webhook'lar, `@postiz/node` SDK'sı, n8n ve Make.com bağlantıları\n- **Agent yüzeyi:** MCP sunucusu ve CLI; Claude, ChatGPT, Codex, Cursor gibi istemcilerden kullanılabilir\n- **Lisans:** AGPL-3.0",
+        "why": "İki trend kesişiyor: **SaaS aboneliklerinden kaçış** (self-host) ve **agent'ların gerçek dünyada iş yapması**. Postiz, MCP ve CLI ile \"agent'ım benim yerime paylaşım planlasın\" senaryosunu hazır sunuyor. 38 bin yıldızlık oturmuş bir topluluğu ve resmi OAuth akışlarını (scraping yok) kullanması güven veriyor. Bugünkü ivme, agent-yerel arayüzlerin duyurulmasıyla ilişkili görünüyor.",
+        "evolve": "- **Kurulum yükü:** Her platform için kendi geliştirici uygulamanı açıp onay beklemek (Meta/TikTok/YouTube haftalar sürebilir) self-host'un en büyük sürtünmesi; ortak bir onaylı uygulama seçeneği fark yaratır\n- **Onay akışları:** Agent'ların taslak oluşturup insanın onayladığı bir kuyruk, otomatik paylaşım riskini azaltır\n- **Analitik:** Platformlar arası karşılaştırmalı raporlama ve A/B test\n- **Entegrasyon:** Kurumsal içerik veya ürün verisinden (ör. bir ERP/veritabanı) otomatik gönderi üretimi"
+      },
+      "glossary": [
+        {
+          "term": "Self-host",
+          "def": "Bir yazılımı hizmet sağlayıcıda değil, kendi sunucunuzda çalıştırmak."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden çok uygulama ve kütüphanenin tek bir depoda tutulması."
+        },
+        {
+          "term": "NestJS",
+          "def": "TypeScript ile yazılan, düzenli ve modüler bir Node.js arka uç çatısı."
+        },
+        {
+          "term": "Prisma",
+          "def": "Veritabanı tablolarına tipli kod üzerinden erişmeyi sağlayan ORM aracı."
+        },
+        {
+          "term": "Temporal",
+          "def": "Uzun süren işlerin hata olsa bile kaldığı yerden devam etmesini ve yeniden denenmesini sağlayan iş akışı motoru."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ agent'larının harici araç ve verilere standart bir yolla bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "OAuth",
+          "def": "Şifre paylaşmadan, bir uygulamaya hesabınız üzerinde sınırlı yetki vermeyi sağlayan standart."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılımı ağ üzerinden hizmet olarak sunsanız bile değişikliklerin kaynak kodunu paylaşmayı şart koşan açık kaynak lisansı."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda başka bir sisteme otomatik HTTP bildirimi gönderen mekanizma."
+        }
+      ]
+    },
+    {
+      "name": "alchaincyf/huashu-design",
+      "url": "https://github.com/alchaincyf/huashu-design",
+      "stars": "27.2k",
+      "language": "HTML",
+      "sections": {
+        "serves": "**Huashu Design**, Claude Code, Codex ve Cursor gibi kod agent'larına eklenen, HTML tabanlı bir **tasarım skill'idir**. Tek cümlelik istekten web sayfası, uygulama prototipi, sunum, animasyon ve infografik üretir.\n\n- Tasarımcısı olmayan geliştirici ve ekiplere hitap eder\n- Amaç, agent'ların ürettiği jenerik \"AI slop\" görünümünü engellemektir\n- Çıktılar tek dosya HTML, düzenlenebilir PPTX, MP4/GIF, PDF/PNG/SVG olabilir",
+        "tech": "- **Skill yapısı:** `SKILL.md` + referans dokümanlar, JSX/JS başlangıç bileşenleri ve demolar\n- **Marka protokolü:** Marka adı verilirse renkleri hafızadan tahmin etmez; resmi sayfayı bulur, varlıkları indirir, hex renkleri çıkarıp `brand-spec.md` içinde CSS değişkenlerine yazar\n- **Yön danışmanı:** Belirsiz isteklerde 84 stillik kütüphaneden adaylar seçip önce küçük önizlemeler, sonra en farklı üç seçeneği tam olarak üretir\n- **Dışa aktarım:** Node betikleri (`html2pptx.js`, video render) DOM'daki hesaplanmış stilleri okuyup PowerPoint nesnelerine çevirir; ffmpeg ile 60 fps ve GIF\n- **Doğrulama:** Playwright ile tarayıcıda kontrol, Python lint betiği (bozuk görsel, küçük yazı, düşük kontrast, konsol hataları)\n- **Gizlilik:** Çekirdek hat yerelde, API anahtarsız çalışır; bulut özellikleri ayrı klasörde ve açık onay ister. Lisans MIT",
+        "why": "Agent'larla kod yazmak olgunlaştı, ama **görsel çıktı kalitesi** hâlâ zayıf nokta. Bu skill, bu boşluğu tek `npx skills add` komutuyla kapatıyor. Çıktının HTML olması, her agent'ın zaten iyi üretebildiği bir format olduğu için sürtünmeyi düşürüyor. Lisansın MIT'ye çevrilmesi ve düzenlenebilir PPTX çıktısı, kitleyi geliştiricilerden pazarlama ve ürün ekiplerine genişletti. Aynı dönemde benzer \"anti-AI-slop\" skill'lerinin trend olması akımın sürdüğünü gösteriyor.",
+        "evolve": "- **Sınırlar:** Marka girdisi olmadan sıfırdan tasarımların kalitesi README'ye göre orta düzeyde; kendi tasarım sistemini (token'lar, bileşenler) içe alma desteği bunu iyileştirir\n- **Figma köprüsü:** PPTX katmanlı Figma dosyasına dönüşemiyor; bu geniş bir kullanıcı grubunu açar\n- **Karmaşık animasyon:** 3B, fizik ve parçacık efektleri kapsam dışı\n- **Ölçülebilir kalite:** Lint yalnızca teknik hataları yakalıyor; görsel regresyon testleriyle desteklenebilir\n- **Yerelleştirme:** Rapor ve iç sunum şablonları için şirket kimliğine göre hazır paketler"
+      },
+      "glossary": [
+        {
+          "term": "Skill",
+          "def": "Bir kod agent'ına belirli bir işi nasıl yapacağını anlatan talimat ve yardımcı dosya paketi."
+        },
+        {
+          "term": "AI slop",
+          "def": "Yapay zekânın ürettiği, birbirine benzeyen, özensiz ve jenerik görünen içerik."
+        },
+        {
+          "term": "Prototip",
+          "def": "Bir ürünün çalışır gibi görünen ama henüz tam geliştirilmemiş erken sürümü."
+        },
+        {
+          "term": "CSS değişkenleri",
+          "def": "Renk, boşluk gibi değerleri tek yerde tanımlayıp tüm sayfada yeniden kullanmayı sağlayan CSS özelliği."
+        },
+        {
+          "term": "DOM",
+          "def": "Tarayıcının bir web sayfasını ağaç yapısında temsil ettiği model."
+        },
+        {
+          "term": "Playwright",
+          "def": "Tarayıcıyı kodla otomatik kullanıp test etmeye yarayan araç."
+        },
+        {
+          "term": "ffmpeg",
+          "def": "Video ve ses dosyalarını dönüştüren, kesen ve işleyen komut satırı aracı."
+        },
+        {
+          "term": "Lint",
+          "def": "Kodu ya da çıktıyı çalıştırmadan, bilinen hata kalıplarına göre tarayan kontrol."
+        },
+        {
+          "term": "MIT lisansı",
+          "def": "Yazılımın ticari dahil serbestçe kullanılmasına izin veren, çok esnek açık kaynak lisansı."
+        }
+      ]
+    }
+  ]
+}
