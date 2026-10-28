@@ -1,0 +1,205 @@
+{
+  "date": "2026-10-28",
+  "projects": [
+    {
+      "name": "ShayanAbbas1/dbdelve",
+      "url": "https://github.com/ShayanAbbas1/dbdelve",
+      "stars": "588",
+      "language": "Rust",
+      "sections": {
+        "serves": "**DBDelve**, hızlı, yerel (native) ve çok motorlu bir veritabanı istemcisidir. DBeaver gibi araçların ağırlığından (Electron/JVM) ve ücretli alternatiflerin kısıtlarından bıkanlar için yazılmıştır.\n\n- Postgres, MySQL/MariaDB, SQLite, DuckDB, Snowflake, SQL Server, MongoDB, Redis ve ClickHouse'u tek arayüzde açar\n- Hücre düzenlemesi doğrudan çalışmaz; önce gözden geçirilecek bir `UPDATE` ifadesi üretir\n- Bağlantı başına salt-okunur / okuma-yazma / tam erişim modu ve başlık çubuğu renklendirmesi vardır\n- Telemetri yoktur; tek otomatik ağ isteği güncelleme kontrolüdür",
+        "tech": "- **Dil ve arayüz:** Rust ve **GPUI** (Zed editörünün arayüz çatısı). Electron ve JVM bilinçli olarak dışarıda bırakılmış; hedef hızlı açılış ve düşük bellek\n- **Dosya sorgulama:** Pencereye sürüklenen CSV, Excel, Parquet veya JSON dosyası bellek içi **DuckDB** ile sorgulanır; ayrı bir import adımı gerekmez\n- **SSH tüneli:** Sistemin kendi `ssh` programına devredilir; böylece mevcut SSH config, agent ve donanım anahtarları olduğu gibi çalışır. Kendi SSH yığınını yazmamak hem güvenlik hem bakım açısından akıllıca bir karar\n- **Göç kolaylığı:** DBeaver ve TablePlus bağlantıları (şifre ve SSH ayarlarıyla) içe aktarılabilir\n- **Lisans:** GPL-3.0; yazar hiçbir özelliğin ücretli duvarın arkasına alınmayacağını söylüyor",
+        "why": "Veritabanı istemcileri geliştiricilerin her gün açtığı araçlardır ve yavaşlık hemen hissedilir. README'deki ölçümler (M1 Pro, DBeaver 25.3.1 ile kıyas) çarpıcı: açılış 1,1 sn'ye karşı 5,2 sn, boşta bellek 133 MB'a karşı 606 MB, 1.000 satırlık sorgu 0,21 sn'ye karşı 1,96 sn.\n\nZaman da uygun: Zed/GPUI ekosistemi Rust ile 'hızlı masaüstü uygulaması' fikrini yaygınlaştırdı, ve Catppuccin / Tokyo Night gibi temalar bu kitlenin dilini konuşuyor. 588 yıldızlık çok genç bir proje olarak trend listesine girmesi, kitlenin bu boşluğu hissettiğini gösteriyor.",
+        "evolve": "- **Eksikler:** Proje kendini erken aşamada tanımlıyor; macOS yalnızca Apple Silicon, Windows yalnızca x86_64, macOS sürümü notarize edilmemiş\n- **Oracle desteği:** Listede yok. PL/SQL / IFS ERP dünyasında çalışanlar için en büyük fırsat bir Oracle sürücüsü ve PL/SQL'e duyarlı tamamlama olurdu\n- **Olası yönler:** Şema karşılaştırma/migrasyon aracı, sorgu planı geçmişi, ekip içi paylaşımlı kayıtlı sorgular, eklenti sistemi\n- **Risk:** GPL-3.0 kurumsal benimsemeyi yavaşlatabilir; tek kişilik projelerde sürdürülebilirlik sorusu devam eder"
+      },
+      "glossary": [
+        {
+          "term": "GPUI",
+          "def": "Zed editörünü yapanların geliştirdiği, GPU üzerinde çizim yapan Rust arayüz çatısı."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması yapan, Chromium içeren ve bu yüzden bellek tüketimi yüksek olan çatı."
+        },
+        {
+          "term": "JVM",
+          "def": "Java Virtual Machine; Java tabanlı uygulamaları çalıştıran ve genelde yavaş açılan çalışma ortamı."
+        },
+        {
+          "term": "DuckDB",
+          "def": "Dosya ve bellek üzerinde analitik SQL çalıştıran, kurulum gerektirmeyen gömülü veritabanı."
+        },
+        {
+          "term": "Parquet",
+          "def": "Büyük veriyi sütun bazlı ve sıkıştırılmış saklayan dosya biçimi."
+        },
+        {
+          "term": "SSH tüneli",
+          "def": "Güvenli bir SSH bağlantısı üzerinden uzaktaki bir veritabanı portuna erişme yöntemi."
+        },
+        {
+          "term": "EXPLAIN ANALYZE",
+          "def": "Bir SQL sorgusunu çalıştırıp veritabanının izlediği planı ve gerçek süreleri gösteren komut."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Yazılımın kullanım verisini üreticiye otomatik göndermesi."
+        },
+        {
+          "term": "Notarize",
+          "def": "Apple'ın uygulamayı zararlı yazılım için tarayıp onayladığı imzalama süreci."
+        }
+      ]
+    },
+    {
+      "name": "kunchenguid/no-mistakes",
+      "url": "https://github.com/kunchenguid/no-mistakes",
+      "stars": "9.0k",
+      "language": "Go",
+      "sections": {
+        "serves": "**no-mistakes**, AI'nın ürettiği koda 'itme anında' kalite kapısı koyan yerel bir git proxy'sidir. `origin` yerine `no-mistakes` remote'una push edersiniz; araç kodu ayrı bir çalışma ağacında gözden geçirir, test eder, lint'ler ve ancak hepsi geçerse gerçek remote'a iletip PR açar.\n\n- Slogan: 'Kill all the slop. Raise clean PR.'\n- Amaç, agent'ların ürettiği özensiz değişikliklerin reviewer'a ulaşmadan elenmesi\n- Çalışma dizininize dokunmaz; kontroller tek kullanımlık worktree'de yürür",
+        "tech": "- **Dil:** Go (race detector'lı testler, `go vet`, `gofmt`), paketleme için Nix ve release-please\n- **Mimari:** Her proje için kullanıcı dizininde çıplak (bare) bir 'geçit' deposu; push bunu tetikler\n- **Aşamalar:** review, test, docs, lint, push, PR, CI. Mekanik düzeltmeler otomatik uygulanır, niyet gerektiren bulgular TUI'de size sorulur\n- **Agent bağımsızlığı:** claude, codex, grok, opencode, copilot, cursor ve `acpx` üzerinden diğerleri; sıralı yedek zinciri desteklenir\n- **CI onarımı:** CI düşerse agent düzeltme dener; yalnızca gözden geçirilmiş head üzerine kurulduğunu kanıtlayabilirse korumalı force-push yapar, aksi halde yeniden review'a gider\n- **Arayüzler:** TUI, `git push no-mistakes` ve agent'lar için `/no-mistakes` skill'i",
+        "why": "Coding agent'lar PR üretimini ucuzlattı ama inceleme maliyetini artırdı: reviewer 'slop' ile boğuluyor. no-mistakes bu sorunu 'insana ulaşmadan önce filtrele' diyerek çözüyor ve mevcut git iş akışına tek komutla oturuyor. Agent-agnostik olması, belirli bir sağlayıcıya bağlı olmayan geniş kitleye hitap ettiriyor. Yaklaşık 9k yıldız ve 939 fork, takımların gerçekten denediğini gösteriyor.",
+        "evolve": "- **Eksikler:** Her kapı için çalışır durumda bir agent gerekir; API kotası harcar. Fork katkıları ayrı kurulum (`--fork-url`) ister\n- **Fırsatlar:** Takım düzeyinde ortak politika dosyası, GitLab/Bitbucket desteği, maliyet raporu, bulgu geçmişinden öğrenen kurallar\n- **Kurumsal bağlam:** PL/SQL veya IFS özelleştirmeleri için SQL lint'i ve şema-uyum kontrolleri bir aşama olarak eklenebilir\n- **Risk:** Kapıyı geçen kod yine de yanlış olabilir; bir AI'nın başka bir AI'yı denetlemesi güveni garanti etmez"
+      },
+      "glossary": [
+        {
+          "term": "Git proxy",
+          "def": "Push'u araya girip yakalayan ve kontrolden sonra gerçek remote'a ileten ara katman."
+        },
+        {
+          "term": "Worktree",
+          "def": "Aynı depoda, ana çalışma dizininizden bağımsız ek bir çalışma kopyası."
+        },
+        {
+          "term": "Bare repo",
+          "def": "Çalışma dosyası içermeyen, yalnızca git verisi tutan depo."
+        },
+        {
+          "term": "TUI",
+          "def": "Terminal içinde çalışan metin tabanlı etkileşimli arayüz."
+        },
+        {
+          "term": "Force-push",
+          "def": "Uzak dalın geçmişini yerel geçmişle üzerine yazan push."
+        },
+        {
+          "term": "Lint",
+          "def": "Kodu stil ve olası hata açısından otomatik denetleyen araç."
+        },
+        {
+          "term": "Slop",
+          "def": "AI tarafından üretilen düşük kaliteli, özensiz içerik veya kod."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir coding agent'a belirli bir işi öğreten, yeniden kullanılabilir talimat paketi."
+        },
+        {
+          "term": "ACP",
+          "def": "Agent Client Protocol; editör/araçların farklı kod agent'larıyla konuşması için ortak protokol."
+        }
+      ]
+    },
+    {
+      "name": "router-for-me/CLIProxyAPI",
+      "url": "https://github.com/router-for-me/CLIProxyAPI",
+      "stars": "56.7k",
+      "language": "Go",
+      "sections": {
+        "serves": "**CLIProxyAPI**, Claude Code, Codex, Gemini CLI, Grok gibi komut satırı araçlarına açtığınız oturumları OpenAI / Gemini / Claude uyumlu tek bir API olarak sunan yerel proxy'dir. Böylece bu API'leri bekleyen herhangi bir istemci, abonelik hesabınız üzerinden model çağırabilir.\n\n- Akışlı (streaming) ve akışsız yanıtlar, function calling ve görsel girdi desteklenir\n- Birden çok hesap arasında round-robin yük dağıtımı yapar\n- Yönetim API'si ve gömülebilir Go SDK'sı vardır",
+        "tech": "- **Dil:** Go; Docker ve compose dosyalarıyla dağıtılır\n- **Çeviri katmanı:** SDK dokümanlarındaki 'translator' ve 'executor' kavramlarına göre, gelen istek formatı (OpenAI/Gemini/Claude) sağlayıcıya özgü formata çevrilir ve yanıt geri çevrilir. Bu protokol çevirisi projenin çekirdeği\n- **Kimlik doğrulama:** Çoğunlukla CLI'ların OAuth girişleri; kimlik bilgileri yerelde `auths` altında tutulur. Bazı sağlayıcılar için API anahtarı da kullanılabilir\n- **Yapılandırma:** `config.example.yaml` ve ortam değişkenleri; OpenRouter gibi OpenAI uyumlu upstream'ler eklenebilir\n- **Not:** v6.10.0'dan beri yerleşik kullanım istatistiği yok",
+        "why": "Modeller ve CLI araçları hızla çoğaldı; her biri kendi API'siyle geliyor. CLIProxyAPI 'bir kez bağlan, her istemciyle kullan' vaadiyle bu kargaşayı sadeleştiriyor ve aboneliği olan kullanıcıya ayrıca API faturası ödememe imkânı veriyor. 56k yıldız ve etrafında oluşan onlarca topluluk aracı (masaüstü istemciler, dashboard'lar, portlar) güçlü bir ekosistem göstergesi. Günlük +257 yıldız, eski bir projenin hâlâ ivme tuttuğunu gösteriyor.",
+        "evolve": "- **Riskler:** Abonelik OAuth oturumlarını proxy'lemek sağlayıcı kullanım şartlarını ihlal edebilir ve hesap kapatılma riski taşır; çok hesaplı kimlik bilgisi tutan bir sunucu ağa açılırsa ciddi güvenlik sorumluluğu doğar\n- **Eksikler:** Yerleşik kullanım ve maliyet izleme yok; model kullanılabilirliği kanala göre değişiyor\n- **Fırsatlar:** Kota/bütçe sınırları, istek denetim günlüğü, sırların şifreli saklanması, rol bazlı erişim\n- **Kurumsal kullanım:** Resmî API anahtarlarıyla çalışan, politika denetimli bir ağ geçidi olarak (LLM gateway) konumlanması daha güvenli olurdu"
+      },
+      "glossary": [
+        {
+          "term": "Proxy",
+          "def": "İstemci ile hedef servis arasına girip istekleri ileten ara sunucu."
+        },
+        {
+          "term": "OAuth",
+          "def": "Şifre paylaşmadan, kullanıcı adına yetki verilmesini sağlayan oturum açma standardı."
+        },
+        {
+          "term": "Streaming",
+          "def": "Yanıtın tamamlanmasını beklemeden parça parça istemciye akıtılması."
+        },
+        {
+          "term": "Function calling",
+          "def": "Modelin, tanımlı araçları/fonksiyonları çağırmak için yapılandırılmış istek üretmesi."
+        },
+        {
+          "term": "Round-robin",
+          "def": "İstekleri hesaplar veya sunucular arasında sırayla dağıtma yöntemi."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir hizmeti kendi uygulamanıza gömmek için hazır kütüphane seti."
+        },
+        {
+          "term": "Multimodal",
+          "def": "Metnin yanında görsel gibi başka girdi türlerini de işleyebilen."
+        },
+        {
+          "term": "LLM gateway",
+          "def": "Şirketteki tüm model çağrılarını tek noktadan yöneten, denetleyen ve sınırlayan ağ geçidi."
+        }
+      ]
+    },
+    {
+      "name": "fabio-rovai/open-ontologies",
+      "url": "https://github.com/fabio-rovai/open-ontologies",
+      "stars": "1.8k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Open Ontologies**, üretimdeki bir OWL/RDF ontolojisinde değişiklik yapmadan önce sonuçlarını görmenizi sağlayan, Rust ile yazılmış bir değişiklik yönetim motorudur. Bir editör değil; Protégé yerine değişikliğin üretime girmeden önce çalıştırılacağı denetim katmanıdır.\n\n- Değişikliği planlar, etkisini (blast radius) ve risk skorunu raporlar, uygular, sapmayı izler ve geri alır\n- README örneğinde tek bir eklenen üçlü 901 yeni çıkarım doğuruyor; düz metin diff'i bunu göstermezdi\n- Her akıl yürütme koşusu için bağımsız olarak doğrulanabilir 'sertifika' üretir\n- MCP üzerinden Claude, Cursor gibi istemcilerle sohbetle kullanılabilir",
+        "tech": "- **Çekirdek:** Rust (edition 2024), JVM'siz tek ikili dosya; RDF depolama ve SPARQL 1.1 için Oxigraph; durum ve soy kütüğü için SQLite\n- **Akıl yürütme:** OWL-RL ve RDFS profilleri, SWRL / RIF Core kuralları ve tutarlılık için SHIQ tableaux akıl yürütücüsü; doğrulama için SHACL\n- **Sertifikalar:** Motor, çıkarım adımlarını düz TSV dosyalarına yazar; kodu motorla hiçbir şey paylaşmayan Lean 4 doğrulayıcısı bunları yeniden kontrol eder ve sahte sonuçları reddeder. Güven, 'motora inanma, kanıtı kontrol et' ilkesine dayanıyor\n- **Veri yükleme:** CSV, JSON, XLSX, Parquet, PostgreSQL ve DuckDB'den RDF'e\n- **Studio:** Tauri 2 + React 19 masaüstü arayüzü",
+        "why": "Kurumsal bilgi grafikleri ve RAG sistemleri büyüdükçe ontolojiler 'kod gibi' yönetilmek zorunda kaldı; ama değişikliğin sonucunu önceden gösteren, CI'a oturan araç azdı. Proje bunu, doğrulanabilir kanıt vaadiyle ve MCP entegrasyonuyla sunuyor. Kitle: bilgi mühendisleri, sağlık/finans gibi denetimli alanlar ve agent'lara güvenilir bilgi tabanı kurmak isteyenler. Bugünkü +343 yıldız, 1,8k toplam yıldızlı bir projede belirgin bir sıçrama.",
+        "evolve": "- **Sınırlar:** Varsayılan depolama bellek içi (kalıcı mod açılmazsa `load` sonrası `reason` boş depoyla başlar); Rust ve Python motoru aynı algoritmayı paylaştığından yalnızca Lean doğrulayıcısı bağımsızdır; yazar ticari bir barındırılan platformu da tanıtıyor\n- **Fırsatlar:** CI'da PR başına otomatik 'ontoloji diff + etki raporu', Windows için tam destek, SQL şemasından ontoloji önerisi\n- **ERP / IFS bağlantısı:** Büyük bir ERP'nin veri sözlüğünü ve iş kurallarını ontoloji olarak modelleyip değişiklik etkisini önceden görmek ilginç bir yön; PostgreSQL / DuckDB yükleyicileri bu yolda başlangıç noktası"
+      },
+      "glossary": [
+        {
+          "term": "Ontoloji",
+          "def": "Bir alandaki kavramları ve aralarındaki ilişkileri biçimsel olarak tanımlayan model."
+        },
+        {
+          "term": "OWL",
+          "def": "Ontolojileri makinece yorumlanabilir şekilde yazmak için W3C standardı dil."
+        },
+        {
+          "term": "RDF",
+          "def": "Bilgiyi özne-yüklem-nesne üçlüleri olarak ifade eden veri modeli."
+        },
+        {
+          "term": "SPARQL",
+          "def": "RDF verisini sorgulamak için kullanılan SQL benzeri sorgu dili."
+        },
+        {
+          "term": "SHACL",
+          "def": "RDF verisinin belirli şekil kurallarına uyup uymadığını denetleyen doğrulama dili."
+        },
+        {
+          "term": "Blast radius",
+          "def": "Bir değişikliğin etkileyeceği alanın büyüklüğü."
+        },
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Mevcut gerçeklerden kurallar yoluyla yeni gerçekler türetme."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zekâ istemcilerinin araçlara standart biçimde bağlanma protokolü."
+        },
+        {
+          "term": "Lean 4",
+          "def": "Matematiksel kanıtların bilgisayarla doğrulanabildiği bir kanıt asistanı ve programlama dili."
+        },
+        {
+          "term": "Protégé",
+          "def": "Ontoloji çizmek ve düzenlemek için yaygın kullanılan masaüstü editör."
+        }
+      ]
+    }
+  ]
+}
