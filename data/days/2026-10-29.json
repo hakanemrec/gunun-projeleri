@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-29",
+  "projects": [
+    {
+      "name": "ruvnet/RuView",
+      "url": "https://github.com/ruvnet/RuView",
+      "stars": "101.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**RuView**, kamera ya da giyilebilir cihaz olmadan, sıradan **WiFi sinyallerini** kullanarak bir odadaki insanların varlığını, hareketini, nefes ve kalp ritmini algılamayı hedefleyen açık kaynak bir algılama sistemidir.\n\n- Varlık ve doluluk sayımı, giriş/çıkış takibi\n- Temassız nefes (6-30 BPM) ve kalp atışı (40-120 BPM) kestirimi\n- Düşme, yürüme, oturma gibi aktivite tanıma ve uyku izleme\n- Home Assistant (MQTT) ve Matter köprüsüyle akıllı ev entegrasyonu\n- Yaklaşık 9 dolarlık ESP32-S3 kartlarıyla çalışır; donanımsız denemek için simüle veriyle çalışan Docker imajı vardır",
+        "tech": "- **Fiziksel temel:** İnsan vücudu WiFi dalgalarını yansıtır ve saçar. ESP32 kartları her alt taşıyıcı için **CSI** (kanal durum bilgisi) ölçer; sinyaldeki küçük değişimler harekete ve soluğa dönüştürülür.\n- **Sinyal işleme:** Hampel filtresi, SpotFi, Fresnel bölgesi modellemesi; nefes için 0,1-0,5 Hz, kalp için 0,8-2,0 Hz bant geçiren filtre.\n- **Çoklu düğüm füzyonu:** Birden çok düğüm kanal atlayarak farklı bakış açıları sağlar, dikkat ağırlıklı gömmelerle birleştirilir. Gürültülü ölçümleri bir \"tutarlılık kapısı\" eler.\n- **Diller:** Çekirdek ve sinyal işleme Rust, firmware C (ESP-IDF), araçlar TypeScript, eğitim/değerlendirme Python.\n- **Model:** Candle ile Rust'ta çıkarım, safetensors formatı, int4/int8 nicemleme. Odaya özel **LoRA** adaptörleriyle yaklaşık 30 saniyede yerel uyum; toplam model yaklaşık 55 KB.\n- **Ajan entegrasyonu:** Teşhis, firmware yazma ve MCP sunucusu içeren npm aracı ve Claude Code eklentisi. Ajan çalıştırmaları varsayılan olarak salt okunur.\n- **Güven katmanı:** Ed25519 imzalı kayıtlar, WASM tabanlı imzalı eklenti modülleri (105 modüllük katalog).",
+        "why": "- **Etkileyici vaat:** \"WiFi ile duvar arkasını görmek\" hem sezgisel hem gösterişli. Yaklaşık 9 dolarlık donanım eşiği meraklıları kolayca içeri çekiyor.\n- **Gizlilik çağı:** Kameraya alternatif bakım, uyku ve yaşlı izleme gibi senaryolar için çok cazip.\n- **Akıllı ev topluluğu:** Home Assistant ve Matter desteği hazır bir kitle sağlıyor.\n- **Dikkat:** README'nin kendisi iddiaları \"ölçüldü / iddia / bekliyor\" diye ayırıyor. Cihaz üstü poz modeli hedefin çok altında (PCK@20 %3), eski \"%100 varlık\" sonucu geri çekilmiş. Yani büyük yıldız sayısı, olgun bir ürünün değil, güçlü bir vizyonun göstergesi. Proje ayrıca Cognitum donanım satışıyla ticari olarak bağlantılı.",
+        "evolve": "- **Doğrulama:** Bağımsız, tek bir ESP32 ile canlı poz tahmini için tekrarlanabilir kıyaslamalar ve gerçek model ağırlıklarının çalışma yoluna bağlanması.\n- **Tıbbi iddialar:** Vital bulgular \"doğrulanmamış\" etiketli; klinik doğrulama olmadan sağlık kullanımı riskli. Net bir uyarı ve doğrulama yol haritası değerli olur.\n- **Model dağıtımı:** Yayımlanan safetensors başlık hatasının (issue #1522) giderilmesi ve standart yükleyici uyumu.\n- **Gizlilik:** Çok kişili ortamda kimlik sızıntısı riskleri için BFLD katmanının bağımsız denetimi.\n- **Sadeleştirme:** Çok geniş kapsam (masaüstü uygulama, 105 modül, mobil) yerine birkaç dikey senaryoda (varlık, düşme tespiti) sağlam ürün olgunluğu."
+      },
+      "glossary": [
+        {
+          "term": "CSI (Kanal Durum Bilgisi)",
+          "def": "WiFi sinyalinin her alt taşıyıcıda alıcıya ulaşırken nasıl değiştiğini gösteren ölçüm. Odadaki hareket bu değerleri değiştirdiği için algılamada kullanılır."
+        },
+        {
+          "term": "ESP32",
+          "def": "Gömülü cihazlarda yaygın kullanılan, WiFi ve Bluetooth'lu, ucuz bir mikrodenetleyici kart ailesi."
+        },
+        {
+          "term": "Hampel filtresi",
+          "def": "Ölçüm serisindeki ani, aykırı sıçramaları medyan tabanlı olarak ayıklayan basit bir gürültü temizleme yöntemi."
+        },
+        {
+          "term": "Fresnel bölgesi",
+          "def": "Verici ile alıcı arasında dalga yayılımının en çok etkilendiği elips biçimli bölge; bu bölgedeki hareket sinyali belirgin değiştirir."
+        },
+        {
+          "term": "LoRA",
+          "def": "Büyük bir modeli baştan eğitmeden, küçük ek ağırlık matrisleriyle belirli bir göreve uyarlama tekniği. Burada her odaya özel küçük adaptör anlamına gelir."
+        },
+        {
+          "term": "MQTT",
+          "def": "IoT cihazlarının birbiriyle hafif mesajlarla haberleşmesi için kullanılan yayın/abone protokolü."
+        },
+        {
+          "term": "Matter",
+          "def": "Apple, Google, Amazon gibi şirketlerin ortak akıllı ev standardı; farklı markaların cihazlarının birlikte çalışmasını sağlar."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zeka ajanlarının dış araç ve verilere standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "WASM (WebAssembly)",
+          "def": "Farklı dillerden derlenmiş kodun güvenli bir kum havuzunda, hızlıca çalışmasını sağlayan taşınabilir ikili format."
+        },
+        {
+          "term": "PCK@20",
+          "def": "Poz tahmininde, tahmin edilen eklem noktalarının gerçeğe belirli bir mesafe eşiği içinde kalma oranı. Yüksek olması daha iyidir."
+        },
+        {
+          "term": "safetensors",
+          "def": "Model ağırlıklarını güvenli ve hızlı yüklenebilir biçimde saklayan dosya formatı."
+        }
+      ]
+    },
+    {
+      "name": "expo/skills",
+      "url": "https://github.com/expo/skills",
+      "stars": "3.7k",
+      "language": "Shell",
+      "sections": {
+        "serves": "**Expo Skills**, Expo ekibinin resmi olarak yayımladığı, yapay zeka kodlama ajanlarına Expo ile mobil uygulama geliştirme, yayınlama, yükseltme ve hata ayıklama konusunda uzmanlık kazandıran bir **skill** (beceri) koleksiyonudur.\n\n- Ajan, genel React Native bilgisi yerine Expo'nun güncel API'leri ve iş akışlarına göre yönlendirilir\n- Yönlendirme, animasyon, veri çekme, yerel modül, SDK yükseltme gibi konular tek tek skill'lere ayrılmıştır\n- Dağıtım tarafında EAS (derleme, mağaza gönderimi, OTA güncelleme, iş akışları) için skill'ler vardır\n- Claude Code, Codex, Cursor, Copilot, Windsurf gibi araçlarda kullanılabilir",
+        "tech": "- **Skill biçimi:** Her beceri, ajanın ilgili görevde okuyup uyguladığı bir markdown talimat paketi. Büyük bir belge yerine odaklı parçalar bağlam penceresini şişirmeden yalnızca gerektiğinde yüklenir.\n- **Başlangıç noktası:** `expo-overview` yönlendirici skill, belirsiz isteklerde doğru skill'e yönlendirir.\n- **Dağıtım:** Claude Code için eklenti (`claude plugin install expo@claude-plugins-official`), Codex için eklenti, diğer ajanlar için `npx skills` CLI'ı.\n- **Canlı veri:** İsteğe bağlı Expo MCP sunucusu güncel dokümana, `npx expo install`, EAS derlemelerine, TestFlight çökme verisine ve simülatör ekran görüntülerine erişim verir.\n- **Doğrulama:** Skill'lerin gerçekten işe yarayıp yaramadığını ölçmek için bir `eval-harness` alt modülü ve değerlendirme skill'i bulunuyor.\n- **Kaynak gerçeği:** Skill'ler resmi dokümana, Expo CLI ve EAS CLI'a referans veriyor, onların yerini almıyor.",
+        "why": "- **Resmi kaynak:** Üçüncü taraf \"prompt koleksiyonlarının\" aksine çatının kendi ekibinden geliyor; sürümlerle senkron kalma ihtimali yüksek.\n- **Skill ekosistemi dalgası:** Bu hafta trend listesinde tasarım ve ajan becerisi depoları çok yer alıyor; skill'ler ajanlara alan bilgisi kazandırmanın standart yolu oluyor.\n- **Gerçek acı noktası:** Ajanlar eski Expo sürümlerinin kalıplarını önerip SDK yükseltmelerinde ve native modüllerde hata yapıyor; bu depo tam bu sorunu hedefliyor.\n- **Kitle:** Mobil geliştiriciler ve \"vibe coding\" ile uygulama yapan bağımsızlar. Ayrıca ücretli EAS hizmetlerine doğal bir kapı açıyor.\n- Yıldız ivmesi (günlük +90) diğerlerine göre mütevazı; ilgi daha çok niş ve nitelikli.",
+        "evolve": "- **Sürüm eşleme:** Her skill'in hangi Expo SDK sürümüne göre yazıldığının açıkça etiketlenmesi ve eski sürümler için dallar.\n- **Ölçülebilir kalite:** Eval sonuçlarının herkese açık yayımlanması; \"skill varken/yokken\" başarı oranı kıyaslaması.\n- **Ticari ayrım:** Ücretli EAS skill'lerinin ücretsiz çerçeve skill'lerinden daha net ayrılması ve açık kaynak alternatiflerin de belirtilmesi.\n- **Daha derin otomasyon:** Yükseltme (`expo-upgrade`) için dependency çatışmalarını otomatik çözen ve test eden bir akış.\n- **Topluluk katkısı:** Üçüncü taraf kütüphane (ör. veri tabanı, kimlik doğrulama) skill'leri için katkı rehberi."
+      },
+      "glossary": [
+        {
+          "term": "Expo",
+          "def": "React Native ile mobil uygulama geliştirmeyi kolaylaştıran, araç ve hizmetler sunan çatı."
+        },
+        {
+          "term": "React Native",
+          "def": "JavaScript/React ile iOS ve Android için yerel uygulama yazmaya yarayan çatı."
+        },
+        {
+          "term": "EAS (Expo Application Services)",
+          "def": "Expo'nun uygulama derleme, mağazaya gönderme ve güncelleme dağıtımı yapan bulut hizmetleri."
+        },
+        {
+          "term": "Skill (beceri)",
+          "def": "Bir yapay zeka ajanının belirli bir görevde izleyeceği talimat ve kaynakları içeren, gerektiğinde yüklenen paket."
+        },
+        {
+          "term": "OTA güncelleme",
+          "def": "Uygulamayı mağazadan yeniden indirtmeden, JavaScript kodunu havadan (over-the-air) güncelleme yöntemi."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zeka ajanlarının dış araç ve verilere standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Brownfield",
+          "def": "Sıfırdan değil, mevcut bir yerel (native) uygulamanın içine yeni bir teknoloji (burada Expo/React Native) eklenmesi durumu."
+        },
+        {
+          "term": "Eval (değerlendirme)",
+          "def": "Bir yapay zeka sisteminin çıktılarını belirli test senaryolarıyla ölçme düzeneği."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kod değişikliklerini otomatik test edip yayına alan sürekli entegrasyon ve dağıtım süreci."
+        }
+      ]
+    },
+    {
+      "name": "elayadesign/ai-design-skills",
+      "url": "https://github.com/elayadesign/ai-design-skills",
+      "stars": "11.4k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "**AI Design Skills**, yapay zeka kodlama araçlarının \"jenerik, yapay zeka yapımı\" görünmeyen web tasarımları üretmesini sağlamak için hazırlanmış tasarım **skill**'leri koleksiyonudur. Şu an tek skill içeriyor: `landing-page-design`.\n\n- Sıfırdan açılış sayfası: önce ön soru formu (intake), sonra sayfa yapısı\n- Dönüşüm odaklı metin yazımı\n- Yazı tipi, boşluk, köşe yuvarlaklığı ve hareket için görsel sistem\n- Mevcut siteleri yenilemek için ayrı bir depoda redesign skill'i var",
+        "tech": "- **Saf markdown:** Kod yok; her skill bir `SKILL.md` talimat dosyası. Bu yüzden Claude Code, Cursor, Codex, Windsurf, Cline gibi kural dosyası okuyan her araçta çalışır.\n- **Taşınabilirlik:** Claude Code'da `.claude/skills` içine klasör kopyalanır; Cursor'da `.cursor/rules`, Codex'te `AGENTS.md`, Windsurf'te `.windsurfrules` gibi hedefe yapıştırılır; Claude.ai'da Project'e yüklenir.\n- **Özelleştirme tasarımı:** Tüm tasarım değerleri (font, renk, boşluk, hareket) dosyanın altındaki tek bir bölümde toplanmış. Fork'layıp bu bölümü değiştirmek tüm çıktıyı değiştirir.\n- **Köken:** İçerik gerçekçiliği ve hareket fikirlerinin bir kısmı Leonxlnx/taste-skill'den uyarlanmış (MIT).",
+        "why": "- **\"AI slop\" tepkisi:** Ajanların ürettiği aynı mor gradyanlı, aynı yerleşimli sayfalardan duyulan bıkkınlık büyük. Bu tür depolar tam o hissi hedefliyor; bugün Nutlope/hallmark ve impeccable gibi benzerleri de trend listesinde.\n- **Düşük giriş eşiği:** Kurulum bir klasör kopyalamak; araç bağımsız ve MIT lisanslı, atıf bile gerekmiyor.\n- **Kitle:** Tasarım bilgisi sınırlı bağımsız geliştiriciler, kurucular ve vibe coding yapanlar.\n- **İvme:** Sadece 8 commit'e rağmen günde yaklaşık 2,1 bin yıldız; bu, içerikten çok yayılma ve zamanlama etkisini gösteriyor.",
+        "evolve": "- **Kanıt:** Skill'li ve skill'siz çıktıları yan yana gösteren örnek galeri ve ölçülebilir kalite kontrolü.\n- **Kapsam:** Pano (dashboard), e-ticaret, mobil arayüz, tasarım sistemi skill'leri; README bunun planlandığını söylüyor.\n- **Otomatik denetim:** hallmark'ın yaptığı gibi çıktıyı kurallara göre tarayan bir lint/kontrol betiği.\n- **Çeşitlilik riski:** Herkes aynı skill'i kullanırsa çıktılar yeniden birbirine benzer; birden çok \"stil yönü\" ve rastgele tohumlama bunu azaltabilir.\n- **Sürdürülebilirlik:** Tek kişilik bir depo için sürüm etiketleri ve katkı rehberi."
+      },
+      "glossary": [
+        {
+          "term": "Skill (beceri)",
+          "def": "Bir yapay zeka ajanının belirli bir görevde izleyeceği talimat ve kaynakları içeren, gerektiğinde yüklenen markdown paketi."
+        },
+        {
+          "term": "Landing page (açılış sayfası)",
+          "def": "Ziyaretçiyi tek bir eyleme (kayıt, satın alma vb.) yönlendirmek için tasarlanmış tanıtım sayfası."
+        },
+        {
+          "term": "AI slop",
+          "def": "Yapay zekanın ürettiği, özensiz ve birbirine benzeyen jenerik içerik veya tasarımlar için kullanılan halk ağzı terim."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine yapay zekaya doğal dille tarif ederek ürün geliştirme tarzı."
+        },
+        {
+          "term": "Intake (ön soru formu)",
+          "def": "İşe başlamadan önce ihtiyaçları öğrenmek için sorulan başlangıç soruları."
+        },
+        {
+          "term": "AGENTS.md",
+          "def": "Kodlama ajanlarına proje kurallarını anlatan, birçok araçta okunan konvansiyon dosyası."
+        },
+        {
+          "term": "Dönüşüm odaklı metin (conversion copy)",
+          "def": "Ziyaretçinin hedeflenen eylemi yapma olasılığını artırmak için yazılmış metin."
+        }
+      ]
+    }
+  ]
+}
