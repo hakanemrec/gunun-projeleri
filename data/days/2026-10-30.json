@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-30",
+  "projects": [
+    {
+      "name": "milind-soni/OpenMausBot",
+      "url": "https://github.com/milind-soni/OpenMausBot",
+      "stars": "7.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Yerel çalışan bir yapay zekâ ekibi sohbet uygulaması.** Her \"bot\", mesajlaşma uygulamasındaki bir kişi gibi kenar çubuğunda durur; arkasında bilgisayarınızda çalışan gerçek bir agent (Claude, Codex veya Grok CLI) vardır.\n\n- Her bota ayrı kişilik, model, bulut bilgisayar ve bağlı uygulamalar (Gmail, Slack, GitHub, Notion, Linear…) verilir.\n- Çözdüğü problem: farklı agent CLI'larını tek tek terminalde yönetmek yerine, tek bir sohbet arayüzünde bir \"ekip\" gibi yönetmek.\n- Grok Bot, Meta Muse gibi kapalı ürünlere **açık kaynak (Apache 2.0)** alternatif olarak konumlanıyor.",
+        "tech": "**İki süreçli mimari:** React 19 + Vite + Tailwind ile yazılmış bir sohbet arayüzü ve `127.0.0.1:8799` üzerinde çalışan bir *harness* sunucusu.\n\n- **Driver kayıt defteri:** Her sağlayıcı (Claude, Codex, Grok) için ayrı sürücü; stream-JSON, JSON-RPC veya ACP ile yerel CLI'larla konuşur. Bilinmeyen sürücü çökmeye değil \"kullanılamıyor\" durumuna düşer.\n- **Olay veriyolu (event bus):** Tüm sağlayıcı çıktılarını tek bir olay akışına normalize eder ve thread başına NDJSON olarak loglar.\n- **İzin aracısı (permission broker):** Riskli işlemleri (shell komutu, dosya düzenleme) satır içi onay kartına çevirir.\n- **Dağıtım:** Electron ile macOS/Windows/Ubuntu, ayrıca npm CLI, Docker ve MCP sunucusu. MCP yüzeyi bilerek dar tutulmuş: onay verme, silme, kimlik bilgisi yok.\n- Gerekçe: kullanıcının mevcut CLI girişlerini kullanmak, yeni hesap veya proxy ihtiyacını ortadan kaldırır.",
+        "why": "**Zamanlama:** Büyük firmaların \"kişisel agent ekibi\" ürünleri (Grok Bot, Muse, dots) aynı anda gündemdeydi ve geliştiriciler bunun açık, kendi makinesinde çalışan bir karşılığını istiyordu.\n\n- Kitle: birden fazla agent aboneliği olan ve hepsini tek yerde toplamak isteyen ileri düzey kullanıcılar.\n- Sohbet metaforu ve ses desteği, agent'ları \"araç\"tan \"ekip arkadaşı\"na çeviriyor; paylaşılabilir takım dosyaları (Markdown + YAML) viral yayılımı kolaylaştırıyor.\n- Yerel-öncelikli olması gizlilik kaygılarına cevap veriyor.",
+        "evolve": "- **Güvenlik:** API anahtarları şu an düz metin `config.json` içinde; işletim sistemi anahtarlığına (keychain) taşınması önemli bir iyileştirme olur.\n- **Her zaman açık altyapı:** Webhook'lar yalnızca uygulama açıkken çalışıyor; barındırılan bir relay bunu çözer.\n- **Platform eşitliği:** Wayland desteği, Linux'ta ses/dikte, imzalı Windows kurulumu.\n- **ERP/IFS bağlantısı:** MCP üzerinden IFS veya Oracle PL/SQL veritabanına bağlanan bir \"ERP analisti\" botu, kurumsal kullanım için doğal bir yön olabilir.\n- Çok sayıda agent'ın maliyet ve yetki takibi için bir panel eklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Agent",
+          "def": "Bir hedefe ulaşmak için kendi başına adımlar planlayıp araç (shell, tarayıcı, dosya) kullanabilen yapay zekâ programı."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırı arayüzü; bir programı grafik yerine terminalden komut yazarak kullanma biçimi."
+        },
+        {
+          "term": "Harness",
+          "def": "Agent süreçlerini başlatan, yöneten ve aralarındaki iletişimi sağlayan çerçeve/sunucu katmanı."
+        },
+        {
+          "term": "SSE (Server-Sent Events)",
+          "def": "Sunucunun tarayıcıya tek yönlü, sürekli olay akışı göndermesini sağlayan basit HTTP tekniği."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin harici araç ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "ACP",
+          "def": "Agent'lar ile editör/arayüzler arasında konuşmayı standartlaştırmayı amaçlayan bir agent iletişim protokolü."
+        },
+        {
+          "term": "NDJSON",
+          "def": "Her satırında ayrı bir JSON nesnesi bulunan, loglama ve akış için uygun metin formatı."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML/JS) masaüstü uygulaması yazmayı sağlayan çerçeve."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda başka bir sistemin belirtilen adrese otomatik HTTP isteği göndermesi."
+        }
+      ]
+    },
+    {
+      "name": "CopilotKit/OpenBot",
+      "url": "https://github.com/CopilotKit/OpenBot",
+      "stars": "8.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Kendi altyapınızda çalıştırabileceğiniz, denetlenebilir \"yapay zekâ iş arkadaşı\" platformu.** Her iş arkadaşı (coworker) kendi tarayıcısı, dosyaları ve izin verilmiş araçlarıyla çalışan bir agent'tır.\n\n- Çözdüğü problem: kurumlarda agent'ların tarayıcı, dosya ve shell gibi güçlü yetkilerle çalışırken **kontrolsüz** olması.\n- README kendini \"ürün değil, şablon\" olarak tanımlıyor: klonla, örnek kiracıyı kendi coworker ve kanallarınla değiştir.\n- Durum: Beta.",
+        "tech": "**Hono tabanlı bir sunucu, React/Vite arayüz, Bun çalışma zamanı ve PostgreSQL + pgvector.**\n\n- **Tek geçit (gateway):** Tarayıcı, dosya, MCP veya bileşen eylemlerinin hepsi tek noktadan geçer; politika değerlendirilir, denetim kaydı yazılır, sonra eylem yapılır ya da hangi kuralın engellediği söylenir.\n- **Politika dili CEL:** \"deny\" kuralları \"allow\"dan önce işlenir.\n- **AG-UI protokolü:** LangGraph, Mastra, CrewAI, Pydantic AI, Google ADK gibi herhangi bir agent coworker olabilir.\n- **Kişi başına bilgisayar:** Her kişi/coworker için ayrı Chromium'lu konteyner; isteğe bağlı gVisor sandbox.\n- Kimlik: Better Auth (Google, Microsoft, Okta, SAML/OIDC). Dağıtım: Docker Compose ve Helm.\n- Sırlar şifreli saklanır; denetim kaydı değeri değil, \"istendi\" bilgisini tutar.",
+        "why": "**Kurumsal güven boşluğunu hedefliyor:** Agent'lar yetenekli ama \"ne yaptı, neden izin verildi?\" sorusuna cevap veren açık kaynak bir çözüm azdı.\n\n- CopilotKit'in AG-UI ekosistemindeki yeri, mevcut agent'ların hızla bağlanabilmesini sağlıyor.\n- Kitle: güvenlik/uyumluluk gereksinimi olan ekipler, platform mühendisleri, fintech gibi regüle sektörler (örnek katalogda masraf kontrolü, bilet triyajı var).\n- Aynı gün trend olan OpenMausBot ile birlikte \"açık kaynak agent iş arkadaşı\" dalgasının parçası.",
+        "evolve": "- **Bağımlılık azaltma:** Kalıcı thread/hafıza şu an CopilotKit Intelligence lisansına bağlı; tamamen açık bir alternatif büyük kazanım olur.\n- **Güvenli varsayılanlar:** `OPENBOT_SINGLE_USER=true` herkesi yönetici yapıyor; üretimde daha katı varsayılan istenir.\n- **Kurulum karmaşıklığı:** Çoklu servis yapısı için tek komutlu yönetilen dağıtım.\n- **ERP fırsatı:** IFS/Oracle gibi sistemler için politika ile sınırlandırılmış (salt-okunur SQL, onaylı yazma) coworker şablonları ve denetim izi, ERP dünyası için çok değerli olurdu."
+      },
+      "glossary": [
+        {
+          "term": "AG-UI",
+          "def": "Agent'lar ile kullanıcı arayüzleri arasındaki iletişimi standartlaştıran açık protokol."
+        },
+        {
+          "term": "Gateway",
+          "def": "Tüm isteklerin geçtiği, kuralları uygulayan ve kayıt tutan tek giriş noktası."
+        },
+        {
+          "term": "CEL (Common Expression Language)",
+          "def": "Google'ın geliştirdiği, politika ve kuralları kısa ifadelerle yazmaya yarayan küçük bir ifade dili."
+        },
+        {
+          "term": "Denetim kaydı (audit log)",
+          "def": "Kim, ne zaman, neyi yaptı bilgisini değiştirilemez şekilde tutan kayıt; uyumluluk için gereklidir."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL'e vektör (embedding) saklama ve benzerlik araması yeteneği ekleyen eklenti."
+        },
+        {
+          "term": "gVisor",
+          "def": "Konteynerleri ek bir izolasyon katmanıyla çalıştıran sandbox; ana sisteme erişimi kısıtlar."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes uygulamalarını paketleyip kurmayı kolaylaştıran araç."
+        },
+        {
+          "term": "SAML/OIDC",
+          "def": "Kurumsal tek oturum açma (SSO) için kullanılan kimlik doğrulama standartları."
+        },
+        {
+          "term": "MCP",
+          "def": "Yapay zekâ modellerinin harici araçlara standart biçimde bağlanmasını sağlayan protokol."
+        }
+      ]
+    },
+    {
+      "name": "Donchitos/Claude-Code-Game-Studios",
+      "url": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+      "stars": "29.5k",
+      "language": "Shell",
+      "sections": {
+        "serves": "**Tek bir Claude Code oturumunu bir oyun stüdyosuna çeviren MIT lisanslı şablon.** 49 uzman agent, 72-74 slash komutu ve hazır şablonlarla oyun geliştirmeye disiplin getirir.\n\n- Problem: düz bir sohbet oturumu tasarım dokümanı, kod standardı veya QA incelemesi dayatmaz; proje dağılır.\n- Çözüm: yönetmen → ekip lideri → uzman hiyerarşisi, kalite kapıları ve her adımda **kullanıcı onayı**.\n- Godot 4, Unity ve Unreal Engine 5 için ayrı uzman agent'lar var.",
+        "tech": "**Tamamen dosya tabanlı bir yapılandırma: Markdown + YAML frontmatter, Bash hook'lar ve Python.**\n\n- **Üç katmanlı hiyerarşi:** Yönetmenler (creative/technical director, producer) Opus; çoğu uzman Sonnet veya oturum modelini devralır — maliyet/kalite dengesi.\n- **Hook'lar:** commit, push, doküman okuma/yazma ve varlık adlandırmasını doğrulayan ~15 olay kancası.\n- **Yola özel kurallar:** Klasöre göre kod standardı (ör. oyun kodunda performans kuralları, ağ kodunda sunucu otoritesi).\n- **project.yaml + `modes.rigor`:** `minimal/standard/full` ile altı süreç ayarı tek anahtarla değişir.\n- **İzin korumaları:** force push, `rm -rf`, `.env` okuma engellenir.",
+        "why": "**Claude Code'un \"agent takımı\" kullanımına yönelik büyük ilgi** ile oyun geliştirme (vibe coding) merakı kesişiyor.\n\n- Kitle: bağımsız oyun geliştiricileri ve hobi projesi yapanlar; hazır \"stüdyo\" hissi çekici.\n- Dürüstlük faktörü: yazar aynı brief'ten dört oyunu farklı titizlik seviyelerinde yapıp, ağır sürecin kaliteyi artırmadığını raporlamış; bu yüzden varsayılan `minimal`.\n- Görsel doğrulama zorunluluğu (ekran görüntüsü kanıtı) güven veriyor.",
+        "evolve": "- **Tutarlılık:** Komut/hook sayıları README ve açıklamada uyuşmuyor; otomatik sayım doğrulaması eklenebilir.\n- **Platform:** Masaüstü bildirimleri yalnızca Windows'ta; macOS/Linux eksik. Git deny kalıpları fazla geniş, commit mesajını yanlışlıkla engelleyebiliyor.\n- **Kanıt:** Titizlik deneyi küçük örneklemli; daha geniş ölçüm gerekli.\n- **Genelleme:** Aynı stüdyo kalıbı oyun dışında, örneğin bir ERP/IFS özelleştirme ekibi (analist, geliştirici, test, yayın yöneticisi agent'ları) için uyarlanabilir."
+      },
+      "glossary": [
+        {
+          "term": "Slash komutu",
+          "def": "Claude Code'da `/` ile başlayan, önceden tanımlı bir iş akışını çalıştıran kısayol komut."
+        },
+        {
+          "term": "Hook",
+          "def": "Belirli bir olayda (commit, dosya yazma vb.) otomatik çalışan betik; doğrulama veya engelleme için kullanılır."
+        },
+        {
+          "term": "Frontmatter",
+          "def": "Markdown dosyasının başındaki YAML bölümü; agent'ın adı, modeli gibi meta veriyi tutar."
+        },
+        {
+          "term": "GDD (Game Design Document)",
+          "def": "Oyunun kurallarını, mekaniklerini ve kapsamını anlatan tasarım dokümanı."
+        },
+        {
+          "term": "ADR (Architecture Decision Record)",
+          "def": "Bir mimari kararı ve gerekçesini kaydeden kısa doküman."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine yapay zekâya doğal dille tarif ederek üretme tarzı."
+        },
+        {
+          "term": "Godot / Unity / Unreal",
+          "def": "Popüler oyun motorları; sırasıyla açık kaynak, ticari ve yüksek görsel kaliteli AAA odaklı."
+        },
+        {
+          "term": "Rigor modu",
+          "def": "Projenin ne kadar doküman ve süreç disiplini uygulayacağını belirleyen ayar (minimal, standard, full)."
+        }
+      ]
+    }
+  ]
+}
