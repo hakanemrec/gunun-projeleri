@@ -1,0 +1,217 @@
+{
+  "date": "2026-10-31",
+  "projects": [
+    {
+      "name": "MemPalace/mempalace",
+      "url": "https://github.com/MemPalace/mempalace",
+      "stars": "60.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Yapay zekâ araçları için yerel çalışan, kalıcı hafıza sistemi.** Sohbet geçmişinizi ve proje içeriğinizi özetlemeden, **olduğu gibi (verbatim)** saklar ve anlamsal aramayla geri getirir.\n\n- Çözdüğü problem: agent'lar her oturumda hafızasını kaybeder; çoğu hafıza aracı ise metni özetleyip bilgi kaybeder.\n- Veri varsayılan olarak makinenizden çıkmaz (local-first).\n- Claude Code, Codex CLI ve Cursor için otomatik kayıt kancaları var.",
+        "tech": "**\"Hafıza sarayı\" metaforu:** içerik *wing* (kişi/proje), *room* (konu) ve *drawer* (ham içerik) olarak katmanlanır; aramalar bu hiyerarşiyle daraltılabilir.\n\n- **Takılabilir arka uç:** Varsayılan vektör deposu ChromaDB; `sqlite_exact`, `rust_exact`, Milvus, Qdrant ve pgvector alternatif. Arayüz tek bir taban sınıfta tanımlı, böylece depolama değiştirilebilir.\n- **Zamansal bilgi grafiği:** SQLite içinde geçerlilik aralıklı ilişkiler (\"X şu tarihe kadar Y'ydi\").\n- **MCP yüzeyi:** 47 araç; hafıza işlemleri, grafik sorguları, agent günlükleri ve koordinasyon.\n- **Gömme modelleri:** İngilizce için `all-MiniLM-L6-v2` (~30 MB), çok dilli için `embeddinggemma`; OpenAI uyumlu uç nokta da olur.\n- **Python + Rust:** Ana kod Python, yerel vektör araması Rust sandıklarında. MIT lisanslı.\n- Gerekçe: özetleme yerine ham metin saklamak bilgi kaybını önler; geri getirme kalitesi aramaya yüklenir.",
+        "why": "**Zamanlama:** Agent'ların uzun ömürlü hafızası 2026'nın en sıcak başlığı; aynı gün listede başka hafıza projeleri de var.\n\n- **Kitle:** Claude Code/Codex/Cursor kullanan, verisini buluta vermek istemeyen geliştiriciler.\n- **Kanıt gücü:** LongMemEval'de LLM'siz %96,6 R@5 gibi sayılar paylaşıyor. Ancak bunlar kendi ölçümleri ve *geri getirme* başarısı; uçtan uca cevap doğruluğu değil. En iyi rakamlar hibrit sezgiler ve LLM yeniden sıralamaya dayanıyor.\n- Sahte siteler konusunda uyarı koymaları, projenin popülerlik düzeyini de gösteriyor.",
+        "evolve": "- **Bağımsız karşılaştırma:** Diğer hafıza sistemleriyle aynı metrikte kafa kafaya test eksik.\n- **Gömme modeli değişimi** tüm sarayı yeniden gömmeyi gerektiriyor; artımlı geçiş desteği değerli olur.\n- **Hafıza bakımı:** Ham metin büyüdükçe eskiyen/çelişen bilgi için budama ve özet katmanı (isteğe bağlı) eklenebilir.\n- **Kurumsal kullanım:** Ekip paylaşımı, erişim kontrolü ve şifreli depolama.\n- **Veritabanı dünyasına köprü:** pgvector arka ucu sayesinde mevcut PostgreSQL altyapısında tutulabilir; ERP/IFS proje notlarını sorgulanabilir hale getirmek için ilginç bir yol."
+      },
+      "glossary": [
+        {
+          "term": "Verbatim depolama",
+          "def": "Metni özetlemeden, orijinal haliyle saklama yaklaşımı."
+        },
+        {
+          "term": "Vektör deposu",
+          "def": "Metinlerin sayısal temsillerini (embedding) saklayıp anlam benzerliğine göre arama yapan veritabanı."
+        },
+        {
+          "term": "Gömme (embedding)",
+          "def": "Bir metni anlamını yansıtan sayı dizisine çeviren model çıktısı; benzer anlamlar birbirine yakın sayılara dönüşür."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zekâ uygulamalarının dış araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "R@5 (Recall@5)",
+          "def": "İlk 5 sonucun içinde doğru cevabın bulunma oranı."
+        },
+        {
+          "term": "LongMemEval",
+          "def": "Yapay zekâ asistanlarının uzun sohbet geçmişinden bilgi hatırlama yeteneğini ölçen kıyas testi."
+        },
+        {
+          "term": "Bilgi grafiği",
+          "def": "Varlıklar ve aralarındaki ilişkilerin düğüm-kenar yapısıyla tutulduğu veri modeli."
+        },
+        {
+          "term": "ChromaDB",
+          "def": "Açık kaynak, kolay gömülebilen bir vektör veritabanı."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL'e vektör saklama ve benzerlik araması ekleyen eklenti."
+        },
+        {
+          "term": "Local-first",
+          "def": "Verinin öncelikle kullanıcının kendi cihazında tutulup işlendiği tasarım yaklaşımı."
+        }
+      ]
+    },
+    {
+      "name": "ethanplusai/harvey",
+      "url": "https://github.com/ethanplusai/harvey",
+      "stars": "3.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Kendi başına çalışan, açık kaynak bir satış ajanı.** İşletmeleri bulur, araştırır, her birine özgü soğuk e-posta yazar, kampanyayı gönderir, cevapları okur ve görüşmeyi toplantıya doğru ilerletir.\n\n- Çözdüğü problem: küçük işletme/ajansların prospecting ve takip işini manuel veya pahalı SaaS'larla yapması.\n- Token başına API faturası yerine **Claude Code veya Codex aboneliğiniz** üzerinden çalışır.\n- Varsayılan olarak her e-posta bir **onay kuyruğundan** geçer.",
+        "tech": "**Kalp atışı (heartbeat) döngüsü:** Her 15 dakikada uyanır, bütçeye bakar, tek bir eylem seçer, kaydeder ve uyur. Eylem seçimi model değil **deterministik kod** ile yapılır (önce cevaplar, sonra gönderim, yazım, prospecting).\n\n- **Boru hattı:** Discover (tek ücretli aşama) → Profile (siteleri düz HTTP ile okur) → Enrich (karar vericiyi bulur) → Verify (e-postayı verified/risky/guess/invalid olarak etiketler).\n- **Veri modeli:** SQLite; her bilgi güven ve kaynak bilgisiyle bir `observations` satırı, bir tetikleyici sinyal kodlarını kontrollü sözlükle sınırlar.\n- **Alt ajanlar:** Scout, Writer, Sender, Handler, Analyst.\n- **Skills klasörü:** Satış bilgisi düzenlenebilir Markdown dosyaları; bir sonraki döngüde yeniden başlatmadan etkili olur.\n- **Yığın:** Python 3.11+, FastAPI, derleme adımsız HTML/JS panel, `claude`/`codex` CLI çağrıları (araçlar kapalı, kullanıcı yapılandırması dışarıda).\n- Gerekçe: kritik karar akışını deterministik tutmak, modeli yalnızca yazma/sınıflandırma gibi dar işlerde kullanmak güvenilirliği artırır.",
+        "why": "**Zamanlama:** \"Aboneliğini işe koş\" akımı; insanlar zaten ödedikleri Claude/Codex kotasını otonom işlere çeviriyor.\n\n- **Kitle:** Ajans sahipleri, serbest çalışanlar, tek kişilik B2B kurucular.\n- **Somut sonuç vaadi:** Genel \"agent framework\" yerine net bir iş akışı (satış) sunuyor; test sayısı (242) ve onay kuyruğu gibi ayrıntılar olgunluk sinyali veriyor.\n- Hem hız hem risk içeriyor: soğuk e-posta, spam ve uyumluluk sorumluluğu kullanıcıda.",
+        "evolve": "- **Teslim edilebilirlik:** Alan adı ısındırma, bounce izleme ve gönderim hızı ayarı daha otomatik olabilir.\n- **Prompt injection savunması:** Web siteleri ve cevaplardaki gizli talimatlar otopilot modunda risk; daha sıkı izolasyon gerekir.\n- **Veri kalitesi:** OpenStreetMap kaynağı zayıf; daha fazla ücretsiz/yerel kaynak.\n- **CRM entegrasyonu:** Mevcut CRM'lerle iki yönlü senkron.\n- **Uyumluluk:** KVKK/GDPR odaklı hazır ayarlar ve denetim kaydı.\n- **Başka alanlara uyarlama:** Aynı döngü mimarisi destek, tedarikçi araştırması gibi iş akışlarına taşınabilir."
+      },
+      "glossary": [
+        {
+          "term": "Soğuk e-posta (cold email)",
+          "def": "Daha önce tanışmadığınız kişilere gönderilen, satış amaçlı ilk e-posta."
+        },
+        {
+          "term": "Prospecting",
+          "def": "Potansiyel müşterileri bulma ve nitelendirme süreci."
+        },
+        {
+          "term": "Heartbeat döngüsü",
+          "def": "Ajanın belirli aralıklarla uyanıp tek bir iş yaptıktan sonra tekrar beklemeye geçtiği çalışma düzeni."
+        },
+        {
+          "term": "Deterministik",
+          "def": "Aynı girdiye her zaman aynı çıktıyı veren, rastgelelik/model yorumu içermeyen."
+        },
+        {
+          "term": "Alt ajan (sub-agent)",
+          "def": "Ana ajanın belirli bir görevi devrettiği, uzmanlaşmış yardımcı yapay zekâ bileşeni."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Okunan metne gizlenmiş talimatlarla yapay zekâ modelini istenmeyen davranışa yönlendirme saldırısı."
+        },
+        {
+          "term": "Bounce",
+          "def": "Geçersiz veya dolu adres nedeniyle e-postanın geri dönmesi."
+        },
+        {
+          "term": "Alan adı ısındırma (warmup)",
+          "def": "Yeni bir alan adından gönderimi kademeli artırarak spam olarak işaretlenmeyi önleme."
+        },
+        {
+          "term": "Onay kuyruğu (outbox approval)",
+          "def": "Giden mesajların gönderilmeden önce insan onayına sunulduğu bekleme listesi."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python için hızlı bir web API çatısı."
+        }
+      ]
+    },
+    {
+      "name": "kirodotdev/KiroCrew",
+      "url": "https://github.com/kirodotdev/KiroCrew",
+      "stars": "4.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Kendi donanımınızda çalışan, oturumlar arası hatırlayan bir geliştirme çalışma alanı.** Çok adımlı görevleri, zamanlanmış işleri ve sistem izlemeyi siz terminalde olmadan sürdürür.\n\n- Çözdüğü problem: agent oturumlarının kısa ömürlü, tek seferlik ve gözlemlenemez olması.\n- Masaüstü uygulaması, web paneli, CLI veya Slack/Discord üzerinden ulaşılır.\n- Düzeltmelerinizden ve hatalarından **ders çıkarır**, tekrarlayan kalıpları yeniden kullanılabilir skill'e çevirir.",
+        "tech": "**Gateway merkezli mimari:** Erişim, oturum, hafıza, zamanlama ve onaylar tek bir Gateway'de; ajanın çalıştığı yer ile sizin çalıştığınız yer ayrılır.\n\n- **ACP arka ucu:** Her sohbet/arka plan görevi, yapılandırılmış bir ACP arka ucu (varsayılan `kiro-cli`) üzerinden ajan oturumu olarak koşar.\n- **Öz-iyileştirme:** Düzeltme ve hatalar kalıcı, düzenlenebilir derslere dönüşür (global veya depoya özel); tekrarlar skill olur.\n- **Güvenlik:** Araç onayları, işletim sistemi sandbox'ı, hassas yol/kimlik bilgisi korumaları, red kuralları, denetim olayları.\n- **Yığın:** Python 3.12+, Node 22+, Docker (GHCR), systemd/launchd servisi, genişletme için MCP. Apache-2.0.\n- Gerekçe: durum ve politikayı tek yerde tutmak, uzun süren işleri kesintiye dayanıklı (checkpoint, doğrulama, yeniden deneme) yapar.",
+        "why": "**Zamanlama:** Agent araçları \"sohbet penceresi\"nden \"sürekli çalışan arka plan işçisi\"ne kayıyor.\n\n- **Kitle:** Kiro kullanıcıları ve her zaman açık bir agent sunucusu isteyen ekipler; Kiro markasının arkasındaki güven de ivmeyi artırıyor.\n- Hafıza, zamanlama, onay ve gözlemlenebilirliği tek pakette sunması, bu parçaları ayrı ayrı birleştirme zahmetini kaldırıyor.",
+        "evolve": "- **Arka uç bağımsızlığı:** Varsayılan `kiro-cli` bağımlılığı; farklı ACP arka uçlarıyla daha geniş destek.\n- **Telemetri:** Varsayılan anonim kalp atışı bazı kurumlar için engel; açıkça opt-in olması güven verir.\n- **Windows:** Yerel kurulum ayrı ve zahmetli.\n- **Ders kalitesi denetimi:** Öğrenilen derslerin yanlış genellemesini yakalayan gözden geçirme/geri alma akışı.\n- **Kurumsal:** Çok kullanıcılı yetkilendirme ve merkezi politika dağıtımı.\n- **Veri/ERP bağlantısı:** MCP üzerinden veritabanı ve iç sistem sorgulayan zamanlanmış rutinler için doğal bir zemin."
+      },
+      "glossary": [
+        {
+          "term": "Gateway",
+          "def": "Tüm istemcilerin (CLI, web, mesajlaşma) bağlandığı ve durumu yöneten merkezi sunucu."
+        },
+        {
+          "term": "ACP",
+          "def": "Agent Client Protocol: editör/istemcilerin kodlama ajanlarıyla standart biçimde konuşmasını sağlayan protokol."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zekâ uygulamalarını dış araç ve verilere bağlayan standart protokol."
+        },
+        {
+          "term": "Skill",
+          "def": "Ajanın belirli bir işi nasıl yapacağını anlatan, yeniden kullanılabilir talimat paketi."
+        },
+        {
+          "term": "Checkpoint",
+          "def": "Uzun bir görevin ilerlemesini kaydedip kesintiden sonra oradan devam etmeyi sağlayan nokta."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Programın sistemin geri kalanına zarar veremeyeceği şekilde yalıtıldığı çalışma ortamı."
+        },
+        {
+          "term": "Alt ajan (subagent)",
+          "def": "Ana ajanın paralel çalışması için görev devrettiği yalıtılmış yardımcı ajan."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda başka bir sisteme otomatik HTTP isteği gönderen mekanizma."
+        },
+        {
+          "term": "systemd / launchd",
+          "def": "Linux ve macOS'ta servisleri arka planda başlatıp yöneten sistem bileşenleri."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Yazılımın kullanım verisini üreticiye gönderme mekanizması."
+        }
+      ]
+    },
+    {
+      "name": "Leonxlnx/taste-skill",
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "stars": "106.5k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**Kodlama agent'larına \"zevk\" kazandıran bir skill.** Agent'ın ürettiği web sayfası veya uygulama ekranı, jenerik \"yapay zekâ yapımı\" görünümden çıkıp bilinçli bir sanat yönüne sahip olur.\n\n- Çözdüğü problem: Claude Code/Codex'in her brief'e benzer, sıkıcı landing page üretmesi.\n- Ana skill: `design-taste-frontend`; 2.1 sürümü panel ve uygulama ekranları için ayrı bir yol içerir.\n- Gerçek (lisanslı) fotoğraflar kullanır, sonucu gerçek tarayıcıda kontrol eder.",
+        "tech": "**Altı adımlı iş akışı:** brief'i oku → 20 araştırılmış tasarım yönünden betikle üçünü seç, agent birini seçsin → merkezi fikri belirle → kredili gerçek görsellerle inşa et → üç genişlikte tarayıcıda \"slop\" testi → ekran görüntülerini kendisi inceleyip en büyük üç sorunu düzelt (en çok üç tur).\n\n- **Çerçeveden bağımsız:** Kurallar tasarım odaklı; React, Vue, Svelte, düz HTML ile çalışır.\n- **Altyapı:** Node 22+ betikleri, Chrome/Edge/Chromium ile görsel doğrulama, Claude Code ve Codex için eklenti manifestleri, symlink'li `install.sh`.\n- **Görsel kaynaklar:** Wikimedia Commons, Openverse, Met gibi açık koleksiyonlar; yalnızca kamu malı/CC lisanslı. MIT lisanslı.\n- Gerekçe: tasarım kalitesini \"güzel yap\" gibi belirsiz bir istekle değil, ölçülebilir kontrol ve kendi kendini eleştirme döngüsüyle sağlamak.",
+        "why": "**Zamanlama:** \"Vibe coding\" yaygınlaştıkça herkesin sayfası birbirine benzedi; \"AI slop\" karşıtı tasarım araçlarına büyük talep var (aynı hafta impeccable da listede).\n\n- **Kitle:** Tasarımcı olmayan geliştiriciler, solo kurucular, ajans prototipçileri.\n- Tek komutla kurulan, önce/sonra farkı görsel olarak gösterilebilen bir skill olduğu için sosyal medyada hızla yayıldı; 106k yıldızın bir kısmı bu viral doğadan geliyor.",
+        "evolve": "- **Maliyet:** Tam bir build 30-45 dakika ve yüzbinlerce token tutuyor; hızlı \"lite\" mod gerekli.\n- **Zevkin sınırları:** 247 sitelik küratörlü bir görüşe dayanıyor; markaya özel tasarım sistemi verilebilmesi önemli.\n- **Görsel kaynağı:** İnternet ve açık lisanslı görsel şart; kullanıcı kendi varlıklarını önceleyebilmeli.\n- **Ölçülebilir kalite:** Erişilebilirlik (kontrast, klavye) ve performans bütçesi kontrollerini otomatik teste eklemek.\n- **Dahili araçlar:** Kurumsal panel/ERP arayüzleri gibi yoğun veri ekranları için ayrı kural setleri."
+      },
+      "glossary": [
+        {
+          "term": "Skill",
+          "def": "Ajanın belirli bir işi nasıl yapacağını anlatan, yeniden kullanılabilir talimat paketi."
+        },
+        {
+          "term": "AI slop",
+          "def": "Yapay zekânın ürettiği, özensiz ve birbirine benzeyen düşük kaliteli çıktı."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine yapay zekâya doğal dille tarif ederek uygulama üretme yaklaşımı."
+        },
+        {
+          "term": "Landing page",
+          "def": "Bir ürün veya kampanya için ziyaretçiyi tek amaca yönlendiren tanıtım sayfası."
+        },
+        {
+          "term": "Sanat yönü (art direction)",
+          "def": "Bir işin renk, tipografi, görsel dil gibi genel estetik kararlarının bütünü."
+        },
+        {
+          "term": "Eklenti manifesti",
+          "def": "Bir eklentinin adını, bileşenlerini ve kurulum bilgisini tanımlayan yapılandırma dosyası."
+        },
+        {
+          "term": "Symlink",
+          "def": "Bir dosyaya veya klasöre başka bir yoldan erişim sağlayan sembolik bağlantı."
+        },
+        {
+          "term": "CC0 / CC BY",
+          "def": "Creative Commons lisansları: CC0 kamu malı gibi serbest, CC BY kaynak göstererek kullanım şartlı."
+        },
+        {
+          "term": "Çerçeve (framework)",
+          "def": "React, Vue gibi uygulama geliştirmeyi kolaylaştıran hazır yazılım iskeleti."
+        }
+      ]
+    }
+  ]
+}
