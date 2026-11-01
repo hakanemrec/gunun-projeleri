@@ -1,0 +1,155 @@
+{
+  "date": "2026-11-01",
+  "projects": [
+    {
+      "name": "Orkas-AI/Orkas",
+      "url": "https://github.com/Orkas-AI/Orkas",
+      "stars": "6.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Orkas**, bilgisayarınızda çalışan, açık kaynaklı (MIT) bir **yapay zekâ ekibi masaüstü uygulaması.** Bir hedef verirsiniz; \"Commander\" adlı yönetici agent hedefi yapılacaklar listesine böler, işleri uzman agent'lara veya yerel kurulu kodlama agent'larına dağıtır ve sonucu inceleme için size getirir.\n\n- Çözdüğü problem: tek bir sohbet penceresi uzun, çok adımlı işlerde (araştırma → rapor → sunum) dağılıyor; Orkas işi proje, görev ve ekip mantığıyla yönetiyor.\n- 16 hazır agent: araştırma, içerik, sunum, görsel/video/ses, e-ticaret ve ofis işleri.\n- Claude Code, Codex, OpenCode gibi CLI agent'ları da aynı ekibe alt süreç olarak bağlanabiliyor.\n- Gmail, Takvim, Notion, Slack gibi bağlayıcılar var; göndermeden, paylaşmadan, silmeden önce onay ister.",
+        "tech": "**Electron + TypeScript + Node.js 22+.** Ana süreç (`src/main`) grup sohbeti dağıtımını ve hafızayı, `src/core-agent` ise agent çalışma zamanını yönetir.\n\n- **Üç araçlı orkestrasyon:** `dispatch_to` (işi ver, sonucu al), `hand_off_to` (kalan işi devret), `run_worker` (izole, isimsiz alt görev). İsimli agent ve anonim işçilerin eşzamanlılık sınırları ayrı tutulur.\n- **Bağlam bütçesi:** Seçilen modelin kullanılabilir girdi boyutuna göre bağlam yönetilir; uzun işlerde eski mesajlar kontrol noktalarıyla sıkıştırılır, dosya okuma/komut kayıtları sıkıştırmadan sağ çıkar.\n- **Güvenlik ağları:** Oturum kilitleri, araç turu bütçesi, tekrarlayan çağrı denetimi ve boşta bekleme bekçisi (watchdog) takılan agent'ları durdurur.\n- **Yerel veri:** SQLite + `sqlite-vec` ile vektör araması; gömme modeli yerelde (~95 MB) çalışır. Ses için whisper.cpp, medya için FFmpeg.\n- **Model esnekliği:** Yerleşik model, kendi API anahtarınız veya OpenAI/Anthropic uyumlu yerel uç nokta.\n- Gerekçe: her şeyi yerelde tutmak gizlilik sağlar; ama bulut eşitleme ve paylaşılan projeler yalnızca paketli sürümde.",
+        "why": "**Zamanlama:** \"Yerel öncelikli AI takım arkadaşı\" kategorisi son haftalarda patladı (OpenBot, OpenMausBot, KiroCrew...). Orkas bu akımın **ofis/içerik iş akışlarına** ve e-ticarete bakan, teknik olmayan kullanıcıya da hitap eden ucu.\n\n- 500 ücretsiz kredi ile API anahtarı olmadan başlanıyor; kurulum bir installer kadar kolay (macOS/Windows).\n- Hem sıfırdan agent'lar hem de mevcut CLI agent'larını tek çatı altında toplaması geliştiricileri de çekiyor.\n- Zamanlanmış otomasyonlar ve \"kendini geliştiren\" hafıza (boşta çalışan gözden geçirmeler) farklılaştırıcı vaat.\n- Günlük ~400 yıldızlık ivme, diğer bot projelerine göre mütevazı ama yeni bir proje için güçlü.",
+        "evolve": "- **Linux ve bulut:** Linux yalnızca kaynaktan kurulabiliyor; bilgisayar kapalıyken otomasyon çalışmıyor. Bir sunucu/headless mod büyük fark yaratır.\n- **Açık çekirdek vs. ücretli katman:** Paylaşımlı proje, senkron ve yayınlama kapalı kaynak tarafta; topluluk güveni için bu sınırın net olması gerekir.\n- **Ölçülebilirlik:** Agent'ların kalitesini gösteren herkese açık değerlendirme (`eval` klasörü var) ve maliyet/token panosu eklenebilir.\n- **Kurumsal ilgi:** ERP/IFS gibi sistemlerle konuşan bağlayıcılar (REST/OData) ve onay akışları eklenirse iş süreçleri için ilginç bir orkestratör olur.\n- Agent'lar arası güven sınırları (hangi agent hangi dosyaya/bağlayıcıya erişir) daha ince ayarlanabilir."
+      },
+      "glossary": [
+        {
+          "term": "Orkestrasyon",
+          "def": "Bir hedefi parçalara bölüp farklı agent veya araçlara dağıtarak sonucu birleştirme işi."
+        },
+        {
+          "term": "Agent",
+          "def": "Hedef verildiğinde araçları (dosya, tarayıcı, komut) kullanarak adım adım iş yapan yapay zekâ programı."
+        },
+        {
+          "term": "Local-first",
+          "def": "Verinin ve işlemin öncelikle kullanıcının kendi bilgisayarında kalması yaklaşımı."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML, JS) masaüstü uygulaması yazmayı sağlayan çatı."
+        },
+        {
+          "term": "sqlite-vec",
+          "def": "SQLite veritabanına vektör (anlamsal) arama yeteneği ekleyen eklenti."
+        },
+        {
+          "term": "Gömme (embedding)",
+          "def": "Metni anlamını yansıtan sayı dizisine çeviren işlem; benzer anlamlı metinleri bulmak için kullanılır."
+        },
+        {
+          "term": "Watchdog",
+          "def": "Bir sürecin takılıp takılmadığını izleyen ve gerekirse durduran koruma mekanizması."
+        },
+        {
+          "term": "CLI agent",
+          "def": "Terminalden çalışan kodlama agent'ı (ör. Claude Code, Codex)."
+        },
+        {
+          "term": "Bağlam penceresi",
+          "def": "Bir modelin tek seferde okuyabildiği metin miktarı; dolunca eski içerik sıkıştırılmalıdır."
+        }
+      ]
+    },
+    {
+      "name": "bregman-arie/devops-exercises",
+      "url": "https://github.com/bregman-arie/devops-exercises",
+      "stars": "86.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "**DevOps, SRE ve altyapı konularında 2.600'den fazla soru ve alıştırma içeren** açık bir çalışma deposu. Mülakat hazırlığı olarak sunuluyor ama pratikte bir **konu haritası ve kendini sınama aracı.**\n\n- Linux, ağ, DNS, AWS/Azure/GCP, Docker, Kubernetes, Terraform, Ansible, Prometheus, SQL, Git, güvenlik, sistem tasarımı gibi geniş bir yelpaze.\n- Çözdüğü problem: DevOps'un dağınık bilgisini tek bir yerde, sorulu-cevaplı çalışılabilir hâle getirmek.\n- Depo kendisi de dürüst: soruların çoğu gerçek bir mülakatı temsil etmiyor, amaç her şeyi öğretmek değil.",
+        "tech": "Bir yazılım projesinden çok **içerik deposu**; bu yüzden teknik tercihler sade:\n\n- **Markdown soru-cevap çiftleri:** Her konunun kendi klasörü ve README'si var (`topics/`, `exercises/`). Cevaplar açılır-kapanır bölümlerde saklanır.\n- **Alıştırma tabloları:** \"Amaç ve Talimatlar\" / \"Çözüm\" sütunlarıyla uygulamalı senaryolar (ör. SQL için Müşteri-Sipariş tabloları).\n- **Python (`coding/python`) ve `scripts`, `tests`:** Küçük kod alıştırmaları ve içerik tutarlılığını denetleyen yardımcılar; GitHub Actions ile otomasyon.\n- **Çeviriler:** Portekizce ve Çince README/SSS.\n- Gerekçe: düz Markdown, katkıyı pull request ile herkese açık kılar ve araç bağımlılığı yaratmaz.",
+        "why": "**Neden hâlâ trend?** 86 bin yıldızlı klasik bir kaynak; bugünkü sıçrama büyük olasılıkla yeniden keşif dalgası (paylaşımlar, işe alım dönemi) kaynaklı.\n\n- **Kitle:** DevOps/SRE'ye geçmek isteyenler, mülakata hazırlananlar, eğitmenler.\n- Yapay zekâ agent'ları altyapı işini üstlendikçe temel kavramları bilmek değer kazandı: agent'ın ürettiği Terraform/Kubernetes çıktısını **doğrulayabilmek** için temel bilgi şart.\n- Hazır soru havuzu, LLM tabanlı sınav/flashcard araçları için de ham madde.",
+        "evolve": "- **Kalite:** README'de bazı cevapların hatalı olduğu (ör. standart olmayan PromQL fonksiyonları) ve bazı ağ sorularının cevapsız kaldığı görülüyor; sürümlü inceleme ve doğrulama süreci eklenmeli.\n- **Etkileşim:** Markdown yerine tarayıcıda çalışan flashcard/quiz arayüzü, ilerleme takibi, aralıklı tekrar.\n- **Gerçek laboratuvarlar:** Soruları çalıştırılabilir ortamlara (kind, Docker Compose, Terraform sandbox) bağlayıp çözümleri otomatik test etmek.\n- **Güncellik:** Bulut ve Kubernetes hızlı değişiyor; sürüm etiketi ve \"son doğrulama tarihi\" alanı faydalı olur.\n- **Veritabanı tarafı:** SQL/PL-SQL, performans ayarı ve yedekleme gibi veri odaklı bölümler genişletilebilir."
+      },
+      "glossary": [
+        {
+          "term": "DevOps",
+          "def": "Yazılım geliştirme ile sunucu/işletim ekiplerini birleştiren, otomasyon ve sürekli teslimata dayalı çalışma kültürü."
+        },
+        {
+          "term": "SRE",
+          "def": "Site Reliability Engineering; sistemlerin güvenilirliğini yazılım mühendisliği yöntemleriyle sağlama disiplini."
+        },
+        {
+          "term": "Kubernetes",
+          "def": "Konteynerleri birçok sunucuda otomatik çalıştıran, ölçekleyen ve yöneten orkestrasyon sistemi."
+        },
+        {
+          "term": "Terraform",
+          "def": "Altyapıyı kodla tanımlayıp bulutta otomatik kuran araç."
+        },
+        {
+          "term": "Ansible",
+          "def": "Sunucu yapılandırmasını SSH üzerinden betiklerle otomatikleştiren araç."
+        },
+        {
+          "term": "Prometheus",
+          "def": "Sistem metriklerini toplayıp sorgulayan açık kaynaklı izleme aracı."
+        },
+        {
+          "term": "PromQL",
+          "def": "Prometheus'un metrik sorgulama dili."
+        },
+        {
+          "term": "Konteyner",
+          "def": "Bir uygulamayı bağımlılıklarıyla paketleyip izole çalıştıran hafif birim (ör. Docker)."
+        },
+        {
+          "term": "Aralıklı tekrar",
+          "def": "Bilgiyi unutmaya yakın zamanlarda tekrar ettirerek kalıcı öğrenmeyi sağlayan yöntem."
+        }
+      ]
+    },
+    {
+      "name": "vorssaint/vorssaint-utils",
+      "url": "https://github.com/vorssaint/vorssaint-utils",
+      "stars": "32.0k",
+      "language": "Swift",
+      "sections": {
+        "serves": "**Vorssaint**, macOS menü çubuğunda tek bir simgeyle onlarca küçük ücretli Mac uygulamasının işini yapmayı hedefleyen, ücretsiz ve açık kaynaklı bir **yardımcı araçlar paketi.**\n\n- Uygulama başına ses seviyesi, sistem izleme (CPU, sıcaklık, pil), pencere yerleştirme, pano geçmişi, ekran görüntüsü/kayıt, Homebrew ve port yöneticisi gibi onlarca özellik.\n- Hesap, telemetri veya abonelik yok; yalnızca istediğiniz özellikleri açıyorsunuz.\n- Geliştiriciye dönük parçalar: port yöneticisi, Homebrew yöneticisi, Claude/Codex/OpenCode/Copilot **kullanım takibi**.",
+        "tech": "- **Swift + SwiftUI + AppKit:** Menü çubuğu ve sistem seviyesi özellikler için yerel (native) yığın; Electron'a göre çok daha az bellek ve pil tüketir.\n- **Swift Package Manager + `build.sh`:** Karmaşık Xcode proje dosyası yerine betikle derleme; `--dev` ile ayrı bir geliştirici sürümü kurulur.\n- **İzin yönetimi:** Erişilebilirlik, ekran kaydı gibi izinler isteğe bağlı; uygulama hangi izni hangi özelliğin kullandığını açıklar ve kullanılmayanları işaretler.\n- **Dağıtım:** Homebrew cask (`brew install --cask vorssaint`) ve imzalı, noter onaylı (notarized) DMG.\n- **Lisans:** GPL-3.0+; ad ve logo ayrı marka şartlarıyla korunuyor, fork'lar kendi kimliğini kullanmalı.\n- Gereksinim: Apple Silicon ve macOS 14+.",
+        "why": "**Kitle:** Mac kullanan geliştiriciler ve güçlü kullanıcılar; her biri için ayrı abonelik ödemekten yorulanlar.\n\n- \"Bir simge, bir düzine uygulama\" vaadi basit ve güçlü bir mesaj; abonelik yorgunluğu zamanlaması da uygun.\n- AI kodlama araçlarının kullanım/limit takibi, bugünün agent merakıyla örtüşüyor.\n- Gizlilik odaklı (hesapsız, telemetrisiz) ve açık kaynak olması güven veriyor; bin 500 fork'a rağmen resmi sürüm tek elden.\n- Günlük yaklaşık 500 yıldız; toplam 32 bin ile hızlı büyümüş bir proje.",
+        "evolve": "- **Platform:** Intel Mac ve eski macOS sürümleri desteklenmiyor; özellik sayısı arttıkça bakım yükü de büyüyor.\n- **Modülerlik:** Özellikleri ayrı eklenti paketleri olarak sunmak ve üçüncü taraf eklenti API'si, uygulamanın şişmesini önler.\n- **Güvenlik yüzeyi:** Çok sayıda sistem izni isteyen tek uygulama cazip bir hedef; izin ayrıştırması ve bağımsız güvenlik denetimi önemli.\n- **Geliştirici özellikleri:** Yerel veritabanı/servis durum paneli, kullanım takibinin maliyet bütçesi uyarılarıyla genişletilmesi.\n- Sürdürülebilirlik: ücretsiz bir paketin gelir modeli (sponsorluk/pro katman) belirsiz."
+      },
+      "glossary": [
+        {
+          "term": "Menü çubuğu",
+          "def": "macOS'ta ekranın üstündeki, küçük uygulama simgelerinin durduğu şerit."
+        },
+        {
+          "term": "SwiftUI",
+          "def": "Apple'ın arayüzleri bildirimsel biçimde yazmayı sağlayan çerçevesi."
+        },
+        {
+          "term": "AppKit",
+          "def": "macOS masaüstü uygulamalarının klasik, düşük seviyeli arayüz çerçevesi."
+        },
+        {
+          "term": "Swift Package Manager",
+          "def": "Swift projelerinin bağımlılık ve derleme yönetim aracı."
+        },
+        {
+          "term": "Homebrew cask",
+          "def": "Homebrew ile terminalden macOS uygulaması kurmayı sağlayan paket biçimi."
+        },
+        {
+          "term": "Notarization (noter onayı)",
+          "def": "Apple'ın dağıtılan uygulamayı zararlı yazılım için taraması ve onaylaması."
+        },
+        {
+          "term": "GPL-3.0",
+          "def": "Türev çalışmaların da aynı lisansla açık kalmasını şart koşan açık kaynak lisansı."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Uygulamanın kullanım verisini geliştiriciye otomatik göndermesi."
+        },
+        {
+          "term": "Apple Silicon",
+          "def": "Apple'ın kendi tasarladığı M serisi işlemciler."
+        }
+      ]
+    }
+  ]
+}
