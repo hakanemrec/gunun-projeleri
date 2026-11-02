@@ -1,0 +1,193 @@
+{
+  "date": "2026-11-02",
+  "projects": [
+    {
+      "name": "colinhacks/reylo",
+      "url": "https://github.com/colinhacks/reylo",
+      "stars": "1.5k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Reylo**, `.sql` dosyalarını doğrudan TypeScript'e import etmenizi ve sorgunun **sonuç ve parametre tiplerini otomatik** almanızı sağlar; ayrı bir kod üretme (codegen) adımı yoktur.\n\n- Çözdüğü problem: SQL'i string olarak yazınca tipler elle yazılır ve şema değişince sessizce bozulur. ORM kullanmak ise SQL'in gücünden vazgeçmek demektir.\n- Sorguyu `.sql` dosyasına yazarsınız, import edip `getAuthor.run(db, { id: 1 })` şeklinde çalıştırırsınız; dönüş tipi SQL'den çıkarılır.\n- Postgres, MySQL, SQLite ve DuckDB desteklenir; `pg`, `mysql2`, `better-sqlite3`, D1, Drizzle gibi sürücülerle çalışır.\n- PL/SQL / ERP dünyasından gelenler için ilgi çekici: sorgu veritabanında yazıldığı gibi kalır, tip güvenliği üstüne eklenir.",
+        "tech": "**Rust ile yazılmış motor + TypeScript 7.1 (beta) 'content mapper' özelliği + Node 24+.**\n\n- **Tip çıkarımı veritabanından gelir:** Reylo sorguyu geliştirme veritabanına *hazırlatır* (çalıştırmaz) ve sütun/parametre tiplerini geri okur. Gerekçe: tipin tek doğru kaynağı şemanın kendisidir, SQL'i ayrıştırmaya çalışan ayrı bir parser sürekli geride kalır.\n- **Content mapper:** TypeScript'in yeni özelliği harici dosya türlerinin derlemeye girmesine izin verir; `tsc` bu yüzden `--runExternalCode` bayrağıyla çalışır.\n- **Motor paketleri:** Her veritabanı ayrı pakete bölünmüş (örn. `@reylosql/postgres`); motor `DATABASE_URL` şemasından seçilir.\n- **Çıkarım ayrıntıları:** null olabilirlik, satır sayısı (`Row | null`, `Row`, `void`, `Row[]`), enum / check kısıtlarından birleşim tipleri ve JSON şekilleri.\n- **Çalışma zamanı:** Node'da `reylo/register` yükleyicisi veya bundler eklentisi; her sorgu `reylo:query` tracing kanalına yayınlanır (gözlemlenebilirlik).",
+        "why": "- **Zamanlama:** TypeScript 7 (yerel derleyici) dönemi ve content mapper'lar yeni; Reylo bu özelliğin ilk çarpıcı kullanım örneği.\n- **Kitle:** Prisma/Drizzle'ın ORM soyutlamasını sevmeyen, ham SQL yazmayı seven TypeScript geliştiricileri.\n- **Marka etkisi:** Zod yazarı Colin McDonnell'in projesi; 'sıfır codegen' vaadi tanıdık bir kalite beklentisi yaratıyor.\n- Kısa sürede 1.5k yıldız: 'SQL'i SQL olarak bırak ama tipli olsun' mesajı net ve sade.",
+        "evolve": "- **Eksikler:** Beta TypeScript'e bağımlı; çalışan bir geliştirme veritabanı gerekir; MySQL 8.0.22+ şartı; tip kontrolü için `--runExternalCode` bayrağı güvenlik açısından dikkat ister.\n- **Fırsatlar:** CI'da şema ile sorguların uyumunu doğrulayan hazır adım, migration araçlarıyla entegrasyon, Oracle/SQL Server desteği (ERP dünyası için kritik).\n- **Olası yön:** Saklı yordam / paket çağrıları için tipli sarmalayıcılar; bu PL/SQL tabanlı sistemlerde TypeScript tarafı yazanlar için çok değerli olurdu."
+      },
+      "glossary": [
+        {
+          "term": "Codegen",
+          "def": "Şemadan veya sorgudan ayrı bir adımda otomatik kaynak kod dosyası üretmek. Reylo bu adımı gerektirmez."
+        },
+        {
+          "term": "ORM",
+          "def": "Veritabanı tablolarını programlama dilindeki nesnelere eşleyen kütüphane; SQL'i gizler."
+        },
+        {
+          "term": "Content mapper",
+          "def": "TypeScript'te `.sql` gibi kod olmayan dosyaların derleme sırasında tip bilgisine çevrilmesini sağlayan yeni özellik."
+        },
+        {
+          "term": "Hazırlanmış sorgu (prepare)",
+          "def": "Veritabanına sorguyu çalıştırmadan 'çözümlet' demek; sütun ve parametre tiplerini öğrenmeyi sağlar."
+        },
+        {
+          "term": "Nullability",
+          "def": "Bir değerin boş (null) olup olamayacağı bilgisi."
+        },
+        {
+          "term": "Cardinality",
+          "def": "Sorgunun kaç satır döndürebileceği: tek, olmayabilir veya çok."
+        },
+        {
+          "term": "DuckDB",
+          "def": "Analitik sorgulara odaklı, uygulamaya gömülebilen hafif veritabanı."
+        },
+        {
+          "term": "Tracing channel",
+          "def": "Node'da olayları dışarıdan dinlemeye yarayan yerleşik yayın kanalı."
+        }
+      ]
+    },
+    {
+      "name": "beenuar/AiSOC",
+      "url": "https://github.com/beenuar/AiSOC",
+      "stars": "6.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "**AiSOC**, kendi sunucunuza kurabileceğiniz açık kaynaklı (MIT) bir **yapay zekâ destekli güvenlik operasyon merkezi (SOC)**.\n\n- Güvenlik verilerini toplar, normalleştirir, tespit kurallarını çalıştırır, ilişkili alarmları olaylara (incident) gruplar ve AI agent'ların inceleme yapmasını sağlar.\n- Çözdüğü problem: analistler yüzlerce alarmı elle sınıflandırmaktan bunalıyor.\n- Her agent isteği ve araç çağrısı kayıt altına alınır; yanıt önerileri **insan onayı olmadan** hiçbir sisteme gönderilmez.\n- Ticari SIEM'in yerine geçme iddiası yok; uzun süreli saklama ve uyumluluk araması kapsam dışı.",
+        "tech": "**Docker Compose + Kafka + PostgreSQL + ClickHouse + Neo4j + Ollama.**\n\n- **Kafka:** telemetri akışı; alarm hacmi dalgalansa da veri kaybı olmasın.\n- **PostgreSQL:** alarmlar ve 'Investigation Ledger' (soruşturma defteri); onay adımları burada kalıcı olarak bekler.\n- **ClickHouse:** olay gölü ve geçmişe dönük avcılık (hunting) sorguları.\n- **Neo4j:** varlıklar arası ilişki grafı.\n- **Ollama + küçük yerel model** (llama3.2 3B): verinin dışarı çıkmaması için varsayılan; yanıt JSON'a kısıtlanınca 50 alarmdan 50'sinde kullanılabilir sonuç, kısıtsız 44.\n- **Kurallar:** Sigma tarzı; 7.023 kural kütüphanesinden 2.538'i çalıştırılabilir. Splunk SPL, Sentinel KQL, Elastic EQL çevirisi var.\n- **Profiller:** core (16 servis, ~8 GB), full (22 servis, ~12 GB), demo.\n- REST API + OpenAPI, MCP desteği, OCSF 1.9.0 kanıt paketleri.",
+        "why": "- **Zamanlama:** SOC ekipleri AI agent'larla 'alarm yorgunluğunu' azaltmaya çalışıyor; MCP desteği bu akıma uyuyor.\n- **Kitle:** Bütçesi ticari SIEM/SOAR'a yetmeyen küçük ekipler ve verisini dışarı vermek istemeyen kurumlar.\n- **Güven unsuru:** Denetlenebilir agent kayıtları ve zorunlu insan onayı.\n- **Dikkat:** README'deki doğruluk rakamları canlı agent doğruluğu değil, kendi içinde tutarlılık ölçümleri; hiçbir barındırılan LLM sağlayıcısı test edilmemiş.",
+        "evolve": "- **Eksikler:** Küçük model sınırlı; telemetri bağlanmadıysa görmez; keşif özelliği yok; iki kural hâlâ tetiklenemiyor.\n- **Fırsatlar:** Gerçek yoğunlukta benchmark, daha güçlü modellerle test, hafif tek-makine profili.\n- **Olası yön:** ERP/veritabanı denetim günlüklerini (örn. IFS, Oracle audit) bağlayan bağlayıcılar; yetki ihlali ve anormal sorgu avcılığı için iş sistemlerine odaklı kural paketleri."
+      },
+      "glossary": [
+        {
+          "term": "SOC",
+          "def": "Güvenlik Operasyon Merkezi; kurumun güvenlik olaylarını izleyen ve müdahale eden ekip veya sistem."
+        },
+        {
+          "term": "SIEM",
+          "def": "Güvenlik loglarını toplayıp ilişkilendiren ve alarm üreten platform."
+        },
+        {
+          "term": "Sigma",
+          "def": "Tespit kurallarını ürün bağımsız yazmaya yarayan açık kural formatı."
+        },
+        {
+          "term": "Kafka",
+          "def": "Yüksek hacimli olay akışlarını sıraya koyup dağıtan mesajlaşma sistemi."
+        },
+        {
+          "term": "ClickHouse",
+          "def": "Çok büyük olay verisi üzerinde hızlı analitik sorgu yapan sütun tabanlı veritabanı."
+        },
+        {
+          "term": "Neo4j",
+          "def": "Veriyi düğümler ve ilişkiler olarak saklayan graf veritabanı."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; AI modellerinin araç ve verilere standart biçimde bağlanma protokolü."
+        },
+        {
+          "term": "Playbook",
+          "def": "Belirli bir alarm türüne verilecek yanıt adımlarını tanımlayan otomatik iş akışı."
+        },
+        {
+          "term": "OCSF",
+          "def": "Güvenlik olaylarını ortak şemada ifade eden açık standart."
+        },
+        {
+          "term": "Threat hunting",
+          "def": "Alarm beklemeden, şüphe temelli proaktif tehdit arama."
+        }
+      ]
+    },
+    {
+      "name": "cjpais/Handy",
+      "url": "https://github.com/cjpais/Handy",
+      "stars": "36.8k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Handy**, tamamen çevrimdışı çalışan, ücretsiz ve açık kaynaklı (MIT) bir **konuşmadan metne** masaüstü uygulaması.\n\n- Kısayola basıp konuşursunuz; yazıya çevrilen metin aktif uygulamaya yapıştırılır.\n- Ses buluta gitmez, her şey yerelde işlenir; gizlilik ve internetsiz kullanım için önemli.\n- Kısayol modları: bas-konuş, aç-kapa veya ikisi birden.\n- Windows, macOS ve Linux'ta çalışır.",
+        "tech": "**Tauri (Rust) + Whisper (ggml) + Parakeet + Silero VAD.**\n\n- **Tauri:** Electron'a göre çok daha küçük, hafif masaüstü kabuğu; tepsi uygulaması olarak yaşar.\n- **Whisper (ggml):** Small/Medium/Turbo/Large modelleri, GPU varsa hızlandırmalı.\n- **Parakeet:** CPU'da iyi çalışan modeller, otomatik dil algılama.\n- **Silero VAD:** sessizlikleri eleyerek gereksiz işlem ve hatalı metni önler.\n- **Metin girişi:** X11'de xdotool, Wayland'de wtype/dotool, yedek olarak enigo.\n- **Tek örnek mimarisi:** CLI bayrakları çalışan örneği yönetir (kaydı aç/kapat, iptal); Linux'ta Unix sinyalleri harici kısayol servisleriyle entegrasyon sağlar.\n- Modeller yerel klasörden otomatik bulunur (Whisper `.bin`, `.gguf`, Hugging Face önbelleği).",
+        "why": "- **Zamanlama:** Yerel modeller artık dizüstünde gerçek zamanlı çalışacak kadar iyi; sesle kod ve prompt yazma alışkanlığı AI araçlarıyla yayıldı.\n- **Kitle:** Gizliliğe önem veren, abonelik ücreti ödemek istemeyen geliştiriciler, yazarlar, erişilebilirlik ihtiyacı olanlar.\n- **Neden öne çıkıyor:** 'Kur, kısayola bas, konuş' sadeliği; 36.8k yıldızla kategorinin referanslarından.",
+        "evolve": "- **Eksikler:** Linux Wayland desteği sınırlı; pano tabanlı yapıştırma yük altında yanlış metin getirebilir; macOS fn/Globe kısayolları yalnızca Apple klavyelerde.\n- **Fırsatlar:** Gelişmiş son işleme (noktalama, terim sözlüğü), Türkçe gibi dillerde doğruluk ayarı, toplantı kaydı modu.\n- **Olası yön:** Kod editörleri ve terminal için bağlama duyarlı dikte, yerel LLM ile komut/özet dönüşümü."
+      },
+      "glossary": [
+        {
+          "term": "Tauri",
+          "def": "Web arayüzünü Rust çekirdeğiyle paketleyen hafif masaüstü uygulama çatısı."
+        },
+        {
+          "term": "Whisper",
+          "def": "OpenAI'ın açık kaynak konuşma tanıma modeli ailesi."
+        },
+        {
+          "term": "ggml",
+          "def": "Modelleri sıradan donanımda verimli çalıştıran C tabanlı tensör kütüphanesi."
+        },
+        {
+          "term": "Parakeet",
+          "def": "NVIDIA'nın CPU'da da hızlı çalışabilen konuşma tanıma modelleri."
+        },
+        {
+          "term": "VAD",
+          "def": "Ses etkinliği algılama; konuşmanın ne zaman başlayıp bittiğini bulur."
+        },
+        {
+          "term": "Wayland",
+          "def": "Linux'ta X11'in yerine geçen modern pencere sistemi; uygulamalara daha sıkı kısıtlar koyar."
+        },
+        {
+          "term": "GGUF",
+          "def": "Yerel çalıştırılan modeller için yaygın model dosya biçimi."
+        }
+      ]
+    },
+    {
+      "name": "FlashML-org/FreeToken",
+      "url": "https://github.com/FlashML-org/FreeToken",
+      "stars": "15.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**FreeToken**, 290 milyar+ parametreli büyük açık modelleri **oyun bilgisayarında** yerel çalıştırmayı hedefleyen bir MoE sunum motoru (Apache 2.0).\n\n- Problem: Büyük modeller tek bir tüketici GPU'sunun belleğine sığmaz.\n- Yaklaşım: GPU, CPU, ana bellek ve veriyolunu tek esnek altyapı gibi kullanır.\n- Anthropic ve OpenAI uyumlu API'leri sunar; Codex, Claude Code, OpenCode gibi kodlama agent'larıyla çalışır.\n- Windows/Linux masaüstü uygulaması ve CLI var.",
+        "tech": "**Python (`freetoken[accel]`) + SGLang/vLLM/FlashInfer/llama.cpp kökenli bileşenler; NVIDIA RTX 30/40/50.**\n\n- **MoE gerçeği:** Her adımda uzmanların yalnızca küçük kısmı etkin olur; kalanlar bellekte beklemek zorunda değil.\n- **Bant genişliğine uyumlu CPU–GPU ortak yürütme:** işi CPU ile GPU arasında veriyolu hızına göre bölen politika.\n- **Prefill akışı:** katmanlar çift tamponla GPU'ya akıtılır.\n- **Global LRU uzman önbelleği:** en çok kullanılan uzmanlar VRAM'de tutulur.\n- **Anlamsal ankraj kontrol noktaları:** agent'ın araç çağrısı / düşünce bloğu düzenlemelerinde bağlamın baştan hesaplanmasını önler.\n- **Esnek bellek:** VRAM, uzman önbelleği ile KV belleği arasında yeniden bölüşülür.\n- Formatlar: MXFP4, NVFP4, FP8, BF16; özel FTW ağırlık formatı.",
+        "why": "- **Zamanlama:** Açık ağırlıklı dev MoE modeller çıktı, ama çalıştırmak pahalı; 'ücretsiz token' vaadi güçlü.\n- **Kitle:** Agent'ları günlerce çalıştıran, API maliyetinden ve veri paylaşımından kaçınan geliştiriciler.\n- **Etki:** Kodlama agent'larıyla doğrudan uyum ve yüksek günlük yıldız ivmesi.\n- Not: Performans iddiaları README'den; bağımsız ölçüm görmedim.",
+        "evolve": "- **Eksikler:** Yalnızca NVIDIA RTX resmi destekli; AMD/Intel/Apple belirsiz; eski FTW checkpoint'leri onarım gerektirebiliyor.\n- **Fırsatlar:** Bağımsız benchmark, daha geniş donanım desteği, tek tıkla model kataloğu.\n- **Olası yön:** Şirket içi ERP/veritabanı asistanları için yerel, veri dışarı çıkmayan kod ve SQL üretimi."
+      },
+      "glossary": [
+        {
+          "term": "MoE",
+          "def": "Mixture-of-Experts; her adımda parametrelerin yalnızca bir kısmını (uzmanları) etkinleştiren model mimarisi."
+        },
+        {
+          "term": "Open-weight model",
+          "def": "Ağırlıkları indirilip kendi donanımında çalıştırılabilen model."
+        },
+        {
+          "term": "VRAM",
+          "def": "Ekran kartının kendi belleği."
+        },
+        {
+          "term": "Prefill",
+          "def": "Modelin istemi (prompt) ilk kez işlediği, sonra token üretimine geçtiği ilk aşama."
+        },
+        {
+          "term": "KV cache",
+          "def": "Üretimi hızlandırmak için önceki tokenların ara hesaplarının saklandığı bellek."
+        },
+        {
+          "term": "LRU",
+          "def": "En uzun süredir kullanılmayanı atan önbellek politikası."
+        },
+        {
+          "term": "Kuantizasyon (MXFP4/NVFP4/FP8)",
+          "def": "Model ağırlıklarını daha az bitle saklayarak bellek ve hız kazandıran sayı biçimleri."
+        },
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş modeli çalıştırıp çıktı üretme işi."
+        }
+      ]
+    }
+  ]
+}
