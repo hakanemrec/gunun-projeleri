@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-03",
+  "projects": [
+    {
+      "name": "deepseek-ai/dsh-superagent-prototype",
+      "url": "https://github.com/deepseek-ai/dsh-superagent-prototype",
+      "stars": "14.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**dsh-superagent-prototype**, DeepSeek'in \"daha özerk bir agent sistemi\" yönündeki prototipidir (MIT lisanslı, TypeScript).\n\n- Çözmeye çalıştığı problem: bugünün kodlama/görev agent'ları adım adım insan onayı ve gözetimi bekliyor; hedef, uzun görevleri **daha az müdahaleyle** bitirebilen bir agent çatısı.\n- Repo yalnızca birkaç günlük; resmî açıklaması tek cümle (\"Towards a More Autonomous Agent System\"), bu yüzden kapsam ve olgunluk henüz net değil.\n- Not: bu analiz repo meta verisine (açıklama, dil, tarih, yıldız/fork) dayanır; kod satırları incelenmemiştir.",
+        "tech": "**TypeScript tabanlı bir agent çatısı** (tahmin: CLI/terminal ve araç çağırma katmanı).\n\n- **TypeScript:** agent araçları, JSON şemaları ve asenkron akışlar için tip güvenliği sağlar; Node ekosistemiyle kolay dağıtım.\n- **MIT lisansı:** kurumsal ve bireysel kullanımda önünü açar; 1.5k+ fork bunun hızla denendiğini gösteriyor.\n- **Prototip etiketi:** mimarinin henüz oturmadığı, API'lerin değişebileceği anlamına gelir.\n- Ayrıntılı mimari kararlar için README ve kaynak koduna bakmak gerekir.",
+        "why": "- **Zamanlama:** 31 Ekim'de açıldı, 3 günde 14k yıldız aldı; ivme çok yüksek.\n- **Marka:** DeepSeek adı \"açık ağırlıklı model + agent\" beklentisi yaratıyor.\n- **Kitle:** agent geliştiricileri, açık kaynak LLM ekosistemini izleyenler ve Claude Code/Codex alternatifi arayanlar.\n- 1.5k forkun yıldıza oranı yüksek: insanlar sadece beğenmiyor, kopyalayıp deniyor.",
+        "evolve": "- Net bir **dokümantasyon ve örnek görev seti** (benchmark) eklenmesi.\n- **Güvenlik katmanı:** özerk agent'lar için sandbox, komut onay politikaları ve geri alma.\n- **Eklenti/MCP uyumu** ile mevcut araç ekosistemine bağlanma.\n- Veritabanı/ERP gibi kurumsal ortamlarda (PL/SQL, IFS) kullanım için denetim kaydı (audit log) ve yetki sınırları."
+      },
+      "glossary": [
+        {
+          "term": "Agent",
+          "def": "Bir hedefi verildiğinde araçları (dosya, tarayıcı, komut satırı) kullanarak adımları kendisi planlayıp uygulayan yapay zekâ sistemi."
+        },
+        {
+          "term": "Prototip",
+          "def": "Fikrin çalışabildiğini göstermek için hazırlanan, henüz kararlı olmayan ilk sürüm."
+        },
+        {
+          "term": "Fork",
+          "def": "Bir deponun kendi hesabınıza kopyalanması; çoğunlukla değiştirmek veya denemek için yapılır."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Kodun ana sisteme zarar veremeyeceği yalıtılmış çalışma ortamı."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zekâ modellerinin dış araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        }
+      ]
+    },
+    {
+      "name": "l0ng-ai/openidea",
+      "url": "https://github.com/l0ng-ai/openidea",
+      "stars": "5.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**OpenIDEA**, IntelliJ IDEA tuş düzenini ve araç pencerelerini taşıyan, **Rust ile yeniden yazılmış hızlı bir masaüstü IDE**'dir.\n\n- Problem: JetBrains IDE'leri güçlü ama ağır; hafif editörler ise IDE derinliğinden yoksun.\n- Editör, kod içgörüsü, hata ayıklayıcı, Git, terminal, **veritabanı istemcisi** ve **HTTP istemcisi** tek uygulamada; 60+ dil hedefleniyor.\n- PL/SQL / ERP geliştiricileri için ilgi çekici: yerleşik veritabanı istemcisi sayesinde SQL ve uygulama kodu aynı pencerede.\n- Not: analiz repo meta verisine (açıklama, konular) dayanır.",
+        "tech": "**Tauri + Rust çekirdek + TypeScript arayüz** (konu etiketlerinden: `tauri`, `rust`, `lsp`, `dap`).\n\n- **Tauri:** Electron'a göre çok daha küçük ve düşük bellekli masaüstü uygulaması; arayüz web teknolojisiyle, ağır iş Rust'ta.\n- **LSP:** dil desteğini her dil için sıfırdan yazmak yerine mevcut dil sunucularına bağlanır; 60+ dil bu sayede mümkün.\n- **DAP:** hata ayıklayıcıyı da standart protokolle birçok dile açar.\n- Gerekçe: protokolleri yeniden kullanıp çekirdeği hızlı tutmak.",
+        "why": "- **Zamanlama:** AI editörlerinin (Cursor vb.) yanında, \"AI'sız klasik IDE deneyimi\" arayanlar için boşluk var.\n- **Kitle:** IntelliJ alışkanlığı olan ama hız ve açık kaynak isteyen geliştiriciler.\n- Apache-2.0 lisansı ve sürekli güncel commit akışı (bugün bile push var) güven veriyor.\n- 12 günde 5k yıldız: güçlü ivme.",
+        "evolve": "- Eklenti API'si ve JetBrains eklenti uyumu.\n- **Yerleşik AI asistan / MCP** entegrasyonu.\n- Veritabanı aracında PL/SQL derleme, paket gezgini ve Oracle/IFS odaklı özellikler büyük fark yaratır.\n- Büyük projelerde indeksleme performansı ve refaktör araçlarının olgunlaşması."
+      },
+      "glossary": [
+        {
+          "term": "IDE",
+          "def": "Kod yazma, derleme, hata ayıklama ve sürüm kontrolünü tek yerde sunan geliştirme ortamı."
+        },
+        {
+          "term": "Tauri",
+          "def": "Masaüstü uygulamalarını web arayüzü ve Rust ile üreten, Electron'a hafif bir alternatif çatı."
+        },
+        {
+          "term": "LSP",
+          "def": "Language Server Protocol; editörlerin otomatik tamamlama, hata gösterme gibi dil özelliklerini ortak bir protokolle almasını sağlar."
+        },
+        {
+          "term": "DAP",
+          "def": "Debug Adapter Protocol; hata ayıklayıcıları editörlerden bağımsız, standart biçimde bağlayan protokol."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojisiyle masaüstü uygulaması yapma çatısı; kullanışlı ama bellek tüketimi yüksektir."
+        }
+      ]
+    },
+    {
+      "name": "haydenschmitty/floorplan",
+      "url": "https://github.com/haydenschmitty/floorplan",
+      "stars": "2.3k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**Floorplan**, kod tabanınızın nasıl bir araya geldiğini gösteren, **sade Türkçe/İngilizce açıklamalı etkileşimli bir harita** üretir; haritayı Claude veya Codex çizer.\n\n- Problem: AI ile hızlı üretilen (vibe coding) projelerde kimse mimariyi tam bilmiyor; yeni gelen biri koda girmekte zorlanıyor.\n- Bir **Claude Code / Codex eklentisi** olarak çalışıyor; çıktı tarayıcıda gezilen bir diyagram (demo sayfası var).\n- Onboarding ve eski ERP/PL-SQL kod tabanlarını anlamak için kullanışlı bir fikir.\n- Not: analiz repo meta verisine dayanır.",
+        "tech": "**JavaScript tabanlı eklenti + LLM ile mimari çıkarımı + statik etkileşimli HTML çıktısı.**\n\n- **Agent eklentisi:** kodu okuyan ve modülleri/ilişkileri özetleyen işi LLM yapar; kural tabanlı ayrıştırıcıdan daha esnek.\n- **Statik çıktı (GitHub Pages demosu):** sunucu gerektirmez, paylaşması kolay.\n- **Düz dilde açıklama:** her kutu için \"bu ne işe yarar\" metni, diyagramı teknik olmayanlara da açar.\n- Risk: LLM çıkarımı hatalı ilişki çizebilir; doğrulama gerekir.",
+        "why": "- **Zamanlama:** AI ile üretilen kod hacmi patladı, \"anlama borcu\" büyüyor.\n- **Kitle:** vibe coding yapanlar, yeni ekibe katılanlar, kod incelemesi yapan yöneticiler.\n- Claude Code eklenti ekosisteminin hızla büyümesi dağıtımı kolaylaştırıyor.\n- 7 günde 2.3k yıldız.",
+        "evolve": "- Kod değiştikçe haritayı **otomatik güncelleme** (CI'da).\n- Veritabanı şeması ve servis çağrılarını da haritaya katmak.\n- Haritadan doğrudan PR/refaktör önerisi üretmek.\n- Doğruluk için statik analizle (import grafı) çapraz kontrol."
+      },
+      "glossary": [
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine yapay zekâya tarif ederek ürettirme ve sonucu çoğunlukla gözle denetleme tarzı."
+        },
+        {
+          "term": "Onboarding",
+          "def": "Yeni bir kişinin projeye veya ekibe hızlıca alışmasını sağlayan süreç."
+        },
+        {
+          "term": "Eklenti (plugin)",
+          "def": "Bir uygulamaya sonradan eklenen ve yeni yetenek kazandıran paket."
+        },
+        {
+          "term": "CI",
+          "def": "Sürekli entegrasyon; kod her değiştiğinde testlerin ve kontrollerin otomatik çalışması."
+        },
+        {
+          "term": "Statik analiz",
+          "def": "Kodu çalıştırmadan, yalnızca okuyarak inceleme yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "t3dotgg/tstack",
+      "url": "https://github.com/t3dotgg/tstack",
+      "stars": "2.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**tstack**, Theo'nun (t3.gg) her gün kullandığı **agent skill'lerinin** derlemesidir; Claude Code ve Codex ile çalışır.\n\n- Problem: agent'a her seferinde aynı talimatları yazmak ve iyi iş akışlarını tekrar keşfetmek.\n- Skill'ler, agent'ın belirli işlerde (inceleme, planlama, yayınlama vb.) izleyeceği hazır talimat paketleridir.\n- Üretkenlik odaklı: kopyala, kur, kullan.\n- Not: skill içerikleri tek tek incelenmedi; analiz meta veriye dayanır.",
+        "tech": "**Markdown talimat dosyaları + yardımcı Python betikleri.**\n\n- **Skill formatı:** talimat dosyası ve isteğe bağlı betikler; agent ilgili göreve gelince yükler, bağlamı şişirmez.\n- **Çoklu agent uyumu:** Claude Code ve Codex aynı yapıyı okuyabildiği için tek depo iki araca hizmet eder.\n- **Python:** betiklerin taşınabilir olması için seçilmiş olabilir.\n- Gerekçe: kod değil, \"pratik\" paylaşılıyor; bakım maliyeti düşük.",
+        "why": "- **Kişi etkisi:** Theo büyük bir geliştirici kitlesine sahip; \"kendi kullandığım\" çerçevesi güven yaratıyor.\n- **Zamanlama:** skill depoları (superpowers, mattpocock/skills vb.) yükselen bir kategori.\n- **Kitle:** agent iş akışını hızlandırmak isteyen bireysel geliştiriciler.\n- 4 günde 2.6k yıldız.",
+        "evolve": "- Skill'ler için **sürümleme ve test** (gerçekten işe yarıyor mu ölçümü).\n- Tek komutla kurulum ve güncelleme.\n- Takım ayarları: şirket kuralı, kod stili, veritabanı/ERP'ye özel skill'ler.\n- Başarısız çalışmalardan skill iyileştirme döngüsü."
+      },
+      "glossary": [
+        {
+          "term": "Skill",
+          "def": "Agent'a belirli bir iş için ne yapacağını anlatan, gerektiğinde yüklenen talimat paketi."
+        },
+        {
+          "term": "Claude Code",
+          "def": "Anthropic'in terminalden çalışan kodlama agent'ı."
+        },
+        {
+          "term": "Codex",
+          "def": "OpenAI'ın kodlama agent'ı."
+        },
+        {
+          "term": "Bağlam (context)",
+          "def": "Modelin tek seferde görebildiği metin miktarı; dolunca performans ve maliyet etkilenir."
+        }
+      ]
+    }
+  ]
+}
