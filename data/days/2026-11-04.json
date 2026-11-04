@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-04",
+  "projects": [
+    {
+      "name": "storytold/craft-anything",
+      "url": "https://github.com/storytold/craft-anything",
+      "stars": "9.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Craft Anything**, herhangi bir web sitesinin, uygulamanın veya oyunun nasıl çalıştığını inceleyip ardından bir kodlama agent'ına \"kendi sürümünü\" yazdıran, açık kaynaklı bir **clean-room** motorudur.\n\n- Problem: Bir ürünü yeniden yaratmak (ya da sadece nasıl yapıldığını anlamak) için ekran görüntüsü almak, kodu okumak, elle karşılaştırmak gerekir. Bu araç döngüyü otomatikleştirir.\n- Dört adım: **İncele → Üret → Karşılaştır → Hazır.**\n- Not: Bu analiz repo açıklaması ve README'ye dayanır; kaynak kod satır satır incelenmemiştir.",
+        "tech": "- **Saf Rust motor:** tek bir çekirdek hem masaüstü arayüzü hem CLI hem de MCP tarafından kullanılıyor.\n- **320 araç:** her biri hem komut satırı komutu hem MCP aracı; böylece herhangi bir agent aynı motoru sürebilir. Araçlar işlevleri, string'leri, pseudo-C'yi, disassembly'yi ve çağrı grafiklerini kapsıyor (Ghidra kuruluysa ondan da yararlanıyor).\n- **İki mod:** *Clean room* (varsayılan) yalnızca bir ziyaretçinin gördüğünü kullanır: ekran görüntüleri, görünür metin, ölçülen yerleşim, renkler, fontlar. *Deep* modda kod ve dosyalar da okunur.\n- **Doğrulama döngüsü:** üretilen proje üç ekran genişliğinde orijinalle karşılaştırılır, benzerlik skoru çıkar ve fark kalmayana kadar agent'a düzeltme yaptırılır.\n- **Onay kartları:** kural dışı her adımda kullanıcıya sorulur.",
+        "why": "- **Zamanlama:** 31 Ekim'de açıldı, birkaç günde 9k+ yıldız ve 1.5k fork aldı.\n- **Vaat:** \"Her şeyi kopyala, kendi sürümünü yap\" cümlesi hem girişimciler hem hobi geliştiriciler için çok çekici.\n- **Agent çağı:** MCP + CLI ikili arayüzü, Claude Code/Codex gibi agent'larla doğrudan çalışmasını sağlıyor.\n- **Hukuki çerçeve:** \"clean room\" vurgusu telif kaygısı olan kitleyi rahatlatıyor.",
+        "evolve": "- **Hukuki/etik sınırlar:** hangi hedefin kopyalanabileceğine dair açık politika ve uyarılar.\n- **Kurumsal kullanım:** eski sistemleri (ör. PL/SQL formları, ERP/IFS ekranları) inceleyip modern bir arayüzle yeniden yazma senaryosu — ekranlar ve davranışlar kayda alınıp karşılaştırılabilir.\n- **Regresyon testi üretimi:** karşılaştırma motoru, yeniden yazım projelerinde otomatik kabul testi olarak kullanılabilir.\n- Benzerlik ölçümünün (görsel + davranış) daha nesnel metriklerle güçlendirilmesi."
+      },
+      "glossary": [
+        {
+          "term": "Clean room",
+          "def": "Bir ürünün iç yapısına (kod, dosya) bakmadan yalnızca dışarıdan görünen davranışına bakarak yeniden yazma yöntemi; telif riskini azaltmak için kullanılır."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ agent'larının dış araçlara ve verilere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Agent",
+          "def": "Hedef verildiğinde araçları kullanarak adımları kendisi planlayıp uygulayan yapay zekâ sistemi."
+        },
+        {
+          "term": "Disassembly",
+          "def": "Derlenmiş makine kodunu insan tarafından okunabilir assembly komutlarına çeviren çıktı."
+        },
+        {
+          "term": "Pseudo-C",
+          "def": "Derlenmiş bir programın C diline benzer, okunabilir tahmini kaynak kodu."
+        },
+        {
+          "term": "Çağrı grafiği (call graph)",
+          "def": "Bir programdaki fonksiyonların birbirini nasıl çağırdığını gösteren diyagram."
+        },
+        {
+          "term": "Ghidra",
+          "def": "ABD Ulusal Güvenlik Ajansı'nın geliştirdiği, programları tersine mühendislikle incelemeye yarayan açık kaynak araç."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırı arayüzü; programı pencere yerine terminalden komutlarla kullanma biçimi."
+        }
+      ]
+    },
+    {
+      "name": "wangzan101/Mika",
+      "url": "https://github.com/wangzan101/Mika",
+      "stars": "6.2k",
+      "language": "Kotlin",
+      "sections": {
+        "serves": "**Mika**, telefonunuzda çalışan açık kaynaklı bir yapay zekâ asistanıdır: ne istediğinizi söylersiniz, uygulamaları ve web'i sizin yerinize kullanarak işi bitirir.\n\n- Problem: Asistanlar genellikle yalnızca cevap verir; Mika gerçekten uygulamaları açıp dokunur, yazar, kaydırır.\n- Örnekler: bir grup sohbetini özetlemek, sepete ürün eklemek (ödemeden önce durur), alarm kurmak.\n- Not: Analiz README'ye dayanır; kod incelenmemiştir.",
+        "tech": "- **Kotlin / Android:** yerel uygulama olarak çalışır; **gizli arka plan ekranı** (sanal ekran) sayesinde siz telefonu kullanmaya devam ederken agent kendi ekranında çalışır.\n- **Ekranı görerek kullanma:** uygulama API'sine veya uygulama başına entegrasyona ihtiyaç duymaz; ekranı bir insan gibi okuyup butonları bulur.\n- **Kablosuz hata ayıklama (ADB):** telefon kontrolü için bir kez eşleştirme gerekir.\n- **Dahili tarayıcı:** oturumları açık tutar, sayfayı okur, indirir/yükler; engel sayfalarını kullanıcıya devreder.\n- **Model esnekliği:** kendi API anahtarınız ya da ChatGPT, xAI, OpenRouter hesabı; Mika'nın sunucusu yok, veri telefonda kalır.\n- **Beceri öğrenme:** tamamlanan görevler *skill*'e dönüşür.",
+        "why": "- **Zamanlama:** 29 Ekim'de açıldı; \"telefonda bilgisayar kullanan agent\" fikri şu an çok sıcak.\n- **Gizlilik:** sunucu yok, veri cihazda — bulut agent'lara güvenmeyenlere hitap ediyor.\n- **Apache-2.0** ve ücretsiz olması denemeyi kolaylaştırıyor.\n- Çok dilli README (6 dil) küresel erişimi artırmış.",
+        "evolve": "- Giriş, doğrulama kodu ve ödemelerin kullanıcıya devredilmesi iyi bir güvenlik tasarımı; bunun **denetim kaydı** ve ayrıntılı izin modeliyle güçlendirilmesi.\n- iOS desteği (platform kısıtları nedeniyle zor).\n- Kurumsal mobil uygulamalarda (ör. saha servis / ERP mobil ekranları) görev otomasyonu.\n- Hata durumlarında geri alma ve \"kuru çalıştırma\" modu."
+      },
+      "glossary": [
+        {
+          "term": "Agent",
+          "def": "Hedef verildiğinde araçları kullanarak adımları kendisi planlayıp uygulayan yapay zekâ sistemi."
+        },
+        {
+          "term": "ADB (Android Debug Bridge)",
+          "def": "Android cihazı bilgisayardan veya kablosuz eşleşmeyle komutla yönetmeye yarayan geliştirici aracı."
+        },
+        {
+          "term": "Sanal ekran",
+          "def": "Fiziksel ekrandan ayrı, arka planda çalışan ve kullanıcıya görünmeyen ekran yüzeyi."
+        },
+        {
+          "term": "API anahtarı",
+          "def": "Bir yapay zekâ veya web servisini kullanma yetkisi veren gizli kod."
+        },
+        {
+          "term": "Skill (beceri)",
+          "def": "Agent'ın tamamladığı bir görevi tekrar kullanılabilir adımlar olarak saklamasıyla oluşan hazır yetenek."
+        },
+        {
+          "term": "Apache-2.0",
+          "def": "Ticari kullanıma da izin veren, esnek bir açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "KKKKhazix/agent-autoloop",
+      "url": "https://github.com/KKKKhazix/agent-autoloop",
+      "stars": "1.2k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Agent Autoloop**, Claude Code / Codex gibi komut satırı agent'larını arka planda kendi kendine iş alıp sonuna kadar götürebilen hafif bir otomasyon katmanıdır; yalnızca emin olamadığında size bir onay kartı gönderir.\n\n- Problem: Agent'lar genelde \"başında beklenerek\" kullanılır; pencereyi kapatınca iş yarıda kalır.\n- Çözüm: Olay → agent'a dağıtım → tur bitince çık → gerekirse sorup bekle → cevapla devam et.\n- Bir bilgisayar ve tek komutla çalışır; bulut sunucu veya açık port gerekmez.",
+        "tech": "- **Sıfır bağımlılıklı çekirdek (Node 24, TypeScript):** zamanlama ve olay dağıtımı çekirdekte; olay kaynakları, agent'lar, bildirim kanalları ve hatta dağıtım hattı **eklenti** olarak değiştirilebilir.\n- **Kurala dayalı yönlendirme:** hangi olayın hangi agent'a ve hangi dizine gideceği kurallarla belirlenir; aynı iş için gelen mesajlar tek turda birleştirilir.\n- **Bir turluk süreç:** agent cevabını yazıp çıkar; onay beklerken süreç ve token harcanmaz, sonra aynı konuşma kaldığı yerden sürdürülür.\n- **Bildirim kartları:** Feishu, DingTalk, WeCom, Slack, Discord veya masaüstü bildirimi.\n- Agent entegrasyonu tek satır yapılandırma: istemi alıp son cevabı yazdıran her CLI olur.",
+        "why": "- **Zamanlama:** 3 Kasım'da açıldı; agent'ların \"devamlı çalışan işçi\" olarak kullanılması şu an ana akım hedef.\n- **Düşük sürtünme:** tek `curl | sh` kurulum, `agent-autoloop try` ile anında deneme.\n- **İnsan döngüde:** silme, para harcama, dış mesaj gibi riskli işlerde onay istemesi güven veriyor.\n- Çin'deki iş mesajlaşma araçlarına (Feishu vb.) yerel destek büyük bir kitleye hitap ediyor.",
+        "evolve": "- Web arayüzü veya salt-okunur panel (şu an bilinçli olarak yok).\n- Onay kartlarına yetki seviyeleri ve denetim izi.\n- Veritabanı/ERP olaylarını (ör. IFS iş emri, PL/SQL job hataları) kaynak olarak bağlayıp agent'a ilk müdahaleyi yaptırma.\n- Maliyet bütçesi ve otomatik durdurma limitleri."
+      },
+      "glossary": [
+        {
+          "term": "Agent",
+          "def": "Hedef verildiğinde araçları kullanarak adımları kendisi planlayıp uygulayan yapay zekâ sistemi."
+        },
+        {
+          "term": "Çekirdek (kernel)",
+          "def": "Sistemin en temel, diğer parçaların üzerine kurulduğu küçük ve kararlı bölümü."
+        },
+        {
+          "term": "Eklenti (plugin)",
+          "def": "Ana programı değiştirmeden yeni yetenek ekleyen ya da bir parçayı değiştiren modül."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlerken kullandığı ve ücretlendirmeye esas olan küçük metin birimi."
+        },
+        {
+          "term": "Olay (event)",
+          "def": "Sistemde bir işi tetikleyen standart bildirim; örneğin zamanlanmış görev veya yeni bir Issue."
+        },
+        {
+          "term": "CLI",
+          "def": "Komut satırı arayüzü; programı terminalden komutlarla kullanma biçimi."
+        },
+        {
+          "term": "İnsan döngüde (human-in-the-loop)",
+          "def": "Otomasyonun kritik kararlarda bir insanın onayını beklemesi."
+        }
+      ]
+    },
+    {
+      "name": "lexifina/global-law",
+      "url": "https://github.com/lexifina/global-law",
+      "stars": "1.8k",
+      "language": "HTML",
+      "sections": {
+        "serves": "**Git for Global Law**, dünya ülkelerinin yasalarını git geçmişi olarak tutan bir projedir: her commit yürürlüğe giren bir yasadır ve her kelimenin hangi yasa tarafından yazıldığı izlenebilir.\n\n- Problem: \"1 Mayıs 2022'de bu madde ne diyordu, onu en son hangi yasa değiştirdi?\" sorusu normalde çok zahmetlidir.\n- Çözüm: Her yargı bölgesi ayrı bir depo; ana depo hepsini submodule olarak toplar. Araçlar her commit'in `In-force` (yürürlük) tarihini okuyarak herhangi bir tarihteki hukuku verir.\n- Lisans: CC0 (metinler ilgili depoların kendi şartlarında).",
+        "tech": "- **Git bir zaman makinesi olarak:** yalnızca büyüyen geçmiş; `blame` ile satır satır, `words` ile kelime kelime kaynak yasa.\n- **Submodule yapısı:** her ülke/eyalet/şehir ayrı depo (`manifest.json` ve `jurisdiction.json` ile kataloglanır); ülkeler birkaç GB olduğu için tek tek eklenebilir.\n- **Python 3.9+ araçları:** `law.py show/blame/words/diff/laws` komutları; ilk okumada geçmiş indekslenip `.git` içinde önbelleğe alınır.\n- **MCP sunucusu:** 18 salt-okunur araç (madde bul, tarihte oku, iki tarihi karşılaştır, dava dilekçesini yürürlükteki hukuka göre kontrol et); yerelde çalışır, ağ çağrısı yapmaz.\n- Taşınan dizinler için `moved-paths.tsv` ile eski yollar çalışmaya devam eder.",
+        "why": "- **Hacker News #1:** ABD Kanunu (US Code) sürümü 28 Ekim'de HN'de birinci olunca, \"küresel\" genişlemeye ilgi patladı.\n- **Kitle:** hukukçular, hukuk-teknoloji girişimleri, LLM tabanlı hukuk asistanı yapanlar.\n- **Zarif fikir:** git'in zaten çözdüğü sürüm/fark/blame problemini hukuka uygulamak.\n- CC0 lisansı ve hazır MCP sunucusu doğrudan ürüne gömülebilirlik sağlıyor.",
+        "evolve": "- Daha fazla ülke ve yerel mevzuat kapsamı, **Türkiye** gibi dillerde çeviri/eşleme.\n- Kurumsal uyum (compliance) kullanımı: bir düzenlemenin sözleşme veya ERP iş kuralını hangi tarihte etkilediğini otomatik izleme.\n- Anlamsal arama için vektör indeksi; web arayüzünde görsel diff.\n- Büyük depolar için sparse/partial clone desteği ile kurulumun hafifletilmesi."
+      },
+      "glossary": [
+        {
+          "term": "Git",
+          "def": "Dosyaların tüm değişiklik geçmişini tutan sürüm kontrol sistemi."
+        },
+        {
+          "term": "Commit",
+          "def": "Git'te bir değişiklik grubunun kalıcı olarak kaydedilmiş anı."
+        },
+        {
+          "term": "Submodule",
+          "def": "Bir git deposunun içine başka bir depoyu belirli bir sürümüyle bağlama yöntemi."
+        },
+        {
+          "term": "git blame",
+          "def": "Bir dosyanın her satırını son olarak hangi değişikliğin yazdığını gösteren komut."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ agent'larının dış araçlara ve verilere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "CC0",
+          "def": "Eseri kamu malına bırakan, izin veya atıf gerektirmeyen lisans/feragat belgesi."
+        },
+        {
+          "term": "Yargı bölgesi (jurisdiction)",
+          "def": "Belirli bir yasanın geçerli olduğu ülke, eyalet veya şehir gibi hukuki alan."
+        },
+        {
+          "term": "Compliance (uyum)",
+          "def": "Bir kurumun yasa ve düzenlemelere uygun davrandığını izleme ve kanıtlama süreci."
+        }
+      ]
+    }
+  ]
+}
