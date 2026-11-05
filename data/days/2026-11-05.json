@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-05",
+  "projects": [
+    {
+      "name": "zai-org/ZCode",
+      "url": "https://github.com/zai-org/ZCode",
+      "stars": "8.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**ZCode**, Z.ai'nin açık kaynaklı **kodlama agent harness'ıdır**: bir dil modelini terminalde/IDE'de dosya okuyan, komut çalıştıran ve kod yazan bir geliştirici asistanına çevirir.\n\n- Problem: Model tek başına kod yazmaz; araç çağırma, bağlam yönetimi ve izin kontrolü gibi iskelet gerekir.\n- Hedef: \"güçlü, akıllı, genişletilebilir\" bir agent çatısı.\n\n- Not: Bu analiz repo açıklaması, konu etiketleri ve metadata'ya dayanır; kaynak kod ve README incelenmemiştir.",
+        "tech": "- **TypeScript** tabanlı: Node ekosistemi, kolay eklenti yazımı ve CLI dağıtımı.\n- **Apache-2.0** lisansı: ticari kullanıma açık.\n- Harness yaklaşımı: model değiştirilebilir, araç/eklenti katmanı sabit kalır. Genişletilebilirlik vurgusu eklenti veya MCP benzeri bir yapı olduğunu düşündürüyor (doğrulanmadı).",
+        "why": "- **Zamanlama:** Eylül'de açıldı, ~7 haftada 8k+ yıldız ve 2.6k fork.\n- **Kitle:** Claude Code/Codex alternatifi arayan, kendi modelini bağlamak isteyen geliştiriciler.\n- Büyük bir laboratuvarın (Z.ai) resmi organizasyonundan çıkması güven veriyor.",
+        "evolve": "- Eksik: bağımsız benchmark ve güvenlik/izin modeli belgeleri.\n- Fırsat: kurumsal ortamlarda (ör. ERP/IFS kod tabanları) özel araçlarla genişletme; PL/SQL için veritabanı araçları eklentisi."
+      },
+      "glossary": [
+        {
+          "term": "Agent harness",
+          "def": "Bir dil modelini araç çağırma, bağlam ve izin yönetimiyle çevreleyip otonom çalışan bir ajana dönüştüren yazılım iskeleti."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zeka uygulamalarının dış araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Apache-2.0",
+          "def": "Ticari kullanıma ve değişikliğe izin veren, patent koruması da içeren açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "google/elephant-goldfish-model",
+      "url": "https://github.com/google/elephant-goldfish-model",
+      "stars": "11.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Elephant Goldfish Model (EGM)**, yazılım tasarlarken ve gözden geçirirken AI ajanlarına verilen **açık kaynaklı beceri (skill) setidir**.\n\n- Problem: Kodlama ajanları hızlı kod yazar ama tasarım disiplini ve inceleme kalitesi tutarsız kalır.\n- Çözüm: Tekrar kullanılabilir, paketlenmiş talimatlarla ajanı tasarım/inceleme sürecine yönlendirmek.\n\n- Not: Bu analiz repo açıklaması, konu etiketleri ve metadata'ya dayanır; kaynak kod ve README incelenmemiştir.",
+        "tech": "- Claude Code, Codex ve Gemini için **eklenti/skill** paketleri (etiketlerden anlaşılıyor).\n- **Spec-driven development** ve **context engineering** yaklaşımı: önce spesifikasyon, sonra kod; ajanın bağlamı bilinçli yönetilir.\n- Çoklu ajan (multi-agent) iş akışları desteği.\n- Python ile yazılmış, Apache-2.0.",
+        "why": "- **Zamanlama:** Skill ekosistemi (Claude skills, Codex plugins) patlama yaşıyor; Google adı görünürlüğü artırıyor.\n- **Kitle:** Ajanlarla çalışan ama çıktı kalitesinden memnun olmayan ekipler.\n- 12k yıldız ve ~800 fork, kısa sürede güçlü benimsenme gösteriyor.",
+        "evolve": "- Eksik: ajan çıktısını ölçen değerlendirme (eval) seti.\n- Fırsat: ERP/IFS gibi büyük kurumsal sistemler için tasarım inceleme skill'leri (veritabanı şeması, PL/SQL paket tasarımı)."
+      },
+      "glossary": [
+        {
+          "term": "Skill",
+          "def": "Bir ajana belirli bir işi nasıl yapacağını anlatan, yeniden kullanılabilir talimat ve dosya paketi."
+        },
+        {
+          "term": "Spec-driven development",
+          "def": "Kodu yazmadan önce davranışı ayrıntılı bir spesifikasyonla tanımlayıp ajanı ona göre çalıştırma yöntemi."
+        },
+        {
+          "term": "Context engineering",
+          "def": "Modele verilen bilgiyi (talimat, dosya, geçmiş) bilinçli seçip düzenleyerek sonucu iyileştirme pratiği."
+        },
+        {
+          "term": "Multi-agent",
+          "def": "Birden çok yapay zeka ajanının rol paylaşarak birlikte çalıştığı yapı."
+        }
+      ]
+    },
+    {
+      "name": "Edge0-AI/Edge0",
+      "url": "https://github.com/Edge0-AI/Edge0",
+      "stars": "9.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Edge0**, 35 milyar parametreli **MoE** modelleri yaklaşık **2.5 GB RAM** ile çalıştırmayı vadeden bir çıkarım motorudur; Mac, iPhone, Android ve Windows'ta çalışır.\n\n- Problem: Büyük modeller bellek yüzünden yalnızca güçlü sunucularda çalışır.\n- Çözüm: Ağırlıklar SSD'den akıtılır; yalnızca gereken parçalar belleğe alınır.\n\n- Not: Bu analiz repo açıklaması, konu etiketleri ve metadata'ya dayanır; kaynak kod ve README incelenmemiştir.",
+        "tech": "- **MoE** mimarisi: her adımda modelin sadece bir kısmı (uzmanlar) aktif olduğundan tümünü RAM'de tutmak gerekmez.\n- **Eğitilmiş yönlendirici (router)** bir adım sonra hangi uzmanların lazım olacağını tahmin edip önceden yükler; SSD gecikmesini gizler.\n- Python ile yazılmış, Apache-2.0; çoklu platform desteği.",
+        "why": "- **Zamanlama:** Yerel/cihaz üstü AI ilgisi ve gizlilik talebi yüksek.\n- **Kitle:** Telefonda veya eski dizüstüde büyük model çalıştırmak isteyenler.\n- ~9k yıldız ve 1.4k fork; \"2.5 GB\" iddiası dikkat çekici (bağımsız doğrulanmadı).",
+        "evolve": "- Eksik: SSD aşınması, hız (token/sn) ve kalite kaybına dair şeffaf ölçümler.\n- Fırsat: şirket içi, buluta veri göndermeyen asistanlar; kurumsal veriyle yerel sorgu."
+      },
+      "glossary": [
+        {
+          "term": "MoE (Mixture of Experts)",
+          "def": "Modelin birçok 'uzman' alt ağdan oluştuğu ve her seferinde yalnızca birkaçının çalıştığı mimari."
+        },
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir modeli yeni girdiyle çalıştırıp cevap üretme aşaması."
+        },
+        {
+          "term": "Router",
+          "def": "Hangi uzman alt ağın veya kontrol noktasının kullanılacağına karar veren bileşen."
+        },
+        {
+          "term": "Ön yükleme (prefetch)",
+          "def": "Veriye ihtiyaç duyulmadan önce belleğe getirerek bekleme süresini azaltma tekniği."
+        }
+      ]
+    },
+    {
+      "name": "KnifeLemon/Filee",
+      "url": "https://github.com/KnifeLemon/Filee",
+      "stars": "22.2k",
+      "language": "C#",
+      "sections": {
+        "serves": "**Filee**, 263 dosya biçimi arasında **çevrimdışı** dönüştürme yapan, sürükle-bırak arayüzlü ücretsiz bir masaüstü uygulamasıdır.\n\n- Problem: Dönüştürücü siteler dosyayı yüklemenizi ister; Office kurulumu gerekebilir.\n- Çözüm: Görsel, PDF, Word/Excel/PowerPoint, HWP/HWPX, video, ses, e-kitap ve arşivler yerelde, yükleme olmadan dönüşür.\n\n- Not: Bu analiz repo açıklaması, konu etiketleri ve metadata'ya dayanır; kaynak kod ve README incelenmemiştir.",
+        "tech": "- **C# / .NET + Avalonia:** tek kod tabanıyla Windows, macOS ve Linux arayüzü.\n- Toplu (batch) dönüştürme ve sürükle-bırak akışı.\n- Office'siz belge dönüşümü, muhtemelen yerleşik kütüphane/araç zinciri kullanıyor (doğrulanmadı).\n- MIT lisansı.",
+        "why": "- **Zamanlama:** Gizlilik kaygısıyla \"dosyamı yüklemeden\" araçlara talep arttı.\n- **Kitle:** Herkes; özellikle Kore'de yaygın HWP biçimini destekleyerek niş bir boşluğu dolduruyor.\n- 22k yıldız, üretkenlik aracı olarak geniş kitleye hitap ediyor.",
+        "evolve": "- Eksik: komut satırı/otomasyon arayüzü ve API.\n- Fırsat: ERP raporlarını (PDF/Excel) toplu dönüştüren iş akışı entegrasyonu."
+      },
+      "glossary": [
+        {
+          "term": "Avalonia",
+          "def": "C#/.NET ile çapraz platform masaüstü arayüzü geliştirmeyi sağlayan UI çatısı."
+        },
+        {
+          "term": "Batch dönüştürme",
+          "def": "Birçok dosyayı tek seferde, sırayla otomatik dönüştürme."
+        },
+        {
+          "term": "HWP/HWPX",
+          "def": "Kore'de yaygın kullanılan Hangul kelime işlemci belge biçimleri."
+        }
+      ]
+    },
+    {
+      "name": "NandhaKishorM/laya",
+      "url": "https://github.com/NandhaKishorM/laya",
+      "stars": "35k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Laya**, herhangi bir metin üzerinde tek geçişte **seçim, puan ve evet/hayır kararı** üreten, 100+ dilli, otoregresif olmayan bir karar modelidir.\n\n- Problem: Sınıflandırma/yönlendirme gibi basit kararlar için büyük bir LLM'i kelime kelime çalıştırmak yavaş ve pahalıdır.\n- Çözüm: Küçük, hızlı ve kalibre edilmiş bir 'Sistem 1' karar motoru.\n\n- Not: Bu analiz repo açıklaması, konu etiketleri ve metadata'ya dayanır; kaynak kod ve README incelenmemiştir.",
+        "tech": "- **Non-autoregressive:** cevap tek ileri geçişte üretilir, token token yazılmaz.\n- **ModernBERT** tabanlı, **PyTorch** ile; typed decisions (tipli çıktı) ve **calibration** (güven skorunun gerçek olasılıkla uyumu).\n- İstek başına doğru **checkpoint**'i seçen bir yönlendirici; model Hugging Face'te.\n- Apache-2.0.",
+        "why": "- **Zamanlama:** Ajan sistemlerinde 'küçük karar modeli + büyük model' desenleri yükselişte.\n- **Kitle:** Maliyet ve gecikme optimize eden ML/backend mühendisleri.\n- 35k yıldız ve 3.1k fork ile gününün en hızlı yükselenlerinden.",
+        "evolve": "- Eksik: LLM tabanlı çözümlerle bağımsız karşılaştırma.\n- Fırsat: destek talebi/log sınıflandırma, ERP iş akışı yönlendirmesi; veritabanı içinden çağrılabilir karar servisi."
+      },
+      "glossary": [
+        {
+          "term": "Non-autoregressive",
+          "def": "Çıktıyı sırayla değil, tek seferde üreten model türü; genellikle çok daha hızlıdır."
+        },
+        {
+          "term": "ModernBERT",
+          "def": "BERT ailesinin güncellenmiş, uzun bağlam ve verimlilik odaklı kodlayıcı modeli."
+        },
+        {
+          "term": "Kalibrasyon",
+          "def": "Modelin verdiği güven skorunun gerçek doğruluk oranıyla örtüşmesi."
+        },
+        {
+          "term": "Checkpoint",
+          "def": "Eğitilmiş modelin belirli bir andaki kaydedilmiş ağırlıkları."
+        },
+        {
+          "term": "Zero-shot",
+          "def": "Modelin o işe özel örnek görmeden yeni göreve uygulanması."
+        }
+      ]
+    }
+  ]
+}
