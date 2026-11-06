@@ -1,0 +1,193 @@
+{
+  "date": "2026-11-06",
+  "projects": [
+    {
+      "name": "NVIDIA/auto-ontology",
+      "url": "https://github.com/NVIDIA/auto-ontology",
+      "stars": "7.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Auto Ontology**, yapay zekâ ajanlarının kurumsal verilerle **güvenilir** biçimde konuşabilmesi için bir **anlamsal bağlam katmanı** (semantic layer) kuran NVIDIA projesi.\n\n- **Problem:** Bir ajan \"gelir\" ya da \"aktif müşteri\" dediğinde, farklı sistemlerde bu terimlerin tanımı farklıdır. Ajan tablo/kolon adlarına bakıp tahmin yürütünce yanlış SQL üretir.\n- **Çözüm:** Veritabanı metadata'sından terimleri, ilişkileri ve SQL karşılıklarını içeren bir ontoloji üretir, sistemler arası tanımları uzlaştırır ve herhangi bir ajan altyapısına sunar.",
+        "tech": "- **Üç aşamalı akış:** *Generate* (ingestion servisi kaynak veritabanlarından taslak ontoloji çıkarır) → *Certify* (insanlar test eder, düzeltir, onaylar) → *Answer* (ajan soruyu sınıflandırır, embedding araması ile aday terimleri bulur, SQL yazıp doğrular, cevabı SQL ve adımlarıyla döner).\n- **Servisler:** Next.js web arayüzü, FastAPI backend, ingestion servisi ve salt-okunur bir MCP sunucusu; depolama **PostgreSQL 17 + pgvector**.\n- **Model katmanı:** NVIDIA NIM üzerinden Nemotron (akıl yürütme, embedding, rerank). LangChain ve FastMCP ile ajan tarafı kurulmuş.\n- **Bağlayıcılar:** PostgreSQL, MySQL, Snowflake, Databricks, DuckDB, SQLite dahil 10 motor.\n- **Dağıtım:** Docker Compose veya Helm; RBAC ve kimlik doğrulama hazır. Gerekçe: insan onayı olan, denetlenebilir bir katman kurumsal güven için şart.",
+        "why": "- **Zamanlama:** \"Text-to-SQL\" demoları etkileyici ama kurumsal veride sık yanılıyor; sektör şimdi çözümün modelden çok **bağlam/anlam katmanında** olduğunu konuşuyor.\n- **Kitle:** Veri mühendisleri, BI ekipleri, ajan tabanlı analitik kurmak isteyen kurumlar.\n- **Marka etkisi:** NVIDIA'nın resmi deposu olması ve tek günde ~2.7k yıldız almasıyla ivme çok yüksek. Apache Ossie ile uyumluluk, açık standart eğilimine oturuyor.",
+        "evolve": "- **Eksik:** README'ye göre şu an dış katkı kabul etmiyor; ekosistem büyümesi bu yüzden sınırlı kalabilir. NIM bağımlılığı da vendor kilidi riski taşıyor.\n- **Fırsat:** Oracle/PL/SQL gibi ağır iş mantığı barındıran sistemlerde, **IFS ve benzeri ERP şemalarının** (yüzlerce tablo, kriptik kolon adları) ontolojisini otomatik çıkarmak çok değerli olur; Oracle bağlayıcısı eklenirse bu dünyaya doğrudan oturur.\n- **Yön:** Ontoloji sürümleme, değişim takibi ve sorgu başına maliyet/doğruluk metrikleri."
+      },
+      "glossary": [
+        {
+          "term": "Ontoloji",
+          "def": "Bir alandaki kavramların (terimler, varlıklar) ve aralarındaki ilişkilerin düzenli, makinece okunabilir tanımı."
+        },
+        {
+          "term": "Anlamsal katman (semantic layer)",
+          "def": "Ham tablo ve kolon adlarını iş diline çeviren, \"gelir\" gibi terimlerin tek ve net tanımını tutan ara katman."
+        },
+        {
+          "term": "Text-to-SQL",
+          "def": "Doğal dilde sorulan bir soruyu otomatik olarak SQL sorgusuna çevirme işi."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını sayı dizisi (vektör) olarak temsil eden yöntem; benzer anlamlılar birbirine yakın çıkar."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL'e vektör saklama ve benzerlik araması yeteneği ekleyen eklenti."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zekâ uygulamalarının araç ve veri kaynaklarına standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "RBAC",
+          "def": "Rol tabanlı erişim kontrolü: kullanıcıların rollerine göre neye erişebileceğinin belirlenmesi."
+        },
+        {
+          "term": "Rerank",
+          "def": "Arama sonucunda bulunan adayları ikinci bir modelle alakaya göre yeniden sıralama adımı."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes uygulamalarını paketleyip kurmayı kolaylaştıran araç."
+        },
+        {
+          "term": "NVIDIA NIM",
+          "def": "NVIDIA'nın hazır paketlenmiş yapay zekâ modeli çıkarım servisleri."
+        }
+      ]
+    },
+    {
+      "name": "vercel-labs/agent-desktop",
+      "url": "https://github.com/vercel-labs/agent-desktop",
+      "stars": "17.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**agent-desktop**, yapay zekâ ajanlarına bilgisayar kullanımı (*computer use*) yeteneğini **ekran görüntüsü ve piksel eşleştirme olmadan** veren bir CLI ve kütüphane.\n\n- **Problem:** Ajanların masaüstü uygulamalarını kullanması genelde ekran görüntüsünü modele gönderip koordinata tıklatmaya dayanır; yavaş, pahalı ve kırılgan.\n- **Çözüm:** Uygulamanın erişilebilirlik ağacını JSON olarak verir; her öğeye bir referans (ref) atar. Ajan ref'e eylem yapar, arayüzü tekrar okur ve döngüye devam eder. Model ajanın içindedir, araçta değil.",
+        "tech": "- **Rust çekirdek:** CLI ve C kütüphanesi aynı `agent-desktop-core` kodunu çalıştırır; işletim sistemine yalnızca bir `PlatformAdapter` trait'i üzerinden erişir. Platform kasası derleme zamanında seçilir.\n- **Platform API'leri:** macOS'ta AX API, Windows'ta UI Automation, Linux'ta AT-SPI.\n- **Dağıtım:** npm üzerinden yerel ikili dosyalar, Homebrew, ayrıca FFI kütüphanesi (Python `ctypes` örneği) ve bir MCP sunucusu modu.\n- **Tasarım kararları:** Her komut JSON zarfı ve hata kodu döner; varsayılan olarak başsız (imleci hareket ettirmez, odak çalmaz). Ref'ler anlık görüntüye bağlıdır; bayat ref hata verir ve ajan yeni snapshot alır. Metin `--stdin` ile verilir, böylece süreç argümanlarında sızmaz.",
+        "why": "- **Zamanlama:** Computer use ajanlarına ilgi yüksek ve ekran görüntüsü yaklaşımının maliyeti ortada; erişilebilirlik ağacı daha ucuz ve deterministik bir alternatif sunuyor.\n- **Kitle:** Masaüstü otomasyonu yapan ajan geliştiricileri, Claude Code/Codex gibi araçlara masaüstü becerisi eklemek isteyenler.\n- **Marka:** Vercel Labs etiketi, üç platform desteği ve MCP uyumu; günlük ~2.2k yıldız.",
+        "evolve": "- **Eksik:** Erişilebilirlik ağacını düzgün sunmayan uygulamalar (özel çizim yapan arayüzler, oyunlar) için yedek görsel yol gerekir. Dört fare/klavye komutu şu an devre dışı.\n- **Fırsat:** Eski kurumsal masaüstü uygulamalarının (ERP istemcileri, IFS masaüstü arayüzleri) otomasyonu için güçlü bir temel olabilir.\n- **Yön:** Eylem kayıt/tekrar oynatma, yetki politikaları ve hassas ekran içeriği için maskeleme."
+      },
+      "glossary": [
+        {
+          "term": "Computer use",
+          "def": "Bir yapay zekâ ajanının insan gibi bilgisayar arayüzünü görüp tıklayarak ve yazarak kullanması."
+        },
+        {
+          "term": "Erişilebilirlik ağacı",
+          "def": "İşletim sisteminin ekran okuyucular için sunduğu, arayüz öğelerinin (buton, metin kutusu vb.) hiyerarşik ve metinsel listesi."
+        },
+        {
+          "term": "AT-SPI",
+          "def": "Linux masaüstünde uygulamaların erişilebilirlik bilgisini paylaştığı arayüz."
+        },
+        {
+          "term": "UI Automation",
+          "def": "Windows'un arayüz öğelerini programla okuyup yönetmeye yarayan erişilebilirlik çerçevesi."
+        },
+        {
+          "term": "Trait (Rust)",
+          "def": "Rust'ta farklı türlerin uyması gereken ortak davranış sözleşmesi; diğer dillerdeki arayüze benzer."
+        },
+        {
+          "term": "FFI",
+          "def": "Foreign Function Interface: bir dilde yazılmış kütüphanenin başka bir dilden çağrılmasını sağlayan mekanizma."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zekâ uygulamalarının araçlara standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Başsız (headless)",
+          "def": "Ekranda görünür hareket veya odak değişimi olmadan arka planda çalışma biçimi."
+        }
+      ]
+    },
+    {
+      "name": "floci-io/floci",
+      "url": "https://github.com/floci-io/floci",
+      "stars": "30.6k",
+      "language": "Java",
+      "sections": {
+        "serves": "**Floci**, geliştirme, test ve CI için **ücretsiz ve açık kaynaklı yerel bir AWS emülatörü**.\n\n- **Problem:** AWS servislerine bağlı kodu test etmek için gerçek hesap açmak maliyetli, yavaş ve riskli; popüler yerel emülatörlerin bazı özellikleri ücretli plana taşındı.\n- **Çözüm:** AWS SDK, CLI, Terraform, CDK veya test paketlerini `http://localhost:4566` adresine yönlendirirsiniz; hesap ve token gerekmez. LocalStack Community'nin yerine geçecek şekilde konumlanıyor.",
+        "tech": "- **Java + Maven**, büyük olasılıkla Quarkus tabanlı; JAX-RS/Vert.x ile HTTP yönlendirici. Yerel (native) ikili yaklaşık 40 MB, Docker imajı yaklaşık 90 MB; milisaniye başlangıç ve düşük boşta bellek.\n- **Üç servis türü:** süreç içi durumsuz servisler (SQS, SNS, IAM, STS), durumlu servisler (S3, DynamoDB) ve gerçek Docker kullanan konteyner destekli servisler (Lambda, RDS, ECS, EC2, EKS; Athena için DuckDB yan aracı).\n- **Depolama modları:** `memory`, `persistent`, `hybrid`, `wal`.\n- **Ek özellikler:** 150'den fazla servis, çoklu hesap izolasyonu (12 haneli erişim anahtarı kimliği), web konsolu, Java/Node/Python/.NET için Testcontainers modülleri, 2.576 uyumluluk testi, LocalStack'ten geçiş desteği. Lisans MIT.",
+        "why": "- **Zamanlama:** Rakip emülatörün ücretsiz sürümünü sınırlaması, geliştiricileri \"gerçekten ücretsiz\" alternatife yöneltti.\n- **Kitle:** Bulut tabanlı backend yazan, CI maliyetini düşürmek isteyen ekipler.\n- **Etki:** ~30k yıldız, 3.3k fork; günlük ~780 yıldız ivmesi ve Azure/GCP/OCI kardeş emülatörleri ekosistem algısını büyütüyor.",
+        "evolve": "- **Eksik:** Servis derinliği değişken; bazıları gerçek motor, bazıları taslak (stub). Gerçek AWS ile davranış farkları gizli hata kaynağı olabilir.\n- **Fırsat:** Uyumluluk matrisinin otomatik yayımlanması, IAM politikalarının daha sıkı doğrulanması, veritabanı geçişleri için RDS/Oracle benzeri senaryolarda test altyapısı.\n- **Yön:** Hata enjeksiyonu (gecikme, kısıtlama) ile dayanıklılık testleri."
+      },
+      "glossary": [
+        {
+          "term": "Emülatör",
+          "def": "Gerçek bir sistemin davranışını yerelde taklit eden yazılım; test için gerçeğine bağlanma gereğini ortadan kaldırır."
+        },
+        {
+          "term": "CI",
+          "def": "Sürekli entegrasyon: kod her değiştiğinde otomatik derleme ve testlerin çalıştığı süreç."
+        },
+        {
+          "term": "Terraform / CDK",
+          "def": "Bulut altyapısını kodla tanımlayıp kurmaya yarayan araçlar (Infrastructure as Code)."
+        },
+        {
+          "term": "Quarkus",
+          "def": "Java uygulamalarını hızlı başlayan ve az bellek kullanan hale getiren bir çerçeve."
+        },
+        {
+          "term": "Native binary",
+          "def": "Java sanal makinesi gerektirmeden doğrudan işletim sisteminde çalışan derlenmiş program."
+        },
+        {
+          "term": "Testcontainers",
+          "def": "Testler sırasında geçici Docker konteynerleri başlatıp yöneten kütüphane ailesi."
+        },
+        {
+          "term": "WAL",
+          "def": "Write-Ahead Log: değişikliklerin önce bir günlüğe yazıldığı, çökme sonrası veri kurtarmayı sağlayan yöntem."
+        },
+        {
+          "term": "Stub",
+          "def": "Gerçek işlevi yapmayan, yalnızca beklenen cevabı dönen yer tutucu uygulama."
+        }
+      ]
+    },
+    {
+      "name": "scenario-labs/skills",
+      "url": "https://github.com/scenario-labs/skills",
+      "stars": "3.2k",
+      "language": "Python",
+      "sections": {
+        "serves": "**scenario-labs/skills**, yapay zekâ kodlama ajanlarına (Claude Code, Cursor, Codex, Copilot ve ~70 diğeri) **görsel, video, ses ve 3B içerik üretmeyi** öğreten bir *Agent Skills* koleksiyonu.\n\n- **Problem:** Ajanlar kod yazmada iyi ama medya üretim hattında hangi modelin seçileceği, maliyet, marka tutarlılığı gibi konularda bilgisizdir.\n- **Çözüm:** `SKILL.md` dosyaları olarak paketlenmiş yaklaşık 90 çekirdek beceri; Scenario MCP sunucusuyla birlikte çalışır.",
+        "tech": "- **Açık Agent Skills formatı:** Her beceri bir `SKILL.md`; `npx skills add` ile kurulur.\n- **Scenario MCP sunucusu** HTTP üzerinden, OAuth veya API anahtarıyla bağlanır.\n- **Uzman takımları:** ZBrush, Blender, Maya, Unreal, Unity, Godot ve Roblox Studio için, yerelde kurulu yazılımı süren lider + uzman beceri grupları. Blender testleri başsız çalışıyor, bazıları canlı doğrulanmış.\n- **Mühendislik:** pnpm, Python unittest, vitest, uv, ffmpeg, commitlint, release-please. Gerekçe: becerilerin sürümlenip test edilebilir bir ürün gibi yönetilmesi. Lisans MIT.",
+        "why": "- **Zamanlama:** Skills formatı hızla standartlaşıyor; trending listesinde birçok skills deposu var, bu da alanın sıcaklığını gösteriyor.\n- **Kitle:** Oyun geliştiricileri, 3B sanatçılar, içerik üreticileri ve ajanlarıyla medya üretmek isteyenler.\n- **Ivme:** Günlük ~670 yıldız; Scenario'nun kendi ürününe yönelik bir dağıtım kanalı olarak da işlev görüyor.",
+        "evolve": "- **Eksik:** Beceriler ücretli bir servise (Scenario) bağlı; ZBrush becerileri için tam canlı test hâlâ beklemede. Çıktı kalitesi için bağımsız değerlendirme yok.\n- **Fırsat:** Kalite kapısı becerisinin otomatik görsel regresyon testine dönüşmesi; açık modellerle çalışan alternatif arka uçlar.\n- **Yön:** Beceri bağımlılık/sürüm uyumluluk matrisi ve maliyet bütçesi sınırları."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skills",
+          "def": "Bir ajana belirli bir işi nasıl yapacağını anlatan, SKILL.md dosyasıyla paketlenmiş talimat ve kaynak seti."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol: yapay zekâ uygulamalarının dış araçlara standart biçimde bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "OAuth",
+          "def": "Bir uygulamaya şifre paylaşmadan, izinle erişim vermeyi sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "Retopoloji",
+          "def": "3B modelin ağ yapısını (poligon düzenini) daha temiz ve verimli hale getirme işlemi."
+        },
+        {
+          "term": "Skybox",
+          "def": "3B sahnede gökyüzü ve uzak çevreyi gösteren arka plan dokusu."
+        },
+        {
+          "term": "Conventional Commits",
+          "def": "Commit mesajlarını tür ve kapsam içeren standart bir biçimde yazma kuralı; otomatik sürüm üretimini mümkün kılar."
+        },
+        {
+          "term": "release-please",
+          "def": "Commit geçmişinden sürüm numarası ve değişiklik notlarını otomatik hazırlayan araç."
+        }
+      ]
+    }
+  ]
+}
