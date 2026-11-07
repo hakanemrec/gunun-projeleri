@@ -1,0 +1,155 @@
+{
+  "date": "2026-11-07",
+  "projects": [
+    {
+      "name": "libracoder/kiri",
+      "url": "https://github.com/libracoder/kiri",
+      "stars": "0.6k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Kiri**, macOS, Windows ve Linux'ta çalışan, Docker Desktop ve OrbStack'e hafif bir alternatif olarak yazılmış **konteyner çalışma zamanı** (container runtime).\n\n- **Problem:** Docker Desktop yoğun kaynak tüketir, konteynerlerin başlaması yavaştır; özellikle macOS/Windows'ta her şey bir sanal makine (VM) içinde döner.\n- **Çözüm:** Mevcut `docker` CLI, Compose ve buildx ile birebir uyumlu çalışan, çok küçük bir daemon ve VM sunar. Komutlarınızı değiştirmeden geçiş yapabilirsiniz.",
+        "tech": "- **Rust ile yazılmış daemon:** Docker Engine API'yi konuşur, bu yüzden mevcut araçlar (docker, Compose, buildx) fark etmeden Kiri'ye bağlanır.\n- **Minimal VM:** 10 MB'lık özel bir Linux çekirdeği ve PID 1 olarak çalışan ~900 KB'lık bir Rust ajanı. Ajan, konteynerleri tek bir `clone3` sistem çağrısıyla namespace ve cgroup içinde başlatır; **runc, shim ve dockerd yok**.\n- **Haberleşme:** Daemon ile VM içindeki ajan arasında `vsock` kullanılır.\n- **Uyku modu:** VM 60 sn boşta kalınca uyur, ~0,15 sn'de uyanır; daemon ~15 MB bellekte durur.\n- **Ekstralar:** `*.kiri.local` yerel alan adları (kendi CA'sıyla HTTPS), tek komutla Kubernetes, Linux makineleri ve yerel bir pencere arayüzü.",
+        "why": "- **Rakamlar çarpıcı:** README'deki benchmark'a göre bir konteyner Docker API üzerinden ~2,5 ms'de başlayıp bitiyor; Docker Desktop'ta bu 213 ms, OrbStack'te 380 ms.\n- **Zamanlama:** Docker Desktop lisans/kaynak şikâyetleri ve OrbStack'in yalnızca macOS'a dönük olması boşluk bırakıyor; Kiri üç platformu birden hedefliyor.\n- **Düşük geçiş sürtünmesi:** `kiri import` ile OrbStack/Docker Desktop'taki imaj ve volume'lar taşınabiliyor. Apache-2.0 lisansı kurumsal kullanımı da kolaylaştırıyor.",
+        "evolve": "- **Yerleşik builder** yol haritasında: buildx'in docker sürücüsüyle Kiri'ye karşı çalışması ve BuildKit'te `host-gateway` desteği.\n- Proje çok yeni (birkaç günlük); **olgunluk ve güvenlik denetimi** henüz kanıtlanmadı. Üretimde kullanmadan önce bilinen sorunlar listesine bakmak gerekir.\n- Fırsat: CI ortamları için başsız (headless) mod, kurumsal imaj kayıt defteri entegrasyonları ve Windows/WSL 2 tarafında daha fazla performans verisi."
+      },
+      "glossary": [
+        {
+          "term": "Container runtime",
+          "def": "Konteynerleri gerçekten oluşturup çalıştıran yazılım katmanı. Docker, runc ve Kiri bu işi yapar."
+        },
+        {
+          "term": "Docker Engine API",
+          "def": "Docker istemcilerinin daemon ile konuştuğu HTTP tabanlı arayüz. Aynı API'yi konuşan her yazılım docker CLI ile uyumlu çalışır."
+        },
+        {
+          "term": "Daemon",
+          "def": "Arka planda sürekli çalışan ve istekleri karşılayan servis programı."
+        },
+        {
+          "term": "VM (sanal makine)",
+          "def": "Gerçek bir bilgisayarı yazılımla taklit eden ortam. macOS ve Windows'ta Linux konteynerleri bu tür bir VM içinde koşar."
+        },
+        {
+          "term": "PID 1",
+          "def": "Bir Linux sisteminde ilk başlayan süreç. Diğer tüm süreçlerin başlatılmasından ve yönetilmesinden sorumludur."
+        },
+        {
+          "term": "clone3",
+          "def": "Linux'ta yeni bir süreç oluşturan ve ona izole ortam (namespace) verebilen sistem çağrısı."
+        },
+        {
+          "term": "Namespace / cgroup",
+          "def": "Linux'un süreçleri birbirinden yalıtmasını (namespace) ve kaynak kullanımını sınırlamasını (cgroup) sağlayan çekirdek özellikleri. Konteynerin temelidir."
+        },
+        {
+          "term": "runc / shim / dockerd",
+          "def": "Geleneksel Docker mimarisindeki ara katmanlar: konteyneri başlatan araç, süreci izleyen aracı ve ana Docker daemon'u. Kiri bunları atlar."
+        },
+        {
+          "term": "vsock",
+          "def": "Bir VM ile ana makine arasında ağ kurmadan hızlı iletişim sağlayan özel soket türü."
+        },
+        {
+          "term": "Compose / buildx",
+          "def": "Compose, birden çok konteynerden oluşan uygulamaları tek dosyayla tanımlar. buildx ise gelişmiş imaj derleme komutudur."
+        },
+        {
+          "term": "BuildKit",
+          "def": "Docker'ın modern, paralel çalışan imaj derleme motoru."
+        }
+      ]
+    },
+    {
+      "name": "openfilm/openfilm",
+      "url": "https://github.com/openfilm/openfilm",
+      "stars": "5.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**OpenFilm**, kodlama ajanınızın (Claude Code, Codex vb.) **video üretmesini** ve sizin de sonucu elle düzenleyebilmenizi sağlayan açık kaynaklı bir \"AI video ajanı\" aracı.\n\n- **Problem:** Prompt'tan video üreten araçlar çıktıyı kapalı bir kutu olarak verir; küçük bir değişiklik için baştan üretmek gerekir.\n- **Çözüm:** Film bir web sayfası gibi yazılır; ajan üretir, siz tarayıcıdaki gerçek bir editörde (Studio) taşır, kırpar, yeniden stillersiniz.",
+        "tech": "- **Tek HTML dosyası (`film.html`):** Animasyonlu sayfalar, görüntüler ve sesler iz (track) üzerinde birleştirilir, CSS ile biçimlendirilir. Ajanlar web'i zaten bildiği için öğrenme eğrisi yoktur.\n- **Tek fonksiyon:** Her sahne `frame(t)` ile istenen anı çizer; three.js, WebGL, canvas, SVG, GSAP gibi tarayıcının çizebildiği her şey kullanılabilir. Remotion gibi bir framework gerekmez.\n- **Başsız Chromium + ffmpeg:** Önizleme ve dışa aktarma aynı motorla yapıldığı için gördüğünüz çıktı ile MP4 aynıdır.\n- **Ajan entegrasyonu:** `npx skills add` ile skill olarak kurulur; `open`, `look`, `render`, `get` gibi CLI komutlarını ajan çalıştırır. Düzenlemeler dosyalara yazıldığı için ajan değişiklikleri görür.\n- **Çıktılar:** MP4, GIF, şeffaf video; ayrıca Final Cut, Premiere ve DaVinci Resolve için zaman çizelgesi.",
+        "why": "- **Ajan çağının doğal ihtiyacı:** Kodlama ajanları artık yalnızca kod değil, her tür çıktıyı üretiyor; video bunun en görünür örneği.\n- **İnsan döngüsü:** Tamamen otomatik üretimin yarattığı \"sonucu düzeltemiyorum\" hayal kırıklığına gerçek bir editörle cevap veriyor.\n- **Düşük giriş bariyeri:** Hesap gerekmeden çalışıyor, müzik/ses/geçiş kütüphanesi ücretsiz; tanıtım videosunun kendisi OpenFilm ile yapılmış, bu da viral etkiyi artırıyor.",
+        "evolve": "- Ürün (demo) videoları, changelog ve CLI tanıtımları gibi **geliştirici içerik otomasyonu** için CI'a bağlanabilir.\n- Marka kitleri/şablonlarla **tutarlı kurumsal video** üretimi ve toplu render.\n- Zayıf noktalar: ilk çalıştırmada ~100 MB Chromium indirmesi, Chromium tabanlı tarayıcı şartı ve üretken servisler için kullanıcı anahtarlarına bağımlılık."
+      },
+      "glossary": [
+        {
+          "term": "Skill (ajan becerisi)",
+          "def": "Bir kodlama ajanına belirli bir işi nasıl yapacağını öğreten talimat paketi. Ajan ihtiyaç duyduğunda yükler."
+        },
+        {
+          "term": "Başsız (headless) tarayıcı",
+          "def": "Ekran göstermeden arka planda çalışan tarayıcı. Burada sahneleri kare kare çizip videoya çevirmek için kullanılır."
+        },
+        {
+          "term": "frame(t)",
+          "def": "Zaman değeri t verildiğinde o andaki görüntüyü çizen fonksiyon. Animasyon, zamanın bir fonksiyonu olarak tanımlanır."
+        },
+        {
+          "term": "three.js / WebGL",
+          "def": "Tarayıcıda 3D grafik çizmeye yarayan teknolojiler. WebGL temel arayüz, three.js onu kolaylaştıran kütüphanedir."
+        },
+        {
+          "term": "GSAP",
+          "def": "Web animasyonları için yaygın kullanılan JavaScript kütüphanesi."
+        },
+        {
+          "term": "Remotion",
+          "def": "Videoyu React bileşenleriyle kodlayarak üreten bir framework. OpenFilm bu tür bir framework gerektirmediğini savunur."
+        },
+        {
+          "term": "Timeline (zaman çizelgesi)",
+          "def": "Video ve ses kliplerinin zaman ekseninde sıralandığı editör bölümü."
+        },
+        {
+          "term": "ffmpeg",
+          "def": "Video ve ses dönüştürme/birleştirme işleri için kullanılan açık kaynaklı komut satırı aracı."
+        }
+      ]
+    },
+    {
+      "name": "caru-ini/stack-diagram",
+      "url": "https://github.com/caru-ini/stack-diagram",
+      "stars": "2.0k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**stack-diagram**, bir cümleyle anlattığınız teknoloji yığınını (stack) **resmî logolarla mimari diyagrama** çeviren bir ajan skill'i.\n\n- **Problem:** Mimari diyagram çizmek sıkıcıdır; çizilenler çoğunlukla hizasız, logosuz ve güncelliğini hızla kaybeder.\n- **Çözüm:** \"Next.js + Hono, Vercel'de; Neon Postgres, Clerk, Stripe\" gibi bir cümle yazın, skill veri akışlarını da gösteren düzgün bir diyagram üretsin.",
+        "tech": "- **Agent Skills standardı:** `npx skills add caru-ini/stack-diagram` ile Claude Code, Codex, Cursor ve skill destekleyen diğer ajanlara kurulur; Claude uygulamalarında zip olarak yüklenir.\n- **Resmî ikonlar:** Vercel, Neon, Stripe gibi servislerin yanı sıra AWS, Google Cloud ve Azure'ın kendi ikon setleri kullanılır; böylece diyagram tanıdık görünür.\n- **Anlamlı bağlantılar:** Oklar sadece kutuları bağlamaz, protokolü de etiketler (HTTPS, RPC, SQL).\n- **Açık/koyu tema** için ayrı çıktılar üretilir. Altyapı detayları (VPC, public/private subnet, bölge) da modellenebilir.",
+        "why": "- **Sıfır çaba, anında sonuç:** Doğal dil → diyagram akışı, README ve doküman yazan herkesin ortak sorununa dokunuyor.\n- **Skill ekosisteminin büyümesi:** `skills.sh` ve agentskills.io gibi dağıtım kanalları, küçük ve odaklı skill'lerin hızla yayılmasını sağlıyor.\n- Geliştirici, mimar ve teknik yazarlara hitap ediyor; MIT lisanslı olması benimsemeyi kolaylaştırıyor.",
+        "evolve": "- **Koddan diyagram:** Mevcut repo, Terraform veya docker-compose dosyalarını okuyup diyagramı otomatik çıkarmak.\n- Diyagramı Mermaid/draw.io/Excalidraw gibi düzenlenebilir formatlara aktarmak ve CI'da kod değişince güncellemek.\n- Veritabanı ve ERP dünyası için ikon/şablon setleri (ör. Oracle, PostgreSQL, entegrasyon katmanları) eklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Stack (teknoloji yığını)",
+          "def": "Bir uygulamanın kullandığı dil, framework, veritabanı ve servislerin bütünü."
+        },
+        {
+          "term": "Agent Skill",
+          "def": "Ajanlara belirli bir yeteneği kazandıran, dosya tabanlı talimat ve kaynak paketi."
+        },
+        {
+          "term": "Mimari diyagram",
+          "def": "Bir sistemin bileşenlerini ve aralarındaki veri akışını gösteren şema."
+        },
+        {
+          "term": "VPC / subnet",
+          "def": "Bulutta izole özel ağ (VPC) ve onun içindeki alt ağlar (subnet). Public olanlar internete açık, private olanlar kapalıdır."
+        },
+        {
+          "term": "ALB / CloudFront",
+          "def": "AWS'te trafiği sunuculara dağıtan yük dengeleyici (ALB) ve içeriği dünya genelinde önbellekten sunan CDN (CloudFront)."
+        },
+        {
+          "term": "Fargate",
+          "def": "AWS'te sunucu yönetmeden konteyner çalıştırma hizmeti."
+        },
+        {
+          "term": "RPC",
+          "def": "Bir servisin başka bir servisteki fonksiyonu yerel çağrıymış gibi çağırması."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL'e vektör (embedding) saklama ve benzerlik araması yeteneği ekleyen eklenti."
+        }
+      ]
+    }
+  ]
+}
