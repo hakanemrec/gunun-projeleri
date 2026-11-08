@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-08",
+  "projects": [
+    {
+      "name": "vercel-labs/agent-browser",
+      "url": "https://github.com/vercel-labs/agent-browser",
+      "stars": "47.0k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**agent-browser**, yapay zekâ ajanlarının web'de gezinmesi için yazılmış bir **tarayıcı otomasyon komut satırı aracıdır**. Ajan, bir sayfayı açar, sayfanın sadeleştirilmiş bir görünümünü alır ve `click`, `fill`, `snapshot` gibi kısa komutlarla işlem yapar.\n\n- **Problem:** Playwright/Puppeteer gibi araçlar insan geliştiriciler için tasarlandı; ajan için çıktı çok uzun ve token açısından pahalı.\n- **Çözüm:** Sayfayı kısa, referans numaralı bir listeye indirgeyip ajana verir; ajan `@e3` gibi referanslarla elemanı hedefler.\n- **Kime:** Claude Code, Codex gibi komut satırı ajanlarıyla form doldurma, test, veri toplama yapanlara.",
+        "tech": "- **Rust ile yazılmış CLI:** Tek bir hızlı ikili dosya; Node kurulumu gerektirmeden başlar, her komut düşük gecikmeyle döner.\n- **Arka planda kalıcı daemon:** Tarayıcı komutlar arasında açık kalır, böylece her komutta yeniden başlatma maliyeti ödenmez ve oturum/çerez durumu korunur.\n- **Erişilebilirlik ağacı tabanlı snapshot:** Sayfanın ham HTML'i yerine anlamlı elemanların (buton, input, link) kısa listesi çıkarılır. Bu, token tüketimini ciddi biçimde düşürür ve ajanın yanlış elemana tıklama riskini azaltır.\n- **CDP (Chrome DevTools Protocol):** Chrome'u doğrudan kontrol etmek için standart protokol; ek sürücü katmanına gerek bırakmaz.\n- **Neden CLI, MCP değil?** Komut satırı her ajanda çalışır; ajanlar zaten shell kullanmayı iyi biliyor.",
+        "why": "- **Zamanlama:** Ajanların \"bilgisayar/tarayıcı kullanımı\" 2026'da ana akım oldu; bunun için hafif ve ucuz bir araç boşluğu vardı.\n- **Marka güveni:** Vercel Labs'ın ajan ekosistemindeki diğer projeleriyle (skills, agent-desktop) birlikte anılıyor.\n- **Kitle:** Ajan geliştiricileri, QA mühendisleri, otomasyon meraklıları.\n- **İvme:** Günlük ~190 yıldız; yani patlama değil, olgun bir projenin istikrarlı büyümesi.",
+        "evolve": "- **Eksikler:** Karmaşık siteler (iframe, shadow DOM, captcha) ve bot engelleme tarafında ek iş gerekir.\n- **Fırsatlar:** Oturum kaydı/tekrar oynatma, çoklu sekme orkestrasyonu, ajan için otomatik test üretimi.\n- **ERP/IFS bağlantısı:** IFS Cloud gibi web tabanlı ERP ekranlarında rutin veri girişi ve regresyon testi senaryoları için ajan destekli otomasyon temeli olabilir.\n- **Risk:** Ajanın yetkili oturumlarda yanlış tıklaması geri alınamaz sonuçlar doğurabilir; onay adımları gerekir."
+      },
+      "glossary": [
+        {
+          "term": "Daemon",
+          "def": "Arka planda sürekli çalışan ve komutları bekleyen yardımcı süreç."
+        },
+        {
+          "term": "CDP (Chrome DevTools Protocol)",
+          "def": "Chrome'u programla kontrol etmeyi sağlayan resmî protokol; sayfa açma, tıklama, ekran görüntüsü gibi işleri yapar."
+        },
+        {
+          "term": "Erişilebilirlik ağacı",
+          "def": "Ekran okuyucuların kullandığı, sayfadaki anlamlı elemanların (buton, başlık, form alanı) sade hiyerarşik listesi."
+        },
+        {
+          "term": "Snapshot",
+          "def": "Sayfanın o andaki sadeleştirilmiş görüntüsünün metin olarak alınması."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modelinin metni işlediği küçük parça; ne kadar token o kadar maliyet ve gecikme."
+        },
+        {
+          "term": "Shadow DOM",
+          "def": "Web bileşenlerinin iç yapısını dışarıdan gizleyen tarayıcı mekanizması; otomasyonu zorlaştırabilir."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; ajanlara dış araç bağlamak için kullanılan standart."
+        }
+      ]
+    },
+    {
+      "name": "prometheus/prometheus",
+      "url": "https://github.com/prometheus/prometheus",
+      "stars": "67.5k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Prometheus**, sistemlerin sağlığını sayılarla izlemek için kullanılan açık kaynaklı bir **izleme (monitoring) sistemi ve zaman serisi veritabanıdır**. CPU kullanımı, istek sayısı, hata oranı gibi ölçümleri düzenli aralıklarla toplar, saklar ve sorgulatır.\n\n- **Problem:** \"Sunucu yavaşladı mı, hangi servis hata veriyor?\" sorusuna zaman içindeki sayılarla cevap vermek.\n- **Çözüm:** Servislerden ölçümleri çekme (pull) modeliyle toplar, PromQL ile sorgulatır, kurallara göre uyarı üretir.\n- **Kime:** DevOps/SRE ekipleri, Kubernetes kullanıcıları, veritabanı yöneticileri.",
+        "tech": "- **Go ile yazıldı:** Tek ikili dosya, kolay dağıtım, düşük bellek ayak izi.\n- **Pull modeli:** Prometheus hedeflerin `/metrics` adresine gidip değerleri okur. Hedefin sağlığı da bu sayede kendiliğinden ölçülür; merkezi bir kayıt noktasına ihtiyaç kalmaz.\n- **Kendi TSDB'si:** Veriler zaman damgalı serilere yazılır, blok blok sıkıştırılır; önce bellekte tutulup WAL ile diske güvence altına alınır.\n- **Etiketli veri modeli:** Her ölçüm `metrik_adı{etiket=\"değer\"}` biçimindedir; bu, boyutlara göre (servis, bölge, sürüm) esnek filtreleme sağlar.\n- **PromQL:** Zaman serileri için özel sorgu dili; oran, yüzdelik dilim ve toplulaştırma kolaydır.\n- **Alertmanager:** Uyarıları gruplayıp e-posta/Slack gibi kanallara yönlendiren ayrı bileşen.",
+        "why": "- **Neden yeniden trendde:** Projenin 10 yılı aşkın geçmişine rağmen yeni sürüm hareketleri ve yapay zekâ altyapılarının (GPU, model sunumu) izleme ihtiyacı ilgiyi canlandırıyor.\n- **Kitle:** Bulut-yerli (cloud native) dünyanın fiili standardı; CNCF mezunu proje.\n- **Güven:** Geniş ekosistem (exporter'lar, Grafana, Kubernetes entegrasyonu).\n- **İvme:** Günde ~320 yıldız; yeni bir viral olay değil, olgun bir projenin sürekli ilgisi.",
+        "evolve": "- **Eksikler:** Uzun süreli saklama ve çok kiracılı ölçekleme için tek başına yetersiz; Thanos, Mimir gibi eklentilere gereksinim duyulur.\n- **Fırsatlar:** OpenTelemetry ile daha derin uyum, yüksek kardinalite sorgularında iyileştirme, ajan/LLM iş yüklerine özel metrik kalıpları.\n- **ERP/IFS bağlantısı:** Oracle/IFS veritabanı sunucularının oturum sayısı, bekleme olayları ve iş kuyruğu gecikmesini exporter ile Prometheus'a aktarıp erken uyarı kurmak mümkün.\n- **Risk:** Etiket sayısı kontrolsüz artarsa bellek ve disk hızla şişer."
+      },
+      "glossary": [
+        {
+          "term": "Zaman serisi veritabanı (TSDB)",
+          "def": "Verileri zaman damgasıyla saklamaya ve zaman aralıklarında hızlı sorgulamaya özelleşmiş veritabanı."
+        },
+        {
+          "term": "PromQL",
+          "def": "Prometheus'un metrikleri sorgulamak için kullandığı kendi sorgu dili."
+        },
+        {
+          "term": "Pull modeli",
+          "def": "İzleyen sistemin ölçümleri hedeften kendisinin çekmesi; hedef veri göndermez."
+        },
+        {
+          "term": "Exporter",
+          "def": "Bir sistemin (veritabanı, sunucu vb.) ölçümlerini Prometheus'un okuyacağı biçime çeviren küçük program."
+        },
+        {
+          "term": "WAL (Write-Ahead Log)",
+          "def": "Verinin önce günlüğe yazılması; çökme olursa kayıp yaşanmaması için güvenlik kaydı."
+        },
+        {
+          "term": "Kardinalite",
+          "def": "Bir etiketin alabileceği farklı değer sayısı; çok yüksekse seri sayısı ve maliyet patlar."
+        },
+        {
+          "term": "Alertmanager",
+          "def": "Uyarıları gruplayan, tekrarlarını bastıran ve doğru kanala ileten bileşen."
+        },
+        {
+          "term": "CNCF",
+          "def": "Bulut-yerli açık kaynak projelerini barındıran Cloud Native Computing Foundation."
+        }
+      ]
+    },
+    {
+      "name": "astral-sh/ruff",
+      "url": "https://github.com/astral-sh/ruff",
+      "stars": "51.0k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Ruff**, Python için son derece hızlı bir **linter (kod denetleyici) ve biçimlendirici (formatter)**. Flake8, isort, Black, pyupgrade gibi onlarca aracın işini tek bir araçta toplar.\n\n- **Problem:** Python projelerinde birden çok araç ayrı ayrı kurulup ayarlanıyor ve büyük kod tabanlarında yavaş çalışıyor.\n- **Çözüm:** Rust ile yazılmış tek araç; denetim ve biçimlendirme çoğunlukla saniyenin altında biter.\n- **Kime:** Python geliştiricileri, CI sürelerini kısaltmak isteyen ekipler.",
+        "tech": "- **Rust:** Python araçlarının önündeki en büyük darboğaz yorumlayıcı hızıdır; Rust bunu yüzlerce kat hızlandırır.\n- **Paralel çalışma ve önbellek:** Dosyalar eşzamanlı işlenir, değişmeyenler atlanır.\n- **Tek ayrıştırıcı (parser):** Kodu bir kez ayrıştırıp yüzlerce kural bu yapı üzerinde çalışır; her araç kodu baştan okumaz.\n- **Otomatik düzeltme (`--fix`):** Kuralların çoğu bulduğu sorunu kendisi düzeltir.\n- **Uyumluluk kararı:** Mevcut araçların kurallarını yeniden yazarak geçişi kolaylaştırır; `pyproject.toml` ile tek yerden yapılandırma.",
+        "why": "- **Neden ilgi görüyor:** Python tarafında ajanların yazdığı kod miktarı arttıkça hızlı, tutarlı denetim ihtiyacı büyüdü; ajan döngüsünde saniyelik geri bildirim önemli.\n- **Kitle:** Python geliştiricilerinin neredeyse tamamı; büyük açık kaynak projeler.\n- **Güvenilirlik:** Astral'ın uv ve ty gibi araçlarıyla bütünleşik bir ekosistem kurması.\n- **İvme:** Günde ~350 yıldız.",
+        "evolve": "- **Eksikler:** Tip denetimi ayrı araca (ty) bırakılmış; eklenti sistemi yok, özel kural yazmak zor.\n- **Fırsatlar:** Ajanlar için yapılandırılmış hata çıktısı, proje geneli anlamsal kurallar.\n- **ERP/IFS bağlantısı:** Python ile yazılan veri taşıma ve entegrasyon betiklerinde CI kalite kapısı olarak kolayca kullanılabilir.\n- **Risk:** Otomatik düzeltmeler büyük yeniden biçimlendirme farkları üretebilir."
+      },
+      "glossary": [
+        {
+          "term": "Linter",
+          "def": "Kodu çalıştırmadan hatalı veya kötü kalıpları bulan denetim aracı."
+        },
+        {
+          "term": "Formatter",
+          "def": "Kodu tek tip biçime (girinti, boşluk, satır uzunluğu) sokan araç."
+        },
+        {
+          "term": "Parser (ayrıştırıcı)",
+          "def": "Kaynak kodu programın anlayabileceği ağaç yapısına çeviren bileşen."
+        },
+        {
+          "term": "CI",
+          "def": "Sürekli entegrasyon; kod gönderildikçe otomatik test ve denetim çalıştıran sistem."
+        },
+        {
+          "term": "pyproject.toml",
+          "def": "Python projelerinin ortak yapılandırma dosyası."
+        },
+        {
+          "term": "Tip denetimi",
+          "def": "Değişken ve fonksiyonların beklenen veri tiplerine uyup uymadığını kontrol etme."
+        }
+      ]
+    },
+    {
+      "name": "zed-industries/zed",
+      "url": "https://github.com/zed-industries/zed",
+      "stars": "94.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Zed**, Rust ile sıfırdan yazılmış, **çok hızlı ve çok kullanıcılı (multiplayer) bir kod editörüdür**. Aynı dosyada ekip arkadaşlarıyla eşzamanlı çalışmayı ve yapay zekâ ajanlarını doğrudan editöre entegre etmeyi hedefler.\n\n- **Problem:** Electron tabanlı editörler (VS Code vb.) ağır ve gecikmeli hissedilebiliyor.\n- **Çözüm:** GPU hızlandırmalı, yerel (native) arayüz.\n- **Kime:** Hız önemseyen geliştiriciler, ajan destekli kodlama yapanlar, ekip içi canlı işbirliği isteyenler.",
+        "tech": "- **Rust:** Bellek güvenliği ve yüksek performans.\n- **GPUI:** Zed'in kendi GPU hızlandırmalı arayüz çatısı; metin ve arayüz doğrudan GPU'da çizilir.\n- **CRDT:** Çok kişili düzenlemede çakışmayı otomatik çözen veri yapısı; herkes aynı dosyada çakışmasız yazabilir.\n- **Tree-sitter:** Artımlı sözdizimi ayrıştırıcı; renklendirme ve yapısal gezinme hızlı.\n- **LSP ve ajan paneli:** Dil sunucularıyla uyumlu; ajanlar (Claude, Codex vb.) için ACP gibi protokollerle bağlanır.\n- **WebAssembly eklentiler:** Eklentiler yalıtılmış çalışır.",
+        "why": "- **Neden bugün:** Editör pazarında \"ajan-yerli\" arayüz yarışı sürüyor; Zed ajan akışlarını hızlı arayüzle birleştiriyor.\n- **Kitle:** Performans meraklıları, Rust topluluğu, ajan kullanan geliştiriciler.\n- **İvme:** Günde ~1.100 yıldız; trendin en güçlü hareketlerinden biri.",
+        "evolve": "- **Eksikler:** Eklenti ekosistemi VS Code'a kıyasla küçük; bazı dil/hata ayıklama desteği sınırlı.\n- **Fırsatlar:** Daha güçlü hata ayıklayıcı, kurumsal yönetim ve gizlilik kontrolleri, ajan izleme paneli.\n- **ERP/IFS bağlantısı:** PL/SQL için LSP ve eklenti yazılırsa hafif bir PL/SQL geliştirme ortamı olabilir.\n- **Risk:** Ticari model ve ajan özelliklerine bağımlılık."
+      },
+      "glossary": [
+        {
+          "term": "Multiplayer düzenleme",
+          "def": "Birden fazla kişinin aynı dosyada eşzamanlı çalışması."
+        },
+        {
+          "term": "CRDT",
+          "def": "Eşzamanlı düzenlemeleri çakışma olmadan birleştiren veri yapısı."
+        },
+        {
+          "term": "GPUI",
+          "def": "Zed'in GPU üzerinde çizim yapan kendi arayüz çatısı."
+        },
+        {
+          "term": "Tree-sitter",
+          "def": "Kodu hızlıca ve artımlı olarak ayrıştıran sözdizimi kütüphanesi."
+        },
+        {
+          "term": "LSP",
+          "def": "Language Server Protocol; editörlere otomatik tamamlama, hata gösterme gibi dil özelliklerini taşıyan standart."
+        },
+        {
+          "term": "ACP (Agent Client Protocol)",
+          "def": "Editörlerin harici kodlama ajanlarıyla konuşması için tasarlanmış protokol."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması yapma çatısı; genellikle daha ağırdır."
+        },
+        {
+          "term": "WebAssembly",
+          "def": "Tarayıcı dışında da çalışan, güvenli ve taşınabilir ikili kod biçimi."
+        }
+      ]
+    }
+  ]
+}
