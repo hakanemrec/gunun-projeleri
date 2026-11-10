@@ -1,0 +1,161 @@
+{
+  "date": "2026-11-10",
+  "projects": [
+    {
+      "name": "DIYgod/pinky",
+      "url": "https://github.com/DIYgod/pinky",
+      "stars": "1.5k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Pinky**, herhangi bir yapay zekâ ajanının (Claude Code, Codex, Cursor vb.) **gerçek bir iPhone veya Android telefonu** senin bilgisayarından, senin gözetiminde kullanmasını sağlayan bir masaüstü uygulamasıdır.\n\n- **Problem:** Ajanlar web'de ve terminalde ustalaştı ama telefon uygulamalarına dokunamıyor; dokunabildiklerinde de \"ödemeyi onayla\" gibi riskli adımları kontrolsüz yapabiliyor.\n- **Çözüm:** Ajan, MCP üzerinden telefonu sürer; ödeme, gönderme, silme gibi adımlar **sen \"İzin ver\"e basana kadar bekletilir**.\n- **Kime:** Mobil uygulama testi yapanlara, telefondaki işleri ajana devretmek isteyip kontrolü bırakmak istemeyenlere.",
+        "tech": "- **Go ile yazılmış tek uygulama:** macOS, Windows ve Linux için 16-22 MB'lık indirme; Electron/webview yok, arayüz GPU üzerinde çizilen MyGo ile yapılıyor, boşta ~70 MB bellek kullanıyor.\n- **MCP sunucusu olarak çalışır:** Ajan tarafında özel bir entegrasyon gerekmez; MCP konuşabilen her ajan bağlanır (aynı bilgisayarda veya HTTP üzerinden).\n- **Onay mekanizması ajanın dışında, ağ geçidinde:** Kurallar Pinky'nin gateway katmanında uygulanır; yani ekrandaki bir metin ajanı kandırsa bile ajan kendi kendine onay veremez. Bu, \"talimatla güvenlik\" yerine \"mimariyle güvenlik\" tercihidir.\n- **Buton tanıma:** Ödeme/silme gibi butonlar 10 dilde tespit edilir.\n- **Telefon bağlantısı:** Android 10-17 için standart araçlar; iPhone için iOS 27+'ta ek kurulumsuz, iOS 17.4-26'da Xcode'dan bir kez yüklenen yardımcı uygulama.\n- **Kilit açma:** PIN bir kez kaydedilir, her açılış Touch ID/Windows Hello ile onaylanır; ajan PIN'i hiç görmez.",
+        "why": "- **Zamanlama:** Ajan ekosistemi masaüstü ve tarayıcıyı fethetti; sıradaki sınır telefon. Aynı gün benzer birkaç proje (poki, phoneuse) de trendde: tema \"ajan + telefon\".\n- **Güven hikâyesi:** \"Döngüde insan\" (human-in-the-loop) vurgusu, ajanlara telefon vermekten çekinenlere doğrudan hitap ediyor.\n- **Yazar etkisi:** DIYgod (RSSHub'ın yaratıcısı) geniş bir takipçi kitlesine sahip.\n- **Düşük sürtünme:** Tek tık ajan bağlama, hesap gerektirmeyen açık kaynak (Apache-2.0), küçük ve hızlı uygulama.",
+        "evolve": "- **Politika dili:** Onay kurallarının uygulama/ekran bazında dışa aktarılabilir, versiyonlanabilir bir dosyada tanımlanabilmesi ekip kullanımını kolaylaştırır.\n- **Denetim izi:** Oturum kayıtlarının (hangi adım, kim onayladı) dışa aktarılması kurumsal uyumluluk için değerli olur.\n- **Cihaz çiftliği:** Birden fazla telefonu paralel süren bir test altyapısı (CI entegrasyonu).\n- **Risk:** Ekran okuma tabanlı buton tespiti yanlış negatif verirse riskli bir adım atlanabilir; bu yüzden \"her adımı onayla\" modu varsayılana yakın bir güvenlik ağı olarak kalmalı."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araç ve verilere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Human-in-the-loop",
+          "def": "Otomatik bir sürecin kritik adımlarında insanın onayının beklendiği tasarım yaklaşımı."
+        },
+        {
+          "term": "Gateway (ağ geçidi)",
+          "def": "İstekleri hedefe ulaşmadan önce karşılayıp kuralları uygulayan ara katman; burada ajan ile telefon arasındaki denetim noktası."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması yapan, ancak genelde bellek açısından ağır olan çatı."
+        },
+        {
+          "term": "Webview",
+          "def": "Uygulama içine gömülmüş tarayıcı bileşeni."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Ekrandaki veya veriyi taşıyan metnin, ajanı gizlice yönlendirmeye çalışması saldırısı."
+        }
+      ]
+    },
+    {
+      "name": "devvmhq/devvm",
+      "url": "https://github.com/devvmhq/devvm",
+      "stars": "500",
+      "language": "Go",
+      "sections": {
+        "serves": "**devvm**, her proje için ayrı, yalıtılmış bir **sanal makine (VM)** kuran ve içinde kodlama ajanını (ör. Claude Code) güvenle çalıştırmanı sağlayan bir komut satırı aracıdır.\n\n- **Problem:** Kodlama ajanlarına bilgisayarının tamamı açık olursa dosyalarını, SSH anahtarlarını ve ağı riske atarsın; her proje için elle sanal makine kurmak ise zahmetli.\n- **Çözüm:** Proje klasöründe `devvm` yazarsın; proje dosyalarına bakıp gereken dil araçlarını (toolchain) otomatik kurar ve aynı yolda bir kabuk açar.\n- **Kime:** Ajanları \"yetkileri açık\" modda çalıştırmak isteyen ama makinesini korumak isteyen geliştiricilere.",
+        "tech": "- **Go ile tek ikili dosya (CLI):** macOS ve Linux, arm64 ve x86_64; kurulum Homebrew veya imzalı betikle.\n- **Lima üzerinde VM:** Sanallaştırma işini olgun bir projeye (Lima) bırakıp üstüne proje bazlı deneyim ekliyor; arkada `backend` soyutlaması var, ileride başka altyapılar eklenebilir.\n- **Katmanlı imaj:** `docker`, `nix`, `desktop` gibi hazır katmanlar ve kendi katmanların; temel imaj bir kez kurulur, sonraki VM'ler saniyeler içinde açılır.\n- **Ağ katmanları (network tiers):** Varsayılan \"izin listesi\" seviyesi; VM yalnızca onayladığın sunuculara çıkar. Kod tabanında ayrı `netpolicy` ve `proxy` paketleri bu amaçla var.\n- **Güvenlik detayları:** `.git` koruması, sırların (secrets) ve SSH ajanının kontrollü aktarımı, imzalı sürümler (minisign).\n- **Proje yolunun aynı olması:** VM içinde klasör, ana makinedeki yolla aynıdır; araçlar ve betikler şaşırmaz.",
+        "why": "- **Doğru dönem:** Ajanlar artık uzun süre ve özerk çalışıyor; \"sandbox\" ihtiyacı hızla büyüyor.\n- **Düşük sürtünme:** Tek komut, proje dosyalarından otomatik algılama, saniyeler içinde açılan VM.\n- **Güvenlik odağı:** Ağ izin listesi ve `.git` koruması, ajan kaynaklı veri sızıntısı korkusuna doğrudan cevap veriyor.\n- **Kitle:** Claude Code, Codex gibi araçları yoğun kullanan bireysel geliştiriciler ve küçük ekipler.",
+        "evolve": "- **Windows desteği** ve Intel Mac testleri (şu an test edilmedi).\n- **Ekip politikaları:** Ağ ve sır kurallarının depoda paylaşılan bir dosyadan gelmesi.\n- **Bulut backend'i:** Aynı deneyimin uzak bir makinede çalışması, yerel kaynak tüketimini azaltır.\n- **Gözlemlenebilirlik:** Ajanın VM içinde hangi dosyalara dokunduğunu ve hangi ağ isteklerini yaptığını özetleyen bir rapor."
+      },
+      "glossary": [
+        {
+          "term": "VM (sanal makine)",
+          "def": "Bilgisayarın içinde çalışan, kendi işletim sistemi olan yalıtılmış sanal bilgisayar."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Çalışan kodun sistemin geri kalanına zarar veremeyeceği yalıtılmış ortam."
+        },
+        {
+          "term": "Toolchain",
+          "def": "Bir dilde geliştirme için gereken derleyici, paket yöneticisi ve yardımcı araçların bütünü."
+        },
+        {
+          "term": "Lima",
+          "def": "macOS ve Linux'ta hafif Linux sanal makineleri çalıştıran açık kaynak araç."
+        },
+        {
+          "term": "Allowlist (izin listesi)",
+          "def": "Yalnızca açıkça listelenenlere izin veren, diğer her şeyi engelleyen kural yaklaşımı."
+        },
+        {
+          "term": "Nix",
+          "def": "Bağımlılıkları tekrarlanabilir ve izole biçimde kuran paket yöneticisi."
+        },
+        {
+          "term": "minisign",
+          "def": "Dosyaların gerçekten yayıncıdan geldiğini doğrulayan küçük bir imza aracı."
+        }
+      ]
+    },
+    {
+      "name": "janestreet/agent_skills",
+      "url": "https://github.com/janestreet/agent_skills",
+      "stars": "2.5k",
+      "language": "Markdown (SKILL.md)",
+      "sections": {
+        "serves": "**janestreet/agent_skills**, Jane Street'in yayımladığı bir **ajan becerisi (skill) koleksiyonu**. İlk ve tek beceri olan **socratic-tutor**, bir LLM'i sana Sokratik yöntemle öğreten **sıkı bir özel öğretmene** dönüştürür.\n\n- **Problem:** Sohbet botları konuyu hemen anlatıp bırakır; sen aktif düşünmezsin, öğrenme kalıcı olmaz.\n- **Çözüm:** Tanı sorularıyla seviyeni ölçer, 0-5 seviyeli bir beceri haritası çıkarır, her seferinde tek soru sorar, aralıklı tekrar ve final değerlendirmesi yapar.\n- **Kime:** Yeni bir konuyu (ör. SQL, derleyiciler, olasılık) gerçekten öğrenmek isteyenlere.",
+        "tech": "- **Sadece bir `SKILL.md` dosyası:** Kod yok. Ajan becerisi, bir klasördeki talimat metnidir; ajan ihtiyaç duyunca yükler.\n- **Tetikleme koruması:** \"Ne ... açıkla\" gibi tek seferlik sorularda öğretim döngüsü başlamaz; niyet belirsizse tek kısa soru sorulur.\n- **Durum takibi bağlam içinde:** Beceri haritası her seviye değişiminde ASCII çubuklarla yeniden gösterilir; ayrı bir veritabanı yok, konuşma hafızası kullanılır.\n- **Pedagojik kurallar:** Tek soru, cevap verme yerine daraltıcı soru, 2-3 başarısız denemeden sonra açıklama; yani yöntem tamamen metinle kodlanmış.\n- **Taşınabilirlik:** `SKILL.md` formatını destekleyen ajanlarda klasörü kopyalamak yeter; düz sohbet botlarında metin sistem istemi olarak yapıştırılır.",
+        "why": "- **Marka etkisi:** Jane Street gibi saygın bir mühendislik şirketinin yayımlaması.\n- **Ajan becerileri akımı:** `SKILL.md` standardı hızla yayılıyor; insanlar hazır, kaliteli beceriler arıyor.\n- **Evrensel ihtiyaç:** Programlama bilmeyenler dahi herhangi bir konuda kullanabilir; sıfır kurulum.\n- **Eğitim kaygısı:** \"Yapay zekâ bize hazır cevap veriyor, öğrenmiyoruz\" endişesine ters yönde bir cevap.",
+        "evolve": "- **Daha fazla beceri:** Koleksiyon adı büyük, içerik küçük; kod inceleme, olay analizi gibi şirket içi pratikler eklenebilir.\n- **Kalıcı ilerleme:** Oturumlar arası beceri haritasını dosyaya kaydedip aralıklı tekrarı gerçekten zamana yaymak.\n- **Ölçüm:** Öğretimin işe yaradığını gösteren değerlendirme setleri.\n- **Sınır:** Tamamen metne dayalı olduğundan model değiştikçe davranış sapabilir; test örnekleri eklemek faydalı olur."
+      },
+      "glossary": [
+        {
+          "term": "Skill (beceri)",
+          "def": "Ajanın gerektiğinde yüklediği, belirli bir görevi nasıl yapacağını anlatan talimat paketi."
+        },
+        {
+          "term": "SKILL.md",
+          "def": "Bir becerinin adı, açıklaması ve talimatlarını içeren, ajanların okuduğu markdown dosyası."
+        },
+        {
+          "term": "Sokratik yöntem",
+          "def": "Cevabı vermek yerine sorularla kişinin kendi akıl yürütmesini ortaya çıkaran öğretim yöntemi."
+        },
+        {
+          "term": "Aralıklı tekrar",
+          "def": "Bilgiyi unutmadan hemen önce, giderek artan aralıklarla yeniden çalışma tekniği."
+        },
+        {
+          "term": "Sistem istemi (system prompt)",
+          "def": "Modelin davranışını belirleyen, kullanıcı mesajlarından önce verilen temel talimat."
+        },
+        {
+          "term": "Tanı sorusu (diagnostic)",
+          "def": "Kişinin mevcut seviyesini ölçmek için sorulan başlangıç soruları."
+        }
+      ]
+    },
+    {
+      "name": "shanselman/gputaskman",
+      "url": "https://github.com/shanselman/gputaskman",
+      "stars": "1.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**gputaskman**, GPU'nun sadece ne kadar dolu olduğunu değil, **içinde ne olduğunu** gösteren bir terminal arayüzüdür; \"GPU'lar için htop\".\n\n- **Problem:** Görev Yöneticisi \"15 GB kullanımda\" der ama kim kullanıyor? Model ağırlıkları mı, KV cache mi, tarayıcı mı? Neden bu kadar bellek sistem RAM'inde?\n- **Çözüm:** İşlem bazında GPU belleği ve motor etkinliğini, yüklü çalışma zamanlarını, model dosyalarını ve LLM tampon dökümünü tek ekranda birleştirir.\n- **Kime:** Yerelde LLM çalıştıranlara, eğitim/ince ayar yapanlara ve GPU belleği tükenince nedenini arayanlara.",
+        "tech": "- **Python 3.11+, `uv`/`pipx` ile kurulum;** ayrıca PyInstaller tarzı taşınabilir Windows ZIP'leri (x64 ve ARM64).\n- **Platforma özgü sürücü katmanları:** NVIDIA için NVML, AMD için amdsmi/ADL, Windows için DXGI ve PDH sayaçları, Linux için DRM; kaynak kodda ayrı modüller olarak duruyor.\n- **GGUF ayrıştırma:** Yerel model dosyalarının başlığından boyut/katman bilgisi okunup ağırlık, KV cache ve compute buffer dökümü tahmin edilir.\n- **Ölçüm ile tahmin ayrımı:** Cihaz ve süreç sayaçları \"ölçüm\", sınıflandırma ve GGUF dökümü \"tahmin\" olarak açıkça etiketlenir.\n- **Çıktı seçenekleri:** TUI, `--once` ve `--json`; böylece betiklerle ve ajanlarla da kullanılabilir.",
+        "why": "- **Yerel LLM patlaması:** Herkes llama.cpp/Ollama ile model çalıştırıyor ve VRAM darboğazına çarpıyor.\n- **Gerçek bir boşluk:** Mevcut araçlar yalnızca toplam kullanımı gösteriyor.\n- **Yazar:** Scott Hanselman'ın geniş Windows/geliştirici kitlesi.\n- **Dürüst kapsam:** Neyin ölçüldüğü, neyin tahmin olduğu açıkça yazıldığı için güven veriyor.",
+        "evolve": "- **Zaman serisi kaydı:** Bellek büyümesini (sızıntı, KV cache şişmesi) zaman içinde grafikleyen kayıt modu.\n- **Uyarılar:** VRAM'in dolmak üzere olduğunu bildiren eşikler.\n- **Daha fazla çerçeve:** vLLM, TensorRT gibi çalışma zamanları için model tanıma.\n- **Entegrasyon:** Prometheus dışa aktarımı ile sunucularda izleme."
+      },
+      "glossary": [
+        {
+          "term": "VRAM",
+          "def": "Ekran kartının kendi hızlı belleği; model ağırlıkları ve ara veriler burada tutulur."
+        },
+        {
+          "term": "KV cache",
+          "def": "LLM'in önceki token'ların hesabını yeniden yapmamak için sakladığı ara bellek; bağlam uzadıkça büyür."
+        },
+        {
+          "term": "GGUF",
+          "def": "Yerel LLM'leri (llama.cpp ekosistemi) tek dosyada, ağırlık ve üst bilgiyle saklayan model formatı."
+        },
+        {
+          "term": "NVML",
+          "def": "NVIDIA'nın GPU durumunu sorgulama kütüphanesi."
+        },
+        {
+          "term": "TUI",
+          "def": "Terminalde çalışan, metin tabanlı etkileşimli arayüz."
+        },
+        {
+          "term": "Compute buffer",
+          "def": "Modelin hesap yaparken geçici olarak ayırdığı çalışma belleği."
+        }
+      ]
+    }
+  ]
+}
