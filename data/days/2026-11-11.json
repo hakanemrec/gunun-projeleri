@@ -1,0 +1,225 @@
+{
+  "date": "2026-11-11",
+  "projects": [
+    {
+      "name": "meta/astryx",
+      "url": "https://github.com/meta/astryx",
+      "stars": "23.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Astryx**, Meta'nın kendi içinde sekiz yıldır kullandığı ve **13.000'den fazla iç uygulamaya** güç veren tasarım sisteminin açık kaynak hâli. Bir React projesinde buton, tablo, form, modal gibi arayüz parçalarını sıfırdan yazmak yerine hazır, tutarlı ve erişilebilir bileşenlerle ilerlemeni sağlıyor.\n\n- **Problem:** Her ekip kendi butonunu, kendi tablosunu yazınca ürünler tutarsızlaşıyor; üstüne bir de yapay zekâ kod asistanları her seferinde farklı bir stil uyduruyor.\n- **Çözüm:** **150+ bileşen**, hazır **desenler** (tablo sayfası, detay sayfası, çok adımlı form sihirbazı) ve hem insanın hem de ajanın aynı kaynaktan okuyabildiği bir **CLI + doküman** seti.\n- **Kime:** Kurumsal iç araç, admin paneli, ERP benzeri yoğun veri ekranları geliştiren React ekiplerine; özellikle arayüz kodunun büyük kısmını artık Claude Code/Cursor gibi ajanlara yazdıranlara.",
+        "tech": "- **React 19+ ve StyleX:** Bileşenler, Meta'nın derleme zamanında atomik CSS üreten stil kütüphanesi **StyleX** ile yazılmış. Ama kullanıcıya kilit yok: hazır derlenmiş CSS ile geliyor, istersen `className` ile **Tailwind**, CSS Modules ya da düz CSS ile üzerine yazabiliyorsun.\n- **Tema = CSS değişkenleri:** Temalar, **CSS custom property** üzerine yazımlarından ibaret. Yedi hazır tema (neutral, matcha, gothic, y2k...) ve karanlık mod var; markana uyarlamak için kaynak kodu forklamana gerek yok.\n- **Üç katman:** *Foundations* (tipografi, renk, yerleşim, erişilebilirlik) → *Components* → *Patterns*. Desen katmanı özellikle değerli: \"liste + filtre + detay\" gibi tekrar eden iş ekranları hazır şablon olarak geliyor.\n- **Ajan dostu CLI:** `@astryxdesign/cli` ile `astryx docs`, `astryx component --list` gibi komutlar dokümanı terminalde sorgulanabilir yapıyor; ajan internette arama yapmadan doğru prop'u buluyor. Repoda `AGENTS.md`, `CLAUDE.md` ve hazır **Claude plugin** klasörleri de var.\n- **Swizzle:** Bir bileşenin tüm kaynak kodunu projene \"dışarı alıp\" serbestçe değiştirmeni sağlıyor — kütüphane ile kendi kodun arasında kaçış kapısı.\n- **Monorepo araçları:** pnpm, Vitest, Playwright, Changesets; ilginç bir ayrıntı olarak `internal/` altında ajanların bileşenleri doğru kullanıp kullanmadığını ölçen **\"vibe test\"**ler bulunuyor.",
+        "why": "- **Meta etkisi + gerçek savaş tecrübesi:** \"Şirketin en çok kullanılan tasarım sistemi\" olarak açık kaynağa çıkması tek başına büyük bir haber; günde **3.100+ yıldız** ile listenin açık ara birincisi.\n- **Zamanlama:** Arayüz kodunu artık büyük ölçüde ajanlar yazıyor ve en büyük şikâyet \"her ekran farklı görünüyor\". Astryx kendini baştan **\"agent ready\"** diye konumlayan ilk büyük kurumsal tasarım sistemi.\n- **shadcn/ui ile MUI arasında bir yer:** shadcn gibi kodu sahiplenmene izin veriyor (swizzle), MUI gibi kapsamlı ve hazır geliyor. Bu orta yol birçok ekibin aradığı şey.\n- **Kitle:** Admin paneli ve iç araç yazan kurumsal geliştiriciler — yani yoğun tablo, form ve filtre ekranları kuranlar. IFS/ERP benzeri ekranların web arayüzünü yazan biri için \"Patterns\" katmanı doğrudan işe yarar.",
+        "evolve": "- **MCP sunucusu:** Şu an ajan entegrasyonu CLI ve talimat dosyalarıyla; resmî bir **MCP** sunucusu ile bileşen kataloğu, prop şemaları ve örnekler her ajana yapılandırılmış veri olarak sunulabilir.\n- **Beta olgunluğu:** 298 açık issue ve 377 açık PR, API'nin hâlâ oturmadığını gösteriyor; üretimde kullanacaklar sürüm kilitlemeli.\n- **Grafik ve veri görselleştirme:** `charts` ve `vega` paketleri henüz yalnızca canary; dashboard ağırlıklı kurumsal uygulamalar için bu paketlerin kararlı hâle gelmesi kritik.\n- **Diğer framework'ler:** Yalnızca React 19+ destekleniyor. CSS değişkenlerine dayalı temalar sayesinde Vue/Svelte ya da Web Components portu teorik olarak kolay.\n- **Figma eşleşmesi:** Tasarımcı–ajan–geliştirici üçgenini kapatmak için Figma kit'i ve tasarım token'larının otomatik senkronu büyük değer katar."
+      },
+      "glossary": [
+        {
+          "term": "Tasarım sistemi (Design system)",
+          "def": "Bir şirketin arayüzlerinde kullandığı renk, yazı tipi, bileşen ve kullanım kurallarının tek bir yerde toplandığı ortak kütüphane ve rehber."
+        },
+        {
+          "term": "Bileşen (Component)",
+          "def": "Buton, tablo, modal gibi tekrar tekrar kullanılabilen, kendi görünümü ve davranışı olan arayüz parçası."
+        },
+        {
+          "term": "StyleX",
+          "def": "Meta'nın geliştirdiği, stilleri derleme sırasında küçük ve tekrar kullanılabilir CSS sınıflarına çeviren stil kütüphanesi."
+        },
+        {
+          "term": "CSS custom property",
+          "def": "CSS'te `--renk-ana` gibi tanımlanan değişkenler; bir kez değiştirince onu kullanan tüm öğelerin görünümü güncellenir."
+        },
+        {
+          "term": "Swizzle",
+          "def": "Bir kütüphane bileşeninin kaynak kodunu kendi projene kopyalayıp üzerinde serbestçe değişiklik yapabilmeni sağlayan işlem."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paketin veya uygulamanın tek bir git deposunda birlikte tutulduğu proje düzeni."
+        },
+        {
+          "term": "Erişilebilirlik (Accessibility)",
+          "def": "Arayüzün ekran okuyucu kullananlar, klavyeyle gezinenler veya görme sorunu olanlar dahil herkes tarafından kullanılabilir olması."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ asistanlarının dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        }
+      ]
+    },
+    {
+      "name": "homeassistant-ai/ha-mcp",
+      "url": "https://github.com/homeassistant-ai/ha-mcp",
+      "stars": "6.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**ha-mcp**, popüler açık kaynak akıllı ev platformu **Home Assistant**'ı Claude, ChatGPT, Gemini gibi yapay zekâ asistanlarına bağlayan bir **MCP sunucusu**. Fark şu: sadece \"ışığı aç\" demiyorsun; asistan senin yerine **otomasyon yazıyor, dashboard tasarlıyor, hata ayıklıyor**.\n\n- **Problem:** Home Assistant çok güçlü ama YAML, şablonlar, otomasyon izleri derken öğrenme eğrisi dik. Yerleşik MCP desteği ise yalnızca Assist'e açılmış cihazları kontrol edebiliyor.\n- **Çözüm:** **87 araç** ile tüm sisteme erişim: otomasyonlar, scriptler, sahneler, yardımcılar, alanlar, cihaz kayıtları, HACS, yedekler, loglar, geçmiş ve otomasyon izleri.\n- **Örnek:** \"Akşam güneş batınca ve evde kimse yoksa salon ışığını yak, neden dün çalışmadığına da bak\" dediğinde asistan otomasyonu yazıp dünkü izi (trace) okuyarak sorunu açıklayabiliyor.",
+        "tech": "- **Python + FastMCP:** Sunucu, Python'da MCP sunucusu yazmayı kolaylaştıran **FastMCP** üzerine kurulu; paket yönetimi **uv** ile.\n- **Çok yollu kurulum:** En çok önerilen yöntem, sunucuyu Home Assistant'ın **içinde (in-process)** çalıştıran özel entegrasyon (HACS ya da Marketplace, HA 2026.8+). Alternatifler: HA OS eklentisi, Docker, `uvx` ile PyPI, yerel stdio.\n- **Taşıma katmanı:** Uzaktan erişim için **Streamable HTTP**; Nabu Casa, Cloudflare Tunnel, webhook proxy ve **OIDC** ile harici kimlik doğrulama destekleniyor.\n- **Araç arama modu:** 87 araç küçük/yerel modellerin bağlam penceresini doldurur. Bu yüzden isteğe bağlı bir **BM25** arama katmanı tüm kataloğu tek tek göstermek yerine \"ara + çağır\" vekil araçları sunuyor — Ollama gibi yerel modellerle kullanımda kritik.\n- **Skill'ler MCP kaynağı olarak:** Home Assistant en iyi pratikleri `skill://` adresli **MCP resource** olarak servis ediliyor; desteklemeyen istemciler için yedek bir araç var.\n- **Güvenlik tasarımı:** Araçlar okuma/yazma/silme vekillerine ayrılmış; `/readonly` uçlu URL'ler yazma araçlarını tamamen gizliyor; düzenlemeden önce **otomatik yedek** alınıyor; araç bazında onay politikası tanımlanabiliyor.",
+        "why": "- **Günde ~800 yıldız:** Akıllı ev topluluğu büyük ve sadık; \"asistanım evimi yapılandırsın\" vaadi bu kitlede çok güçlü yankı buluyor.\n- **Yerleşik çözümün boşluğunu dolduruyor:** README'deki karşılaştırma tablosu net: resmî MCP sadece cihaz kontrolü, ha-mcp ise **yapılandırma + hata ayıklama**.\n- **Kurulum engelinin kalkması:** HA 2026.8 ile gelen Marketplace ve in-process entegrasyon, Docker/token uğraşı olmadan tek tıkla kurulum sağladı; bu da yeni bir yıldız dalgası getirdi.\n- **15+ istemci desteği:** Claude Desktop, Claude Code, ChatGPT, Codex, Cursor, VS Code, Open WebUI... Hangi asistanı kullanırsan kullan çalışıyor.\n- **Geliştirici açısından ilginç bir referans:** 87 araçlı bir MCP sunucusunda araç sayısı, güvenlik ve küçük model desteği nasıl yönetilir sorusuna olgun bir cevap veriyor — kendi kurumsal MCP sunucunu (ör. bir ERP için) tasarlayan biri için örnek alınacak mimari.",
+        "evolve": "- **Simülasyon / kuru çalıştırma:** Otomasyonu kaydetmeden önce \"bu kural geçen hafta olsaydı ne zaman tetiklenirdi\" diye geçmiş veride test eden bir mod, hatalı otomasyon riskini ciddi azaltır.\n- **Yazma araçlarının olgunlaşması:** Dosya ve YAML araçları hâlâ beta; bunların kararlı hâle gelmesi ileri seviye kullanıcılar için şart.\n- **Çok kullanıcılı yetki:** Evde birden fazla kişi varsa kimin asistanı neyi değiştirebilir — kullanıcı bazlı politika katmanı eksik.\n- **Enerji ve maliyet ajanı:** Energy verisine zaten erişiyor; elektrik tarifesine göre cihazları otomatik planlayan hazır bir \"skill\" paketi doğal bir sonraki adım.\n- **Telemetri tartışması:** Gelecekte planlanan analitik özelliğin şeffaf ve opt-in kalması, gizliliğe hassas bu topluluğun güvenini korumak için önemli."
+      },
+      "glossary": [
+        {
+          "term": "Home Assistant",
+          "def": "Evdeki akıllı cihazları tek bir yerden yönetmeyi ve otomasyonlar kurmayı sağlayan, kendi sunucunda çalışan açık kaynak platform."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "Bir uygulamanın yeteneklerini, yapay zekâ asistanlarının çağırabileceği 'araçlar' hâline getirip Model Context Protocol üzerinden sunan program."
+        },
+        {
+          "term": "FastMCP",
+          "def": "Python'da birkaç satır kodla MCP sunucusu yazmayı sağlayan popüler kütüphane."
+        },
+        {
+          "term": "HACS",
+          "def": "Home Assistant Community Store; resmî olmayan topluluk eklentilerini Home Assistant'a kurmayı sağlayan mağaza."
+        },
+        {
+          "term": "In-process",
+          "def": "Bir yazılımın ayrı bir program olarak değil, başka bir uygulamanın (burada Home Assistant'ın) kendi süreci içinde çalışması."
+        },
+        {
+          "term": "Streamable HTTP",
+          "def": "MCP'nin, sunucu ile istemcinin ağ üzerinden HTTP ile ve gerektiğinde akış hâlinde veri alışverişi yapmasını sağlayan taşıma yöntemi."
+        },
+        {
+          "term": "stdio",
+          "def": "Programların standart giriş/çıkış kanalları üzerinden konuşması; MCP'de aynı bilgisayardaki yerel bağlantı için kullanılır."
+        },
+        {
+          "term": "OIDC (OpenID Connect)",
+          "def": "Google, Microsoft gibi harici bir kimlik sağlayıcıyla oturum açmayı sağlayan standart kimlik doğrulama protokolü."
+        },
+        {
+          "term": "BM25",
+          "def": "Bir sorguya en uygun metinleri kelime eşleşmesine göre puanlayıp sıralayan klasik arama algoritması."
+        },
+        {
+          "term": "Trace (otomasyon izi)",
+          "def": "Bir otomasyonun her çalışmasında hangi adımın ne zaman, hangi koşulla çalıştığını gösteren ayrıntılı kayıt."
+        },
+        {
+          "term": "Bağlam penceresi (Context window)",
+          "def": "Bir dil modelinin tek seferde 'aklında tutabildiği' metin miktarı; araç tanımları da bu alanı tüketir."
+        }
+      ]
+    },
+    {
+      "name": "anthropics/claude-quickstarts",
+      "url": "https://github.com/anthropics/claude-quickstarts",
+      "stars": "20.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**claude-quickstarts**, Anthropic'in Claude API ile gerçek, çalışır uygulamalar kurmak isteyenler için hazırladığı **19 başlangıç projesinden** oluşan resmî koleksiyon. \"Doküman okudum ama nereden başlayacağım?\" sorusuna klonla–anahtarını ekle–çalıştır cevabı veriyor.\n\n- **Problem:** Ajan, computer use, tarayıcı otomasyonu, webhook'la tetiklenen botlar... Her birinin mimarisini sıfırdan çözmek günler alıyor.\n- **Çözüm:** Müşteri destek ajanı, finansal veri analisti, computer use demosu, otonom kodlama ajanı ve **10 adet Managed Agents** örneği (Slack botu, Linear ajanı, Sentry otomatik düzeltici, günlük brifing ajanı, MCP sunucusu...).\n- **Kime:** Claude üzerine ürün geliştiren ekiplere ve kurumsal entegrasyon (Slack, Linear, Sentry, GitHub) kuran geliştiricilere.",
+        "tech": "- **Çoklu dil:** Python ve TypeScript örnekleri yan yana; web arayüzlü olanlarda **Next.js**, ajan tarafında **Claude Agent SDK**.\n- **Yeni araç arayüzleri:** `computer_toolset_20260801` ve `browser_toolset_20260801` sürümleri ile her bilgisayar/tarayıcı eylemi **ayrı, isimli bir araç** olarak çağrılıyor. Minimal örnekler **CDP** (tek Chromium sekmesi) ve **VNC** (RFB protokolü, kütüphanesiz) üzerinden bu arayüzü baştan sona gösteriyor; modelsiz test scriptleri de var.\n- **Computer Use Best Practices:** Prompt caching, ekran görüntüsü boyutlandırma/budama, sunucu tarafı **compaction**, toplu araç çağrıları ve yörünge kaydı gibi maliyet ve güvenilirlik tekniklerini öğreten referans ajan.\n- **Managed Agents örnekleri:** Çoğu **durumsuz webhook köprüsü** — veritabanı yok. Örneğin Slack botu, `session.status_idled` webhook'u gelince cevabı thread'e yazıyor. Daily Brief ise tüm dağıtımı (ajan, ortam, iki memory store, vault, cron) `ant apply` ile dosyadan uyguluyor: altyapı-kod gibi ajan-kod.\n- **Güvenlik desenleri:** Sentry Autofix'te sandbox'ın açık internete çıkışı yok, oturum başına **harcama tavanı** var ve PR'ı ajan değil, insan onayı için host açıyor; kimlik bilgileri **vault** içinde tutuluyor.",
+        "why": "- **Platform anı:** Managed Agents ve yeni toolset arayüzleri çıktıkça geliştiriciler \"resmî, doğru yol nedir?\" diye bu repoya akıyor; günde **500+ yıldız**.\n- **Kopyala-uyarla değeri:** Slack, Linear, Sentry, GitHub entegrasyonları kurumsal dünyada en çok istenen senaryolar; çalışan bir iskelet saatler kazandırıyor.\n- **Desen kütüphanesi:** Tek tek projelerden çok, içlerindeki desenler ilgi çekiyor: insan onaylı PR, harcama tavanı, tekrarı önleyen defter (ledger), kaynak bazlı yer imleri... Bunlar üretime giden ajanların ortak ihtiyaçları.\n- **Kurumsal kesişim:** \"Knowledge Wiki\" (doküman yığınını bir kez damıtıp kaynak göstererek cevap veren wiki) ve \"Daily Brief\" (her sabah kanalları/PR'ları okuyup özet atan ajan) desenleri, ERP/IFS destek ekipleri için doğrudan uyarlanabilir.",
+        "evolve": "- **Veritabanı entegrasyonlu örnek:** Örneklerin çoğu kasıtlı olarak veritabanısız. SQL/PLSQL üzerinde güvenli, salt-okunur sorgu yapan bir \"veri analisti ajanı\" quickstart'ı büyük bir boşluğu doldurur.\n- **Değerlendirme (eval) iskeleti:** Her örneğe \"ajanın doğru çalıştığını nasıl ölçerim\" test seti eklenmesi, demodan üretime geçişi hızlandırır.\n- **Maliyet gözlemlenebilirliği:** Token ve harcama metriklerini toplayan ortak bir panel, özellikle zamanlanmış ajanlar için faydalı olur.\n- **Daha fazla kurumsal kaynak:** Jira, Confluence, Microsoft Teams ve klasik ERP sistemleri için webhook köprüsü örnekleri talep gören alanlar.\n- **Dağınıklık:** 19 proje farklı olgunluk düzeyinde; hangi örneğin \"referans\", hangisinin \"deneysel\" olduğunu gösteren bir etiketleme okuyucuya yön verir."
+      },
+      "glossary": [
+        {
+          "term": "Quickstart",
+          "def": "Bir teknolojiyi hızla denemek için hazırlanmış, minimum kurulumla çalışan başlangıç projesi."
+        },
+        {
+          "term": "Computer use",
+          "def": "Yapay zekâ modelinin ekran görüntülerine bakarak fare ve klavyeyi kullanıp bir bilgisayarı insan gibi kontrol etmesi."
+        },
+        {
+          "term": "CDP (Chrome DevTools Protocol)",
+          "def": "Chrome/Chromium tarayıcısını dışarıdan programla yönetmeyi (sayfa açma, tıklama, DOM okuma) sağlayan protokol."
+        },
+        {
+          "term": "VNC / RFB",
+          "def": "Uzaktaki bir bilgisayarın ekranını görüp kontrol etmeyi sağlayan sistem; RFB onun kullandığı alt protokoldür."
+        },
+        {
+          "term": "Managed Agents",
+          "def": "Ajanların altyapısını (sandbox, oturum, bellek, zamanlama) sağlayıcının barındırdığı, geliştiricinin sadece ajanı tanımladığı hizmet modeli."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay olduğunda (ör. Slack'te etiketlenme) bir servisin senin belirlediğin adrese otomatik HTTP isteği göndermesi."
+        },
+        {
+          "term": "Durumsuz (Stateless)",
+          "def": "Önceki istekleri hatırlamayan, her isteği bağımsız işleyen; bu yüzden veritabanı gerektirmeyen servis tasarımı."
+        },
+        {
+          "term": "Prompt caching",
+          "def": "Her istekte tekrarlanan uzun metin kısımlarının sağlayıcı tarafında önbelleğe alınarak maliyetin ve gecikmenin düşürülmesi."
+        },
+        {
+          "term": "Compaction",
+          "def": "Uzayan bir konuşmanın eski kısımlarının özetlenerek bağlam penceresine sığacak şekilde sıkıştırılması."
+        },
+        {
+          "term": "Vault",
+          "def": "API anahtarı, OAuth token gibi gizli bilgilerin güvenli şekilde saklandığı ve ajana doğrudan gösterilmeden kullandırıldığı kasa."
+        },
+        {
+          "term": "AG-UI",
+          "def": "Ajanların arayüze anlık mesaj, araç çağrısı ve etkileşimli bileşen göndermesini standartlaştıran açık protokol."
+        }
+      ]
+    },
+    {
+      "name": "tokio-rs/topcoat",
+      "url": "https://github.com/tokio-rs/topcoat",
+      "stars": "6.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Topcoat**, Rust'ın en yaygın asenkron çalışma zamanı **Tokio**'nun ekibinden gelen, **\"pil dahil\" (batteries-included)** bir full-stack web framework'ü. Amaç: Rails veya Laravel'deki \"tek komutla her şey hazır\" üretkenliğini Rust'ın hız ve tip güvenliğiyle birleştirmek.\n\n- **Problem:** Rust'ta web uygulaması yazmak için routing, şablon, oturum, asset, form, e-posta için ayrı ayrı kütüphane seçip birbirine bağlamak gerekiyor; ön yüz etkileşimi için de genelde ayrı bir JavaScript/WASM projesi kuruluyor.\n- **Çözüm:** Routing, `view!` şablonları, istemci tarafı reaktivite, oturum/çerez, asset paketleyici, yerelleştirme, e-posta, OpenAPI ve hazır Tailwind bileşenleri tek pakette.\n- **Önemli not:** README açıkça **\"erken aşama ve deneysel, kırıcı değişiklikler bekleyin\"** diyor.",
+        "tech": "- **Sunucu tarafı render:** Tüm HTML sunucuda üretiliyor. Bileşenler **async** olduğu için bir bileşen doğrudan veritabanına sorgu atabiliyor — araya ayrı bir API katmanı koymaya gerek yok.\n- **WASM'sız istemci reaktivite:** `$(...)` ifadeleri **tip denetimli Rust** olarak yazılıyor; ilk render'da sunucuda çalışıyor, tarayıcı için otomatik olarak **JavaScript'e çevriliyor**. Böylece ne WASM paketi ne de ayrı bir ön yüz derleme adımı var.\n- **Shard'lar:** `#[shard]` ile işaretlenen bileşenler, argümanları değiştiğinde sunucuda yeniden render edilip sayfaya sadece o parça yerleştiriliyor. Örnek: arama kutusuna yazdıkça sunucu ürün sorgusunu çalıştırıp sadece sonuç listesini güncelliyor — htmx/LiveView felsefesine yakın.\n- **Procedures:** Tarayıcının doğrudan çağırabildiği async sunucu fonksiyonları (RPC benzeri).\n- **Modül ağacından routing:** `app/` klasöründeki dosyalar URL'lere eşleniyor; alt çizgiyle başlayan dosyalar layout oluyor. Bunu bir build adımı olmadan, derleyici makrolarıyla yapıyor.\n- **Asset paketleyici:** Derlenmiş binary içindeki `asset!` çağrılarını bulup içerik hash'li URL'lerle servis ediyor; Node gerektirmeden **Tailwind**, Fontsource fontları ve Iconify ikonları entegre.\n- **Ekosistem uyumu:** htmx, Alpine AJAX ve **Datastar** (SSE tabanlı) ile birlikte çalışabiliyor.",
+        "why": "- **Tokio markası:** Rust'ta neredeyse her ağ uygulamasının altında Tokio var; aynı organizasyondan resmî bir full-stack framework çıkması topluluk için güçlü bir sinyal.\n- **\"Rust'ın Rails'i\" boşluğu:** Axum, Actix gibi framework'ler minimal; Leptos/Dioxus ise WASM ağırlıklı. Topcoat **sunucu-merkezli ama etkileşimli** bir orta yol öneriyor.\n- **JS yorgunluğu:** \"Node yok, ayrı ön yüz projesi yok, tek binary\" vaadi, npm bağımlılık cehenneminden bıkan geliştiricilere çok çekici.\n- **Ajan çağı ile uyum:** Tip denetimli tek bir dil ve tek proje, yapay zekâ kod asistanlarının hata yapma alanını daraltıyor; derleyici ajanın yanlışlarını hemen yakalıyor.\n- **Kitle:** Performans ve güvenilirlik isteyen backend geliştiricileri, iç araç yazan küçük ekipler ve Rust'ı web'de denemek isteyenler.",
+        "evolve": "- **ORM entegrasyonu:** Şu an yerleşik bir ORM yok; yol haritasında \"daha iyi Toasty entegrasyonu\" var. Veri ağırlıklı uygulamalar için migration + model katmanı en kritik eksik.\n- **Kimlik doğrulama, doğrulama, arka plan işleri:** Hepsi yol haritasında; \"pil dahil\" iddiasının tam karşılığı bunlar geldiğinde oluşacak.\n- **Statik dışa aktarım ve pre-render:** Blog/doküman siteleri için büyük kapı açar.\n- **Dağıtım rehberi:** Tek binary avantajını vurgulayan hazır Docker/Fly/Cloudflare şablonları benimsenmeyi hızlandırır.\n- **Kararlılık:** Deneysel statü nedeniyle şimdilik yan projeler ve prototipler için uygun; 1.0 öncesi API dondurma takvimi kurumsal kullanım için belirleyici olacak."
+      },
+      "glossary": [
+        {
+          "term": "Full-stack framework",
+          "def": "Bir web uygulamasının hem sunucu hem de tarayıcı tarafını tek çatı altında geliştirmeyi sağlayan yazılım iskeleti."
+        },
+        {
+          "term": "Batteries-included",
+          "def": "Sık ihtiyaç duyulan özelliklerin (routing, şablon, oturum, e-posta vb.) ek kütüphane aramadan hazır geldiği yaklaşım."
+        },
+        {
+          "term": "Tokio",
+          "def": "Rust'ta aynı anda binlerce ağ bağlantısını verimli yönetmeyi sağlayan, en yaygın asenkron çalışma zamanı."
+        },
+        {
+          "term": "Async (asenkron)",
+          "def": "Bir işlemin (ör. veritabanı sorgusu) bitmesini beklerken programın başka işleri yapmaya devam edebildiği çalışma biçimi."
+        },
+        {
+          "term": "Sunucu tarafı render (SSR)",
+          "def": "Web sayfasının HTML'inin tarayıcıda değil sunucuda üretilip hazır olarak gönderilmesi."
+        },
+        {
+          "term": "WebAssembly (WASM)",
+          "def": "Rust gibi dillerde yazılan kodun tarayıcıda neredeyse yerel hızda çalışmasını sağlayan ikili kod formatı."
+        },
+        {
+          "term": "Reaktivite / Signal",
+          "def": "Bir değer değiştiğinde ona bağlı arayüz parçalarının otomatik güncellenmesi; signal bu değişen değeri tutan yapıdır."
+        },
+        {
+          "term": "Makro (Rust)",
+          "def": "Derleme sırasında kod üreten veya dönüştüren Rust özelliği; `view!` gibi özel söz dizimleri bununla yazılır."
+        },
+        {
+          "term": "ORM",
+          "def": "Veritabanı tablolarını programlama dilindeki nesnelere eşleyip SQL yazmadan veri işlemeyi sağlayan katman."
+        },
+        {
+          "term": "SSE (Server-Sent Events)",
+          "def": "Sunucunun tarayıcıya tek yönlü ve sürekli açık bir bağlantı üzerinden anlık veri göndermesini sağlayan web standardı."
+        },
+        {
+          "term": "htmx",
+          "def": "HTML özellikleriyle sunucudan parça parça HTML çekip sayfayı JavaScript yazmadan güncellemeyi sağlayan küçük kütüphane."
+        }
+      ]
+    }
+  ]
+}
