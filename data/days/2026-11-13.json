@@ -1,0 +1,277 @@
+{
+  "date": "2026-11-13",
+  "projects": [
+    {
+      "name": "QwenLM/qwen-code",
+      "url": "https://github.com/QwenLM/qwen-code",
+      "stars": "30k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Qwen Code**, terminalde yaşayan açık kaynaklı bir **yapay zekâ kodlama ajanı**. Proje klasörüne girip `qwen` yazıyorsun; ajan kodu okuyor, dosya düzenliyor, komut çalıştırıyor ve çok adımlı işleri senin adına yürütüyor.\n\nÇözdüğü problem şu: güçlü kodlama ajanlarının çoğu tek bir model sağlayıcısına bağlı. Qwen Code ise **sağlayıcı bağımsız** olmayı hedefliyor:\n\n- OpenAI, Anthropic, Gemini ve Qwen uyumlu API'lerle çalışıyor; çalışırken sağlayıcı değiştirilebiliyor.\n- **Ollama** veya **vLLM** üzerinden tamamen yerel modellerle de kullanılabiliyor.\n- Terminalin yanı sıra masaüstü uygulaması, deneysel web arayüzü, VS Code / Zed / JetBrains eklentileri ve hatta Telegram, DingTalk, WeChat, Feishu gibi sohbet uygulamalarından erişiliyor.\n\nKısacası: \"Claude Code / Codex benzeri bir deneyim, ama hem çerçevesi hem modeli açık\" vaadi.",
+        "tech": "- **Köken:** Proje, Google'ın **Gemini CLI**'ının v0.8.2 sürümünden çatallanmış (fork). v0.1'den itibaren upstream ile senkronizasyon bırakılmış ve bağımsız geliştirmeye geçilmiş. Bu, sıfırdan başlamak yerine olgun bir terminal arayüzünü miras alıp hızlı ilerleme kararı.\n- **Dil ve araçlar:** TypeScript, Node.js 22+, **pnpm workspaces** ile monorepo, derleme için **esbuild**, test için **Vitest**. `packages/` altında TypeScript, Python ve Java SDK'ları, masaüstü otomasyonu için `cua-driver` ve `node-repl` paketleri var.\n- **Protokoller:** Araç bağlantısı için **MCP**, istemci-ajan iletişimi için **ACP**, kod anlama için **LSP** entegrasyonu. Standart protokollere yaslanmak, ekosistemdeki hazır sunucu ve editörlerle anında uyum demek.\n- **Daemon modu:** `qwen serve`, uzun süre çalışan bir servis açıp **HTTP + SSE** API sunuyor. Birden fazla istemci aynı ajan oturumunu paylaşabiliyor, kopan bağlantılar oturuma geri dönebiliyor.\n- **Ajan özellikleri:** Auto-Memory, Auto-Skills, alt ajanlar (SubAgents) ve Agent Teams kurulum gerektirmeden açık geliyor.\n- **Otomasyon:** `qwen -p` ile **headless** çalıştırma; betiklerde ve CI/CD hatlarında kullanılabiliyor.\n\n**Dikkat edilmesi gereken nokta:** Daemon varsayılan olarak yerel adreste ve **kimlik doğrulama olmadan** dinliyor; makinedeki herhangi bir süreç API'ye, dolayısıyla kod çalıştırmaya erişebilir. Paylaşılan sunucularda `QWEN_SERVER_TOKEN` ve `--require-auth` şart.",
+        "why": "Bugün günde ~150 yıldız alıyor ve 30 bine dayanmış durumda. İvmenin sebepleri:\n\n- **1.0 Preview duyurusu:** Qoder ve Qwen Code'un ajan yeteneklerini birleştiren 1.0 önizlemesi ve resmi masaüstü uygulamaları yeni bir ilgi dalgası yarattı.\n- **Ölçülebilir başarı:** README'ye göre **SWE-bench Verified**'da Qwen 3.7 Max ile yedi sürümün ortalaması %76,4–77,8 arasında. Açık bir araç için rekabetçi bir sonuç.\n- **Kilitlenme korkusu:** Ekipler tek bir ticari ajana bağımlı kalmak istemiyor. Sağlayıcıyı çalışırken değiştirebilmek ve yerel modelle çalışabilmek, maliyet ve veri gizliliği açısından cazip.\n- **Asya pazarı:** WeChat, DingTalk, Feishu entegrasyonları Çin'deki kurumsal kullanıcılar için doğrudan bir giriş kapısı.\n\nHedef kitle: açık kaynak tercih eden geliştiriciler, kurum içi model barındıran şirketler ve ajanı CI hattına gömmek isteyen DevOps ekipleri.",
+        "evolve": "- **Güvenli varsayılanlar:** Daemon'ın kimlik doğrulamasız açılması ciddi bir risk. Varsayılanı \"token zorunlu\" yapmak, kurumsal benimsemenin önündeki ilk engeli kaldırır.\n- **Model başına ayar profilleri:** Çok sağlayıcı desteği güzel ama her modelin araç çağırma becerisi farklı. Modele göre otomatik ayarlanan istem ve araç profilleri, yerel modellerdeki kalite düşüşünü azaltır.\n- **Kurumsal veri kaynakları:** MCP üzerinden ERP ve veritabanı bağlantıları (ör. Oracle / PL/SQL kod tabanları için şema okuyan sunucular) eklenirse, ajan yalnızca uygulama kodunda değil iş mantığı katmanında da işe yarar.\n- **Upstream ayrışmasının bedeli:** Gemini CLI ile senkronizasyon bırakıldığı için oradaki iyileştirmeler artık otomatik gelmiyor. Ayrışan iki kod tabanı uzun vadede bakım yükü demek.\n- **Ekip özellikleri:** Paylaşılan daemon oturumları, eşli programlama ve kod incelemede \"ortak ajan\" senaryosuna doğal bir zemin hazırlıyor."
+      },
+      "glossary": [
+        {
+          "term": "Kodlama ajanı",
+          "def": "Kodu okuyup düzenleyen, komut çalıştıran ve çok adımlı yazılım işlerini kendi başına yürüten yapay zekâ aracı."
+        },
+        {
+          "term": "Fork (çatallama)",
+          "def": "Bir projenin kopyasını alıp ondan bağımsız olarak geliştirmeye devam etmek."
+        },
+        {
+          "term": "Upstream",
+          "def": "Bir fork'un kopyalandığı asıl proje. Upstream ile senkronize olmak, oradaki değişiklikleri almaya devam etmek demek."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin harici araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "ACP (Agent Client Protocol)",
+          "def": "Editör veya arayüz gibi istemcilerin bir kodlama ajanıyla standart biçimde konuşmasını sağlayan protokol."
+        },
+        {
+          "term": "LSP (Language Server Protocol)",
+          "def": "Editörlerin otomatik tamamlama, tanıma git gibi dil özelliklerini bir dil sunucusundan almasını sağlayan standart."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paketin veya projenin tek bir depoda birlikte tutulduğu düzen."
+        },
+        {
+          "term": "Daemon",
+          "def": "Arka planda sürekli çalışan ve istek bekleyen servis programı."
+        },
+        {
+          "term": "SSE (Server-Sent Events)",
+          "def": "Sunucunun tarayıcıya veya istemciye tek yönlü, sürekli veri akışı göndermesini sağlayan web tekniği."
+        },
+        {
+          "term": "Headless mod",
+          "def": "Bir programın arayüz olmadan, komut satırından veya betikten çalıştırılması."
+        },
+        {
+          "term": "CI/CD",
+          "def": "Kodun her değişiklikte otomatik test edilip derlendiği ve yayına alındığı süreç."
+        },
+        {
+          "term": "SWE-bench Verified",
+          "def": "Gerçek GitHub hatalarını çözme becerisini ölçen, insanlar tarafından doğrulanmış 500 görevlik kodlama ajanı testi."
+        },
+        {
+          "term": "Ollama / vLLM",
+          "def": "Dil modellerini kendi makinende veya sunucunda çalıştırmayı sağlayan yazılımlar. Ollama kolay kullanım, vLLM yüksek verim odaklıdır."
+        }
+      ]
+    },
+    {
+      "name": "ggml-org/llama.cpp",
+      "url": "https://github.com/ggml-org/llama.cpp",
+      "stars": "134.7k",
+      "language": "C++",
+      "sections": {
+        "serves": "**llama.cpp**, büyük dil modellerini (LLM) ve görsel-dil modellerini (VLM) **kendi donanımında, minimum kurulumla** çalıştırmanı sağlayan C/C++ çıkarım motoru. Bulut API'sine para ödemeden ve verini dışarı göndermeden; dizüstü bilgisayarda, ev sunucusunda, hatta telefonda model çalıştırmanın fiilî standardı.\n\nNe işe yarar?\n\n- Hugging Face'teki bir modeli **GGUF** formatına çevirip tek bir dosya olarak çalıştırırsın.\n- **Kuantizasyon** ile model boyutunu küçültür, 70 milyar parametreli bir modeli bile sıradan donanıma sığdırabilirsin.\n- `llama serve` komutuyla **OpenAI uyumlu bir API** ve yerleşik web arayüzü açarsın; OpenAI için yazılmış her uygulama artık senin yerel modelinle konuşur.\n\nBugün Ollama, LM Studio gibi popüler araçların birçoğu arka planda llama.cpp'yi veya onun **ggml** kütüphanesini kullanıyor.",
+        "tech": "- **Saf C/C++, sıfır bağımlılık:** Python, PyTorch ya da CUDA zorunlu değil. Tek bir ikili dosya derleyip çalıştırırsın. Bu karar taşınabilirliği ve kurulum kolaylığını sağlıyor.\n- **ggml tensör kütüphanesi:** Projenin kalbi. Matris işlemlerini her donanım için ayrı ayrı optimize eden hafif bir kütüphane.\n- **Geniş arka uç (backend) desteği:** Apple Silicon için Metal ve ARM NEON; x86 için AVX/AVX2/AVX512/AMX; NVIDIA için özel CUDA çekirdekleri; AMD için HIP; ayrıca Vulkan, SYCL (Intel), OpenCL (Adreno), CANN (Huawei Ascend), Hexagon (Snapdragon), WebGPU ve RISC-V vektör uzantıları. Yani hemen her çipte çalışıyor.\n- **Kuantizasyon:** 1,5 bitten 8 bite kadar tamsayı kuantizasyonu. Ağırlıklar daha az bitle saklanınca bellek kullanımı düşüyor ve hız artıyor; kalite kaybı genelde kabul edilebilir düzeyde.\n- **Hibrit CPU+GPU çıkarımı:** Model ekran kartı belleğine sığmıyorsa katmanların bir kısmı GPU'da, kalanı CPU'da çalışıyor.\n- **GGUF formatı:** Model ağırlıklarını, tokenizer'ı ve meta veriyi tek dosyada toplayan format. `convert_hf_to_gguf.py` ile Hugging Face modelleri dönüştürülüyor.\n- **Lisans:** MIT; ticari kullanımda neredeyse hiçbir kısıt yok.",
+        "why": "134 bini aşmış dev bir proje ama bugün hâlâ günde ~175 yıldız alıyor. Sebepleri:\n\n- **Yeni model dalgası:** Qwen 3.5 / 3.6 gibi yeni açık modeller çıktıkça insanlar onları yerelde denemek için ilk iş llama.cpp'ye geliyor. README'deki örnekler bile güncel Qwen modelleriyle.\n- **Yerel ajan trendi:** Kodlama ajanlarını (ör. bugünkü listedeki Qwen Code) yerel modelle çalıştırmak isteyenler OpenAI uyumlu `llama serve` uç noktasına ihtiyaç duyuyor.\n- **Maliyet ve gizlilik:** Token fiyatları ve veri gizliliği kaygıları, şirketleri \"hassas veriyi kendi sunucumuzda işleyelim\" noktasına itiyor.\n- **Donanım çeşitliliği:** Yeni NPU'lar ve ARM dizüstüleri çıktıkça \"bu çipte model nasıl çalışır?\" sorusunun cevabı genelde yine llama.cpp.\n\nHedef kitle: yerel yapay zekâ meraklıları, gizlilik hassasiyeti olan kurumlar, uç cihaz (edge) geliştiricileri ve kendi LLM ürününü inşa eden mühendisler.",
+        "evolve": "- **Çok kullanıcılı sunucu performansı:** vLLM ve SGLang gibi motorlar yüksek eşzamanlı yükte hâlâ önde. Sürekli toplu işleme (continuous batching) ve bellek yönetiminde iyileştirmeler llama.cpp'yi üretim sunucularında da rakipsiz yapabilir.\n- **Kurumsal paketleme:** İzleme (metrics), kimlik doğrulama ve çoklu model yönetimi gibi özellikler yerleşik gelse, ek katman gerekmeden şirket içi kurulum kolaylaşır.\n- **Belgeleme:** README, GGUF ve kuantizasyon türlerini neredeyse hiç açıklamıyor. Yeni başlayanlar için \"hangi kuantizasyonu seçmeliyim?\" rehberi büyük boşluk.\n- **Kurumsal kullanım senaryosu:** ERP verisi gibi dışarı çıkarılamayan verilerle çalışan ekipler için yerel model + RAG kurulumunun temel taşı olabilir; buna yönelik hazır şablonlar değer katar.\n- **Tarayıcıda çıkarım:** WebGPU arka ucu olgunlaşırsa, sunucusuz ve kurulum gerektirmeyen tarayıcı içi model uygulamaları mümkün olur."
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Çok büyük metin verisiyle eğitilmiş, metin anlayan ve üreten yapay zekâ modeli."
+        },
+        {
+          "term": "VLM (Görsel-Dil Modeli)",
+          "def": "Hem görüntüyü hem metni anlayabilen yapay zekâ modeli."
+        },
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir modelin yeni girdiye cevap üretmesi, yani modelin kullanılma aşaması."
+        },
+        {
+          "term": "GGUF",
+          "def": "llama.cpp'nin kullandığı, model ağırlıklarını ve gerekli bilgileri tek dosyada tutan model formatı."
+        },
+        {
+          "term": "Kuantizasyon",
+          "def": "Model ağırlıklarını daha az bitle saklayarak boyutu ve bellek ihtiyacını düşürme tekniği. Hız artar, kalite biraz düşebilir."
+        },
+        {
+          "term": "ggml",
+          "def": "llama.cpp'nin üzerine kurulduğu, farklı donanımlarda hızlı matris hesaplaması yapan hafif C kütüphanesi."
+        },
+        {
+          "term": "Backend (arka uç)",
+          "def": "Hesaplamanın hangi donanım ve yazılım katmanında yapılacağını belirleyen bileşen; ör. CUDA, Metal, Vulkan."
+        },
+        {
+          "term": "CUDA",
+          "def": "NVIDIA ekran kartlarında genel amaçlı hesaplama yapmayı sağlayan programlama platformu."
+        },
+        {
+          "term": "Metal",
+          "def": "Apple'ın kendi çiplerinde GPU'yu kullanmak için sunduğu grafik ve hesaplama arayüzü."
+        },
+        {
+          "term": "VRAM",
+          "def": "Ekran kartının kendi belleği. Model buraya sığarsa çok daha hızlı çalışır."
+        },
+        {
+          "term": "OpenAI uyumlu API",
+          "def": "OpenAI'nin istek/cevap biçimini taklit eden arayüz. OpenAI için yazılmış uygulamalar kod değişmeden bu sunucuya bağlanabilir."
+        },
+        {
+          "term": "NPU",
+          "def": "Yapay zekâ hesaplamaları için özel tasarlanmış işlemci birimi; telefon ve yeni dizüstülerde bulunur."
+        },
+        {
+          "term": "RAG",
+          "def": "Modelin cevap vermeden önce ilgili belgeleri bir veri kaynağından çekip bağlama eklemesi tekniği."
+        },
+        {
+          "term": "Continuous batching",
+          "def": "Sunucunun farklı kullanıcıların isteklerini dinamik olarak aynı hesaplama turunda birleştirip verimi artırması."
+        }
+      ]
+    },
+    {
+      "name": "NVIDIA/SkillEvaluator",
+      "url": "https://github.com/NVIDIA/SkillEvaluator",
+      "stars": "926",
+      "language": "Python",
+      "sections": {
+        "serves": "**SkillEvaluator**, yapay zekâ ajanları için yazılmış **becerileri (skills)** test eden NVIDIA'nın açık kaynak aracı. Beceri; ajana belirli bir işi nasıl yapacağını anlatan talimat ve yardımcı dosyalardan oluşan bir klasör (Agent Skills spesifikasyonu).\n\nBugün herkes beceri yazıyor ve paylaşıyor; ama iki soru cevapsız kalıyor:\n\n- **Bu beceri güvenli mi?** İçinde gizli bir talimat, sızmış bir API anahtarı ya da zararlı komut var mı?\n- **Gerçekten işe yarıyor mu?** Ajan bu beceriyle, becerisiz haline göre daha mı başarılı?\n\nSkillEvaluator bu iki soruyu **üç kademeli bir değerlendirme hattıyla** ölçüyor ve sonucu CI'da geçti/kaldı kararına bağlıyor. Yani beceriler için \"birim testi + güvenlik taraması + A/B testi\" paketi.",
+        "tech": "**Üç kademe (tier), her biri bağımsız çalışabiliyor:**\n\n- **Tier 1 – Doğrulama:** Beceri güvenli ve düzgün biçimlendirilmiş mi? NVIDIA'nın **SkillSpector** tarayıcısı (prompt injection, tedarik zinciri riski), **Gitleaks** (sızmış sırlar) ve isteğe bağlı **Semgrep** (statik kod analizi) kullanılıyor.\n- **Tier 2 – Tekrar tespiti:** Beceri başka becerilerle çakışıyor mu? **Embedding** modelleriyle anlamsal benzerlik ölçülüyor; `--catalog` ile tüm katalogla karşılaştırma yapılabiliyor.\n- **Tier 3 – Canlı değerlendirme:** Ajan beceriyle ve becerisiz olarak gerçek görevlerde çalıştırılıyor. Çalıştırmalar **Docker** sanal alanında, **Harbor** değerlendirme çatısıyla yapılıyor; gerekirse sentetik test verisi de üretiliyor.\n\n**Kalite kapıları:** 100 üzerinden statik kalite puanı (varsayılan eşik 70), rubrik tabanlı model puanlaması ve bir tarayıcı çalışamazsa `INCOMPLETE` sonucu ile sıfırdan farklı çıkış kodu. \"Kontrol edemedim\" durumunun \"geçti\" sayılmaması bilinçli bir güvenlik tercihi.\n\n**Teknoloji:** Python 3.12–3.14, bağımlılık yönetimi için **uv**, GitHub ve GitLab için hazır CI şablonları (`skillevaluator ci init`). Anahtarsız hızlı başlangıç (`quality-check`) API anahtarı, GPU ya da Docker istemiyor; bu da ilk deneme eşiğini çok düşürüyor. Lisans Apache-2.0, arkasında bir arXiv makalesi var.",
+        "why": "Henüz 926 yıldızda ama bugün **108 yıldız** almış; yani yeni ve hızla yükselen bir proje. Sebepleri:\n\n- **Beceri patlaması:** Claude Code, Codex ve benzeri ajanlar için beceri pazarları ve \"awesome-skills\" listeleri hızla büyüyor. Kalite ve güvenlik denetimi ise neredeyse yok.\n- **Güvenlik kaygısı:** Başkasının yazdığı bir beceriyi yüklemek, ajanına yabancı talimat vermek demek. Prompt injection ve tedarik zinciri saldırıları artık somut bir tehdit.\n- **NVIDIA etkisi:** Kardeş proje **SkillSpector** kısa sürede büyük ilgi gördü; SkillEvaluator onun üzerine kurulan değerlendirme katmanı ve \"NVIDIA Verified Skills\" hattının parçası.\n- **Ölçülebilirlik ihtiyacı:** Ekipler \"bu beceri gerçekten fark yaratıyor mu?\" sorusuna sezgi yerine veriyle cevap vermek istiyor.\n\nHedef kitle: kurum içi beceri kütüphanesi tutan platform ekipleri, beceri yayınlayan açık kaynak geliştiricileri ve ajan güvenliğiyle uğraşan güvenlik ekipleri.",
+        "evolve": "- **Olgunluk:** Proje kendini \"Experimental\" ve SLA'sız olarak tanımlıyor; kurumsal kullanımda kararlı bir API ve sürüm politikası gerekecek.\n- **Ajan çeşitliliği:** Tier 3 şimdilik belirli ajanları destekliyor. Daha fazla ajan ve model için adaptörler, aracı tarafsız bir standart haline getirir.\n- **Maliyet kontrolü:** Canlı değerlendirme çok sayıda model çağrısı demek. Bütçe sınırları ve önbellekleme olmadan büyük kataloglarda pahalıya patlayabilir.\n- **Negatif testler:** README, şablonların negatif test vakalarını kendiliğinden üretmediğini belirtiyor. \"Beceri yanlış durumda tetiklenmemeli\" testlerinin otomatik üretimi büyük kalite kazancı olur.\n- **Alan odaklı rubrikler:** ERP, veritabanı veya PL/SQL gibi alanlara özel becerileri değerlendirmek için sektör rubrikleri eklenebilir; kurum içi beceriler için ciddi bir denetim aracı olur."
+      },
+      "glossary": [
+        {
+          "term": "Agent Skill (ajan becerisi)",
+          "def": "Yapay zekâ ajanına belirli bir işi nasıl yapacağını anlatan, talimat ve yardımcı dosyalardan oluşan paket."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Modele verilen içeriğe gizlenmiş talimatlarla modelin asıl görevinden saptırılması saldırısı."
+        },
+        {
+          "term": "Tedarik zinciri saldırısı",
+          "def": "Doğrudan hedefe değil, hedefin kullandığı üçüncü taraf paket veya bileşene zararlı kod yerleştirme yöntemi."
+        },
+        {
+          "term": "Gitleaks",
+          "def": "Kod ve dosyalarda yanlışlıkla bırakılmış şifre, API anahtarı gibi sırları arayan açık kaynak tarayıcı."
+        },
+        {
+          "term": "Semgrep",
+          "def": "Kodu çalıştırmadan, kalıplara bakarak hata ve güvenlik açığı arayan statik analiz aracı."
+        },
+        {
+          "term": "Embedding",
+          "def": "Metnin anlamını sayısal bir vektöre çeviren temsil. Benzer anlamlı metinlerin vektörleri birbirine yakın olur."
+        },
+        {
+          "term": "Sandbox (sanal alan)",
+          "def": "Kodun ana sistemden yalıtılmış, zarar veremeyeceği bir ortamda çalıştırılması."
+        },
+        {
+          "term": "Docker",
+          "def": "Uygulamaları tüm bağımlılıklarıyla birlikte yalıtılmış konteynerlerde çalıştıran platform."
+        },
+        {
+          "term": "Kalite kapısı (quality gate)",
+          "def": "Bir değişikliğin ilerleyebilmesi için geçmesi gereken otomatik kontrol eşiği."
+        },
+        {
+          "term": "Rubrik",
+          "def": "Bir çıktının hangi ölçütlere göre ve nasıl puanlanacağını tanımlayan değerlendirme şeması."
+        },
+        {
+          "term": "Sentetik veri",
+          "def": "Gerçek kullanıcılardan toplanmak yerine yapay olarak üretilmiş test veya eğitim verisi."
+        },
+        {
+          "term": "uv",
+          "def": "Rust ile yazılmış, çok hızlı bir Python paket ve proje yöneticisi."
+        },
+        {
+          "term": "SLA",
+          "def": "Hizmet seviyesi anlaşması; destek ve erişilebilirlik konusunda verilen resmi taahhüt."
+        }
+      ]
+    },
+    {
+      "name": "appwrite/appwrite",
+      "url": "https://github.com/appwrite/appwrite",
+      "stars": "58.1k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Appwrite**, bir uygulamanın ihtiyaç duyduğu arka uç (backend) hizmetlerini tek pakette sunan açık kaynak platform. Her projede yeniden yazılan \"giriş sistemi, veritabanı, dosya yükleme, bildirim\" gibi parçaları hazır olarak veriyor; sen ön yüze ve iş mantığına odaklanıyorsun.\n\nSunduğu servisler:\n\n- **Auth:** e-posta, SMS, OAuth, anonim oturum ve sihirli bağlantıyla giriş.\n- **Databases:** Appwrite'ın kendi veritabanı veya yönetilen **PostgreSQL / MySQL**.\n- **Storage:** sıkıştırma, şifreleme, görsel dönüştürme ve erişim kontrollü dosya depolama.\n- **Functions:** olaylarla tetiklenen sunucusuz (serverless) fonksiyonlar.\n- **Messaging, Sites, Realtime, Firewall:** e-posta/SMS/push bildirim, ön yüz barındırma, anlık olay abonelikleri ve trafik kuralları.\n\nYönetilen bulut olarak da, Docker ile **kendi sunucunda** da çalıştırılabiliyor. Firebase ve Supabase'in açık kaynak, kendi barındırılabilir alternatifi; son dönemde kendini açıkça **\"AI ajanlarına odaklı backend\"** olarak konumluyor.",
+        "tech": "- **Mimari:** Hibrit **monolit-mikroservis** tasarımı. API katmanı bellek içi önbellekle hızlı cevap veriyor, ağır işler mesaj kuyruğu üzerinden arka plan işçilerine (worker) devrediliyor. Tek parça kurulum kolaylığıyla ölçeklenebilirlik arasında bir orta yol.\n- **API'ler:** REST, WebSocket tabanlı Realtime, GraphQL ve **S3 uyumlu** depolama arayüzü; hepsi ortak bir güvenlik katmanından geçiyor.\n- **Bileşenler:** Fonksiyonları çalıştıran **Executor** (Open Runtimes üzerine), Queue, Cache, SMTP ve **Embeddings** servisi. Embeddings'in çekirdeğe girmesi, yapay zekâ özelliklerinin artık \"eklenti\" değil temel parça sayıldığını gösteriyor.\n- **Diller:** Depoda PHP (Composer, PHPUnit, PHPStan), Rust, TypeScript/JavaScript (Bun) ve Docker yapılandırmaları birlikte görülüyor; ClickHouse ve MongoDB konfigürasyonları da var.\n- **SDK'lar:** Web, Flutter, Apple, Android, React Native, Unity istemci SDK'ları; Node.js, Python, Go, Rust, .NET, Kotlin gibi sunucu SDK'ları. Hepsi bir **SDK Generator** ile otomatik üretiliyor, böylece onlarca dilde tutarlılık sağlanıyor.\n- **Ajan entegrasyonu:** OAuth ile çalışan, API anahtarı gerektirmeyen **barındırılan MCP sunucusu** (Cursor, Claude Code, Codex, VS Code ile uyumlu), self-hosted kurulumlar için yerel MCP sunucusu ve `npx skills add appwrite/agent-skills` ile kurulan ajan becerileri.\n- **Lisans:** BSD 3-Clause.",
+        "why": "58 bini aşmış olgun bir proje; bugün ~80 yıldızla trend listesine yeniden girdi. Sebepleri:\n\n- **\"Ajanlar için backend\" konumlanması:** Vibe coding ile uygulama üreten ajanların en çok zorlandığı yer arka uç kurulumu. Appwrite, MCP sunucusu ve ajan becerileriyle ajanın doğrudan veritabanı oluşturup kullanıcı yönetimi kurmasını sağlıyor.\n- **PostgreSQL / MySQL desteği:** Kendi veritabanı yanında yönetilen ilişkisel veritabanı seçeneği, \"kilitlenirim\" kaygısını azaltıyor.\n- **Self-hosting talebi:** Veri egemenliği ve bulut maliyetleri nedeniyle Firebase yerine kendi sunucusunda çalışan alternatif arayanlar artıyor.\n- **Rekabet ortamı:** Aynı günün trend listesinde Supabase de var; açık kaynak BaaS alanında ajan entegrasyonu üzerinden yeni bir yarış başlamış durumda.\n\nHedef kitle: hızlı MVP çıkaran girişimler, mobil ve web geliştiricileri, verisini kendi sunucusunda tutmak isteyen kurumlar ve ajanla uygulama üreten \"vibe coder\"lar.",
+        "evolve": "- **Ajan güvenliği:** Ajana veritabanı ve kullanıcı yönetimi yetkisi vermek riskli. Ajan işlemleri için ayrıntılı yetki kapsamları, onay adımları ve denetim kayıtları kritik hale gelecek.\n- **Göç araçları:** Firebase veya Supabase'ten Appwrite'a tek komutla veri ve kullanıcı taşıma, benimsemeyi ciddi şekilde hızlandırır.\n- **Kurumsal veritabanları:** Oracle veya SQL Server bağlantısı eklenirse, mevcut ERP verisi üzerine hızlı mobil/portal uygulamaları kurmak için güçlü bir katman olabilir.\n- **Vektör arama:** Çekirdekteki Embeddings servisinin doğal bir sonraki adımı, veritabanında yerleşik vektör arama ve RAG uç noktaları.\n- **Karmaşıklık:** PHP, Rust, TypeScript ve birçok veri deposunu birlikte barındıran mimari, self-hosted kurulumlarda bakım yükünü artırabilir; daha hafif bir \"tek düğüm\" profili küçük ekipler için değerli olur."
+      },
+      "glossary": [
+        {
+          "term": "Backend (arka uç)",
+          "def": "Uygulamanın kullanıcıya görünmeyen; veri saklama, giriş, iş mantığı gibi işleri yapan sunucu tarafı."
+        },
+        {
+          "term": "BaaS (Backend as a Service)",
+          "def": "Giriş, veritabanı, depolama gibi arka uç hizmetlerini hazır servis olarak sunan platform türü."
+        },
+        {
+          "term": "OAuth",
+          "def": "Kullanıcının şifresini paylaşmadan Google, GitHub gibi bir hesapla başka bir uygulamaya giriş yapmasını sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "Serverless (sunucusuz) fonksiyon",
+          "def": "Sunucu yönetmeden yazılan ve yalnızca bir olay olduğunda çalışan küçük kod parçası."
+        },
+        {
+          "term": "Monolit",
+          "def": "Tüm bileşenlerin tek bir uygulama olarak birlikte paketlenip çalıştırıldığı mimari."
+        },
+        {
+          "term": "Mikroservis",
+          "def": "Uygulamanın, her biri ayrı çalışan ve birbirleriyle ağ üzerinden konuşan küçük servislere bölündüğü mimari."
+        },
+        {
+          "term": "Mesaj kuyruğu",
+          "def": "İşlerin sıraya konup arka plandaki işçiler tarafından sırayla alınıp işlendiği yapı."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Tarayıcı ile sunucu arasında sürekli açık kalan, iki yönlü anlık iletişim bağlantısı."
+        },
+        {
+          "term": "GraphQL",
+          "def": "İstemcinin tam olarak hangi alanları istediğini belirttiği esnek bir API sorgu dili."
+        },
+        {
+          "term": "S3 uyumlu",
+          "def": "Amazon S3'ün dosya depolama arayüzünü taklit eden; S3 için yazılmış araçlarla kullanılabilen depolama."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir servisi belirli bir programlama dilinden kolayca kullanmayı sağlayan hazır kütüphane paketi."
+        },
+        {
+          "term": "Self-hosting",
+          "def": "Bir yazılımı bulut hizmeti olarak kullanmak yerine kendi sunucunda kurup çalıştırmak."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine, ne istediğini doğal dille anlatıp yapay zekâya ürettirme yaklaşımı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin harici araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan protokol."
+        }
+      ]
+    }
+  ]
+}
