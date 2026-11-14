@@ -1,0 +1,321 @@
+{
+  "date": "2026-11-14",
+  "projects": [
+    {
+      "name": "backnotprop/plannotator",
+      "url": "https://github.com/backnotprop/plannotator",
+      "stars": "10.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Plannotator**, yapay zekâ kodlama ajanlarıyla çalışırken **\"döngüde kalmanı\"** sağlayan yerel, tarayıcı tabanlı bir inceleme yüzeyi. Ajan bir plan önerdiğinde, işini bitirdiğinde ya da bir doküman ürettiğinde tarayıcında bir inceleme ekranı açılıyor; sen metnin üzerine not düşüyor, satır satır yorum yapıyor ve **yapılandırılmış geri bildirimi** tek tıkla ajana geri gönderiyorsun.\n\nÇözdüğü problem çok tanıdık: ajanın uzun planını terminalde okuyup \"3. adımı şöyle yap, 5. adımı atla\" diye düz metinle anlatmak hem yorucu hem hataya açık. Plannotator bunu bir **doküman inceleme deneyimine** çeviriyor:\n\n- **Plan inceleme:** Ajan plan modundan çıkmak istediğinde planı onaylıyor ya da notlarla reddediyorsun; ajan revize ettiğinde neyin değiştiğini **plan diff'i** olarak görüyorsun.\n- **Kod inceleme:** Yerel değişiklikleri veya uzak PR/MR'ları dosya ağacı ve yan yana diff ile inceleyip satırlara not düşüyorsun.\n- **Annotate:** Markdown, HTML, URL ya da ajanın son cevabını işaretleyip geri bildirim yolluyorsun.\n- **Inbox:** Birden fazla ajanın soru, dosya ve inceleme isteklerini tek bir yerel pencerede topluyor; cevabın soran oturuma geri gidiyor.\n\nClaude Code, Codex, Copilot CLI, Gemini CLI, OpenCode, Kiro, Amp, Pi gibi neredeyse tüm popüler ajanlarla çalışıyor.",
+        "tech": "**Yığın:** TypeScript + **Bun**. Arayüz **tek dosyalık HTML** olarak derleniyor, ana ikili dosya `bun build --compile` ile tek bir çalıştırılabilir hâline getiriliyor. Yani kullanıcıya Node kurulumu dayatmadan, `curl ... | bash` ile kurulan bağımsız bir araç.\n\n**Mimari — hook tabanlı entegrasyon:** Plannotator ajanların içine girmiyor, onların **genişleme noktalarına** takılıyor:\n\n- **Claude Code:** Ajan `ExitPlanMode` çağırdığında bir `PermissionRequest` **hook**'u tetikleniyor. Hook, planı yerel sunucuya veriyor; sunucu tarayıcıda arayüzü açıyor; senin onay/ret kararın ve notların hook çıktısı olarak ajana dönüyor.\n- **Codex:** Deneysel `Stop` hook'u üzerinden; **OpenCode** npm eklentisiyle; **Pi** kendi extension sistemiyle; **Gemini CLI** hook + policy ile.\n- **Diğer ajanlar:** `plannotator inbox mcp` ile **MCP** üzerinden bağlanıyor — yani standart bir protokol \"yedek kapı\" olarak duruyor.\n\n**Akıllı küçük kararlar:**\n\n- Her hook çağrısı **rastgele bir portta** çalıştığı için ayarlar localStorage yerine **cookie**'de tutuluyor (localStorage porta/origin'e bağlı olduğundan her seferinde sıfırlanırdı).\n- SSH/devcontainer algılandığında sabit `19432` portuna geçiyor; uzak geliştirme senaryosu düşünülmüş.\n- Kod inceleme yalnızca Git değil; **GitButler, Jujutsu (jj), Perforce**, GitHub ve GitLab destekleniyor.\n\n**Gizlilik ve tedarik zinciri güvenliği:** Telemetri yok, plan/diff/notlar yerelde kalıyor. Büyük paylaşımlar **AES-256-GCM** ile istemcide şifrelenip anahtar URL fragment'ında tutuluyor (sunucu içeriği göremiyor). Her sürüm **SHA256** özeti, **SLSA provenance** ve **CycloneDX SBOM** ile yayımlanıyor; `--verify-attestation` ile kurulumda doğrulanabiliyor. Dual lisans: **MIT veya Apache 2.0**.",
+        "why": "**Zamanlama:** 2026'da ajanlar artık tek seferlik kod tamamlama değil, saatlerce süren çok adımlı işler yapıyor. Bu da darboğazı \"ajan kodu yazabilir mi?\" sorusundan **\"insan ajanın işini ne kadar hızlı ve doğru denetleyebilir?\"** sorusuna kaydırdı. Plannotator tam bu darboğaza oturuyor: **insan-döngüde (human-in-the-loop)** incelemeyi ucuzlatıyor.\n\n**Neden şimdi patladı:**\n\n- **Inbox** özelliği yeni geldi: aynı anda birkaç ajan çalıştıranlar için \"tüm ajanların bana sorduğu şeyler tek ekranda\" fikri çok çekici.\n- Neredeyse **her ajanı** desteklemesi, belli bir araca kilitlenmek istemeyenlerin ortak tercihi yapıyor.\n- Claude Code'un yeni sürümlerinde inceleme sırasında turun kapanıp kararın sonradan mesaj olarak gelmesi gibi daha derin entegrasyonlar, aracı \"eklenti\" olmaktan çıkarıp iş akışının parçası yapıyor.\n- Obsidian, Bear ve Notion'a plan aktarımı, onaylanmış planları **kalıcı bilgi tabanına** çeviriyor.\n\n**Kime hitap ediyor:** Plan modunu yoğun kullanan geliştiriciler, ajan çıktısını PR gibi incelemek isteyen ekip liderleri ve birden fazla ajanla paralel çalışan \"ajan orkestra şefi\" profili. 8.700'ü aşan commit sayısı da projenin ne kadar aktif geliştirildiğini gösteriyor.",
+        "evolve": "- **Ekip modu:** Açık kaynak link paylaşımı \"deprecated\" yoluna giriyor, ekip paylaşımı ayrı barındırılan **Workspaces** ürününe taşınıyor. Kendi sunucusunda çalışan, rol tabanlı bir ekip inceleme modu açık kaynak tarafta büyük boşluk olarak kalıyor.\n- **İnceleme politikaları:** \"Veritabanı migration'ı içeren her plan mutlaka insan onayından geçsin\" gibi **kural tabanlı otomatik yönlendirme** eklenebilir. Kurumsal ortamda (örneğin ERP'de PL/SQL paketlerine dokunan değişiklikler) bu çok değerli olurdu.\n- **Ölçümleme:** Hangi tür planların sık reddedildiğini, hangi geri bildirimlerin tekrarlandığını gösteren yerel istatistikler, ajan talimatlarını (AGENTS.md, CLAUDE.md) iyileştirmek için doğrudan girdi olabilir.\n- **Uzak mod güvenliği:** Uzak modda sunucu `0.0.0.0` üzerinde **kimlik doğrulamasız** dinliyor; basit bir token ya da tek kullanımlık link eklemek riski ciddi azaltır.\n- **Sürüm kontrolü opt-out'u:** Her açılışta GitHub'a yapılan sürüm kontrolünün kapatılamaması, kapalı ağlarda çalışan kurumlar için küçük ama gerçek bir engel."
+      },
+      "glossary": [
+        {
+          "term": "Kodlama ajanı",
+          "def": "Kodu okuyup düzenleyen, komut çalıştıran ve çok adımlı yazılım işlerini kendi başına yürüten yapay zekâ aracı."
+        },
+        {
+          "term": "Plan modu",
+          "def": "Ajanın kod yazmaya başlamadan önce ne yapacağını adım adım bir plan olarak sunduğu ve kullanıcı onayını beklediği çalışma şekli."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir programın belirli anlarında (örneğin bir araç çağrılmadan önce) otomatik çalıştırılan dış komut veya betik; davranışı değiştirmek için bir takılma noktası."
+        },
+        {
+          "term": "Diff",
+          "def": "Bir metnin veya kodun iki sürümü arasındaki farkları satır satır gösteren çıktı."
+        },
+        {
+          "term": "PR / MR",
+          "def": "Pull Request / Merge Request: bir kod değişikliğinin ana dala alınmadan önce incelenmek üzere sunulduğu istek."
+        },
+        {
+          "term": "Human-in-the-loop",
+          "def": "Otomatik bir sürecin kritik noktalarında insanın onay veya düzeltme vermesini zorunlu kılan tasarım yaklaşımı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara, veri kaynaklarına ve servislere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Bun",
+          "def": "JavaScript/TypeScript kodunu çalıştıran, paket yöneticisi ve derleyiciyi de içeren hızlı bir çalışma zamanı; Node.js alternatifi."
+        },
+        {
+          "term": "localStorage",
+          "def": "Tarayıcının bir web sitesine ait küçük verileri kalıcı olarak sakladığı alan; site adresine (origin) bağlıdır."
+        },
+        {
+          "term": "Cookie",
+          "def": "Tarayıcının bir siteye ait küçük veri parçalarını saklayıp sonraki isteklerde geri gönderdiği mekanizma."
+        },
+        {
+          "term": "Jujutsu (jj)",
+          "def": "Git ile uyumlu çalışabilen, daha basit geri alma ve dal yönetimi sunan yeni nesil bir sürüm kontrol sistemi."
+        },
+        {
+          "term": "AES-256-GCM",
+          "def": "Veriyi hem şifreleyen hem de değiştirilip değiştirilmediğini doğrulayan, yaygın ve güçlü bir simetrik şifreleme yöntemi."
+        },
+        {
+          "term": "URL fragment",
+          "def": "Adres çubuğunda # işaretinden sonra gelen kısım; tarayıcıda kalır, sunucuya gönderilmez."
+        },
+        {
+          "term": "SLSA provenance",
+          "def": "Bir yazılım paketinin hangi kaynak koddan, nerede ve nasıl derlendiğini kanıtlayan imzalı köken bilgisi."
+        },
+        {
+          "term": "SBOM",
+          "def": "Software Bill of Materials: bir yazılımın içerdiği tüm bileşen ve bağımlılıkların listesi; güvenlik denetimi için kullanılır."
+        },
+        {
+          "term": "Devcontainer",
+          "def": "Geliştirme ortamının bir konteyner içinde tanımlandığı ve herkesin aynı araçlarla çalışmasını sağlayan yapılandırma."
+        }
+      ]
+    },
+    {
+      "name": "lobehub/lobehub",
+      "url": "https://github.com/lobehub/lobehub",
+      "stars": "85.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**LobeHub** (eski adıyla LobeChat), \"**ekibindeki süper ajanlar**\" sloganıyla yola çıkan açık kaynaklı bir yapay zekâ çalışma alanı. Eskiden şık bir çoklu model sohbet arayüzü olarak bilinen proje, artık ekibin zaten kullandığı sohbet araçlarına (Slack, Discord, Telegram, WeChat, Feishu…) **kendi başına iş alan ajanlar** eklemeyi hedefliyor.\n\nÇözdüğü problem: Yapay zekâ çoğu ekipte hâlâ \"birinin açıp soru sorduğu bir sekme\". LobeHub ise ajanı bir **ekip üyesi** gibi konumlandırıyor:\n\n- **Görevler:** Ajanlara iş devredip durumunu takip ediyorsun; tek seferlik ya da **zamanlanmış** çalıştırmalar kurabiliyorsun.\n- **Ajan ekibi:** Birden fazla ajan sıralı, paralel, yinelemeli ya da **münazara** modunda birlikte çalışıyor.\n- **Hafıza:** Ajanın öğrendikleri yapılandırılmış anılar olarak saklanıyor; sen bunları görüp düzenleyip silebiliyorsun.\n- **Dış ajanlar:** Claude Code, Codex gibi kodlama ajanlarını proje bağlamı ve izinleriyle içeri alabiliyorsun.\n- **GitHub entegrasyonu:** Ajanın açtığı PR birleşince iş kabul edilmiş sayılıyor; CI başarısız olursa iş ajana geri dönüyor.\n\nWeb, masaüstü (macOS/Windows/Linux) ve mobilde çalışıyor; kendi sunucunda barındırılabiliyor.",
+        "tech": "**Ön yüz ve çalışma zamanı:** **Next.js** tam yığın modu ve ayrıca bir **Vite SPA** derlemesi. Paket yönetimi **pnpm**, betikler **bun** ile. Bu ikili yapı, aynı kod tabanını hem sunucu taraflı web uygulaması hem de masaüstü/mobil kabuğa gömülebilen hafif bir istemci olarak dağıtmayı mümkün kılıyor.\n\n**Veri katmanı:**\n\n- **PostgreSQL** ana veritabanı; şema ve migration'lar **Drizzle ORM** ile yönetiliyor (tip güvenli, SQL'e yakın bir ORM).\n- **Redis** önbellek ve kuyruk benzeri işler için.\n- Dosyalar için **RustFS** (S3 uyumlu nesne depolama), web araması için kendi barındırılan **SearXNG**.\n- Ayrı bir **agent gateway** servisi, ajanların dış dünyayla (sohbet kanalları, araçlar) konuşmasını merkezileştiriyor.\n\n**Kimlik doğrulama:** **Better Auth** + Auth0 gibi SSO sağlayıcıları.\n\n**Model katmanı:** 40'tan fazla model sağlayıcısı ve yerel model desteği — ajanı belirli bir LLM'e kilitlemeyen **sağlayıcı bağımsız** bir tasarım.\n\n**Ekosistem:** Hazır ajan pazarı, puanlanan **MCP sunucuları** listesi ve açık `SKILL.md` formatında **skill**'ler. Skill'lerin Claude Code ve Codex'te de çalışması, LobeHub'ı kapalı bir bahçe yerine ortak standartlar üzerine kuruyor. Ekip ayrıca MCP için bir stres testi benchmark'ı olan **MCPMark**'ı NUS ile birlikte geliştirdi.\n\n**Dağıtım:** Önerilen yol **Docker Compose** (Postgres, Redis, RustFS, SearXNG ve gateway tek komutla); alternatif olarak Vercel, Zeabur, Sealos gibi tek tık dağıtımlar.",
+        "why": "**Dönüşüm hikâyesi:** LobeHub, \"güzel bir ChatGPT alternatifi arayüz\" olmaktan çıkıp **ajan platformuna** dönüşen projelerin en görünür örneği. Haftalık trend listesinde 1.100'ü aşan yıldızla yer alması, bu yeniden konumlandırmanın karşılık bulduğunu gösteriyor; Product Hunt lansmanı da ivmeyi artırdı.\n\n**Neden ilgi çekiyor:**\n\n- **Ajanı sohbet aracına taşımak:** İnsanlar yeni bir uygulama öğrenmek istemiyor; ajanın Slack/Discord'da yaşayıp işi oradan alması benimsemeyi kolaylaştırıyor.\n- **Kendi sunucunda barındırma:** Kurumsal veri hassasiyeti olan ekipler için, kapalı SaaS ajan ürünlerine karşı **self-hosted** bir alternatif.\n- **Kodlama ajanlarını orkestre etme:** Claude Code/Codex'i proje bağlamıyla içeri alıp PR döngüsüne bağlaması, geliştirici ekiplerine somut bir iş akışı sunuyor.\n- **Düzenlenebilir hafıza:** \"Ajan ne öğrendi, neyi yanlış öğrendi?\" sorusuna şeffaf cevap, güven için kritik.\n\n**Kime hitap ediyor:** Küçük ve orta ölçekli teknik ekipler, Çin ekosistemi (WeChat, Feishu, QQ desteği sayesinde) ve kendi yapay zekâ altyapısını kurmak isteyen kurum içi platform ekipleri.",
+        "evolve": "- **Lisans netliği:** README \"LobeHub Community License\" derken rozet Apache 2.0 gösteriyor. Kurumların benimsemesi için hangi lisansın geçerli olduğu net yazılmalı; bu belirsizlik hukuk ekiplerini durdurabilir.\n- **Kurumsal kanallar:** Microsoft Teams ve e-posta tabanlı iş akışları güçlendirilirse, ERP ağırlıklı kurumlarda (örneğin IFS kullanan şirketlerde) onay ve talep süreçlerine ajan bağlamak mümkün olur.\n- **Veritabanı ajanları:** Postgres zaten çekirdekte; kuruma ait veritabanlarına **salt okunur, denetimli** sorgu yapan hazır ajan şablonları (SQL üretimi + insan onayı) güçlü bir kullanım alanı açar.\n- **Ölçülebilir öğrenme:** \"Ajan zamanla gelişiyor\" iddiası şu an anlatı düzeyinde; görev başarı oranı, düzeltme sayısı gibi metriklerle gösterilmesi güveni artırır.\n- **Basitleştirilmiş kurulum:** Beş servisli Docker yığını küçük ekipler için ağır; SQLite + yerel dosya depolamalı \"tek kutu\" modu girişi kolaylaştırır."
+      },
+      "glossary": [
+        {
+          "term": "Ajan (AI agent)",
+          "def": "Bir hedef verildiğinde araç kullanarak, birden çok adımı kendi başına planlayıp uygulayabilen yapay zekâ programı."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımı üreticinin bulutunda değil, kendi sunucunda veya altyapında çalıştırmak."
+        },
+        {
+          "term": "Next.js",
+          "def": "React tabanlı, sunucu ve istemci tarafını birlikte yöneten popüler bir web uygulama çatısı."
+        },
+        {
+          "term": "Vite",
+          "def": "Modern web projeleri için çok hızlı geliştirme sunucusu ve derleme aracı."
+        },
+        {
+          "term": "SPA (Single Page Application)",
+          "def": "Sayfa yenilemeden tek bir HTML sayfası içinde çalışan, içeriği JavaScript ile güncelleyen web uygulaması."
+        },
+        {
+          "term": "PostgreSQL",
+          "def": "Güçlü, açık kaynaklı ve yaygın kullanılan ilişkisel veritabanı yönetim sistemi."
+        },
+        {
+          "term": "ORM",
+          "def": "Object-Relational Mapping: veritabanı tablolarıyla koddaki nesneler arasında köprü kuran, SQL yazmayı kolaylaştıran katman."
+        },
+        {
+          "term": "Drizzle",
+          "def": "TypeScript için tip güvenli, SQL'e yakın sözdizimi sunan hafif bir ORM."
+        },
+        {
+          "term": "Migration",
+          "def": "Veritabanı şemasındaki değişikliklerin (tablo ekleme, kolon değiştirme) sürümlü ve sıralı betikler hâlinde uygulanması."
+        },
+        {
+          "term": "Redis",
+          "def": "Verileri bellekte tutan, çok hızlı bir anahtar-değer veri deposu; önbellek ve kuyruk olarak kullanılır."
+        },
+        {
+          "term": "S3 uyumlu depolama",
+          "def": "Amazon S3'ün dosya saklama arayüzünü taklit eden, aynı araçlarla kullanılabilen nesne depolama servisi."
+        },
+        {
+          "term": "SSO (Single Sign-On)",
+          "def": "Tek bir hesapla birden fazla uygulamaya giriş yapabilmeyi sağlayan kimlik doğrulama yöntemi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara, veri kaynaklarına ve servislere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir yapay zekâ ajanına belirli bir işi nasıl yapacağını öğreten talimat ve betik paketi; genellikle SKILL.md dosyasıyla tanımlanır."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Bir sistemin performansını standart testlerle ölçüp diğerleriyle karşılaştırmaya yarayan değerlendirme seti."
+        },
+        {
+          "term": "Docker Compose",
+          "def": "Birden fazla konteynerden oluşan bir uygulamayı tek bir yapılandırma dosyası ve tek komutla ayağa kaldıran araç."
+        },
+        {
+          "term": "CI (Continuous Integration)",
+          "def": "Her kod değişikliğinde testlerin ve derlemenin otomatik çalıştırıldığı sürekli entegrasyon süreci."
+        }
+      ]
+    },
+    {
+      "name": "louislam/uptime-kuma",
+      "url": "https://github.com/louislam/uptime-kuma",
+      "stars": "94k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**Uptime Kuma**, kendi sunucunda çalıştırdığın, kurulumu dakikalar süren şık bir **erişilebilirlik izleme (uptime monitoring)** aracı. Web siteni, API'ni, veritabanı portunu ya da Docker konteynerini belirli aralıklarla yokluyor; bir şey çöktüğünde seni anında uyarıyor ve geçmişi grafiklerle gösteriyor.\n\nUptime Robot gibi barındırılan servislere **self-hosted** bir alternatif olarak doğdu. Sunduğu başlıca şeyler:\n\n- **Çok çeşitli izleme tipleri:** HTTP(s), anahtar kelime arama, **JSON sorgusu** ile yanıt içeriği kontrolü, TCP portu, Ping, DNS kaydı, WebSocket, Docker konteyneri, Steam oyun sunucusu ve **Push** (servisin kendisinin \"yaşıyorum\" sinyali göndermesi).\n- **90'dan fazla bildirim kanalı:** Telegram, Discord, Slack, e-posta, Gotify, Pushover ve daha fazlası.\n- **Durum sayfaları:** Kullanıcılarına \"sistemlerimiz şu an çalışıyor mu?\" sorusunu cevaplayan, kendi alan adına bağlanabilen **public status page**'ler.\n- **20 saniyelik** kontrol aralığı, SSL sertifika bilgisi, proxy ve 2FA desteği.\n\nKısacası: küçük bir ekibin ya da ev laboratuvarı (homelab) sahibinin ihtiyaç duyduğu izlemenin %90'ını tek bir Docker komutuyla veriyor.",
+        "tech": "**Yığın:** Ön yüzde **Vue 3 + Vite + Bootstrap 5**, arka yüzde **Node.js** (20.4+). Yazarın açıkça belirttiği bilinçli bir mimari tercih var: klasik bir **REST API** yerine, tek sayfa uygulamada **WebSocket (Socket.IO)** ile gerçek zamanlı iletişim.\n\n**Bu tercihin anlamı:**\n\n- Monitörlerin durumu, ping grafikleri ve olaylar sayfayı yenilemeden **anlık** akıyor; arayüzün \"canlı\" hissettirmesinin sebebi bu.\n- Buna karşılık, dışarıdan otomasyon için resmi ve kapsamlı bir REST API yok; topluluk bu boşluğu üçüncü parti kütüphanelerle dolduruyor.\n\n**Veri:** Veriler `/app/data` altında tutuluyor; README, **NFS gibi ağ dosya sistemlerinin desteklenmediğini** özellikle vurguluyor — bu, yerel bir gömülü veritabanı (dosya kilitleme hassasiyeti olan) kullanımının tipik işareti. 2.x serisiyle (Docker imaj etiketi `louislam/uptime-kuma:2`) daha büyük kurulumlar için harici veritabanı seçenekleri de gündemde.\n\n**Dağıtım:** Tek satır: `docker run ... -p 3001:3001 -v uptime-kuma:/app/data louislam/uptime-kuma:2` veya Docker Compose. Docker'sız kurulumda `npm run setup` ve PM2 ile arka planda çalıştırma. Lisans **MIT**.\n\n**Bildirim mimarisi:** Her bildirim sağlayıcısı `src/components/notifications` altında ayrı bir modül; bu **eklenti benzeri** yapı, 90'ı aşan entegrasyonun topluluk katkısıyla büyümesini mümkün kıldı.",
+        "why": "Uptime Kuma yeni bir proje değil; 94 bin yıldızla GitHub'ın en sevilen self-hosted araçlarından biri. Bugün listede olması bir **\"evergreen\" (her dönem ilgi gören) proje** dalgası:\n\n- **Self-hosting rönesansı:** SaaS fiyatlarının artması ve veri egemenliği kaygıları, ekipleri ve bireyleri kendi araçlarını barındırmaya itiyor. Uptime Kuma bu akımın \"ilk kurulan araç\" listesinde neredeyse her zaman var.\n- **Ajanlarla kurulan altyapılar:** Kodlama ajanlarıyla hızlıca servis ayağa kaldıran geliştiriciler, bu servislerin ayakta kalıp kalmadığını izlemek için en düşük sürtünmeli aracı arıyor.\n- **2.x serisi:** Yeni ana sürüm etrafındaki beta yayınları ve güncellemeler projeyi yeniden gündeme taşıyor.\n- **Kolaylık:** \"Docker komutunu çalıştır, tarayıcıyı aç, monitör ekle\" — öğrenme eğrisi neredeyse sıfır.\n\n**Kime hitap ediyor:** Homelab meraklıları, küçük SaaS girişimleri, ajanslar ve kurum içinde birkaç kritik servisi (ERP web arayüzü, entegrasyon API'leri, veritabanı portları) izlemek isteyen BT ekipleri.\n\n**Not:** README'de `uptimekuma.co` adresinin resmi site **olmadığı** uyarısı var — popüler projelerin taklit sitelerle mücadelesinin güncel bir örneği.",
+        "evolve": "- **Bakımcı kapasitesi:** README, test edilemeyen çok sayıda PR olduğunu ve yardım beklendiğini açıkça söylüyor. Daha geniş bir bakımcı ekibi ya da vakıf modeli projenin geleceği için en kritik adım.\n- **Resmi API ve \"monitoring as code\":** Monitörleri YAML/JSON dosyalarıyla tanımlayıp Git'te tutma (ve Terraform sağlayıcısı) desteği, kurumsal benimsemeyi ciddi artırır.\n- **Veritabanı izleme:** TCP portu kontrolü yerine Oracle, PostgreSQL, MSSQL için **gerçek sorgu tabanlı** sağlık kontrolleri (örneğin \"bu SQL 2 saniyeden kısa sürede dönüyor mu?\") — ERP/PL/SQL dünyasında çok aranan bir özellik olur.\n- **Dağıtık kontrol noktaları:** Tek konumdan yapılan kontroller ağ kaynaklı yanlış alarmlara açık; birden çok bölgeden yoklayıp çoğunluk kararıyla alarm vermek doğruluğu artırır.\n- **Yapay zekâ destekli olay özeti:** Bir kesinti olduğunda son yanıtları, sertifika durumunu ve DNS değişikliklerini özetleyip olası kök nedeni öneren bir asistan, bildirimlerin değerini artırır."
+      },
+      "glossary": [
+        {
+          "term": "Uptime monitoring",
+          "def": "Bir web sitesinin veya servisin çalışıp çalışmadığını düzenli aralıklarla kontrol edip kesintilerde uyarı veren izleme."
+        },
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımı üreticinin bulutunda değil, kendi sunucunda veya altyapında çalıştırmak."
+        },
+        {
+          "term": "Homelab",
+          "def": "Kişilerin evde kurduğu, öğrenme ve kişisel servisler için kullanılan küçük sunucu altyapısı."
+        },
+        {
+          "term": "Status page",
+          "def": "Bir servisin anlık çalışma durumunu ve geçmiş kesintilerini kullanıcılara gösteren herkese açık sayfa."
+        },
+        {
+          "term": "Push monitörü",
+          "def": "İzleme aracının servisi yoklaması yerine, servisin belirli aralıklarla kendisinin 'çalışıyorum' sinyali gönderdiği izleme türü."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Tarayıcı ile sunucu arasında sürekli açık kalan, iki yönlü ve anlık veri aktarımı sağlayan bağlantı protokolü."
+        },
+        {
+          "term": "Socket.IO",
+          "def": "WebSocket üzerine kurulu, bağlantı kopmalarını ve yeniden bağlanmayı otomatik yöneten JavaScript kütüphanesi."
+        },
+        {
+          "term": "REST API",
+          "def": "Kaynaklara HTTP adresleri ve GET/POST gibi standart yöntemlerle erişilen, yaygın web servis arayüzü tarzı."
+        },
+        {
+          "term": "Vue 3",
+          "def": "Kullanıcı arayüzü geliştirmek için kullanılan, reaktif veri bağlama sunan popüler JavaScript çatısı."
+        },
+        {
+          "term": "Bootstrap",
+          "def": "Hazır stil ve bileşenlerle hızlı, mobil uyumlu web arayüzleri yapmayı sağlayan CSS çatısı."
+        },
+        {
+          "term": "Docker",
+          "def": "Uygulamayı tüm bağımlılıklarıyla birlikte paketleyip her ortamda aynı şekilde çalıştıran konteyner teknolojisi."
+        },
+        {
+          "term": "NFS",
+          "def": "Network File System: dosyaların ağ üzerinden başka bir sunucudaki diskte saklanmasını sağlayan dosya paylaşım protokolü."
+        },
+        {
+          "term": "PM2",
+          "def": "Node.js uygulamalarını arka planda çalıştıran, çökünce yeniden başlatan süreç yöneticisi."
+        },
+        {
+          "term": "2FA",
+          "def": "İki faktörlü kimlik doğrulama: şifreye ek olarak telefondaki kod gibi ikinci bir doğrulama adımı."
+        },
+        {
+          "term": "Monitoring as code",
+          "def": "İzleme kurallarının arayüzden tıklanarak değil, sürüm kontrolünde tutulan yapılandırma dosyalarıyla tanımlanması."
+        }
+      ]
+    },
+    {
+      "name": "kajisho5/ffmpeg-skill",
+      "url": "https://github.com/kajisho5/ffmpeg-skill",
+      "stars": "5.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**ffmpeg-skill**, Claude Code, Cursor ve Codex gibi kodlama ajanlarına **yerel video ve ses düzenleme yeteneği** kazandıran bir araç seti. Ajana 42 adet **FFmpeg** tabanlı araç, bunları tarif eden makine okunur bir **sözleşme (contract)** ve bir **MCP sunucusu** veriyor.\n\nÇözdüğü problem: FFmpeg inanılmaz güçlü ama komut satırı sözdizimi kötü şöhretli. Ajanlara \"şu videoyu kes, sesini normalize et, altyazı ekle\" dediğinizde genellikle uzun, kırılgan ve bazen tehlikeli FFmpeg komutları uyduruyorlar. ffmpeg-skill bunun yerine:\n\n- **Tipli, güvenli araçlar** sunuyor: kesme, birleştirme, sessizlik temizleme, kırpma, stabilizasyon, hız rampası, altyazı gömme, renk/LUT, platform ön ayarlı dışa aktarma…\n- Ajana bir **iş disiplini** öğretiyor: önce incele (probe), mümkünse kayıpsız düzenle, kontrol et, **doğrula**.\n- **Bulut ve API anahtarı gerektirmiyor**; görüntüler makinenden çıkmıyor.\n\nKurulum tek satır: `npx ffmpeg-skill` (Cursor/Codex için bayraklarla).",
+        "tech": "**Yığın:** Yalnızca **Python 3.10+ standart kütüphanesi** — hiç Python bağımlılığı yok. Dış gereksinim sadece **FFmpeg/ffprobe 6.1+** (CI'da 6.1, 7.1, 8.x ve 9.x test ediliyor). Bu minimalizm, ajanın çalıştığı her makinede sorunsuz kurulmayı garanti etmek için bilinçli bir seçim.\n\n**Güvenlik odaklı tasarım:**\n\n- Her işlem tipli argümanları olan ayrı bir Python betiği. **Shell kullanılmıyor** ve çağıran taraf **ham filtre grafiği** veremiyor. Bu, ajanın (veya prompt injection'ın) keyfi komut çalıştırma riskini ortadan kaldırıyor.\n- Her araçta `--dry-run`, `--json` ve `--help` var; ajan önce ne olacağını görüp sonra uyguluyor.\n\n**Sözleşme (contract) yaklaşımı:** `contract --json` her aracın girdilerini, çıktılarını, gerekli FFmpeg yeteneklerini ve doğrulama adımlarını veriyor. Şemalar betiklerin **argparse** tanımından otomatik üretiliyor ve **CI, kodla şema arasında sapma olursa başarısız oluyor** — dokümantasyonun koddan kopmasını engelleyen zarif bir çözüm.\n\n**Doğrulama döngüsü:** İş bitince çıktı yeniden `probe` ediliyor; görsel değişikliklerde `look.py` bir **kontak sayfası** (kare küçük resimleri) üretiyor ve çok modlu ajan sonucu kendi gözüyle kontrol ediyor.\n\n**MCP sunucusu:** `mcp/server.py` stdio üzerinden **JSON-RPC** konuşuyor; araç listesi sözleşmeden üretiliyor. **Bağlam penceresini korumak** için varsayılan olarak sadece 12 çekirdek araç listeleniyor (`FFMPEG_SKILL_MCP_FULL=1` ile 42'si). Ayrıca reel, podcast, multicam, teslim kontrolü ve HDR için hazır **prompt tarifleri** var.\n\n**Kalite:** Linux, macOS ve Windows'ta CI, test paketi ve **fuzzing**. Lisans **MIT**.",
+        "why": "**Skill ekonomisinin olgunlaşması:** 2026'da `SKILL.md` formatı Claude Code, Codex, Cursor ve Gemini CLI arasında ortak bir dil hâline geldi. Artık soru \"skill nedir?\" değil, \"**hangi skill gerçekten güvenilir?**\". ffmpeg-skill bu soruya mühendislik disipliniyle cevap veriyor: tipli araçlar, şema senkronu, doğrulama adımları.\n\n**Neden ilgi gördü:**\n\n- **İçerik üreticisi + geliştirici kesişimi:** Kısa video (reel), podcast ve demo videosu üreten geliştiriciler, bulut video editörlerine para ödemeden ajana \"bunu Instagram reel formatına getir\" diyebiliyor.\n- **Gizlilik:** Hiçbir görüntünün buluta gitmemesi, kurumsal ve kişisel içerik için önemli.\n- **Bağlam bilinci:** Varsayılan 12 araçla gelmesi, çok sayıda MCP sunucusu bağlayıp bağlam penceresini dolduran kullanıcıların yaşadığı somut bir derde çözüm.\n- **Doğrulama odaklı kodlama** tartışması: Yazarın bağlantı verdiği \"verification-driven coding\" makalesi ve projenin kendini dürüstçe \"kısmen uyumlu\" olarak puanlaması, topluluktan saygı topladı.\n\n**Kime hitap ediyor:** Ajanlarla içerik üreten geliştiriciler, eğitim videosu hazırlayanlar, podcast ekipleri ve kendi skill'ini yazmak isteyip iyi bir örnek arayan herkes.",
+        "evolve": "- **Zaman çizelgesi önizlemesi:** `project.json` tabanlı render güçlü; bunu görsel bir zaman çizelgesinde gösterip insanın düzeltme yapabileceği hafif bir web önizleme eklenirse, ajan-insan iş birliği çok daha akıcı olur.\n- **Transkripsiyon tabanlı düzenleme:** Yerel konuşma tanıma zaten opsiyonel; \"metinden bu cümleyi sil → videodan da silinsin\" tarzı **metin tabanlı video düzenleme**, podcast ve eğitim içeriği için büyük kazanç.\n- **Donanım hızlandırma:** NVENC, VideoToolbox, QSV gibi donanım kodlayıcılarının otomatik algılanıp seçilmesi, uzun videolarda süreyi dramatik kısaltır.\n- **Kurumsal kullanım:** Eğitim/onboarding videolarına otomatik altyazı, logo ve standart giriş-çıkış ekleyen \"şirket şablonu\" profilleri, örneğin ERP eğitim içeriği üreten ekipler için hazır bir iş akışı sunar.\n- **Diğer medya araçlarına şablon olmak:** Sözleşme + doğrulama + güvenli argüman yaklaşımı ImageMagick, Pandoc veya veritabanı araçları (ör. güvenli SQL export/import) için de çoğaltılabilecek bir **skill tasarım kalıbı**."
+      },
+      "glossary": [
+        {
+          "term": "FFmpeg",
+          "def": "Video ve ses dosyalarını dönüştürmek, kesmek, birleştirmek ve işlemek için kullanılan, çok güçlü açık kaynaklı komut satırı aracı."
+        },
+        {
+          "term": "ffprobe",
+          "def": "FFmpeg ile gelen, bir medya dosyasının süre, çözünürlük, codec gibi teknik bilgilerini okuyan araç."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir yapay zekâ ajanına belirli bir işi nasıl yapacağını öğreten talimat ve betik paketi; genellikle SKILL.md dosyasıyla tanımlanır."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara, veri kaynaklarına ve servislere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "JSON-RPC",
+          "def": "İstek ve cevapların JSON formatında taşındığı, uzaktaki bir fonksiyonu çağırmaya yarayan basit protokol."
+        },
+        {
+          "term": "stdio",
+          "def": "Standart girdi/çıktı: bir programın metin okuyup yazdığı temel kanallar; MCP sunucuları sıklıkla bu kanal üzerinden konuşur."
+        },
+        {
+          "term": "Filtre grafiği (filter graph)",
+          "def": "FFmpeg'de video/ses üzerinde uygulanacak işlemlerin zincir hâlinde tarif edildiği, güçlü ama karmaşık ifade dili."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Yapay zekâya verilen içeriğin içine gizlenmiş talimatlarla modeli asıl görevinden saptırmaya yönelik saldırı."
+        },
+        {
+          "term": "Dry run",
+          "def": "Bir komutun gerçekte bir şey değiştirmeden, ne yapacağını göstererek çalıştırılması."
+        },
+        {
+          "term": "argparse",
+          "def": "Python'un komut satırı argümanlarını tanımlayıp ayrıştırmaya yarayan standart kütüphanesi."
+        },
+        {
+          "term": "Bağlam penceresi (context window)",
+          "def": "Bir dil modelinin tek seferde dikkate alabildiği toplam metin miktarı; araç tanımları da bu alanı tüketir."
+        },
+        {
+          "term": "Kayıpsız düzenleme",
+          "def": "Videoyu yeniden kodlamadan (kaliteyi düşürmeden) kesme veya birleştirme gibi işlemlerin yapılması."
+        },
+        {
+          "term": "EBU R128",
+          "def": "Yayıncılıkta ses yüksekliğinin algılanan seviyeye göre normalize edilmesini tanımlayan Avrupa standardı."
+        },
+        {
+          "term": "LUT",
+          "def": "Look-Up Table: videonun renklerini belirli bir görünüme dönüştüren hazır renk eşleme tablosu."
+        },
+        {
+          "term": "HDR / SDR",
+          "def": "Yüksek ve standart dinamik aralık: görüntünün parlaklık ve renk kapsamını belirleyen formatlar; HDR daha geniş aralık sunar."
+        },
+        {
+          "term": "Fuzzing",
+          "def": "Bir programa rastgele veya bozuk girdiler vererek çökme ve güvenlik açıklarını otomatik olarak arama test yöntemi."
+        },
+        {
+          "term": "Kontak sayfası",
+          "def": "Bir videodan alınan karelerin küçük resimler hâlinde tek bir görselde dizildiği özet görüntü."
+        }
+      ]
+    }
+  ]
+}
