@@ -1,0 +1,203 @@
+{
+  "date": "2026-11-15",
+  "projects": [
+    {
+      "name": "tradermonty/claude-trading-skills",
+      "url": "https://github.com/tradermonty/claude-trading-skills",
+      "stars": "5.0k",
+      "language": "Python",
+      "sections": {
+        "serves": "**claude-trading-skills**, vakti kısıtlı bireysel yatırımcılar için hazırlanmış, **Claude'a yüklenebilen ~74 beceriden (skill)** oluşan bir yatırım araç seti. Bugün **553 yeni yıldızla** listenin en hızlı yükselenlerinden biri.\n\nÖnemli olan, projenin kendini nasıl tanımladığı: bu bir **\"al-sat sinyali\" servisi değil**. Amaç kararı yapay zekâya devretmek değil; piyasa değerlendirmesini, risk yönetimini, işlem planlamayı ve işlem günlüğü tutmayı **yapılandırılmış bir rutine** dönüştürmek. Emir göndermiyor, gizli zamanlanmış iş çalıştırmıyor; son kararı her zaman sen veriyorsun.\n\nHazır **iş akışları (workflow)** ile geliyor:\n\n- **market-regime-daily:** 15 dakikalık günlük piyasa kontrolü (temel hâli API gerektirmiyor)\n- **core-portfolio-weekly:** Uzun vadeli portföyün haftalık gözden geçirmesi\n- **swing-opportunity-daily:** Risk ortamı uygunsa kısa vadeli (swing) aday tarama\n- **trade-memory-loop / monthly-performance-review:** Kapanan işlemlerden ders çıkarma ve aylık performans değerlendirmesi\n\nBeceriler; piyasa rejimi (piyasa genişliği, tepe tespiti, makro rejim), temettü yatırımı, pozisyon büyüklüğü hesaplama, **drawdown devre kesici**, işlem öncesi disiplin kapısı, backtest ve strateji araştırması gibi kategorilere ayrılmış.",
+        "tech": "Mimari, **Agent Skills** formatının oldukça olgun bir uygulaması:\n\n- **Her beceri bir klasör:** `skills/<isim>/` altında `SKILL.md` (talimat), referans dokümanlar ve **Python betikleri**. Model sayısal işleri kendisi uydurmak yerine betiği çalıştırıyor; böylece pozisyon büyüklüğü veya genişlik oranı gibi hesaplar **deterministik** kalıyor.\n- **Tek doğruluk kaynağı:** `skills-index.yaml` tüm becerilerin meta verisini (durum: production/beta, hangi entegrasyonu kullandığı) tutuyor; README ile çelişirse YAML kazanıyor. `workflows/*.yaml` manifestleri bir **doğrulayıcı (validator)** ile denetleniyor.\n- **İki dağıtım yolu:** Claude.ai için önceden paketlenmiş `.skill` arşivleri (GitHub Release'te **SHA256** özetleriyle birlikte, yani indirdiğin dosyanın değiştirilmediğini kontrol edebiliyorsun) ve Claude Code için `~/.claude/skills/` klasörüne kopyalanan kaynak klasörler. Ayrıca altı adet tematik **skillset** paketi var.\n- **Veri kaynakları:** Financial Modeling Prep (günde 250 istekli ücretsiz katman), FINVIZ Elite, yfinance, SEC EDGAR, CFTC verileri ve **MCP sunucusu** üzerinden Alpaca (sanal/kâğıt işlem hesabı). API'siz bir **başlangıç yolu** da tanımlı.\n- **Python 3.11–3.13**, paketlenmiş becerilerde 3.9 uyumluluğu korunmuş; Linux, Windows ve macOS destekli.\n\nDikkat çekici bir detay: depoda **beceri üreten ve gözden geçiren meta beceriler** de var (skill-designer, dual-axis-skill-reviewer, skill-integration-tester). Yani proje kendi becerilerini yapay zekâyla geliştirip test eden bir üretim hattına sahip.",
+        "why": "- **Skill ekonomisinin dikey uzmanlaşması:** Son aylarda genel amaçlı skill koleksiyonları patladı; şimdi sıra **alan uzmanlığına** geldi. Finans, insanların gerçek para ve gerçek zaman harcadığı bir alan olduğu için en hızlı ilgi gören dikeylerden biri.\n- **\"Sinyal satmıyorum\" duruşu güven veriyor:** Yapay zekâ + borsa kombinasyonu genelde abartılı vaatlerle gelir. Bu proje tersine **disiplin, risk ve günlük tutmayı** öne çıkarıyor; bu dürüstlük deneyimli yatırımcıların ilgisini çekiyor.\n- **Hacim ve olgunluk:** 1.000'i aşkın commit, 74 beceri, iki dilde (İngilizce/Japonca) doküman ve ayrı bir doküman sitesi. \"Bir hafta sonu projesi\" değil, uzun soluklu bir çalışma.\n- **Hitap ettiği kitle:** Tam zamanlı trader olmayan, ama portföyünü ciddiye alan beyaz yakalılar; ve Claude Skills'in gerçek bir alanda nasıl ölçeklendiğini görmek isteyen geliştiriciler.",
+        "evolve": "- **ABD piyasası dışı:** Beceriler büyük ölçüde ABD hisseleri ve vergilendirmesine göre yazılmış. **Borsa İstanbul** gibi piyasalar için veri adaptörleri ve yerel vergi kuralları eklenirse çok daha geniş bir kitleye ulaşır.\n- **Kalıcı durum ve kurumsal kullanım:** İşlem günlüğü şu an yerel dosyalarda. Bir **veritabanı** (ör. PostgreSQL) arka ucu ile çok kullanıcılı, denetlenebilir bir yapıya kavuşabilir; aile ofisleri veya küçük fonlar için ilginç bir temel olur.\n- **Backtest güvenilirliği:** Yapay zekânın yorumladığı backtest sonuçları **aşırı uyum (overfitting)** riskine açık. Her strateji önerisine otomatik **örneklem dışı test** zorunluluğu eklemek değerli olur.\n- **Değerlendirme (eval) seti:** 74 becerinin kalitesini ölçen açık bir eval paketi, topluluğun katkılarını güvenle kabul etmeyi kolaylaştırır.\n- **Hukuki çerçeve:** Proje açıkça yatırım tavsiyesi olmadığını söylüyor; yine de becerilerin ürettiği raporlara otomatik uyarı ve kaynak gösterimi eklemek, yanlış anlamaların önüne geçer."
+      },
+      "glossary": [
+        {
+          "term": "Skill (beceri)",
+          "def": "Yapay zekâ ajanına belirli bir işi nasıl yapacağını anlatan talimat dosyası (SKILL.md) ve yardımcı betiklerden oluşan klasör. Ajan ihtiyaç duyduğunda bu paketi yükleyip kullanır."
+        },
+        {
+          "term": "Swing trading",
+          "def": "Hisseleri birkaç günden birkaç haftaya kadar tutarak orta vadeli fiyat dalgalanmalarından kazanç hedefleyen işlem tarzı. Gün içi işlemden daha yavaş, uzun vadeli yatırımdan daha hızlıdır."
+        },
+        {
+          "term": "Drawdown",
+          "def": "Portföy değerinin zirve noktasından gördüğü en derin düşüş oranı. 'Drawdown devre kesici', kayıp belirli bir eşiği aşınca yeni işlem açmayı durduran bir kuraldır."
+        },
+        {
+          "term": "Piyasa genişliği (market breadth)",
+          "def": "Endeks hareketine kaç hissenin katıldığını ölçen göstergeler. Endeks yükselirken hisselerin çoğu düşüyorsa, yükseliş zayıf kabul edilir."
+        },
+        {
+          "term": "Backtest",
+          "def": "Bir alım-satım stratejisini geçmiş piyasa verileri üzerinde deneyerek nasıl sonuç vereceğini ölçme yöntemi."
+        },
+        {
+          "term": "Aşırı uyum (overfitting)",
+          "def": "Bir stratejinin veya modelin geçmiş veriye o kadar sıkı uydurulması ki, yeni verilerde başarısız olması. Geçmişte mükemmel, gelecekte kötü sonuç veren sistemlerin tipik sebebidir."
+        },
+        {
+          "term": "Paper trading",
+          "def": "Gerçek para kullanmadan, sanal bir hesapla gerçek piyasa koşullarında işlem yapma pratiği. Stratejileri risksiz denemek için kullanılır."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araç ve veri kaynaklarına standart bir yoldan bağlanmasını sağlayan açık protokol. Burada Alpaca aracı hesabına bağlanmak için kullanılıyor."
+        },
+        {
+          "term": "SHA256",
+          "def": "Bir dosyadan sabit uzunlukta benzersiz bir 'parmak izi' üreten özetleme algoritması. İndirilen dosyanın özeti yayınlanan değerle aynıysa, dosya yolda değiştirilmemiş demektir."
+        },
+        {
+          "term": "Deterministik",
+          "def": "Aynı girdiye her zaman aynı çıktıyı veren davranış. Hesapları dil modeline değil Python betiğine yaptırmak, sonuçların tekrarlanabilir olmasını sağlar."
+        },
+        {
+          "term": "Manifest",
+          "def": "Bir paketin veya iş akışının neleri içerdiğini ve hangi sırayla çalışacağını tarif eden yapılandırılmış (genelde YAML/JSON) dosya."
+        }
+      ]
+    },
+    {
+      "name": "ag-ui-protocol/ag-ui",
+      "url": "https://github.com/ag-ui-protocol/ag-ui",
+      "stars": "17.4k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**AG-UI (Agent–User Interaction Protocol)**, yapay zekâ ajanlarını **kullanıcının gördüğü uygulamalara** bağlamak için tasarlanmış açık, hafif ve **olay (event) tabanlı** bir protokol.\n\nProblem şu: Bir ajanı arka uçta LangGraph, CrewAI, Mastra ya da Google ADK ile kurmak artık kolay. Ama o ajanı bir web uygulamasının içine gömüp; cevabını kelime kelime akıtmak, hangi aracı çağırdığını göstermek, kullanıcının onayını beklemek, ekrandaki form durumunu ajanla senkron tutmak... Her framework için bunu baştan yazmak gerekiyordu.\n\nAG-UI bunu standartlaştırıyor. Ajan tarafı yaklaşık **16 standart olay tipinden** birini yayıyor (mesaj başladı, metin parçası geldi, araç çağrısı, durum değişti vb.), ön yüz bu olayları dinleyip ekrana yansıtıyor. Sağladıkları:\n\n- **Akışlı (streaming) sohbet**\n- **Çift yönlü durum senkronizasyonu:** Ajan ile arayüz aynı veriyi paylaşıyor\n- **Üretken arayüz (generative UI):** Ajan düz metin yerine yapılandırılmış bileşenler gönderebiliyor\n- **Ön yüz araçları:** Ajan, tarayıcıdaki bir işlevi araç olarak çağırabiliyor\n- **Human-in-the-loop:** Kritik adımda kullanıcıdan onay alma\n\nKendini şöyle konumluyor: **MCP ajana araç verir, A2A ajanları birbiriyle konuşturur, AG-UI ajanı kullanıcıyla buluşturur.**",
+        "tech": "- **Olay tabanlı tasarım:** İstek-cevap yerine bir olay akışı var. Bu, uzun süren ve ara adımları olan ajan işleri için doğal bir model; arayüz her adımı anında gösterebiliyor.\n- **Taşımadan bağımsız (transport-agnostic):** Olaylar **SSE**, **WebSocket** ya da webhook üzerinden taşınabiliyor. Referans olarak bir HTTP uygulaması ve varsayılan bir bağlayıcı geliyor; ihtiyaca göre değiştirilebiliyor.\n- **Esnek ara katman (middleware):** Olay formatlarında \"gevşek eşleşmeye\" izin veren bir katman, farklı framework'lerin birebir aynı şemayı üretmese bile uyumlu çalışmasını sağlıyor. Standartların benimsenmesinde bu pragmatizm kritik.\n- **Monorepo yapısı:** Çekirdek paket npm'de `@ag-ui/core`; SDK'lar, entegrasyonlar, ara katmanlar, örnek uygulamalar ve dokümanlar tek depoda. `npx create-ag-ui-app` ile tek komutla iskelet kuruluyor; **AG-UI Dojo** yapı taşı örneklerini sunuyor.\n- **Geniş dil desteği:** TypeScript ve Python'un yanında Kotlin, Go, Dart, Java, Rust, Ruby, C++ ve .NET SDK'ları (çoğu topluluk destekli).\n- **Entegrasyon ekosistemi:** LangGraph, CrewAI, Microsoft Agent Framework, Google ADK, AWS Strands, Mastra, Pydantic AI, LlamaIndex, AG2; topluluk tarafında Claude Agent SDK ve Cloudflare Agents. A2A ve **MCP Apps** ile de köprüleri var.\n- Protokol **CopilotKit** ekibinden çıktı; CopilotKit hâlâ birinci taraf istemci. Lisans **MIT**.",
+        "why": "- **Eksik halka:** Ajan ekosisteminde araç tarafı (MCP) ve ajanlar arası iletişim (A2A) standartlaştı; **arayüz tarafı** açık kalmıştı. AG-UI bu boşluğu dolduran en yaygın aday hâline geldi.\n- **Büyük oyuncuların desteği:** Microsoft, Google, AWS ve Oracle'ın framework'lerinin birinci taraf entegrasyonu olması, protokolün \"bir girişimin projesi\" olmaktan çıkıp **sektör standardına** dönüştüğünü gösteriyor.\n- **Ajanlar ürünlere giriyor:** Şirketler artık ajanları terminalde değil, kendi SaaS ürünlerinin içinde kullanıcıya sunmak istiyor. Bu da ön yüz geliştiricilerini doğrudan bu protokole yönlendiriyor.\n- **Kime hitap ediyor:** Ürününe yapay zekâ asistanı ekleyen full-stack ekipler, ajan framework'ü geliştirenler ve kurumsal uygulamalarda (ERP, CRM gibi) ajanın kullanıcı onayıyla işlem yaptığı senaryoları tasarlayanlar.",
+        "evolve": "- **Güvenlik ve yetkilendirme modeli:** Ajanın ön yüz araçlarını çağırabilmesi güçlü ama riskli. Protokol seviyesinde **izin kapsamları** ve imzalı olaylar tanımlanırsa kurumsal benimseme hızlanır.\n- **Kurumsal sistemlerle köprü:** ERP ekranlarında (ör. IFS, SAP) bir siparişi veya iş emrini ajanla birlikte dolduran, her alan değişikliğini durum senkronizasyonuyla gösteren referans entegrasyonlar çok değerli olur.\n- **Resmî uyumluluk test seti:** Topluluk SDK'larının çokluğu, sürüm farkları ve uyumsuzluk riski doğuruyor. Bir **conformance** test paketi, \"AG-UI uyumlu\" etiketini anlamlı kılar.\n- **Gözlemlenebilirlik:** Olay akışı zaten kayıt için ideal; OpenTelemetry ile standart iz (trace) üretimi, hata ayıklamayı ve denetimi kolaylaştırır.\n- **Yönetişim:** CopilotKit'e bağlılık şu an güç kaynağı; ilerde tarafsız bir vakfa (ör. Linux Foundation) devredilmesi standardın uzun ömürlü olmasını sağlar."
+      },
+      "glossary": [
+        {
+          "term": "Protokol",
+          "def": "İki yazılımın birbiriyle nasıl konuşacağını tanımlayan ortak kurallar bütünü. Herkes aynı kurala uyunca farklı firmaların yazılımları birlikte çalışabilir."
+        },
+        {
+          "term": "Olay tabanlı (event-driven)",
+          "def": "Sistemin 'bir şey oldu' mesajları yayarak çalıştığı mimari. Dinleyen taraf her olaya anında tepki verir; tek seferlik istek-cevap yerine sürekli bir akış vardır."
+        },
+        {
+          "term": "SSE (Server-Sent Events)",
+          "def": "Sunucunun tarayıcıya tek bir HTTP bağlantısı üzerinden sürekli veri göndermesini sağlayan basit web standardı. Yapay zekâ cevaplarının kelime kelime akması genelde bununla yapılır."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Tarayıcı ile sunucu arasında açık kalan, iki yönlü ve gerçek zamanlı iletişim kanalı."
+        },
+        {
+          "term": "Streaming (akış)",
+          "def": "Cevabın tamamı hazır olmadan, üretildikçe parça parça gönderilmesi. Kullanıcı beklemeden çıktıyı görmeye başlar."
+        },
+        {
+          "term": "Generative UI (üretken arayüz)",
+          "def": "Yapay zekânın düz metin yerine tablo, form, grafik gibi arayüz bileşenleri üretmesi ve uygulamanın bunları doğrudan ekranda göstermesi."
+        },
+        {
+          "term": "Human-in-the-loop",
+          "def": "Otomatik bir sürecin kritik noktalarında insan onayı veya müdahalesi beklenmesi. Ajan bir işlemi yapmadan önce kullanıcıya sorar."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara ve veri kaynaklarına standart yoldan bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "A2A (Agent-to-Agent)",
+          "def": "Farklı yapay zekâ ajanlarının birbirine görev devretmesi ve haberleşmesi için geliştirilmiş açık protokol."
+        },
+        {
+          "term": "Middleware (ara katman)",
+          "def": "İki sistem arasına oturan, mesajları dönüştüren veya uyumlu hâle getiren yazılım katmanı."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir platformu veya protokolü belirli bir programlama dilinde kolayca kullanmak için hazırlanmış kütüphane ve araç paketi."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birbiriyle ilişkili birçok paketin veya projenin tek bir kod deposunda birlikte tutulması."
+        },
+        {
+          "term": "Conformance testi",
+          "def": "Bir uygulamanın bir standarda gerçekten uyup uymadığını kontrol eden ortak test paketi."
+        }
+      ]
+    },
+    {
+      "name": "Tencent/LoopForge",
+      "url": "https://github.com/Tencent/LoopForge",
+      "stars": "1.0k",
+      "language": "Go",
+      "sections": {
+        "serves": "**LoopForge**, Tencent'in açık kaynak yaptığı, **kodlama ajanlarıyla yazılım teslimatını** kurumsal bir süreç hâline getiren, kendi sunucunda çalışan (self-hosted) bir çalışma alanı.\n\nProblem: Ekipte herkes Claude Code, Codex ya da Cursor kullanıyor; ama her biri kendi terminalinde, kendi tarzıyla. Kim hangi işi ajana yaptırdı, hangi adımda kim onay verdi, maliyet ne oldu, sonuç hangi PR'a gitti? Belli değil. LoopForge bu dağınıklığı **tanımlı süreçlere** çeviriyor.\n\nİki çalışma biçimi sunuyor:\n\n- **Main Bot ile sohbet:** Keşif ve hızlı düzeltmeler için. Bot, projenin depolarıyla bir **Docker sandbox** açıyor ve işi proje rollerine alt ajan olarak dağıtıyor.\n- **SOP çalıştırma:** Tekrarlanabilir teslimat için. Görsel olarak tasarlanmış bir **standart iş akışı (SOP)**; Agent, Script, **İnsan onay kapısı** ve alt-SOP düğümlerini sırayla, her birini kendi sandbox'ında çalıştırıyor.\n\nİnsan onay kapısında inceleyen kişi çıktıyı **onaylayabiliyor**, ek bağlamla adımı **yeniden çalıştırabiliyor** ya da işi **önceki bir adıma geri gönderebiliyor**. Bekleyen tüm onaylar tek bir \"İnceleme bekliyor\" kutusunda toplanıyor. Her iş bir **gereksinime** bağlanıyor ve gereksinimden PR'a, oradan birleştirmeye kadar izleniyor.",
+        "tech": "- **Go arka uç + web ön yüz + MySQL:** `cmd/`, `internal/`, migrations klasörleri klasik ve sağlam bir Go servis yapısına işaret ediyor. Kurulumda betik bir **MySQL** servisi oluşturuyor; çalıştırma geçmişi, roller ve gereksinimler ilişkisel veritabanında tutuluyor.\n- **Executor soyutlaması:** On farklı kodlama ajanı CLI'si destekleniyor: Claude Code, Codex, CodeBuddy, OpenCode, Cursor CLI, Antigravity, Kimi Code, Pi, DeepSeek Harness, ZCode. Her rol kendi çalıştırıcısını ve modelini seçebiliyor; yani bir SOP'ta backend adımını Claude Code, test adımını Codex yapabilir.\n- **Yeniden kullanılabilir roller:** Prompt, executor, model, kurallar, Skill'ler ve MCP araçları tek bir **rol** tanımında paketleniyor; hem sohbette hem SOP düğümlerinde aynı rol kullanılıyor.\n- **Bağımlılık tabanlı motor:** Her düğüm ürettiği çıktıları (artifact) ve bağımlılıklarını beyan ediyor; motor bağımlılıklar tamamlanınca düğümü başlatıyor. Başarısızlıkta **yeniden çalışma (rework) kenarları** ile döngü kurulabiliyor; adı da buradan geliyor.\n- **Dağıtım:** `./start.sh` sabitlenmiş bir GHCR imajını çekip Docker Compose ile ayağa kaldırıyor (port 8090). Sandbox'lar için host'un **Docker soketi** kullanılıyor; README bunun güvenilir ekipler için uygun olduğunu, çok kiracılı kullanım için olmadığını açıkça belirtiyor.\n- **Entegrasyon yüzeyi:** OpenAPI ile tanımlı HTTP API ve **MCP API**; `loopforge-cli` npm paketi ile hazır iş akışları doğrudan mevcut asistanına (Claude Code, Codex vb.) kurulabiliyor. Lisans **MIT**.",
+        "why": "- **Bireysel ajandan ekip sürecine:** 2026'nın ana sorusu artık \"ajan kod yazabilir mi?\" değil, \"ajanı ekibin teslimat sürecine **denetlenebilir** şekilde nasıl yerleştiririz?\". LoopForge doğrudan bu soruya cevap veriyor.\n- **Bu haftanın ana teması ile örtüşüyor:** Plannotator, shadcn/improve ve Codex Security gibi projelerin hepsi **insanı döngüde tutma** üzerine kuruluydu. LoopForge bunu tek bir kişiden **organizasyon seviyesine** taşıyor.\n- **Satıcıdan bağımsızlık:** On farklı ajanı destekleyip kendi sunucunda çalışması, tek bir sağlayıcıya kilitlenmek istemeyen kurumlar için cazip.\n- **Tencent etkisi ve maliyet takibi:** Büyük bir şirketin iç kullanımdan çıkardığı bir araç olması ve gereksinim bazında maliyet raporlaması, yöneticilerin aradığı \"ajan harcamasının karşılığı ne?\" sorusuna somut cevap veriyor.\n- **Kime hitap ediyor:** Platform/DevEx ekipleri, mühendislik yöneticileri ve düzenlemeye tabi sektörlerde onay izi tutmak zorunda olan yazılım ekipleri.",
+        "evolve": "- **SOP'ların kod olarak dışa aktarımı:** Şu an iş akışları yalnızca görsel tasarımcıda; YAML gibi bir formatta dışa aktarma (yol haritasında var) **sürüm kontrolü ve kod incelemesi** ile yönetimi mümkün kılar.\n- **Güvenli çok kiracılık:** Docker soketi yerine gVisor, Firecracker gibi **mikro VM** yalıtımı eklenirse paylaşımlı kurumsal kurulumlar için uygun hâle gelir.\n- **Dil desteği:** Sohbet çalışma alanı şimdilik Çince; tam İngilizce (ve yerelleştirme altyapısıyla diğer diller) global benimsemenin önündeki en büyük engeli kaldırır.\n- **Kurumsal sistem SOP'ları:** PL/SQL paketleri veya ERP özelleştirmeleri (ör. IFS) için hazır SOP şablonları: veritabanı migration'ı üret → test şemasında çalıştır → DBA onay kapısı → canlıya al. Onay kapıları bu tür kritik veritabanı değişiklikleri için biçilmiş kaftan.\n- **Veritabanı seçenekleri:** MySQL'e ek olarak PostgreSQL desteği, mevcut altyapıya kolay entegrasyon sağlar.\n- **Kalite metrikleri:** Hangi rol/model kombinasyonunun daha az rework ve daha düşük maliyetle sonuç verdiğini gösteren karşılaştırmalı analizler, ekiplerin ajan seçimini veriye dayandırmasını sağlar."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üreticinin bulutu yerine kendi sunucunda veya altyapında çalıştırılması. Veri ve kontrol sende kalır."
+        },
+        {
+          "term": "Kodlama ajanı",
+          "def": "Kodu okuyabilen, dosya düzenleyebilen ve komut çalıştırarak çok adımlı yazılım işlerini kendi başına yürütebilen yapay zekâ aracı (ör. Claude Code, Codex)."
+        },
+        {
+          "term": "SOP (Standart İşletim Prosedürü)",
+          "def": "Bir işin her seferinde aynı adımlar ve aynı kontrollerle yapılmasını sağlayan tanımlı süreç. LoopForge'da görsel olarak tasarlanan iş akışlarını ifade eder."
+        },
+        {
+          "term": "Sandbox (yalıtılmış alan)",
+          "def": "Bir programın ana sisteme zarar veremeyeceği, sınırları çizilmiş ayrı bir çalışma ortamı."
+        },
+        {
+          "term": "Docker",
+          "def": "Uygulamaları tüm bağımlılıklarıyla birlikte 'konteyner' adı verilen taşınabilir paketlerde çalıştıran platform."
+        },
+        {
+          "term": "Docker soketi",
+          "def": "Docker motorunu yönetmeye yarayan iletişim noktası. Ona erişen bir program yeni konteyner başlatabildiği için pratikte sunucu üzerinde geniş yetkiye sahip olur."
+        },
+        {
+          "term": "Onay kapısı (approval gate)",
+          "def": "İş akışında, bir insan çıktıyı inceleyip onaylamadan sonraki adıma geçilmesini engelleyen kontrol noktası."
+        },
+        {
+          "term": "Executor (çalıştırıcı)",
+          "def": "Bir görevi fiilen yerine getiren bileşen. Burada her rolün işini hangi kodlama ajanı CLI'sinin yapacağını belirtir."
+        },
+        {
+          "term": "Artifact (çıktı)",
+          "def": "Bir iş akışı adımının ürettiği dosya, rapor, kod değişikliği gibi somut sonuç."
+        },
+        {
+          "term": "PR (Pull Request)",
+          "def": "Bir kod değişikliğinin ana koda eklenmeden önce incelenmesi için açılan öneri."
+        },
+        {
+          "term": "Alt ajan (subagent)",
+          "def": "Ana ajanın bir işi bölüp devrettiği, belirli bir role veya göreve odaklanmış yardımcı ajan."
+        },
+        {
+          "term": "OpenAPI",
+          "def": "Bir HTTP API'sinin uç noktalarını, parametrelerini ve cevaplarını makinece okunabilir şekilde tanımlayan standart format."
+        },
+        {
+          "term": "Çok kiracılık (multi-tenancy)",
+          "def": "Tek bir yazılım kurulumunun, birbirinin verisini göremeyen birden fazla müşteri veya ekip tarafından güvenle paylaşılması."
+        },
+        {
+          "term": "Mikro VM",
+          "def": "Çok hızlı açılan, minimal kaynak kullanan ama konteynerden daha güçlü yalıtım sağlayan hafif sanal makine (ör. Firecracker)."
+        },
+        {
+          "term": "Migration",
+          "def": "Veritabanı şemasındaki değişiklikleri (tablo ekleme, kolon değiştirme vb.) sıralı ve tekrarlanabilir betikler hâlinde uygulama yöntemi."
+        }
+      ]
+    }
+  ]
+}
