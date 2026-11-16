@@ -1,0 +1,287 @@
+{
+  "date": "2026-11-16",
+  "projects": [
+    {
+      "name": "ModernRelay/omnigraph",
+      "url": "https://github.com/ModernRelay/omnigraph",
+      "stars": "2.7k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Omnigraph**, yapay zekâ ajanlarının **ortak ve kalıcı bir hafızaya** ihtiyaç duyduğu yeni dönem için tasarlanmış bir **graf veritabanı**. Bugün **174 yeni yıldızla** Rust trend listesinin zirvesinde.\n\nÇözdüğü problem şu: Uzun süre çalışan, birbirleriyle iş paylaşan birden fazla ajan aynı bilgiyi okuyup güncellemek zorunda. Bugün bu genellikle dağınık bir kurguyla yapılıyor — bir **vektör veritabanı**, bir arama motoru, bir ilişkisel veritabanı ve araya yazılmış yapıştırıcı kod. Omnigraph bunları tek çatıda topluyor:\n\n- **Tipli ontoloji:** Şirketin \"dünya modeli\" (kişiler, projeler, müşteriler ve aralarındaki ilişkiler) bir şemayla tanımlanıyor ve her yazma işleminde motor tarafından **zorla uygulanıyor**. Ajan saçma bir kayıt ekleyemiyor.\n- **Tek sorguda çoklu arama:** Graf gezinme + vektör benzerliği + tam metin arama (**BM25**) aynı sorguda birleşiyor.\n- **Git gibi dallanma:** Ajan doğrudan ana veriye yazmak yerine kendi **dalında (branch)** çalışıyor; değişiklik incelenip ana dala birleştiriliyor. Geçmişe dönüp verinin eski hâline bakmak da mümkün.\n\nHedeflenen kullanımlar: **şirket beyni** (tüm kurumsal bilginin tek grafta toplanması), **ajan hafızası**, kodlama ajanlarının okuyup yazdığı **iş/bağımlılık grafı** ve ML deney verisi.",
+        "tech": "**Dil ve depolama:** Motor **Rust** ile (2024 sürümü) yazılmış. En dikkat çekici karar, verinin yerel disk yerine doğrudan **nesne depolamada (object storage)** — AWS S3, Cloudflare R2, MinIO, RustFS, Azure — tutulabilmesi. Yani **depolama ve hesaplama ayrık**: sunucuyu kapatıp açsanız da veri S3'te duruyor, ölçekleme ucuzluyor.\n\n**Açık veri formatı — Lance:** Graf verisi, yapay zekâ verisi için tasarlanmış açık ve sürümlenebilir **Lance** sütunlu formatında saklanıyor. Bu iki şey kazandırıyor: (1) vektör indeksleri ve sürümleme formatın içinde hazır geliyor, (2) veriniz kapalı bir formata hapsolmuyor; başka araçlarla da okunabiliyor. Dallanma ve \"zaman yolculuğu\" büyük ölçüde Lance'in sürüm mekanizmasının üstüne kurulu.\n\n**Sorgu ve şema:** Şemalar `.pg` dosyalarında düğüm/kenar tipleri, anahtarlar ve kısıtlarla tanımlanıyor; sorgular `.gq` dosyalarında **saklı sorgu (stored query)** olarak yazılıp **isimle** çağrılıyor (`omnigraph query search_docs ...`). Sonuçların birleştirilmesinde **Reciprocal Rank Fusion (RRF)** kullanılıyor — farklı arama yöntemlerinden gelen sıralamaları adil biçimde harmanlayan basit ama etkili bir teknik.\n\n**Altyapıyı kod olarak yönetme:** Bir `cluster.yaml` dosyası grafları, şemaları, sorguları ve politikaları tanımlıyor. `cluster plan` farkı gösteriyor, `cluster apply` uyguluyor — tıpkı **Terraform** gibi. Değişiklikler sunucu yeniden başlatılmadan devreye giriyor.\n\n**Güvenlik:** Yetkilendirme, AWS'nin açık kaynak politika dili **Cedar** ile yapılıyor ve **her yazma işleminde sunucu tarafında** denetleniyor. İşlemi yapan kimlik token'dan sunucuda çözülüyor; istemci kendini başkası gibi gösteremiyor.\n\n**Erişim yolları:** TypeScript SDK, yerleşik **MCP** uç noktası (`/mcp`), HTTP/OpenAPI ve Zed editörünün arayüz çatısı **GPUI** ile yazılmış masaüstü uygulaması **Omnigraph Studio**. Ayrıca CLI kendi **ajan becerisini (skill)** dışa aktarabiliyor; böylece Claude Code gibi bir ajan, kurulu sürümle birebir uyumlu kullanım kılavuzunu yüklüyor.",
+        "why": "**Zamanlama:** 2026'nın baskın konusu \"ajanlar için bağlam ve hafıza\". Tek bir sohbet penceresinin ötesine geçen, günlerce çalışan ve ekip hâlinde iş bölen ajanlar yaygınlaştıkça \"bu ajanlar neyi ortak biliyor ve kim neyi değiştirdi?\" sorusu kritik hâle geldi. Omnigraph bu soruya **veritabanı disipliniyle** cevap veriyor.\n\n**Farkı:** Ajan hafızası projelerinin çoğu ya serbest metin notlarına ya da sadece vektör aramaya dayanıyor. Omnigraph ise üç şeyi birleştiriyor: **şema zorlaması** (veri tutarlılığı), **dallanma/birleştirme** (ajanın yazdığını insanın incelemesi) ve **politika** (kim neyi değiştirebilir). Bu üçlü, kurumların ajanlara gerçek veri emanet etmesinin ön şartı.\n\n**Kitle:**\n- Kurum içi \"şirket beyni\" ya da **RAG** sistemi kuran ekipler\n- Çok ajanlı sistem geliştiren mühendisler\n- Veri mühendisleri: Lance/S3 tabanlı mimari, mevcut **lakehouse** yaklaşımıyla uyumlu\n\n**ERP perspektifi:** IFS gibi bir ERP'de müşteri–sipariş–parça–tedarikçi ilişkileri zaten bir graf. Bu ilişkileri tipli bir ontolojiye döküp ajanların sorgulamasına açmak; ajan önerilerini de doğrudan veriye değil, **incelenebilir bir dala** yazdırmak, ERP dünyasının \"kontrolsüz değişiklik\" korkusuna iyi bir yanıt.",
+        "evolve": "**Eksikler ve riskler:**\n- **Olgunluk:** Proje 0.14 sürümünde; istemci-sunucu sözleşmesinin sürümle birebir eşleşmesi gerekiyor. Sık kırılan API'ler üretim kullanımını zorlaştırabilir.\n- **Yeni sorgu dili öğrenme maliyeti:** `.pg`/`.gq` kendi dilleri. Standart **GQL** veya **Cypher** desteği gelirse Neo4j gibi sistemlerden geçiş kolaylaşır.\n- **Bulut sürümü kapalı önizlemede:** Ticari model şekillendikçe açık kaynak çekirdeğin kapsamı netleşmeli.\n\n**Fırsatlar:**\n- **İlişkisel veritabanlarından içe aktarma:** Oracle/PostgreSQL tablolarını yabancı anahtar ilişkilerinden otomatik olarak graf şemasına çeviren bir araç, ERP verisini ajanlara açmanın en kısa yolu olur.\n- **Değişiklik yakalama (CDC):** Kaynak sistemlerdeki güncellemeleri sürekli grafa akıtan bağlayıcılar, \"canlı şirket beyni\" fikrini gerçek kılar.\n- **Birleştirme çatışmalarında yapay zekâ:** İki ajanın aynı düğümü farklı değiştirdiği durumlarda çatışmayı açıklayan ve çözüm öneren bir inceleme ekranı Studio'ya çok yakışır.\n- **Değerlendirme (eval) entegrasyonu:** Dallar zaten deney gibi; bir dalın ajan başarımını nasıl değiştirdiğini ölçen hazır araçlar ML ekipleri için güçlü bir satış noktası olur."
+      },
+      "glossary": [
+        {
+          "term": "Graf veritabanı",
+          "def": "Veriyi düğümler (varlıklar) ve aralarındaki kenarlar (ilişkiler) olarak saklayan veritabanı türü. \"Bu müşterinin siparişlerindeki parçaların tedarikçileri kim?\" gibi ilişki zinciri sorularında çok hızlıdır."
+        },
+        {
+          "term": "Ontoloji",
+          "def": "Bir alandaki kavramların, tiplerinin ve aralarındaki ilişkilerin resmî tanımı. Kısaca, sistemin dünyayı nasıl gördüğünü anlatan sözlük ve kurallar bütünü."
+        },
+        {
+          "term": "Vektör veritabanı",
+          "def": "Metin veya görselleri sayı dizilerine (vektörlere) çevirip saklayan ve anlamca benzer içerikleri bulmaya yarayan veritabanı."
+        },
+        {
+          "term": "Vektör ANN",
+          "def": "Approximate Nearest Neighbor (yaklaşık en yakın komşu): milyonlarca vektör arasından en benzerlerini, kesin sonuçtan çok az sapma pahasına çok hızlı bulan arama yöntemi."
+        },
+        {
+          "term": "BM25",
+          "def": "Klasik tam metin arama algoritması. Kelimelerin bir belgede ne sıklıkta geçtiğine ve ne kadar nadir olduklarına bakarak belgeleri sıralar."
+        },
+        {
+          "term": "Reciprocal Rank Fusion (RRF)",
+          "def": "Farklı arama yöntemlerinden gelen sıralı listeleri, her sonucun listelerdeki sırasına göre puanlayarak tek listede birleştiren teknik."
+        },
+        {
+          "term": "Branch (dal)",
+          "def": "Git'ten gelen kavram: ana veriyi bozmadan ayrı bir kopyada değişiklik yapma alanı. İş bitince değişiklikler ana dala birleştirilir (merge)."
+        },
+        {
+          "term": "Üç yollu birleştirme (three-way merge)",
+          "def": "İki dalı birleştirirken, ikisinin ortak atasını da referans alarak hangi değişikliğin kimden geldiğini anlayan birleştirme yöntemi."
+        },
+        {
+          "term": "Nesne depolama (object storage)",
+          "def": "Dosyaları klasör yapısı yerine benzersiz anahtarlarla saklayan, ucuz ve neredeyse sınırsız ölçeklenen depolama türü. AWS S3 en bilinen örneğidir."
+        },
+        {
+          "term": "S3 uyumlu",
+          "def": "Amazon S3'ün API'siyle aynı şekilde konuşabilen depolama servisleri (MinIO, Cloudflare R2, RustFS gibi). Uygulama değişmeden farklı sağlayıcılara geçilebilir."
+        },
+        {
+          "term": "Lance",
+          "def": "Yapay zekâ verileri için tasarlanmış açık kaynak sütunlu veri formatı. Vektör indeksleme, sürümleme ve büyük ikili dosyaları (blob) yerleşik olarak destekler."
+        },
+        {
+          "term": "Lakehouse",
+          "def": "Veri gölünün (ucuz, ham depolama) esnekliğiyle veri ambarının (yapılandırılmış, sorgulanabilir) düzenini birleştiren veri mimarisi."
+        },
+        {
+          "term": "Saklı sorgu (stored query)",
+          "def": "Sunucuya önceden kaydedilen ve sonradan sadece adı ve parametreleriyle çağrılan sorgu. Hem güvenliği hem tekrar kullanımı kolaylaştırır."
+        },
+        {
+          "term": "Terraform tarzı plan/apply",
+          "def": "Altyapıyı bir yapılandırma dosyasında tarif edip önce farkı önizleme (plan), sonra uygulama (apply) yaklaşımı. Değişiklikler kontrollü ve tekrarlanabilir olur."
+        },
+        {
+          "term": "Cedar",
+          "def": "AWS'nin geliştirdiği açık kaynak yetkilendirme politika dili. \"Kim, hangi kaynakta, hangi işlemi yapabilir\" kurallarını okunur biçimde yazmayı sağlar."
+        },
+        {
+          "term": "Bearer token",
+          "def": "İsteğin başlığına eklenen ve sahibini doğrulayan erişim anahtarı. Token'ı taşıyan kişi yetkili sayılır, bu yüzden gizli tutulmalıdır."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "RAG",
+          "def": "Retrieval-Augmented Generation: dil modeli cevap üretmeden önce ilgili belgeleri bir kaynaktan çekip bağlama ekleme yöntemi. Modelin güncel ve kuruma özel bilgiyle konuşmasını sağlar."
+        },
+        {
+          "term": "GPUI",
+          "def": "Zed kod editörünün ekibi tarafından Rust ile yazılmış, ekran kartını kullanarak çizim yapan hızlı masaüstü arayüz çatısı."
+        },
+        {
+          "term": "CDC (Change Data Capture)",
+          "def": "Bir veritabanındaki ekleme, güncelleme ve silmeleri anında yakalayıp başka sistemlere aktarma tekniği."
+        },
+        {
+          "term": "Cypher / GQL",
+          "def": "Graf veritabanları için sorgu dilleri. Cypher Neo4j'nin dilidir; GQL ise graf sorguları için ISO standardı hâline gelen dildir."
+        }
+      ]
+    },
+    {
+      "name": "antithesishq/bombadil",
+      "url": "https://github.com/antithesishq/bombadil",
+      "stars": "2.0k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Bombadil**, web ve terminal arayüzleri için **özellik tabanlı test (property-based testing)** aracı. Arkasında, deterministik simülasyon testleriyle tanınan **Antithesis** şirketi var. Bugün **202 yeni yıldızla** Rust listesinde öne çıkıyor.\n\nKlasik arayüz testlerinde (Playwright, Cypress) \"şu butona tıkla, şu yazı çıkmalı\" gibi **tek tek senaryolar** yazarsınız. Sorun iki yönlü:\n\n- **Pahalı:** Yüzlerce senaryoyu bakımda tutmak zor; arayüz değiştikçe testler kırılır — yapay zekâ ajanlarının yazdığı testler de dahil.\n- **Sınırlı:** Sadece aklınıza gelen yolları test edersiniz. Asıl hatalar ise kimsenin düşünmediği tıklama sıralarında, garip zamanlamalarda, beklenmedik girdilerde saklanır.\n\nBombadil yaklaşımı tersine çeviriyor: Senaryo yerine **genel kurallar** yazıyorsunuz — \"sayfada hiçbir zaman yakalanmamış JavaScript hatası olmamalı\", \"yükleniyor göstergesi çıktıysa **eninde sonunda** kaybolmalı\", \"hata mesajı bir süre sonra kapanmalı\". Araç uygulamanızı **kendi kendine, rastgele ama sistematik biçimde** gezip tıklıyor ve bu kurallardan biri çiğnendiği anda raporluyor.\n\nHiç spesifikasyon yazmadan bile çalışıyor: varsayılan kurallar yakalanmamış hataları, reddedilmiş promise'leri, konsol hata loglarını ve **HTTP 4xx/5xx** yanıtlarını kontrol ediyor. Terminal tarafında ise CLI, REPL ve **TUI** uygulamalarını stdin üzerinden sürüyor.",
+        "tech": "**Çekirdek Rust, spesifikasyon TypeScript:** Motor Rust ile yazılmış; testleri ise geliştiricinin zaten bildiği **TypeScript/JavaScript** ile yazıyorsunuz. Spesifikasyonlar, içinde JS çalıştırmak için Rust ile yazılmış **Boa** motoruyla yürütülüyor — Node.js gerekmiyor (bu yüzden Node'a özel npm paketleri çalışmayabiliyor).\n\n**Tarayıcıyı nasıl sürüyor?** Depoda kendi **CDP (Chrome DevTools Protocol)** istemcisi var; protokol tanımlarından kod üretiliyor. Böylece Playwright gibi ara katmanlara bağımlı kalmadan Chrome'u doğrudan yönetiyor.\n\n**Çalışma döngüsü:**\n1. Tarayıcıdan/terminalden mevcut durumu çıkar\n2. Tüm kuralları bu duruma karşı kontrol et\n3. Duruma göre bir sonraki eylemi seç ve uygula\n4. Bir olay bekle (sayfa geçişi, **DOM** değişimi, terminal çıktısı veya zaman aşımı)\n5. Başa dön\n\n**Zamansal mantık (LTL):** İşin entelektüel kalbi `lib/bombadil-ltl`. Kurallar **doğrusal zamansal mantık** operatörleriyle yazılıyor:\n\n- `always(x)` — x her durumda doğru olmalı (değişmez kural)\n- `eventually(x)` — x şimdi ya da gelecekte bir noktada doğru olmalı\n- `next(x)` — x bir sonraki durumda doğru olmalı\n\nÖrnek: `now(() => butonaBasildi).implies(now(() => spinnerGorunur).and(eventually(() => !spinnerGorunur)))` — \"butona basıldıysa spinner görünmeli ve sonunda kaybolmalı.\" Bu tür \"zaman içinde\" kuralları klasik testlerle ifade etmek çok zordur.\n\n**Eylem üreticileri (action generators):** Ne yapılacağını belirleyen fonksiyonlar bir **ağaç** döndürüyor ve dallar `weighted([...])` ile **ağırlıklandırılabiliyor** — örneğin %80 form doldurma, %20 sayfa yenileme. Durumu okuyan **extractor**'lar ise tarayıcının içinde her yakalanan durumda çalışıp JSON döndürüyor.\n\n**Üç ortam:** Yerel geliştirme, CI ve Antithesis'in deterministik hipervizörü. Sonuncusu, bulunan hatanın **birebir yeniden oynatılabilmesi** anlamına geliyor — arayüz testlerinin en büyük derdi olan \"bende çalışıyor\"a karşı güçlü bir silah.",
+        "why": "**Yapay zekâ çağının test sorunu:** Kodlama ajanları kodu hiç olmadığı kadar hızlı üretiyor; ama ajanların yazdığı örnek tabanlı testler de kırılgan ve sadece \"mutlu yolu\" kapsıyor. Ekipler, kodun **genel olarak doğru davrandığını** gösterecek daha güçlü bir güvence arıyor. Özellik tabanlı test, insanın kuralları belirleyip makinenin keşfi yaptığı bu iş bölümüne çok uygun.\n\n**Ajanlarla doğal uyum:** \"Hiçbir zaman 5xx dönmemeli\" gibi kurallar, ajanın değişiklik yaptıktan sonra kendini kontrol edebileceği **otomatik bir hakem** işlevi görüyor. Testleri yeniden yazmak yerine kurallar sabit kalıyor.\n\n**Güvenilir marka:** Antithesis, dağıtık sistemlerde (ör. veritabanlarında) bulunması neredeyse imkânsız hataları yakalamasıyla tanınıyor. Aynı felsefenin ücretsiz ve açık kaynak olarak **ön yüze** taşınması dikkat çekti.\n\n**Kitle:**\n- Playwright/Cypress test bakımından yorulan ön yüz ekipleri\n- Karmaşık form ve iş akışlarına sahip kurumsal web uygulamaları geliştirenler\n- TUI/CLI araç geliştiricileri (terminal desteği rakiplerde nadir)\n\n**ERP bağlantısı:** IFS Aurena gibi web tabanlı ERP ekranlarında asıl hatalar genellikle \"kaydet'e iki kez basıp geri dönünce\" gibi beklenmedik sıralarda çıkar. \"Kayıt sonrası hata bildirimi eninde sonunda kaybolmalı\" ya da \"aynı sipariş iki kez oluşmamalı\" gibi kurallar bu tür hataları yakalamak için biçilmiş kaftan.",
+        "evolve": "**Eksikler:**\n- **Öğrenme eğrisi:** Zamansal mantık güçlü ama çoğu geliştiriciye yabancı. Hazır \"kural kalıpları\" kütüphanesi (oturum açma, form gönderme, sepet) benimsenmeyi hızlandırır.\n- **Sınırlı JS çalışma ortamı:** Boa tabanlı ortamda birçok npm paketi çalışmıyor; daha geniş uyumluluk yardımcı kütüphane kullanımını kolaylaştırır.\n- **Hata küçültme (shrinking) görünürlüğü:** Bulunan hatanın en kısa adım dizisine indirgenmesi kullanıcı deneyiminin kilit noktası; bu raporların görsel ve paylaşılabilir olması (video + adım listesi) çok değerli olur.\n\n**Fırsatlar:**\n- **Yapay zekâ ile kural üretimi:** Uygulamayı ve gereksinim belgesini okuyup aday özellikler öneren bir ajan; insan sadece onaylar.\n- **Playwright testlerinden dönüşüm:** Mevcut senaryo testlerinden ortak değişmezleri çıkarıp Bombadil kurallarına çeviren bir araç, geçiş engelini kaldırır.\n- **Kapsam haritası:** Keşfin hangi ekranlara ve durumlara ulaştığını görselleştirmek, \"ne kadar test ettik?\" sorusuna cevap verir.\n- **Mobil ve masaüstü:** Aynı modelin mobil uygulamalara veya Electron'a genişlemesi doğal bir sonraki adım.\n- **Erişilebilirlik kuralları:** \"Her buton erişilebilir bir isme sahip olmalı\" gibi hazır kurallar varsayılan pakete eklenebilir."
+      },
+      "glossary": [
+        {
+          "term": "Özellik tabanlı test (property-based testing)",
+          "def": "Tek tek örnekler yerine sistemin her durumda uyması gereken genel kuralları yazıp, aracın binlerce rastgele girdi ve senaryoyla bu kuralları sınamasına dayanan test yaklaşımı."
+        },
+        {
+          "term": "Örnek tabanlı test",
+          "def": "Belirli bir girdi ve beklenen çıktıyla yazılan klasik test. \"2+2 verince 4 dönmeli\" gibi."
+        },
+        {
+          "term": "Fuzzing",
+          "def": "Bir programa çok sayıda rastgele veya beklenmedik girdi vererek çökme ve hata arama tekniği."
+        },
+        {
+          "term": "Playwright / Cypress",
+          "def": "Web uygulamalarını gerçek tarayıcıda otomatik olarak tıklayıp test etmeye yarayan popüler uçtan uca test araçları."
+        },
+        {
+          "term": "Değişmez (invariant)",
+          "def": "Sistemin her anında doğru olması gereken koşul. Örneğin \"bakiye hiçbir zaman eksiye düşmemeli\"."
+        },
+        {
+          "term": "Doğrusal zamansal mantık (LTL)",
+          "def": "Bir koşulun zaman içinde nasıl davranması gerektiğini — her zaman, eninde sonunda, bir sonraki adımda — ifade etmeye yarayan mantık sistemi."
+        },
+        {
+          "term": "CDP (Chrome DevTools Protocol)",
+          "def": "Chrome tarayıcısını dışarıdan programla yönetmeye yarayan protokol. Geliştirici araçları ve otomasyon araçları bunu kullanır."
+        },
+        {
+          "term": "DOM",
+          "def": "Document Object Model: tarayıcının bir web sayfasını ağaç yapısında temsil etme biçimi. JavaScript sayfayı bu ağaç üzerinden okur ve değiştirir."
+        },
+        {
+          "term": "TUI",
+          "def": "Text-based User Interface: terminal içinde çalışan, menü ve pencereleri karakterlerle çizen metin tabanlı arayüz."
+        },
+        {
+          "term": "REPL",
+          "def": "Read-Eval-Print Loop: komut yazıp anında sonucunu gördüğünüz etkileşimli komut ortamı (Python kabuğu gibi)."
+        },
+        {
+          "term": "HTTP 4xx / 5xx",
+          "def": "Web isteklerinde hata durum kodları. 4xx istemci kaynaklı hataları (ör. 404 bulunamadı), 5xx sunucu kaynaklı hataları (ör. 500 sunucu hatası) gösterir."
+        },
+        {
+          "term": "Promise rejection",
+          "def": "JavaScript'te asenkron bir işlemin başarısız olması. Kimse bu hatayı ele almazsa uygulamada sessiz bozulmalara yol açabilir."
+        },
+        {
+          "term": "Extractor",
+          "def": "Bombadil'de, test edilen sayfanın veya terminalin o anki durumundan ihtiyaç duyulan bilgiyi çekip JSON olarak döndüren fonksiyon."
+        },
+        {
+          "term": "Eylem üretici (action generator)",
+          "def": "Test aracının bir sonraki adımda ne yapacağını (tıklama, yazma, yenileme) mevcut duruma göre seçen fonksiyon."
+        },
+        {
+          "term": "Boa",
+          "def": "Rust ile yazılmış bir JavaScript motoru. Rust programlarının içinde JS kodu çalıştırmayı sağlar."
+        },
+        {
+          "term": "Deterministik simülasyon",
+          "def": "Bir sistemi her seferinde birebir aynı şekilde yeniden oynatılabilecek kontrollü bir ortamda çalıştırma. Bulunan hata tekrar tekrar üretilebilir."
+        },
+        {
+          "term": "Hipervizör",
+          "def": "Bilgisayar üzerinde sanal makineleri oluşturan ve yöneten yazılım katmanı."
+        },
+        {
+          "term": "Shrinking (küçültme)",
+          "def": "Hata bulan uzun bir rastgele senaryoyu, hatayı hâlâ tetikleyen en kısa adım dizisine indirgeme işlemi."
+        },
+        {
+          "term": "CI (Sürekli Entegrasyon)",
+          "def": "Kod her değiştiğinde testlerin ve derlemenin otomatik çalıştırıldığı süreç ve sistemler."
+        }
+      ]
+    },
+    {
+      "name": "PrefectHQ/fastmcp",
+      "url": "https://github.com/PrefectHQ/fastmcp",
+      "stars": "28.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**FastMCP**, yapay zekâ modellerini araçlara ve verilere bağlayan **Model Context Protocol (MCP)** için Python'daki fiilî standart çatı. İş akışı orkestrasyon aracı **Prefect**'in ekibi geliştiriyor. Bugün Python trend listesinde **82 yeni yıldızla** yer aldı; asıl rakamlar ise başka yerde: proje **günde bir milyon kez indiriliyor** ve ekibe göre tüm dillerdeki MCP sunucularının **%70'i** bir FastMCP sürümüyle çalışıyor.\n\nÇözdüğü problem: MCP sunucusu yazmak kâğıt üzerinde basit ama pratikte zahmetli — **JSON Schema** üretmek, girdileri doğrulamak, taşıma katmanını (stdio, HTTP) yönetmek, kimlik doğrulama ve protokol yaşam döngüsü... FastMCP bunların hepsini üstleniyor. Bir Python fonksiyonuna `@mcp.tool` yazdığınızda araç hazır:\n\n```python\nfrom fastmcp import FastMCP\nmcp = FastMCP(\"Demo\")\n\n@mcp.tool\ndef add(a: int, b: int) -> int:\n    \"\"\"İki sayıyı topla\"\"\"\n    return a + b\n```\n\nÜç ayağı var:\n- **Sunucular:** Fonksiyonları **araç (tool)**, **kaynak (resource)** ve **istem (prompt)** olarak dil modellerine açar.\n- **İstemciler:** Yerel ya da uzak herhangi bir MCP sunucusuna kodla veya CLI ile bağlanır.\n- **Uygulamalar (Apps):** Araçlara, doğrudan sohbet içinde görünen **etkileşimli arayüzler** ekler.",
+        "tech": "**Python'un tip ipuçlarından otomatik şema:** FastMCP'nin sihri, fonksiyon imzasını okuması. `a: int, b: int` tanımından JSON Schema'yı, docstring'den aracın açıklamasını üretiyor; gelen argümanları **Pydantic** ile doğruluyor. Geliştirici protokolü düşünmeden sadece iş mantığını yazıyor. Bu, **FastAPI**'nin web API'leri için yaptığının MCP karşılığı — isim benzerliği tesadüf değil.\n\n**Taşıma katmanı soyutlaması:** Aynı sunucu kodu yerelde **stdio** ile (Claude Desktop, Claude Code gibi istemciler alt süreç olarak başlatır), uzakta ise **Streamable HTTP** ile çalışabiliyor. İstemci tarafında bir URL vermek yeterli; taşıma pazarlığını kütüphane yapıyor.\n\n**Kimlik doğrulama:** Uzak MCP sunucularının en zor kısmı **OAuth** akışları; FastMCP bunları hazır sağlayıcılarla yönetiyor.\n\n**Tarihçe ve mimari olgunluk:** FastMCP 1.0, 2024'te **resmî MCP Python SDK'sına dahil edildi**. Bağımsız proje ise üst katmanda gelişmeye devam etti ve şu an 3.x üstünde (README FastMCP 2 ve 3'ten yükseltme kılavuzları sunuyor). Yani resmî SDK \"alt seviye protokol\", FastMCP \"uygulama çatısı\" rolünde.\n\n**Ekosistem kararları:**\n- Resmî **TypeScript** karşılığı (`@prefecthq/fastmcp-ts`) aynı ekip tarafından, aynı kavramlarla geliştiriliyor.\n- Belgeler **llms.txt** formatında da yayımlanıyor; kodlama ajanları sürümle eşleşen dokümanı ve bir \"sunucu yazma becerisi\"ni doğrudan yükleyebiliyor.\n- Kurulum için **uv** öneriliyor (`uv add fastmcp`).\n\n**Ticari katman:** **FastMCP Gateway** — sunucuları GitHub'dan dağıtma, dal önizlemeleri, şirket içi MCP kayıt defteri, SSO, araç düzeyinde **RBAC**, denetim logları. Açık çekirdek + kurumsal geçit modeli.",
+        "why": "**MCP artık altyapı:** 2025'te deneysel bir protokol olan MCP, 2026 itibarıyla Claude, ChatGPT, Gemini, Cursor ve neredeyse tüm ajan araçlarının ortak dili. Bir şirketin iç sistemini yapay zekâya açmanın standart yolu bir MCP sunucusu yazmak — ve Python'da bunun standart yolu FastMCP.\n\n**İstikrarlı yükseliş:** Bugünkü yıldız sayısı patlama değil, **sürekli talep** göstergesi. Trend listesinde sık görülmesinin sebebi, her yeni sürümün (özellikle **Apps** gibi sohbet içi arayüz yetenekleri) yeni bir geliştirici dalgası çekmesi.\n\n**Kime hitap ediyor?**\n- Kurum içi veriyi (veritabanı, ERP, CRM, dosya sunucusu) yapay zekâ asistanlarına açmak isteyen geliştiriciler\n- Kendi ajanını yazıp başka MCP sunucularını **istemci** olarak kullanmak isteyenler\n- Platform ekipleri: onlarca MCP sunucusunu yönetişim altında tutmak isteyen şirketler (Gateway)\n\n**PL/SQL & ERP açısından:** En somut fırsat burada. Bir Oracle veritabanına `python-oracledb` ile bağlanıp \"stok durumu getir\", \"açık siparişleri listele\", \"bir paketin kaynak kodunu göster\" gibi **salt okunur** araçları `@mcp.tool` ile yazmak bir öğleden sonralık iş. Sonuç: Claude Code ya da Claude Desktop'tan doğal dille ERP verisine erişen, yetkileri sizin belirlediğiniz bir asistan. IFS projeksiyonlarını (OData/REST API'leri) saran bir MCP sunucusu da aynı kolaylıkta yazılabilir.",
+        "evolve": "**Eksikler ve dikkat noktaları:**\n- **Hızlı sürüm değişimi:** Kısa sürede 1→2→3→sonrası geçişler ve SDK ile çakışan isimler (resmî SDK'nın içindeki eski FastMCP ile bağımsız paket) yeni başlayanların kafasını karıştırıyor. Tek, net bir \"hangi paketi kullanmalıyım\" rehberi faydalı olur.\n- **Güvenlik varsayılanları:** MCP sunucuları güçlü yetkilerle çalışıyor; **istem enjeksiyonuna** karşı araç düzeyinde onay, salt okunur mod ve hız sınırı gibi korumaların açık kaynak çekirdekte varsayılan gelmesi önemli. Bunların bir kısmı şu an ücretli Gateway tarafında.\n\n**Fırsatlar:**\n- **Veritabanı şablonları:** Oracle, PostgreSQL, SQL Server için şemayı okuyup güvenli, parametreli sorgu araçlarını otomatik üreten hazır \"starter\"lar; kurumsal benimsemeyi ciddi hızlandırır.\n- **Test ve değerlendirme araçları:** Bir MCP aracının modeller tarafından doğru anlaşılıp anlaşılmadığını ölçen yerleşik eval desteği (araç açıklamaları da bir tür \"prompt\").\n- **Apps'in olgunlaşması:** Sohbet içinde form, tablo, onay ekranı gösterebilmek; ERP gibi \"onay ister\" iş akışlarında insan-ajan işbirliğinin anahtarı olabilir.\n- **Gözlemlenebilirlik:** OpenTelemetry ile araç çağrılarının iz kaydı, \"ajan neden bu aracı çağırdı?\" sorusuna cevap verir."
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara, veritabanlarına ve servislere standart bir yolla bağlanmasını sağlayan açık protokol. \"Yapay zekâ için USB-C\" diye anılır."
+        },
+        {
+          "term": "MCP sunucusu / istemcisi",
+          "def": "Sunucu, araç ve verileri sunan taraftır; istemci ise (Claude Desktop, bir ajan) bu sunucuya bağlanıp araçları kullanan taraftır."
+        },
+        {
+          "term": "Tool / Resource / Prompt",
+          "def": "MCP'nin üç temel yapı taşı. Tool, modelin çağırabildiği bir işlev; resource, okunabilen bir veri kaynağı; prompt ise hazır, yeniden kullanılabilir bir istem şablonudur."
+        },
+        {
+          "term": "Dekoratör",
+          "def": "Python'da bir fonksiyonun üstüne @ ile yazılan ve ona ek davranış kazandıran yapı. @mcp.tool, sıradan bir fonksiyonu MCP aracına dönüştürür."
+        },
+        {
+          "term": "Tip ipucu (type hint)",
+          "def": "Python'da bir değişkenin veya parametrenin hangi türde olacağını belirten not (ör. a: int). Çalışmayı değiştirmez ama araçların kodu anlamasını sağlar."
+        },
+        {
+          "term": "JSON Schema",
+          "def": "Bir JSON verisinin hangi alanları, hangi türlerde içermesi gerektiğini tanımlayan standart. Dil modelleri araç parametrelerini bu şemadan öğrenir."
+        },
+        {
+          "term": "Pydantic",
+          "def": "Python'da tip ipuçlarını kullanarak veriyi doğrulayan ve dönüştüren popüler kütüphane."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Tip ipuçlarından otomatik doğrulama ve dokümantasyon üreten, çok popüler Python web API çatısı."
+        },
+        {
+          "term": "SDK",
+          "def": "Software Development Kit: bir platform veya protokol için geliştirmeyi kolaylaştıran hazır kütüphane ve araçlar paketi."
+        },
+        {
+          "term": "stdio",
+          "def": "Standart giriş/çıkış. Bir programın başka bir programla, ayrı ağ bağlantısı kurmadan, doğrudan metin akışı üzerinden konuşma yöntemi."
+        },
+        {
+          "term": "Streamable HTTP",
+          "def": "MCP'nin uzak sunucular için kullandığı taşıma yöntemi; istek-yanıt ve akış (streaming) iletişimini HTTP üzerinden yapar."
+        },
+        {
+          "term": "OAuth",
+          "def": "Kullanıcının şifresini paylaşmadan bir uygulamaya başka bir servisteki verilerine sınırlı erişim yetkisi vermesini sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "SSO",
+          "def": "Single Sign-On: tek bir oturum açmayla birden çok uygulamaya erişebilme."
+        },
+        {
+          "term": "RBAC",
+          "def": "Role-Based Access Control: yetkilerin kişilere değil rollere (ör. \"muhasebe\", \"yönetici\") verildiği erişim kontrol modeli."
+        },
+        {
+          "term": "llms.txt",
+          "def": "Bir sitenin dokümantasyonunu dil modellerinin kolayca okuyabileceği sade markdown biçiminde sunan basit standart."
+        },
+        {
+          "term": "uv",
+          "def": "Astral'ın Rust ile yazdığı, pip'ten çok daha hızlı Python paket ve proje yöneticisi."
+        },
+        {
+          "term": "İstem enjeksiyonu (prompt injection)",
+          "def": "Modelin okuduğu bir metne gizlenmiş talimatlarla modeli asıl görevinden saptırıp istenmeyen işlemler yaptırma saldırısı."
+        },
+        {
+          "term": "OData",
+          "def": "REST tabanlı, sorgulanabilir veri API'leri için standart protokol. IFS Cloud gibi ERP sistemleri verilerini bu yolla dışarı açar."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan iz (trace), metrik ve log toplamak için açık ve satıcıdan bağımsız standart."
+        },
+        {
+          "term": "Açık çekirdek (open core)",
+          "def": "Temel ürünün açık kaynak, kurumsal ek özelliklerin ise ücretli olarak sunulduğu iş modeli."
+        }
+      ]
+    }
+  ]
+}
