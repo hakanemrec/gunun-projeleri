@@ -1,0 +1,321 @@
+{
+  "date": "2026-11-18",
+  "projects": [
+    {
+      "name": "farion1231/cc-switch",
+      "url": "https://github.com/farion1231/cc-switch",
+      "stars": "155.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**CC Switch**, yapay zekâ kodlama araçları için **tek bir masaüstü yönetim paneli**. Claude Code, Claude Desktop, Codex, Gemini CLI, Grok Build, OpenCode, Kimi Code ve birkaç araç daha — toplam **12 araç** — tek uygulamadan yönetiliyor.\n\nÇözdüğü problem çok somut: Her aracın kendi ayar dosyası var (JSON, TOML, YAML, `.env`). Bugün Anthropic'in resmî API'sini, yarın daha ucuz bir **relay** sağlayıcısını, öbür gün yerel bir modeli denemek istediğinde bu dosyaları elle düzenlemen gerekiyor. MCP sunucularını, skill'leri ve prompt'ları da her araçta ayrı ayrı kurmak zorundasın.\n\nCC Switch'in sundukları:\n\n- **Tek tıkla sağlayıcı değiştirme:** 90+ hazır şablon (AWS Bedrock, NVIDIA NIM, topluluk relay'leri). Yalnızca uç nokta, anahtar ve model değişiyor; senin eklediğin hook'lar, eklentiler, yorumlar olduğu gibi kalıyor\n- **Üç bağlantı modu:** *Direct* (araç doğrudan sağlayıcıya gider), *Routing* (istekler senin makinendeki yerel proxy'den geçer, format dönüştürülür ve hata olursa sıradaki sağlayıcıya geçilir), *Aggregation* (birden çok sağlayıcının modelleri tek bir model listesinde birleşir)\n- **Merkezî MCP, Skills ve Prompt yönetimi:** Bir kez ekle, hangi araçlara senkronlanacağını seç\n- **Okunabilir oturumlar:** Araçların oturum loglarını \"her turda ne yapıldı, hangi dosya değişti, hangi adım patladı\" görünümüne çeviriyor\n- **Kullanım ve kota takibi:** Token harcaması, abonelik kotası, bakiye — sistem tepsisinde",
+        "tech": "**Teknoloji yığını:** Tauri 2 · Rust · React 18 · TypeScript · SQLite.\n\n- **Neden Tauri 2?** Electron gibi her uygulamaya ayrı bir Chromium gömmek yerine işletim sisteminin kendi WebView'ını kullanıyor. Sonuç: küçük kurulum boyutu, düşük bellek. Arayüz React ile yazılıyor ama dosya sistemi, ağ ve proxy işleri **Rust** tarafında — yani hassas ve performans isteyen kısımlar derlenmiş, güvenli bir dilde.\n- **Yerel proxy (Routing modu):** Araçların ayar dosyasına `http://127.0.0.1:15721` adresi ve `PROXY_MANAGED` gibi yer tutucu bir anahtar yazılıyor; gerçek anahtar CC Switch'te kalıyor. Proxy isteği alıp **API formatını dönüştürüyor** (örneğin Anthropic formatından OpenAI formatına), böylece Claude Code içinde GPT, Codex içinde Claude kullanılabiliyor.\n- **Dayanıklılık:** Her araç için bir **failover kuyruğu**, arkasında **circuit breaker** ve sağlayıcı sağlık izleme var. Bir sağlayıcı sürekli hata veriyorsa bir süre devre dışı bırakılıyor.\n- **Tek veri dosyası:** Sağlayıcılar, MCP, prompt'lar, skill'ler, kullanım kayıtları `cc-switch.db` adlı bir **SQLite** dosyasında. Yedeklemesi ve taşıması kolay.\n- **Deep Link (`ccswitch://`):** Bir web sitesindeki butona tıklayınca sağlayıcı veya MCP sunucusu doğrudan uygulamaya aktarılıyor.\n- **Ayrıntı:** Windows'ta WSL içindeki araçların ayarları da `\\\\wsl.localhost\\...` yoluyla yönetilebiliyor; WSL2'nin NAT modunda `127.0.0.1` Windows'a ulaşmadığı için **mirrored networking** öneriliyor.",
+        "why": "- **Araç patlaması:** 2026'da geliştiriciler tek bir kodlama ajanına bağlı kalmıyor; Claude Code, Codex, Gemini CLI, Kimi Code arasında gidip geliyor. Her birinin ayrı ayar formatı gerçek bir sürtünme. CC Switch bu ara katmanı ilk ve en kapsamlı çözenlerden.\n- **Maliyet baskısı:** Özellikle Çin'deki geliştirici topluluğunda resmî API yerine **relay** hizmetleri ve yerli modeller (Kimi, GLM, DeepSeek, MiniMax) yaygın. README'deki uzun sponsor listesi de bu ekosistemin ne kadar büyük olduğunu gösteriyor. Tek tıkla sağlayıcı değiştirmek burada doğrudan para demek.\n- **Çok dilli kitle:** README'nin Türkçe dahil 8 dile çevrilmiş olması, projeyi Çin dışına da taşımış.\n- **Sürekli güncellenme:** Yeni araçlar (Grok Build, Oh My Pi, Kimi Code) çıktıkça hızla destekleniyor; 155 bin yıldıza rağmen günde yüzlerce yıldız almaya devam etmesi bundan.\n\n**Kime hitap ediyor?** Birden fazla AI kodlama aracı kullanan, farklı modelleri ve sağlayıcıları deneyen, maliyetini izlemek isteyen her geliştiriciye.",
+        "evolve": "- **Güven ve şeffaflık:** API anahtarlarını yöneten ve trafiği yönlendiren bir araç için bağımsız güvenlik denetimi ve imzalı sürümler önemli. Sponsorların relay hizmeti olması, \"hangi sağlayıcı önerileri tarafsız?\" sorusunu doğuruyor; şablonların net bir şekilde \"resmî / topluluk / sponsor\" olarak etiketlenmesi faydalı olur.\n- **Takım modu:** Şu an kişisel bir masaüstü aracı. Şirket içinde merkezî bir sağlayıcı/MCP politikası dağıtan, bütçe limiti koyan bir \"takım sürümü\" büyük bir fırsat.\n- **Akıllı yönlendirme:** Failover var ama maliyet/gecikme/kaliteye göre **otomatik model seçimi** (basit iş ucuz modele, zor iş güçlü modele) henüz yok.\n- **Aggregation sınırları:** Aggregation modunda failover yok ve oturum içinde model değişince prompt önbelleği yeniden oluşturuluyor; bunu akıllıca yöneten bir mekanizma maliyetleri düşürür.\n- **Kurumsal entegrasyon:** Oturum loglarını (hangi dosya değişti, hangi adım başarısız) dışa aktarıp kod inceleme veya denetim süreçlerine bağlamak, özellikle ERP gibi değişiklik kontrolü sıkı ortamlarda değerli olur."
+      },
+      "glossary": [
+        {
+          "term": "Relay (API aktarıcı)",
+          "def": "Senin isteğini alıp asıl yapay zekâ sağlayıcısına ileten aracı hizmet. Genelde daha ucuz fiyat veya erişim kolaylığı sunar ama verin üçüncü bir taraftan geçer."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol. Bir MCP sunucusu, ajana yeni yetenekler (ör. GitHub'a erişim) kazandırır."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir yapay zekâ ajanına belirli bir işi nasıl yapacağını anlatan, yeniden kullanılabilir talimat ve dosya paketi."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle (HTML, JS) arayüzü, Rust ile arka ucu yazılan masaüstü uygulama çatısı. İşletim sisteminin kendi tarayıcı motorunu kullandığı için hafiftir."
+        },
+        {
+          "term": "WebView",
+          "def": "Bir uygulamanın içine gömülen, web sayfası gösterebilen tarayıcı bileşeni. Tauri bunu işletim sisteminden ödünç alır."
+        },
+        {
+          "term": "Electron",
+          "def": "Her uygulamaya kendi Chromium tarayıcısını gömen popüler masaüstü uygulama çatısı. Kolaydır ama kurulumları büyük ve bellek tüketimi yüksektir."
+        },
+        {
+          "term": "Proxy",
+          "def": "İstemci ile sunucu arasına giren ve istekleri ileten ara program. Bu sırada istekleri değiştirebilir, kaydedebilir veya başka yere yönlendirebilir."
+        },
+        {
+          "term": "Failover",
+          "def": "Bir hizmet hata verdiğinde otomatik olarak yedek bir hizmete geçilmesi."
+        },
+        {
+          "term": "Circuit breaker (devre kesici)",
+          "def": "Sürekli hata veren bir hizmete bir süreliğine istek göndermeyi durduran koruma deseni. Hem zaman kaybını önler hem de sorunlu hizmetin toparlanmasına fırsat tanır."
+        },
+        {
+          "term": "SQLite",
+          "def": "Sunucu gerektirmeyen, tüm veritabanını tek bir dosyada tutan hafif veritabanı motoru."
+        },
+        {
+          "term": "Deep Link",
+          "def": "Tıklandığında bir web sayfası yerine belirli bir uygulamayı açan ve ona veri aktaran özel bağlantı (ör. `ccswitch://...`)."
+        },
+        {
+          "term": "WSL (Windows Subsystem for Linux)",
+          "def": "Windows içinde gerçek bir Linux ortamı çalıştırmayı sağlayan Microsoft özelliği."
+        },
+        {
+          "term": "Mirrored networking",
+          "def": "WSL2'nin, Linux tarafının Windows ile aynı ağ adreslerini paylaştığı ağ modu. Böylece `127.0.0.1` her iki tarafta da aynı makineyi gösterir."
+        },
+        {
+          "term": "Prompt önbelleği (prompt cache)",
+          "def": "Modele tekrar tekrar gönderilen uzun metnin sağlayıcı tarafında saklanıp daha ucuz ve hızlı işlenmesi. Model değişince önbellek sıfırlanır."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlediği küçük parçalar (kelime veya kelime parçası). Ücretlendirme genelde token sayısına göre yapılır."
+        }
+      ]
+    },
+    {
+      "name": "anomalyco/hex",
+      "url": "https://github.com/anomalyco/hex",
+      "stars": "7.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Hex**, Mac, Windows ve Linux için **tamamen yerel çalışan sesle yazdırma (dikte)** uygulaması. Kullanımı tek cümle: **bir tuşa basılı tut, konuş, bırak — metin imlecin olduğu yere yapışsın.**\n\nNeden önemli? Bulut tabanlı dikte araçları sesini bir sunucuya gönderiyor. Hex ise ilk çalıştırmada bir konuşma modeli indiriyor, **sonrasında hiçbir veri makineden çıkmıyor.**\n\nÖne çıkan özellikler:\n\n- **Her uygulamada çalışır:** E-posta, IDE, terminal, tarayıcı — metin imlecin olduğu yere gider. Son dikteyi tekrar yapıştırmak için kısayol var\n- **Output adımları:** Her dikte, senin seçtiğin adımlardan geçiyor — kelime değiştirme, hazır temizlikler, kendi script'lerin, isteğe bağlı bir **OpenCode** ile yeniden yazım. **Uygulamaya veya siteye göre farklı adımlar** tanımlanabiliyor (ör. Slack'te samimi, e-postada resmî)\n- **Vocabulary:** Ürün, kişi, tablo adları gibi modelin bilmesi gereken özel kelimeler listesi\n- **History:** Diktelerin 7 gün aranabilir şekilde saklanması\n- **Annotate:** Ekrana çizip konuşurken kayıt alma; **Meetings** (macOS deneysel): görüşme kaydı ve transkript\n- **CLI ve SDK:** `hex transcribe toplanti.m4a` ile dosya dökümü; kimlik doğrulamalı yerel API ve TypeScript SDK ile kendi araçlarına entegrasyon",
+        "tech": "- **Saf Rust, Electron yok:** Hex, Rust 2024 sürümüyle yazılmış. Arayüz için ekibin kendi **Rune** UI kütüphanesi kullanılıyor; bu kütüphane pencere yönetimi için **winit**, GPU çizimi için **wgpu**, metin dizgisi için **parley** gibi Rust ekosistemi bileşenlerinin yamalı sürümlerine dayanıyor. Sonuç: tarayıcı motoru olmayan, hızlı açılan, küçük bir uygulama.\n- **Çıkarım motoru: transcribe.cpp + ggml.** Konuşma tanıma, llama.cpp'nin arkasındaki **ggml** kütüphanesini kullanan **transcribe.cpp** ile yapılıyor. Ekip bu kütüphaneyi kendi dalında yamalamış: yalnızca kullandıkları modellerin **Vulkan** shader'larını derleme, Parakeet için kelime listesine göre yeniden puanlama, Apple GPU'sunda (Metal) boşta kalınca belleği bırakma gibi.\n- **Model kataloğu:** Varsayılan İngilizce model **Parakeet Unified**, konuşurken yazıyor (streaming) — tuşu bıraktığında metin hazır. Ayrıca Whisper large-v3-turbo (neredeyse her dil), Parakeet v3 (25 Avrupa dili), Qwen3-ASR, Cohere Transcribe, Granite Speech gibi seçenekler var. **Kendi GGUF modelini de ekleyebiliyorsun.**\n- **Boyut disiplini:** `Cargo.toml`'daki yorumlar ilginç: hata ayıklama bilgisinin her derlemede ~19 GB yer kapladığı fark edilip kısıtlanmış, sürüm dosyalarından sembol tablosu atılmış (~11 MB tasarruf).\n- **Geliştirme modeli:** Proje **pull request kabul etmiyor**; issue açılıyor ve README'ye göre \"ajanlarımız genelde hızlıca hallediyor\". Yani kodun büyük kısmı AI ajanlarıyla geliştiriliyor.",
+        "why": "- **Anomaly ekibi:** Proje, trend listesinin müdavimi **OpenCode**'un arkasındaki ekipten (anomalyco). OpenCode'u tanıyan kitle Hex'e de hızla güveniyor; Output adımındaki OpenCode entegrasyonu da bu bağı güçlendiriyor.\n- **\"Sesle kodlama\" dalgası:** AI kodlama ajanlarıyla çalışırken uzun talimatları yazmak yerine söylemek giderek yaygınlaşıyor. Dikte artık sadece erişilebilirlik değil, **verimlilik aracı.**\n- **Gizlilik:** Toplantı, müşteri bilgisi, kod — bunları buluta göndermek istemeyenler için \"hiçbir şey makineden çıkmıyor\" güçlü bir vaat.\n- **Gerçekten çapraz platform:** Bu alandaki popüler açık kaynak araçların çoğu yalnızca macOS'ta. Hex Windows ARM64 ve Linux ARM64 dahil her yerde.\n\n**Kime hitap ediyor?** AI ajanlarına uzun prompt yazan geliştiricilere, çok yazı yazan herkese, gizliliğe önem veren şirket çalışanlarına.",
+        "evolve": "- **Türkçe deneyimi:** Whisper ve bazı çok dilli modeller Türkçeyi destekliyor, ama Türkçeye özel ince ayarlı (fine-tuned) bir modelin katalogda olması yerel kullanıcılar için büyük fark yaratır.\n- **Teknik sözlük paketleri:** Vocabulary listesi elle dolduruluyor. Örneğin bir projenin veritabanı şemasından veya kod tabanından tablo/fonksiyon adlarını otomatik çeken bir özellik, \"PL/SQL paket adlarını doğru yazan dikte\" gibi senaryoları mümkün kılar.\n- **Ajanlarla doğrudan entegrasyon:** Yerel API zaten var; diktenin doğrudan bir kodlama ajanına komut olarak gitmesi (yapıştırmadan) bir sonraki doğal adım.\n- **Meetings'in olgunlaşması:** Şu an macOS'ta deneysel. Konuşmacı ayırma ve otomatik özet ile tüm platformlara gelirse ücretli toplantı asistanlarına ciddi bir alternatif olur.\n- **Katkı modeli riski:** PR kabul etmeyen, ajanlarla geliştirilen bir proje modeli ilginç ama topluluğun katkı motivasyonunu zayıflatabilir; uzun vadede nasıl sürdürüleceği izlenmeye değer."
+      },
+      "glossary": [
+        {
+          "term": "Dikte (speech-to-text)",
+          "def": "Konuşmayı yazıya çevirme. Hex bunu bulut yerine tamamen kendi bilgisayarında yapar."
+        },
+        {
+          "term": "ASR (Automatic Speech Recognition)",
+          "def": "Otomatik konuşma tanıma; ses kaydını metne dönüştüren yapay zekâ modelleri ailesinin genel adı."
+        },
+        {
+          "term": "Streaming transkripsiyon",
+          "def": "Konuşma bitmesini beklemeden, sen konuşurken metni parça parça üreten tanıma yöntemi."
+        },
+        {
+          "term": "Whisper",
+          "def": "OpenAI'nin açık kaynak olarak yayımladığı, neredeyse her dili tanıyabilen konuşma tanıma modeli."
+        },
+        {
+          "term": "ggml",
+          "def": "Yapay zekâ modellerini sıradan bilgisayarlarda (CPU veya GPU) verimli çalıştırmak için yazılmış C kütüphanesi. llama.cpp'nin de temelidir."
+        },
+        {
+          "term": "GGUF",
+          "def": "ggml tabanlı araçların kullandığı, model ağırlıklarını ve ayarlarını tek dosyada tutan model dosya formatı."
+        },
+        {
+          "term": "Vulkan",
+          "def": "Farklı ekran kartlarında çalışan, düşük seviyeli bir grafik ve hesaplama arayüzü. Hex'te modeli GPU'da çalıştırmak için kullanılır."
+        },
+        {
+          "term": "Metal",
+          "def": "Apple'ın kendi cihazlarındaki GPU'ya erişim için sunduğu grafik ve hesaplama arayüzü."
+        },
+        {
+          "term": "Shader",
+          "def": "GPU üzerinde çalışan küçük program. Grafik çizmek kadar yapay zekâ hesaplamaları için de kullanılır."
+        },
+        {
+          "term": "wgpu",
+          "def": "Rust ile yazılmış, Vulkan, Metal ve DirectX üzerinde ortak bir arayüzle GPU kullanmayı sağlayan kütüphane."
+        },
+        {
+          "term": "winit",
+          "def": "Rust'ta farklı işletim sistemlerinde pencere açma ve klavye/fare olaylarını yakalama kütüphanesi."
+        },
+        {
+          "term": "CLI (Command Line Interface)",
+          "def": "Bir programı grafik arayüz yerine terminalden komut yazarak kullanma yöntemi."
+        },
+        {
+          "term": "SDK (Software Development Kit)",
+          "def": "Bir hizmeti kendi kodundan kolayca kullanabilmen için hazırlanmış kütüphane ve araç paketi."
+        },
+        {
+          "term": "Fine-tuning (ince ayar)",
+          "def": "Hazır bir yapay zekâ modelinin belirli bir dil veya alan için ek veriyle yeniden eğitilerek iyileştirilmesi."
+        },
+        {
+          "term": "Sembol tablosu",
+          "def": "Derlenmiş bir programın içinde fonksiyon adlarını tutan bilgi. Hata ayıklamayı kolaylaştırır ama dosya boyutunu büyütür."
+        }
+      ]
+    },
+    {
+      "name": "hieunc229/mailflare",
+      "url": "https://github.com/hieunc229/mailflare",
+      "stars": "6.9k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Mailflare**, kendi sunucunda (veya Cloudflare hesabında) çalıştırdığın, **Google Workspace'e açık kaynak bir alternatif.** Tek pakette:\n\n- **Kendi alan adınla e-posta:** `ad@sirketim.com` gibi kişisel ya da paylaşımlı posta kutuları, erişimi senin kontrolünde\n- **Yönlendirme kuralları:** Gelen postayı saklama, iletme, reddetme veya klasörlere ayırma\n- **Takvim:** Saat dilimli, tekrarlayan etkinlikler; katılımcılara e-posta daveti\n- **Randevu (Booking):** Herkesin takviminde boş bir saati alabileceği paylaşılabilir bağlantı (Calendly benzeri)\n- **Drive:** Dosya saklama ve paylaşma\n- **Yapay zekâ ajanları:** Postada arama, yanıt taslağı yazma, etkinlik yönetme; diğer AI araçlarını **MCP** ile bağlama\n- **Yönetim:** Kullanıcılar, API anahtarları, webhook'lar, denetim kayıtları, yedekler; IMAP, Gmail Takeout, `.eml`/`.mbox` içe aktarma\n\nEn çarpıcı vaadi **maliyet:** Cloudflare Email Routing ile posta almak ücretsiz; göndermek için Resend'in ayda 3.000 e-postalık ücretsiz katmanı veya Amazon SES yeterli. Küçük bir ekip için kişi başı aylık Workspace ücretini sıfıra yaklaştırıyor. Türkçe dahil 34 dil destekleniyor.",
+        "tech": "- **İki çalışma ortamı, tek kod tabanı:** Uygulama varsayılan olarak **Cloudflare Workers** üzerinde sunucusuz (serverless) çalışıyor; istersen tek bir **Docker** konteyneri olarak kendi sunucunda da çalıştırabiliyorsun. `package.json`'da `MAILFLARE_RUNTIME=node` ile Node.js derlemesi ayrı bir hedef olarak tanımlı.\n- **Next.js + Vite tabanlı derleme:** Arayüz ve API, Next.js uygulama yapısında; Workers hedefi için Vite tabanlı `vp` araç zinciriyle derleniyor. Bu, Next.js uygulamalarını Cloudflare'in kendi çalışma ortamına taşımanın yeni yaklaşımlarından.\n- **Veritabanı bağımsızlığı (Drizzle ORM):** Varsayılan **Cloudflare D1** (SQLite tabanlı); `DATABASE_URL` ile **PostgreSQL, MySQL, Turso/libSQL** veya yerel SQLite'a geçilebiliyor. Supabase, Neon, PlanetScale, TiDB ile çalışıyor. Bedeli: her şema değişikliği için **her veritabanı türüne ayrı migration** yazmak gerekiyor.\n- **Değiştirilebilir sağlayıcılar:** Gönderim için Cloudflare Email / Resend / Amazon SES, depolama için **R2 / Backblaze B2 / S3**. Bu \"tak-çıkar\" mimari, tek bir sağlayıcıya kilitlenmeyi önlüyor.\n- **Kuyruk tabanlı işleme:** Kurulum talimatlarında `mailflare-inbound`, `mailflare-outbound`, `mailflare-agent` adlı üç kuyruk geçiyor; yani gelen posta, giden posta ve AI işleri birbirini bloklamadan arka planda işleniyor.\n- **Ajanla kurulum:** README'de Claude Code / Codex gibi bir ajana yapıştırılacak hazır kurulum prompt'u var; sırları komut satırı argümanı olarak vermemesi, uzaktaki veritabanı migration'larını kendisinin çalıştırmaması gibi güvenlik kuralları da içinde.",
+        "why": "- **Workspace fiyat artışları ve veri egemenliği:** Kişi başı abonelik ücretleri ve verinin büyük bir bulut sağlayıcıda tutulması, küçük işletmeleri ve bağımsız geliştiricileri alternatif aramaya itiyor.\n- **Cloudflare'in olgunlaşan posta altyapısı:** Cloudflare'in Email Routing ve Email Sending hizmetleri, \"kendi posta sunucunu işletmek\" gibi bilinen zor bir işi neredeyse tek tıkla mümkün kılıyor. Mailflare bu yeni imkânın üstüne kurulmuş ilk kapsamlı uygulamalardan.\n- **AI hazır:** Posta, takvim ve dosyaları tek veritabanında tutup MCP ile ajanlara açmak, \"AI asistanım e-postalarımı okusun\" isteğini kendi kontrolünde tutmanın yolu.\n- **Kolay kurulum:** \"Deploy to Cloudflare\" butonu ve ajanla kurulum prompt'u giriş eşiğini çok düşürüyor.\n\n**Kime hitap ediyor?** Küçük şirketlere, serbest çalışanlara, kendi alan adıyla profesyonel e-posta isteyen ama Workspace ücreti ödemek istemeyenlere, self-hosting meraklılarına.",
+        "evolve": "- **Teslim edilebilirlik (deliverability):** E-postada asıl zorluk, gönderilen postanın spam'e düşmemesi. SPF/DKIM/DMARC durumunu gösteren, alan adı itibarını izleyen bir panel kritik bir eksik.\n- **Standart protokoller:** Masaüstü ve mobil posta istemcileriyle (Outlook, Thunderbird, iOS Mail) çalışmak için **IMAP/SMTP** ve takvim için **CalDAV** desteği benimsenmeyi çok artırır.\n- **Lisans netliği:** README sadece \"LICENSE dosyasına bakın\" diyor; şirketlerin kullanım kararı için lisansın açıkça belirtilmesi önemli.\n- **Ofis belgeleri:** Drive'a ortak çalışmalı belge/tablo düzenleme (ör. açık kaynak ofis SDK'larıyla) eklenirse gerçek bir \"Workspace\" alternatifine dönüşür.\n- **İş sistemleriyle entegrasyon:** Webhook ve API zaten var; gelen faturaları veya sipariş e-postalarını yapılandırılmış veriye çevirip bir ERP'ye aktaran AI ajan şablonları, kurumsal kullanım için güçlü bir senaryo olur."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımı bir şirketin bulut hizmeti olarak kullanmak yerine kendi sunucunda veya hesabında çalıştırmak."
+        },
+        {
+          "term": "Cloudflare Workers",
+          "def": "Cloudflare'in dünya çapındaki sunucularında kod çalıştırmanı sağlayan sunucusuz platform. Sunucu kurup yönetmen gerekmez."
+        },
+        {
+          "term": "Serverless (sunucusuz)",
+          "def": "Sunucu yönetimini tamamen sağlayıcıya bırakıp sadece kodu yüklediğin, kullandığın kadar ödediğin çalışma modeli."
+        },
+        {
+          "term": "Cloudflare D1",
+          "def": "Cloudflare'in SQLite tabanlı, Workers ile birlikte çalışan yönetilen veritabanı hizmeti."
+        },
+        {
+          "term": "R2 / S3",
+          "def": "Dosyaları (nesneleri) bulutta saklamak için kullanılan depolama hizmetleri. S3 Amazon'un, R2 Cloudflare'in S3 uyumlu hizmetidir."
+        },
+        {
+          "term": "ORM (Drizzle)",
+          "def": "Veritabanı tablolarını koddaki nesneler gibi kullanmayı sağlayan katman. Drizzle, TypeScript için hafif bir ORM'dir ve farklı veritabanlarını destekler."
+        },
+        {
+          "term": "Migration",
+          "def": "Veritabanı şemasındaki bir değişikliği (yeni tablo, yeni sütun) kontrollü ve sürümlü şekilde uygulayan script."
+        },
+        {
+          "term": "Next.js",
+          "def": "React tabanlı, hem arayüzü hem sunucu tarafı API'leri tek projede yazmayı sağlayan popüler web çatısı."
+        },
+        {
+          "term": "Vite",
+          "def": "Modern web projelerini çok hızlı geliştirip derleyen araç zinciri."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay gerçekleştiğinde (ör. yeni e-posta geldiğinde) bir sistemin başka bir sisteme otomatik HTTP isteği göndermesi."
+        },
+        {
+          "term": "Kuyruk (queue)",
+          "def": "İşlerin sırayla ve arka planda işlenmek üzere bekletildiği yapı. Yoğunlukta sistemin tıkanmasını önler."
+        },
+        {
+          "term": "IMAP / SMTP",
+          "def": "E-posta okumak (IMAP) ve göndermek (SMTP) için kullanılan standart protokoller. Posta istemcileri bunlarla sunucuya bağlanır."
+        },
+        {
+          "term": "CalDAV",
+          "def": "Takvim verilerini farklı uygulamalar arasında senkronlamak için kullanılan standart protokol."
+        },
+        {
+          "term": "SPF / DKIM / DMARC",
+          "def": "Bir e-postanın gerçekten o alan adından gönderildiğini doğrulayan DNS tabanlı kurallar. Doğru ayarlanmazsa postalar spam'e düşer."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Turnstile",
+          "def": "Cloudflare'in, kullanıcıyı resim seçtirmeden bot olup olmadığını anlayan CAPTCHA alternatifi."
+        }
+      ]
+    },
+    {
+      "name": "vstorm-co/agenticos",
+      "url": "https://github.com/vstorm-co/agenticos",
+      "stars": "413",
+      "language": "Python",
+      "sections": {
+        "serves": "**AgenticOS**, bir şirketin kendi sunucularında çalıştırdığı **\"AI takım arkadaşları\" platformu.** Kısaca: ajanları **oluşturma, çalıştırma ve yönetişim altında tutma** katmanı. Apache-2.0 lisanslı, Pydantic AI üzerine kurulu.\n\nTemel fikir şu: Çoğu ajan çatısı bir kütüphane; ajanın davranışını değiştirmek için kod değişikliği, inceleme, sürüm çıkarma gerekiyor. Ama ajanın ne söylemesi gerektiğini bilen kişi (muhasebeci, satış uzmanı) genelde kodu değiştirebilen kişi değil. AgenticOS'un sloganı: **\"Kod tanımlar, yapılandırma birleştirir.\"** Mühendisler yapı taşlarını yazıyor, iş birimleri ajanı tarayıcıdan talimat, model ve araç seçerek kuruyor.\n\nNeler var:\n\n- **Ortak canlı sohbet ve Projeler:** İnsanlar ve ajanlar aynı odada; her mesajın sahibi belli\n- **Ajan kataloğu ve sürümleme:** Taslak → yayımla → geri al\n- **Bilgi:** Skill'ler, bağlam dosyaları ve **RAG** bilgi tabanları (Google Drive, SharePoint, S3, Git senkronu)\n- **Araçlar:** 4.700+ MCP sunucusu, gerçek tarayıcı, kod çalıştıran sandbox, Claude Code / Codex'e iş devretme\n- **Yönetişim:** Bütçeler, **onay politikaları**, rol ve departman grupları, OIDC/LDAP/Kerberos ile şirket girişi, **zincirleme hash'li denetim kaydı**\n- **Kanallar:** Web, Slack, Teams, Discord, Telegram, web sitesi widget'ı, API; görsel iş akışları ve Virtual Tables",
+        "tech": "- **Katmanlar:** Ajanlar **Pydantic AI** ve pydantic-ai-harness üzerinde çalışıyor; çevresindeki platform **FastAPI** (Python API), **PostgreSQL + pgvector** (veri ve vektör arama) ve **Next.js** (konsol) ile yazılmış. Masaüstü ve mobil istemciler de var (mobil kaynak kodu Rust + Bun araç zinciriyle derleniyor).\n- **Neden Pydantic AI?** Tip güvenli, Python'un doğal tip ipuçlarına dayanan bir ajan çatısı. README'de \"tipli Python uzantı noktaları\" vurgusu bu yüzden: mühendis yeni bir aracı tipli bir fonksiyon olarak yazıyor, iş birimi onu konsoldan ajana ekliyor.\n- **RAG hattı:** Belgeler yerel parser'larla (PyMuPDF, LiteParse; taranmış belgeler için OCR) veya bulut tabanlı LlamaParse ile okunuyor, parçalara bölünüyor, OpenAI / OpenRouter / yerel **Ollama** modelleriyle embedding'e çevrilip PostgreSQL'de saklanıyor. Ayrı bir vektör veritabanı yok — **tek veritabanı** sadeliği.\n- **Model bağımsızlığı:** 28 sağlayıcı; Azure, Bedrock, Vertex sözleşmeleri veya tamamen yerel Ollama/vLLM. README hangi verinin nereye gittiğini tablo halinde gösteriyor ve her dış bağlantı için yerel alternatif sunuyor.\n- **Güvenlik tasarımı:** Gizli bilgiler **zarf şifrelemeli kasada** (her sır için ayrı anahtar, organizasyon bazında sarılmış, ana anahtarlar döndürülebilir). Kod çalıştıran **sandbox'lar** izole: API'nin Docker soketine erişimi yok, konteynerlerin varsayılan ağ erişimi yok, CPU/süreç/zaman limitleri var, isteğe bağlı **gVisor**. Bütçeler her model isteğinden **önce** kontrol ediliyor.\n- **Dağıtım:** Tek sunucuda Docker Compose (4 vCPU, 8 GB RAM), Traefik veya Nginx ters proxy. Bir **HIPAA profili** var ama README açıkça \"bu bir yapılandırma kontrolü, sertifika değil\" diyor — dürüst bir yaklaşım.",
+        "why": "- **\"Ajanları kim yönetecek?\" sorusu:** 2026'da şirketler ajan denemekten ajanları yaygınlaştırmaya geçiyor. Bu noktada asıl sorular teknik değil, yönetişimle ilgili: Hangi ajan hangi veriye erişebilir? Maliyeti ne? Kritik bir işlemi kim onayladı? AgenticOS doğrudan bu sorulara cevap veren bir ürün.\n- **Veri egemenliği:** Özellikle Avrupa'da (proje Polonyalı Vstorm tarafından geliştiriliyor; README Lehçe, Almanca, İspanyolca da var) verinin şirket dışına çıkmaması önemli bir satın alma kriteri.\n- **Kodlama ajanlarıyla köprü:** Hem Claude Code / Codex'e iş devredebilmesi hem de kendisinin bir MCP sunucusu olması, geliştiricilerle iş birimlerini aynı platformda buluşturuyor.\n- **Ödül etkisi:** Agentic AI Foundation'dan aldığı 2026 Open Agentic AI Innovation ödülü görünürlüğünü artırmış. Yıldız sayısı henüz küçük ama ivme yeni başlıyor.\n\n**Kime hitap ediyor?** Kendi AI ajan katmanını kurmak isteyen orta ve büyük şirketlerin BT, güvenlik ve dijital dönüşüm ekiplerine. ERP dünyasından bakınca: tedarik, üretim planlama, finans raporlama gibi süreçlerde ajan kullanmak isteyen ama denetim izi ve onay akışından vazgeçemeyen kurumlar için tam hedef kitle.",
+        "evolve": "- **ERP konnektörleri:** README'deki tedarik ağı ve üretim planlama demoları kurgusal veriyle hazırlanmış; \"ERP bağlı değil\" uyarısı açıkça var. IFS, SAP, Oracle gibi sistemler için hazır, salt-okunur başlayan MCP konnektörleri (ve Oracle/PL/SQL veritabanlarına güvenli sorgu araçları) projeyi kurumsal dünyada çok hızlı yaygınlaştırır.\n- **Eksik kimlik özellikleri:** Yerleşik MFA, SAML ve SCIM yok; büyük kurumlar için kullanıcı yaşam döngüsünü (işe giriş/çıkış) otomatik yöneten SCIM özellikle önemli.\n- **Yatay ölçekleme:** Desteklenen kurulum tek sunucuda Docker Compose. Yüzlerce eşzamanlı ajan çalıştıracak şirketler için Kubernetes / Helm desteği bir sonraki adım.\n- **Kalite ölçümü:** Bütçe ve onay var; bir sonraki doğal adım ajan cevaplarının doğruluğunu sürekli ölçen değerlendirme (eval) panelleri ve sürümler arası kalite karşılaştırması.\n- **Topluluk:** Özellik seti çok geniş ama yıldız sayısı düşük; daha odaklı bir \"5 dakikada ilk ajan\" deneyimi ve hazır sektör şablonları benimsenmeyi hızlandırır."
+      },
+      "glossary": [
+        {
+          "term": "Ajan (AI agent)",
+          "def": "Bir hedefe ulaşmak için kendi başına adım planlayan, araç kullanan ve sonuca göre ilerleyen yapay zekâ programı."
+        },
+        {
+          "term": "Yönetişim (governance)",
+          "def": "Bir sistemin kim tarafından, hangi kurallar ve sınırlar içinde kullanılacağını belirleyen politikalar ve kontroller bütünü."
+        },
+        {
+          "term": "Pydantic AI",
+          "def": "Python'un tip ipuçlarını kullanarak güvenli ve okunabilir yapay zekâ ajanları yazmayı sağlayan çatı."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python ile hızlı ve tip güvenli web API'leri yazmak için kullanılan popüler çatı."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Modelin cevap vermeden önce ilgili belgeleri bir bilgi tabanından bulup bunları kullanarak yanıt üretmesi. Modelin uydurmasını azaltır, kaynak göstermesini sağlar."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını sayılardan oluşan bir vektöre çevirme. Anlamca benzer metinlerin vektörleri birbirine yakın olur."
+        },
+        {
+          "term": "pgvector",
+          "def": "PostgreSQL'e vektör saklama ve benzerlik araması yeteneği kazandıran eklenti."
+        },
+        {
+          "term": "Ollama / vLLM",
+          "def": "Açık kaynak dil modellerini kendi donanımında çalıştırmayı sağlayan araçlar. Ollama kişisel kullanım için kolay, vLLM yüksek performanslı sunucu kullanımı içindir."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Kodun ana sisteme zarar veremeyeceği şekilde izole edilmiş çalışma ortamı."
+        },
+        {
+          "term": "gVisor",
+          "def": "Google'ın geliştirdiği, konteynerler ile işletim sistemi çekirdeği arasına ek bir güvenlik katmanı koyan izolasyon aracı."
+        },
+        {
+          "term": "Zarf şifreleme (envelope encryption)",
+          "def": "Verinin bir anahtarla, o anahtarın da başka bir ana anahtarla şifrelendiği yöntem. Ana anahtarı değiştirmek tüm veriyi yeniden şifrelemeyi gerektirmez."
+        },
+        {
+          "term": "Hash zincirli denetim kaydı",
+          "def": "Her kaydın bir önceki kaydın özetini (hash) içerdiği log yapısı. Geçmişte bir kayıt değiştirilirse zincir bozulur ve fark edilir."
+        },
+        {
+          "term": "OIDC / LDAP / Kerberos",
+          "def": "Şirket kullanıcılarının mevcut hesaplarıyla (ör. Entra ID, Active Directory) uygulamalara giriş yapmasını sağlayan kimlik doğrulama standartları."
+        },
+        {
+          "term": "SAML / SCIM",
+          "def": "SAML kurumsal tek oturum açma standardı; SCIM ise kullanıcı hesaplarının oluşturulup silinmesini kimlik sisteminden otomatik senkronlayan protokol."
+        },
+        {
+          "term": "MFA (çok faktörlü doğrulama)",
+          "def": "Girişte parolaya ek olarak telefon kodu veya güvenlik anahtarı gibi ikinci bir kanıt istenmesi."
+        },
+        {
+          "term": "HIPAA",
+          "def": "ABD'de sağlık verilerinin gizliliği ve güvenliğiyle ilgili yasal düzenleme."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ ajanlarının dış araçlara ve veri kaynaklarına standart bir şekilde bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Docker Compose",
+          "def": "Birden çok konteynerden oluşan bir uygulamayı tek bir yapılandırma dosyasıyla tanımlayıp birlikte çalıştırmayı sağlayan araç."
+        },
+        {
+          "term": "Ters proxy (Traefik / Nginx)",
+          "def": "İnternetten gelen istekleri karşılayıp arkadaki doğru servise ileten, genelde HTTPS sertifikasını da yöneten sunucu."
+        }
+      ]
+    }
+  ]
+}
