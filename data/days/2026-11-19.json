@@ -1,0 +1,297 @@
+{
+  "date": "2026-11-19",
+  "projects": [
+    {
+      "name": "astral-sh/uv",
+      "url": "https://github.com/astral-sh/uv",
+      "stars": "92.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**uv**, Python dünyasının en eski derdine çare olmak için yazılmış bir **paket ve proje yöneticisi**. Python'da bir projeye başlamak bugüne kadar birkaç farklı araç gerektiriyordu: Python sürümünü kurmak için `pyenv`, sanal ortam için `virtualenv`, paket kurmak için `pip`, sürümleri sabitlemek için `pip-tools` ya da `poetry`, komut satırı araçları için `pipx`, PyPI'ye yüklemek için `twine`.\n\nuv bunların hepsini **tek bir çalıştırılabilir dosyada** topluyor:\n\n- **Proje yönetimi:** `uv init`, `uv add`, `uv sync` ile bağımlılıklar, sanal ortam ve **lockfile** otomatik yönetilir\n- **Python sürümleri:** `uv python install 3.13` — sistemde Python olmasa bile uv onu indirip kurar (PyPy dahil)\n- **Tek dosyalık script'ler:** Script'in başına bağımlılıklarını yazarsın, `uv run script.py` gerisini halleder\n- **Araç çalıştırma:** `uvx ruff check` gibi bir komutla bir aracı kurmadan, izole şekilde çalıştırırsın\n- **pip uyumlu arayüz:** `uv pip install` mevcut alışkanlıkları bozmadan hız kazandırır\n\nVaat basit: aynı işi **pip'ten 10-100 kat hızlı** ve tek araçla yapmak.",
+        "tech": "- **Rust ile yazılmış:** Python araçlarının kendisi Python'da yazıldığında, başlangıç süresi ve tek çekirdekli çalışma sınırlayıcı oluyor. Rust, uv'ye derlenmiş tek bir binary, paralel indirme/çözme ve bellek güvenliği sağlıyor. Astral bu yaklaşımı daha önce **Ruff** (linter) ile kanıtlamıştı\n- **PubGrub tabanlı bağımlılık çözücü:** Hangi paketin hangi sürümünün birbiriyle uyumlu olduğunu bulmak NP-zor bir problem. uv, çakışma olduğunda *neden* çakıştığını anlaşılır şekilde açıklayabilen PubGrub algoritmasını kullanıyor\n- **Global önbellek + hardlink/reflink:** Aynı paketi on projede kullanıyorsan diske on kez kopyalamıyor; tek kopyayı bağlantıyla paylaştırıyor. Sanal ortam oluşturmak bu yüzden milisaniyeler sürüyor\n- **Evrensel lockfile (`uv.lock`):** Tek bir kilit dosyası Linux, macOS ve Windows için ayrı ayrı çözümleri içeriyor; ekipteki herkes aynı sürümleri alıyor\n- **Standartlara bağlılık:** `pyproject.toml`, PEP 723 (script içi bağımlılık), PEP 517 gibi topluluk standartlarını izliyor; böylece kilitlenme (lock-in) riski düşük\n- **Cargo tarzı workspace'ler:** Birden çok paketi tek depoda (monorepo) birlikte yönetebiliyorsun",
+        "why": "- **Gerçek bir acıyı çözüyor:** \"Bende çalışıyordu\" sorunu, yavaş `pip install`, karışık sanal ortamlar — her Python geliştiricisinin yaşadığı şeyler. uv kurulduğu an fark ediliyor\n- **AI dalgası Python'u yeniden merkeze koydu:** Agent araçları, MCP sunucuları ve model script'leri çoğunlukla Python. Birçok MCP sunucusunun kurulum talimatı artık doğrudan `uvx paket-adı` ile başlıyor; bu da uv'yi AI araç zincirinin varsayılan parçası yaptı\n- **CI maliyetini düşürüyor:** Her pipeline'da dakikalar süren kurulum saniyelere iniyor; büyük ekipler için doğrudan para tasarrufu\n- **Güven:** Ruff'un başarısı Astral'a kredi kazandırdı; uv de sık sürüm çıkaran, hızlı hata kapatan bir ekip tarafından geliştiriliyor\n- Bugünkü yıldız artışı (~260/gün) zaten devasa olan bir projede bile ilginin sürdüğünü gösteriyor: uv artık \"denenecek yeni araç\" değil, **yeni standart** olma yolunda\n\n**Kime hitap ediyor?** Python ile veri, otomasyon, AI ya da backend işi yapan herkese — özellikle de ERP/veritabanı ekiplerinde yan script yazan, ama Python ortam karmaşasıyla uğraşmak istemeyen geliştiricilere.",
+        "evolve": "- **Eksik/zayıf noktalar:** `conda` dünyasının çözdüğü sistem kütüphanesi (C/CUDA) bağımlılıkları uv'nin kapsamı dışında; bilimsel hesaplama ekipleri hâlâ iki araç arasında kalıyor\n- **Kurumsal kullanım:** Özel paket sunucuları (Artifactory, Nexus), proxy arkasındaki ağlar ve imzalı paket doğrulaması için daha olgun kurumsal belgeler ve politika desteği iyi olur\n- **Güvenlik:** Lockfile'a dayalı otomatik güvenlik açığı taraması (`uv audit` benzeri) yerleşik gelirse ayrı araç ihtiyacı kalkar\n- **Sürdürülebilirlik sorusu:** Proje bir şirketin (Astral) desteğinde; topluluğun en büyük sorusu uzun vadeli yönetişim. Bağımsız bir vakıf yapısı güveni artırabilir\n- **Fırsat:** IFS/Oracle tarafında veri aktarımı, rapor üretimi veya test otomasyonu için yazılan Python script'leri PEP 723 + `uv run` ile **tek dosyada taşınabilir** hale getirilebilir — sunucuya Python kurmadan bile çalışır"
+      },
+      "glossary": [
+        {
+          "term": "Paket yöneticisi",
+          "def": "Bir projenin ihtiyaç duyduğu dış kütüphaneleri indiren, kuran ve sürümlerini takip eden araç."
+        },
+        {
+          "term": "Sanal ortam (virtual environment)",
+          "def": "Bir projeye ait Python paketlerinin diğer projelerden ve sistemden yalıtıldığı ayrı klasör. Böylece projeler birbirinin sürümlerini bozmaz."
+        },
+        {
+          "term": "Lockfile",
+          "def": "Kurulan her paketin tam sürümünü kaydeden dosya. Ekipteki herkesin ve sunucunun birebir aynı sürümleri kurmasını sağlar."
+        },
+        {
+          "term": "PyPI",
+          "def": "Python paketlerinin yayınlandığı resmî, herkese açık depo; pip ve uv paketleri buradan indirir."
+        },
+        {
+          "term": "Bağımlılık çözücü (resolver)",
+          "def": "İstenen paketlerin birbiriyle uyumlu sürüm kombinasyonunu bulan algoritma."
+        },
+        {
+          "term": "PubGrub",
+          "def": "Sürüm çakışmalarını hızlıca bulan ve kullanıcıya neden çözüm olmadığını açıklayabilen bir bağımlılık çözme algoritması."
+        },
+        {
+          "term": "Binary",
+          "def": "Kaynak koddan derlenmiş, doğrudan çalıştırılabilen program dosyası; ayrıca bir yorumlayıcı gerektirmez."
+        },
+        {
+          "term": "Hardlink / reflink",
+          "def": "Dosyayı kopyalamadan, diskteki aynı veriye ikinci bir yol göstermek. Yer ve zaman kazandırır."
+        },
+        {
+          "term": "pyproject.toml",
+          "def": "Python projesinin adı, sürümü ve bağımlılıklarının yazıldığı standart yapılandırma dosyası."
+        },
+        {
+          "term": "PEP 723",
+          "def": "Tek dosyalık bir Python script'inin bağımlılıklarını dosyanın başına yorum olarak yazmayı tanımlayan standart."
+        },
+        {
+          "term": "Workspace / monorepo",
+          "def": "Birden fazla paketin ya da projenin tek bir depoda birlikte geliştirilmesi düzeni."
+        },
+        {
+          "term": "CI (Sürekli Entegrasyon)",
+          "def": "Her kod değişikliğinde testlerin ve derlemenin otomatik çalıştırıldığı süreç."
+        },
+        {
+          "term": "Linter",
+          "def": "Kodu çalıştırmadan inceleyip hata, stil sorunu ve şüpheli yapıları bulan araç."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI asistanlarının dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "conda",
+          "def": "Python paketlerinin yanında C/C++ ve sistem kütüphanelerini de yönetebilen, bilimsel hesaplamada yaygın bir paket yöneticisi."
+        }
+      ]
+    },
+    {
+      "name": "punkpeye/awesome-mcp-servers",
+      "url": "https://github.com/punkpeye/awesome-mcp-servers",
+      "stars": "98.1k",
+      "language": "Markdown",
+      "sections": {
+        "serves": "**awesome-mcp-servers**, AI asistanlarını dış dünyaya bağlayan **MCP sunucularının** en büyük topluluk kataloğu. Kod içermiyor; kategorilere ayrılmış, sürekli güncellenen dev bir **liste**.\n\nProblem şu: MCP (Model Context Protocol) sayesinde Claude, Cursor, VS Code gibi araçlar bir veritabanını sorgulayabiliyor, dosya sistemine erişebiliyor, Jira'da kayıt açabiliyor. Ama bunun için o sistemle konuşan bir **MCP sunucusu** gerekiyor. Bugün binlerce sunucu var ve hangisinin ne yaptığını, güvenilir olup olmadığını bulmak zor.\n\nBu liste:\n\n- Sunucuları **alanlara göre** grupluyor: veritabanları, geliştirici araçları, tarayıcı otomasyonu, finans, iletişim, bilgi yönetimi, bulut platformları, güvenlik vb.\n- Her girdide kısa açıklama ve **simgeler** var: hangi dilde yazıldığı, yerel mi bulut tabanlı mı çalıştığı, hangi işletim sistemlerini desteklediği, resmî (üreticinin kendi) sunucusu olup olmadığı\n- Glama'nın MCP sunucu dizinine bağlanarak daha detaylı arama/inceleme imkânı sunuyor\n- Japonca, Korece, Çince, Portekizce, Farsça, Tayca çevirileriyle küresel bir kitleye hitap ediyor",
+        "tech": "Teknik olarak sade: tek bir **README.md** dosyası ve katkı kuralları (CONTRIBUTING.md). Ama asıl ilginç olan, bu sadeliğin arkasındaki ekosistem kararları:\n\n- **Neden Markdown liste?** \"Awesome list\" formatı GitHub'ın doğal keşif mekanizmasıdır: yıldızlanır, fork'lanır, Pull Request ile herkes katkı verir. Ayrı bir web sitesine göre bariyer çok düşük\n- **Simge (emoji) sistemi:** Dil (🐍 Python, 📇 TypeScript, 🏎️ Go, 🦀 Rust vb.), kapsam (🏠 yerel, ☁️ bulut) ve işletim sistemi bilgisi metne gömülü — makine tarafından da ayrıştırılabilir, insan için de hızlı taranabilir\n- **PR tabanlı küratörlük:** Yeni sunucular Pull Request ile ekleniyor; bakımcı sıralama, kategori ve format kurallarını denetliyor\n- **Glama entegrasyonu:** Listenin yanında, sunucuları otomatik test edip puanlayan, güvenlik/lisans bilgisi gösteren bir dizine (glama.ai) yönlendirme var; liste \"vitrin\", dizin \"arama motoru\" işlevi görüyor\n- **MCP'nin kendi mimarisi:** İstemci (AI uygulaması) ile sunucu arasında JSON-RPC mesajları; sunucular *araç* (tool), *kaynak* (resource) ve *prompt* sunar. Yerel sunucular genellikle `stdio` üzerinden, uzak sunucular HTTP üzerinden konuşur",
+        "why": "- **MCP fiilen standart oldu:** Anthropic'in başlattığı protokol, diğer büyük AI şirketleri ve IDE'ler tarafından da benimsendi. Her yeni istemci, \"hangi sunucuları bağlayabilirim?\" sorusunu doğuruyor; bu liste o sorunun ilk cevabı\n- **Agent çağı:** Bugünkü trending listesi skill'ler, plugin'ler ve agent araçlarıyla dolu. Agent'lar ancak bağlandıkları araçlar kadar yetenekli — MCP sunucuları da bu araçların kendisi\n- **Ağ etkisi:** ~98 bin yıldız ve 20 bin fork; sunucu yazan herkes buraya eklenmek istiyor, kullanan herkes buraya bakıyor. Kendi kendini besleyen bir döngü\n- **Kime hitap ediyor?** AI asistanını kendi sistemlerine bağlamak isteyen geliştiricilere, ürününe MCP desteği ekleyen şirketlere ve ekosisteme genel bakış arayan teknik liderlere\n\n**ERP/PL/SQL açısından:** Listedeki veritabanı kategorisinde Oracle, PostgreSQL, SQL Server gibi sistemlere bağlanan sunucular var. Bir IFS/Oracle ortamında AI asistanına **salt-okuma** yetkili bir DB bağlantısı vermek, sorgu yazma ve veri analizi için en hızlı kazanımlardan biri.",
+        "evolve": "- **Kalite sinyali eksik:** Liste büyüdükçe terk edilmiş, güvenliği belirsiz sunucular da birikiyor. Her girdiye \"son güncelleme\", \"bakım durumu\" veya otomatik test rozetinin eklenmesi değerli olur\n- **Güvenlik:** MCP sunucuları ciddi yetkilerle çalışıyor (dosya, veritabanı, kimlik bilgileri). İzin kapsamı, **prompt injection** riski ve kod doğrulama gibi bilgileri standart bir şekilde göstermek listenin en büyük açığı\n- **Makine-okunur sürüm:** README'nin yanında JSON/YAML formatında bir katalog yayınlanırsa, istemciler sunucuları doğrudan listeden keşfedip kurabilir\n- **Kurumsal kategori:** ERP (SAP, IFS, Oracle EBS), MES ve iş süreçleri için ayrı ve derinlemesine bir kategori hâlâ zayıf — bu alanda bir sunucu yazmak, görünür olmak için iyi bir fırsat\n- **Uzak (remote) sunucu ve OAuth:** Yeni nesil HTTP tabanlı, kimlik doğrulamalı sunucuların ayrı işaretlenmesi kullanıcıların kurulum zahmetini azaltır"
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI asistanlarının dış araçlara, veritabanlarına ve servislere standart bir dille bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "Belirli bir sistemi (ör. veritabanı, GitHub, dosya sistemi) MCP üzerinden AI asistanına açan küçük program."
+        },
+        {
+          "term": "MCP istemcisi",
+          "def": "MCP sunucularına bağlanıp onların araçlarını kullanan AI uygulaması; ör. Claude Desktop, Cursor, VS Code."
+        },
+        {
+          "term": "Awesome list",
+          "def": "GitHub'da belirli bir konuyla ilgili kaliteli kaynakların topluluk tarafından derlendiği liste formatı."
+        },
+        {
+          "term": "Pull Request (PR)",
+          "def": "Bir depoya yapılacak değişikliğin incelenip onaylanması için açılan öneri."
+        },
+        {
+          "term": "Fork",
+          "def": "Bir GitHub deposunun kendi hesabına kopyalanması; değişiklik yapıp geri önermenin ilk adımı."
+        },
+        {
+          "term": "JSON-RPC",
+          "def": "İki programın JSON formatında mesajlarla birbirinden işlem çağırmasını tanımlayan basit bir protokol."
+        },
+        {
+          "term": "stdio",
+          "def": "Bir programın standart giriş/çıkış kanalları; yerel MCP sunucuları istemciyle genellikle bu kanal üzerinden konuşur."
+        },
+        {
+          "term": "Tool (araç)",
+          "def": "MCP sunucusunun AI'a sunduğu, çağrılabilir bir işlev; ör. 'sorgu çalıştır' veya 'issue oluştur'."
+        },
+        {
+          "term": "Agent",
+          "def": "Bir hedefe ulaşmak için kendi başına adım planlayan, araç kullanan ve sonuçlara göre yön değiştiren AI sistemi."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "AI'ın okuduğu bir metne gizlenmiş talimatlarla modelin istenmeyen işler yapmaya kandırılması saldırısı."
+        },
+        {
+          "term": "OAuth",
+          "def": "Bir uygulamaya şifreni vermeden, sınırlı yetkiyle hesabına erişim izni vermeni sağlayan yetkilendirme standardı."
+        },
+        {
+          "term": "Küratörlük",
+          "def": "İçeriklerin seçilmesi, düzenlenmesi ve kalitesinin denetlenmesi işi."
+        }
+      ]
+    },
+    {
+      "name": "openvinotoolkit/openvino",
+      "url": "https://github.com/openvinotoolkit/openvino",
+      "stars": "11.4k",
+      "language": "C++",
+      "sections": {
+        "serves": "**OpenVINO**, eğitilmiş bir AI modelini alıp **mevcut donanımda olabildiğince hızlı çalıştırmak** için geliştirilmiş açık kaynaklı bir **çıkarım (inference)** araç seti. Intel tarafından başlatıldı ve yönetiliyor.\n\nProblem: Bir modeli PyTorch'ta eğitmek bir şey, onu bir dizüstü bilgisayarda, fabrikadaki bir endüstriyel PC'de ya da GPU'su olmayan bir sunucuda hızlı ve verimli çalıştırmak başka bir şey. Çoğu kişi AI = pahalı NVIDIA GPU diye düşünüyor; OpenVINO ise **sıradan CPU'lardan, entegre GPU'lardan ve yeni nesil NPU'lardan** en iyi performansı çıkarmaya odaklanıyor.\n\nNeler sunuyor:\n\n- **Geniş model desteği:** PyTorch, TensorFlow, ONNX, Keras, PaddlePaddle, JAX/Flax ve TensorFlow Lite modellerini dönüştürüp çalıştırma; dağıtımda orijinal framework'e gerek kalmıyor\n- **Donanım çeşitliliği:** x86 ve ARM CPU'lar, Intel entegre/harici GPU'lar ve Intel NPU'lar\n- **GenAI desteği:** LLM sohbet botu, görüntü üretimi, Whisper ile konuşma tanıma, çok modlu (görsel+metin) asistanlar\n- **Çoklu dil API'leri:** C++, Python, C ve Node.js",
+        "tech": "- **C++ çekirdek:** Çıkarım motorunun kalbi C++; düşük seviyeli bellek yönetimi ve donanıma özel optimizasyonlar için şart. Python ve Node.js bağlamaları bu çekirdeğin üzerine ince katmanlar\n- **Ara temsil (IR) ve graf optimizasyonu:** Model önce OpenVINO'nun kendi grafik formatına çevriliyor; ardından katman birleştirme (fusion), gereksiz işlemleri atma, sabitleri önceden hesaplama gibi optimizasyonlar uygulanıyor\n- **Eklenti (plugin) mimarisi:** Her donanım (CPU, GPU, NPU) için ayrı bir arka uç var. Uygulama kodu aynı kalırken `device=\"NPU\"` diyerek hedef değiştirilebiliyor; `AUTO` modu en uygun cihazı kendisi seçiyor\n- **NNCF ile sıkıştırma:** Modeli INT8/INT4 gibi düşük hassasiyete **quantize** ederek boyutu ve gecikmeyi ciddi oranda düşürüyor; LLM'leri dizüstüde çalıştırmanın anahtarı bu\n- **Ekosistem entegrasyonları:** Hugging Face **Optimum Intel**, `torch.compile` arka ucu, **vLLM** için OpenVINO backend'i, ONNX Runtime Execution Provider, LangChain/LlamaIndex, Keras 3 backend'i — yani mevcut iş akışını bozmadan devreye girebiliyor\n- **OpenVINO Model Server:** Modelleri REST/gRPC üzerinden sunmak için hazır, ölçeklenebilir sunucu",
+        "why": "- **\"AI PC\" dönemi:** Yeni dizüstü ve masaüstü işlemcilerde yerleşik NPU'lar standart hale geliyor. Bu donanımı gerçekten kullanmanın en olgun yolu OpenVINO; yazılım, donanımın önüne geçmek zorunda\n- **Yerel (on-device) AI talebi:** Gizlilik, maliyet ve gecikme nedeniyle şirketler verilerini buluta göndermeden model çalıştırmak istiyor. GPU'suz sunucularda LLM çalıştırmak cazip bir alternatif\n- **Edge ve endüstri:** Fabrika kalite kontrolü, kamera analitiği, perakende gibi alanlarda Intel tabanlı endüstriyel PC'ler yaygın; OpenVINO burada yıllardır sahada\n- **Kime hitap ediyor?** Modeli üretime taşıyan ML mühendislerine, edge cihaz geliştiricilerine ve GPU bütçesi olmadan AI özelliği eklemek isteyen kurumsal yazılım ekiplerine\n- Bugünkü yıldız artışı mütevazı (~24/gün) ama istikrarlı: bu, hype değil **altyapı** projesi olduğunun işareti",
+        "evolve": "- **Donanım bağımlılığı algısı:** Proje ARM CPU'ları da destekliyor ama en iyi deneyim Intel donanımında. AMD/Apple tarafında daha görünür destek, \"Intel'e kilitlenme\" endişesini azaltır\n- **Geliştirici deneyimi:** Model dönüştürme, quantization ve cihaz seçimi hâlâ birçok adım gerektiriyor. `uvx`/tek komutla \"şu Hugging Face modelini NPU'da çalıştır\" diyen bir CLI benimsemeyi hızlandırır\n- **OpenAI uyumlu yerel sunucu:** Model Server'ın Ollama kadar kolay kurulan, OpenAI API uyumlu bir hafif modu yerel LLM kullanıcılarını çekebilir\n- **Kurumsal fırsat:** ERP ortamlarında belge sınıflandırma, fatura/irsaliye OCR'ı, talep tahmini gibi işleri **mevcut CPU sunucularında** çalıştırmak için hazır şablonlar ve örnek akışlar büyük bir boşluğu doldurur\n- **Agent entegrasyonu:** MCP sunucusu olarak paketlenmiş bir OpenVINO çıkarım servisi, yerel modelleri agent araç zincirine doğrudan bağlayabilir"
+      },
+      "glossary": [
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir AI modelinin yeni veriler üzerinde tahmin veya çıktı üretmesi; modeli 'kullanma' aşaması."
+        },
+        {
+          "term": "NPU (Neural Processing Unit)",
+          "def": "Yapay zekâ hesaplamaları için özel tasarlanmış, düşük enerjiyle çalışan işlemci birimi; yeni bilgisayarlarda yerleşik geliyor."
+        },
+        {
+          "term": "Entegre GPU",
+          "def": "Ana işlemcinin içine gömülü grafik birimi; ayrı bir ekran kartı gerektirmez."
+        },
+        {
+          "term": "Framework",
+          "def": "Belirli tür yazılımları geliştirmeyi kolaylaştıran hazır kütüphane ve kurallar bütünü; ör. PyTorch, TensorFlow."
+        },
+        {
+          "term": "ONNX",
+          "def": "Farklı AI framework'leri arasında model taşımayı sağlayan açık model dosya formatı."
+        },
+        {
+          "term": "Ara temsil (IR)",
+          "def": "Bir modelin veya programın, optimizasyon yapılabilmesi için dönüştürüldüğü ara format."
+        },
+        {
+          "term": "Quantization (nicemleme)",
+          "def": "Model ağırlıklarını daha az bitle (ör. 32 bit yerine 8 veya 4 bit) saklayarak modeli küçültme ve hızlandırma tekniği."
+        },
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Çok büyük miktarda metinle eğitilmiş, metin anlayıp üretebilen yapay zekâ modeli."
+        },
+        {
+          "term": "Edge (uç) bilişim",
+          "def": "Verinin buluta gönderilmeden, üretildiği yerde (cihazda, fabrikada) işlenmesi."
+        },
+        {
+          "term": "Backend (arka uç)",
+          "def": "Bir sistemin kullanıcıya görünmeyen, asıl işi yapan katmanı; burada belirli bir donanımda hesaplamayı yapan motor."
+        },
+        {
+          "term": "vLLM",
+          "def": "LLM'leri yüksek verimle sunmak için geliştirilmiş popüler açık kaynak çıkarım sunucusu."
+        },
+        {
+          "term": "Hugging Face",
+          "def": "Açık AI modellerinin ve veri setlerinin paylaşıldığı en büyük platform."
+        },
+        {
+          "term": "REST / gRPC",
+          "def": "Programların ağ üzerinden birbirine istek göndermesi için yaygın iki iletişim yöntemi."
+        },
+        {
+          "term": "Whisper",
+          "def": "Konuşmayı metne çeviren açık kaynaklı bir ses tanıma modeli."
+        },
+        {
+          "term": "OCR",
+          "def": "Görüntüdeki veya taranmış belgedeki yazıyı okunabilir metne çeviren teknoloji."
+        },
+        {
+          "term": "Graf optimizasyonu",
+          "def": "Modelin işlem adımlarını birleştirerek veya sadeleştirerek daha hızlı çalışmasını sağlama."
+        }
+      ]
+    },
+    {
+      "name": "solidjs/solid",
+      "url": "https://github.com/solidjs/solid",
+      "stars": "36.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Solid**, web arayüzleri yazmak için bir JavaScript kütüphanesi. İlk bakışta React'e çok benziyor — aynı **JSX** sözdizimi, bileşenler — ama altında bambaşka bir motor var.\n\nÇözdüğü problem: React gibi kütüphanelerde bir veri değiştiğinde, ilgili bileşen fonksiyonu baştan çalışır, sanal bir DOM ağacı üretilir ve önceki ağaçla karşılaştırılarak gerçek sayfada neyin değişeceği bulunur. Bu esnek ama maliyetli; geliştiriciler de gereksiz yeniden çizimi önlemek için `useMemo`, `useCallback` gibi optimizasyonlarla uğraşmak zorunda kalır.\n\nSolid'in yaklaşımı:\n\n- **Bileşenler yalnızca bir kez çalışır** — sayfa kurulurken\n- Bir veri değiştiğinde, sadece **o veriye bağlı olan tek ifade** güncellenir; sayfanın geri kalanına dokunulmaz\n- **Sanal DOM yok:** JSX, derleme aşamasında doğrudan gerçek DOM işlemlerine çevrilir\n\nSonuç: Optimize edilmiş saf JavaScript'e çok yakın performans, küçük paket boyutu ve \"neden bu bileşen yeniden çizildi?\" sorusunun ortadan kalkması.",
+        "tech": "- **Fine-grained reactivity (ince taneli reaktivite):** Temel yapı taşları `createSignal` (değişebilen değer), `createMemo` (türetilmiş değer) ve `createStore` (iç içe nesneler için reaktif durum). Bir sinyal okunduğunda, okuyan hesaplama otomatik olarak abone olur; sinyal değişince sadece aboneler çalışır\n- **Derleyici tabanlı JSX:** Babel eklentisi JSX'i statik HTML şablonları + hedefli DOM güncellemelerine çeviriyor. Statik kısımlar bir kez klonlanıyor, dinamik kısımlar tek tek bağlanıyor\n- **Solid 2.0 değişiklikleri:** Okumalar artık bir sonraki **microtask**'ta toplu güncelleniyor (senkron ihtiyaçlar için `flush()`); efektler \"izleme\" ve \"yan etki\" olarak iki aşamaya ayrıldı — bu, öngörülebilirliği ve async davranışı iyileştiriyor\n- **Async birinci sınıf vatandaş:** Hesaplamalar doğrudan Promise veya AsyncIterable döndürebiliyor; `<Loading>` sınırı bekleme durumlarını yönetiyor. İyimser (optimistic) UI primitifleri de yerleşik\n- **Sunucu tarafı:** Streaming SSR ve aşamalı hydration; sayfa parça parça gönderilip etkileşimli hale getiriliyor\n- **TypeScript ve web component desteği**, PNPM monorepo yapısı; 1.x sürümü ayrı dalda bakımda tutuluyor",
+        "why": "- **Sinyal devrimi Solid'in eseri:** Bugün Angular, Vue, Preact, Svelte (runes) ve hatta TC39'daki JavaScript sinyal önerisi, Solid'in popülerleştirdiği modelden ilham alıyor. Solid, bu fikrin \"saf\" ve referans uygulaması olarak görülüyor\n- **Solid 2.0:** Ana sürüm geçişi ve göç (migration) rehberi, topluluğu yeniden harekete geçirdi; async ve SSR tarafındaki köklü değişiklikler, projenin aktif şekilde evrildiğini gösteriyor\n- **Performansa duyarlı kitle:** Dashboard'lar, gerçek zamanlı veri ekranları, düşük donanımlı cihazlar — her milisaniyenin önemli olduğu yerlerde sanal DOM maliyeti hissediliyor\n- **React bilen için düşük öğrenme eğrisi:** JSX tanıdık; zihinsel model farklı ama kodu okumak kolay\n- Bugünkü artış (~40/gün) küçük ama bu, büyük bir ürün yerine **fikir lideri** bir kütüphane için doğal bir ivme",
+        "evolve": "- **Ekosistem boşluğu:** React'in devasa bileşen kütüphanesi, UI kitleri ve işe alım havuzu yanında Solid'in ekosistemi küçük. Kurumsal düzeyde olgun bir bileşen kütüphanesi (tablolar, formlar, grid'ler) benimsemeyi ciddi hızlandırır\n- **2.0 göç maliyeti:** Davranış değişiklikleri (microtask toplu güncelleme, ayrılmış efektler) mevcut 1.x projeler için dikkatli geçiş gerektiriyor; otomatik dönüşüm araçları (codemod) değerli olur\n- **AI kod asistanı desteği:** Modeller React'i çok daha iyi biliyor; Solid'e özgü kalıplarda hatalı kod üretebiliyorlar. Resmî bir agent skill paketi veya MCP tabanlı doküman sunucusu bu açığı kapatabilir\n- **Kurumsal fırsat:** ERP ekranları gibi binlerce satırlık, hücre bazında sık güncellenen veri tablolarında ince taneli reaktivite büyük avantaj — IFS benzeri sistemlere özel, yüksek performanslı grid bileşenleri için Solid iyi bir temel olabilir"
+      },
+      "glossary": [
+        {
+          "term": "JSX",
+          "def": "JavaScript içinde HTML'e benzer sözdizimiyle arayüz tanımlamayı sağlayan uzantı; derleyici tarafından normal JavaScript'e çevrilir."
+        },
+        {
+          "term": "DOM",
+          "def": "Tarayıcının bir web sayfasını içeride tuttuğu ağaç yapısı; sayfayı değiştirmek bu ağacı değiştirmek demektir."
+        },
+        {
+          "term": "Sanal DOM (Virtual DOM)",
+          "def": "Gerçek DOM'un bellekteki hafif bir kopyası; değişiklikler önce burada hesaplanıp karşılaştırılır, sonra gerçek sayfaya uygulanır."
+        },
+        {
+          "term": "Sinyal (signal)",
+          "def": "Değeri değiştiğinde ona bağlı olan hesaplamaları otomatik olarak haberdar eden reaktif değişken."
+        },
+        {
+          "term": "Fine-grained reactivity",
+          "def": "Değişikliklerin tüm bileşene değil, yalnızca etkilenen en küçük parçaya yansıtıldığı reaktivite modeli."
+        },
+        {
+          "term": "Bileşen (component)",
+          "def": "Arayüzün kendi mantığı ve görünümü olan, tekrar kullanılabilir parçası; ör. bir buton veya tablo."
+        },
+        {
+          "term": "Microtask",
+          "def": "JavaScript'te mevcut kod bittikten hemen sonra, tarayıcı başka işe geçmeden çalıştırılan küçük iş kuyruğu."
+        },
+        {
+          "term": "Promise / AsyncIterable",
+          "def": "İleride tamamlanacak bir işlemi (ör. sunucudan veri gelmesi) veya zamanla gelen bir veri akışını temsil eden JavaScript yapıları."
+        },
+        {
+          "term": "SSR (Server-Side Rendering)",
+          "def": "Sayfanın HTML'inin tarayıcıda değil sunucuda üretilip hazır gönderilmesi; ilk açılışı hızlandırır."
+        },
+        {
+          "term": "Hydration",
+          "def": "Sunucudan hazır gelen statik HTML'e, tarayıcıda JavaScript bağlanarak etkileşimli hale getirilmesi."
+        },
+        {
+          "term": "Optimistic UI",
+          "def": "Sunucu cevabını beklemeden işlemin başarılı olacağını varsayıp arayüzü hemen güncelleme tekniği."
+        },
+        {
+          "term": "Babel",
+          "def": "Modern JavaScript ve JSX kodunu tarayıcıların anlayacağı koda dönüştüren derleme aracı."
+        },
+        {
+          "term": "TC39",
+          "def": "JavaScript dilinin yeni özelliklerini standartlaştıran komite."
+        },
+        {
+          "term": "Codemod",
+          "def": "Kod tabanındaki eski kalıpları otomatik olarak yeni kalıplara dönüştüren araç veya script."
+        },
+        {
+          "term": "Web component",
+          "def": "Herhangi bir framework'ten bağımsız, tarayıcının yerel olarak desteklediği yeniden kullanılabilir özel HTML etiketi."
+        }
+      ]
+    }
+  ]
+}
