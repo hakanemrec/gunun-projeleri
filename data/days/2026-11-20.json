@@ -1,0 +1,301 @@
+{
+  "date": "2026-11-20",
+  "projects": [
+    {
+      "name": "mjmirza/app-store-compliance",
+      "url": "https://github.com/mjmirza/app-store-compliance",
+      "stars": "2.1k",
+      "language": "Shell",
+      "sections": {
+        "serves": "**app-store-compliance**, mobil uygulama geliştiricilerin en sinir bozucu anını hedefliyor: haftalarca çalıştığın uygulamanın **App Store ya da Google Play incelemesinden reddedilmesi**. Ret sebepleri çoğu zaman koddaki küçük bir eksikten (izin açıklaması, gizlilik bildirimi, hesap silme seçeneği) kaynaklanıyor ve ancak gönderimden günler sonra öğreniliyor.\n\nProje bunu **gönderimden önce** yakalamaya çalışan bir \"playbook + kontrol aracı\":\n\n- **117 ret örüntüsü:** Apple ve Google'ın en sık reddetme sebepleri tek bir sınıflandırmada toplanmış\n- **Otomatik tarama:** Uygulama klasörünü tarıyor, bulguları önem sırasıyla, dosya/satır bilgisiyle listeliyor ve sonucu tek kelimeyle veriyor: `BLOCKED.`, `CLEAR.` ya da `NOT CHECKED.`\n- **Mevzuat takvimi:** EU AI Act, DSA, COPPA, yaş doğrulama yasaları gibi 95 düzenleyici son tarih izleniyor\n- **Manuel kontrol listesi:** Kodun göremediği şeyler (hesap durumu, mağaza açıklaması) için insan eliyle doldurulacak liste\n- **AI agent skill'i:** Claude Code, Codex, Cursor, Gemini CLI gibi araçlara kuruluyor; agent `fastlane` ya da `eas submit` gibi gönderim komutunu çalıştırmadan önce denetim otomatik devreye giriyor",
+        "tech": "- **Bash ile yazılmış guard script'i:** Asıl kontrol aracı tek bir Bash dosyası. Neden? Her CI makinesinde ve her geliştirici bilgisayarında zaten var; ek kurulum gerektirmeden `bash guard.sh /uygulama/yolu` ile çalışıyor. Yardımcı araçlar (izleyiciler, denetimler, atıf doğrulayıcı) ise Python 3\n- **Veri ile kodu ayırma:** Kurallar script'in içine gömülmemiş; `rejection-patterns.json` (ret sınıflandırması), `detection-recipes.json` (her örüntü için tarama komutu) ve `regulatory-deadlines.json` (mevzuat takvimi) olarak ayrı tutuluyor. Apple yeni bir kural çıkardığında kod değil, veri güncelleniyor\n- **Hook tabanlı entegrasyon:** Kurulum betiği, her agent aracının **hook** klasörüne guard'ı yerleştiriyor. Agent bir gönderim komutu çalıştırmaya kalktığında hook araya giriyor ve kritik bulgu varsa komutu engelliyor. Kurulumun sonunda `doctor` komutu sahte bir gönderim deneyip gerçekten engellendiğini kanıtlıyor\n- **Anlamlı çıkış kodları:** 0 = temiz, 2 = engellendi, 3 = eksik kontrol. Bu sayede CI pipeline'ına doğrudan bağlanabiliyor\n- **Atıf doğrulayıcı:** Kuralların dayandığı ~300 resmi kaynağın hâlâ yaşadığını kontrol ediyor; sayfa 200 dönse bile içeriği \"bulunamadı\" olan **soft-404** durumlarını da yakalıyor\n- **Çapraz framework desteği:** Flutter, React Native, Expo ve Unity projelerinde derlenmiş çıktının yüzeyini tarıyor\n\n**Dikkat:** Lisans 24 Ağustos 2026'dan itibaren MIT değil; yıllık geliri 20 milyon doları aşan şirketler için gelir payı isteyen **OpenRoots Agent License** kullanılıyor.",
+        "why": "- **Günde ~380 yıldız, toplam 2.1k:** Küçük ama çok hızlı yükselen bir proje; bugünkü trend listesindeki en yüksek göreli ivmelerden biri\n- **\"Vibe coding\" ile mobil uygulama patlaması:** AI agent'larla birkaç günde uygulama yazan çok sayıda yeni geliştirici var, ama mağaza inceleme kurallarını bilen azınlık. Bu proje tam o boşluğa oturuyor\n- **2026 mevzuat yoğunluğu:** AB Yapay Zekâ Yasası, yaş doğrulama zorunlulukları ve gizlilik bildirimleri art arda yürürlüğe giriyor; takip etmek tek başına bir iş\n- **Agent'a \"fren\" eklemesi:** Agent'lar kodu yazıp gönderimi de kendileri yapabiliyor. Gönderimden önce otomatik devreye giren bir denetim, \"agent işini bitirdi ama uygulama reddedildi\" senaryosunu önlüyor\n- **Pratik geri bildirim:** README'deki kullanıcı yorumları \"ilk denemede onay aldım\" diyor; somut, ölçülebilir bir fayda\n\n**Kime hitap ediyor?** Tek başına ya da küçük ekiple mobil uygulama çıkaran geliştiricilere, ajans ekiplerine ve birden fazla uygulamayı yöneten şirketlere (fleet sweep özelliği bunun için).",
+        "evolve": "- **Statik analizin sınırları:** Erişilebilirlik denetimi statik; ikonlarda kontrast hesaplayamıyor. Uygulamayı emülatörde çalıştırıp ekran görüntüsü üzerinden kontrol eden dinamik bir mod büyük adım olur\n- **Kural kapsamı:** 114 örüntünün 107'si otomatik taranıyor, kalanlar elle. Bir LLM ile mağaza açıklaması ve ekran görüntülerini de denetleyen katman eklenebilir\n- **Canlı veri:** İzleyiciler varsayılan olarak örnek veriyle çalışıyor; Apple/Google kural değişikliklerini otomatik çekip PR açan bir bot projeyi güncel tutar\n- **Lisans belirsizliği:** Gelir payı modeli kurumsal benimsemeyi yavaşlatabilir; şirket içi kullanım için net bir ticari paket sunulabilir\n- **Kurumsal mobil uygulamalar:** ERP sistemlerinin (ör. saha servisi, depo uygulamaları) mobil istemcileri için \"kurumsal dağıtım\" (MDM, özel mağaza) kurallarını kapsayan bir modül, IFS gibi platformların ekosisteminde ilgi görebilir"
+      },
+      "glossary": [
+        {
+          "term": "Playbook",
+          "def": "Belirli bir işi adım adım nasıl yapacağını anlatan, tekrar kullanılabilir yöntem rehberi."
+        },
+        {
+          "term": "Privacy manifest",
+          "def": "Apple'ın uygulamalardan istediği, hangi kişisel veriyi neden topladığını ve hangi hassas API'leri kullandığını bildiren dosya."
+        },
+        {
+          "term": "Data safety",
+          "def": "Google Play'in, uygulamanın veri toplama ve paylaşma davranışını kullanıcıya gösteren zorunlu beyan formu."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir araç belirli bir işlemi yapmadan önce ya da sonra otomatik çalışan küçük script. Burada gönderim komutundan önce denetim yapıyor."
+        },
+        {
+          "term": "Agent skill",
+          "def": "Bir AI kodlama asistanına belirli bir işi nasıl yapacağını öğreten talimat ve araç paketi."
+        },
+        {
+          "term": "CI (Continuous Integration)",
+          "def": "Koda her değişiklik geldiğinde testlerin ve kontrollerin otomatik çalıştığı sürekli entegrasyon sistemi."
+        },
+        {
+          "term": "Exit code (çıkış kodu)",
+          "def": "Bir programın bittiğinde döndürdüğü sayı; 0 genellikle başarıyı, diğer değerler farklı hata durumlarını anlatır."
+        },
+        {
+          "term": "Soft-404",
+          "def": "Sayfanın aslında bulunmadığı halde sunucunun 'başarılı' (200) yanıtı verip 'bulunamadı' içeriği gösterdiği durum."
+        },
+        {
+          "term": "fastlane",
+          "def": "iOS ve Android uygulamalarını derleme, imzalama ve mağazaya gönderme işlerini otomatikleştiren açık kaynak araç."
+        },
+        {
+          "term": "Expo / EAS",
+          "def": "React Native ile mobil uygulama geliştirmeyi kolaylaştıran platform; EAS onun derleme ve mağazaya gönderme servisi."
+        },
+        {
+          "term": "Vibe coding",
+          "def": "Kodu satır satır yazmak yerine AI'a ne istediğini anlatarak uygulama geliştirme tarzı."
+        },
+        {
+          "term": "EU AI Act",
+          "def": "Avrupa Birliği'nin yapay zekâ sistemlerini risk seviyesine göre düzenleyen yasası."
+        },
+        {
+          "term": "COPPA",
+          "def": "ABD'de 13 yaş altı çocukların çevrimiçi verilerini koruyan yasa."
+        },
+        {
+          "term": "MDM (Mobile Device Management)",
+          "def": "Şirketlerin çalışan cihazlarını ve bu cihazlara kurulan uygulamaları merkezi olarak yönettiği sistem."
+        }
+      ]
+    },
+    {
+      "name": "toeverything/AFFiNE",
+      "url": "https://github.com/toeverything/AFFiNE",
+      "stars": "75.3k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**AFFiNE**, not alma, planlama ve beyin fırtınasını **tek bir çalışma alanında** birleştiren açık kaynak bir bilgi tabanı. Kendini **Notion ve Miro'ya gizlilik odaklı alternatif** olarak konumluyor.\n\nTemel fikir şu: Notion'da belge yazarsın, Miro'da beyaz tahtada çizersin, Airtable'da tablo tutarsın — ve bilgi üç yere dağılır. AFFiNE'de ise:\n\n- **Belge ve beyaz tahta aynı şey:** Yazdığın sayfayı tek tıkla sınırsız bir tuvale (edgeless mode) çevirip üzerine yapışkan not, şekil, bağlantı ve slayt ekleyebilirsin\n- **Veritabanı blokları:** Sayfanın içine tablo, kanban gibi farklı görünümlere sahip veritabanları gömülebiliyor\n- **Local-first:** Veriler önce senin cihazında tutuluyor; internet olmadan da çalışıyor, sonra senkronize oluyor\n- **Gerçek zamanlı ortak çalışma:** Web, masaüstü ve mobil istemciler arasında eşzamanlı düzenleme\n- **AFFiNE AI:** Taslak rapor yazma, makaleyi zihin haritasına çevirme, ana hatlardan slayt üretme\n- **Self-hosting:** Docker ile kendi sunucuna kurabiliyorsun; Community Edition MIT lisanslı ve ücretsiz",
+        "tech": "- **BlockSuite (editör çekirdeği):** AFFiNE'nin editörü ayrı bir açık kaynak proje. Her şey bir \"blok\" (paragraf, görsel, tablo, şekil); aynı blok modeli hem doküman görünümünde hem tuvalde render ediliyor. Bu sayede iki mod arasında geçiş veri dönüştürmeden mümkün\n- **CRDT ve Yjs:** Ortak düzenlemede çakışmaları çözmek için merkezi bir sunucuya güvenmek yerine **CRDT** veri yapıları kullanılıyor. İki kişi çevrimdışıyken aynı belgeyi değiştirse bile sonradan birleştirme matematiksel olarak tutarlı oluyor. Web tarafında Yjs kütüphanesi kullanılıyor\n- **y-octo ve OctoBase (Rust):** Yjs'in Rust ile yeniden yazılmış, thread-safe bir uygulaması (y-octo) ve onun üzerine kurulmuş veritabanı (OctoBase). Aynı veri formatı hem istemcide hem sunucuda yüksek performansla işlenebiliyor\n- **napi-rs:** Rust kodunu Node.js eklentisi olarak çağırmayı sağlıyor; ağır işler Rust'ta, arayüz TypeScript'te\n- **Electron masaüstü uygulaması:** Tek kod tabanıyla Windows, macOS ve Linux\n- **React + Jotai + Vite:** Arayüz React, durum yönetimi atom tabanlı Jotai, derleme Vite ile\n- **Monorepo:** Editör, sunucu, masaüstü ve mobil kodu tek depoda; 11 binden fazla commit ile olgun bir kod tabanı",
+        "why": "- **Uzun soluklu ama hâlâ canlı:** 75k yıldızlık bir projenin günde ~180 yıldız alması, ilginin yeni bir dalgayla canlandığını gösteriyor\n- **Veri egemenliği kaygısı:** Şirketler ve bireyler notlarını, iç dokümanlarını bulut SaaS ürünlerine (ve onların AI eğitim politikalarına) emanet etmekten giderek çekiniyor. Local-first + self-host seçeneği tam bu kaygıya cevap veriyor\n- **Notion fiyatlandırması ve AI paketleri:** Ticari araçlarda AI özellikleri ek ücretli katmanlara taşındıkça açık kaynak alternatiflere yönelim artıyor\n- **\"Hepsi bir arada\" çekiciliği:** Doküman + tuval + veritabanı birleşimi; ürün ekipleri, öğrenciler ve araştırmacılar için araç sayısını azaltıyor\n- **Hazır şablonlar:** Planlayıcı, okuma günlüğü, Cornell not şablonu gibi içerikler bireysel üretkenlik kitlesini hızla çekiyor\n\n**Kime hitap ediyor?** Notion kullanıp verisini kendi kontrolünde tutmak isteyenlere, iç dokümantasyonunu şirket sunucusunda barındırmak isteyen ekiplere ve görsel düşünen ürün/tasarım ekiplerine.",
+        "evolve": "- **Enterprise Edition henüz yok:** SSO, denetim kayıtları ve gelişmiş yönetici araçları planlanıyor ama yayımlanmadı; kurumsal benimseme için kritik eksik\n- **Eklenti ekosistemi:** Notion'un gücü entegrasyonlarında. AFFiNE için olgun bir eklenti/API katmanı ve MCP sunucusu, AI agent'ların çalışma alanını okuyup yazabilmesini sağlar\n- **Yerel AI modelleri:** Local-first felsefesiyle uyumlu olarak AI özelliklerinin Ollama gibi yerel modellerle de çalışabilmesi gizlilik vaadini tamamlar\n- **Veritabanı bloklarının derinleşmesi:** Formüller, ilişkiler ve dış veri kaynaklarına (SQL veritabanı, REST API) canlı bağlantı eklenirse hafif bir iç araç platformuna dönüşebilir\n- **ERP dokümantasyonu senaryosu:** IFS/ERP projelerinde süreç akışlarını tuvalde çizip yanına teknik dokümanı ve gereksinim tablosunu koymak için ideal; şirket içi kurulumla müşteri verisi dışarı çıkmadan kullanılabilir"
+      },
+      "glossary": [
+        {
+          "term": "Local-first",
+          "def": "Verinin önce kullanıcının kendi cihazında saklandığı, internet olmadan çalışıp bağlantı gelince senkronize olan uygulama yaklaşımı."
+        },
+        {
+          "term": "Self-hosting",
+          "def": "Bir yazılımı üreticinin bulutunda değil, kendi sunucunda ya da bilgisayarında çalıştırmak."
+        },
+        {
+          "term": "CRDT",
+          "def": "Birden fazla kişinin aynı veriyi aynı anda, hatta çevrimdışı değiştirmesine izin verip sonradan çakışmasız birleştirmeyi garanti eden veri yapısı türü."
+        },
+        {
+          "term": "Yjs",
+          "def": "Web uygulamalarında gerçek zamanlı ortak düzenleme için yaygın kullanılan, CRDT tabanlı JavaScript kütüphanesi."
+        },
+        {
+          "term": "Thread-safe",
+          "def": "Aynı anda birden fazla iş parçacığı tarafından kullanıldığında bozulmadan doğru çalışan kod."
+        },
+        {
+          "term": "Edgeless mode",
+          "def": "AFFiNE'de sayfanın kenarı olmayan sonsuz bir tuvale dönüştüğü, serbestçe çizim ve yerleşim yapılan görünüm."
+        },
+        {
+          "term": "Blok tabanlı editör",
+          "def": "İçeriği paragraf, görsel, tablo gibi bağımsız parçalar halinde tutan ve bunların taşınıp dönüştürülebildiği editör tipi."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML, JavaScript) masaüstü uygulaması yazmayı sağlayan çerçeve."
+        },
+        {
+          "term": "napi-rs",
+          "def": "Rust ile yazılmış kodu Node.js'ten doğrudan çağrılabilen eklentiye dönüştüren araç."
+        },
+        {
+          "term": "Jotai",
+          "def": "React uygulamalarında durumu küçük, bağımsız 'atomlar' halinde yöneten hafif kütüphane."
+        },
+        {
+          "term": "Vite",
+          "def": "Geliştirme sırasında çok hızlı açılan ve üretim için kodu paketleyen modern frontend derleme aracı."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paket veya uygulamanın tek bir git deposunda birlikte tutulması."
+        },
+        {
+          "term": "SSO (Single Sign-On)",
+          "def": "Kullanıcının tek bir kurumsal hesapla birçok uygulamaya ayrı ayrı şifre girmeden giriş yapabilmesi."
+        },
+        {
+          "term": "CLA (Contributor License Agreement)",
+          "def": "Katkıcının yazdığı kodun kullanım haklarını proje sahibine devrettiği ya da lisansladığı sözleşme."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "AI asistanlarının bir uygulamanın verisine ve işlevlerine standart bir protokolle erişmesini sağlayan ara katman."
+        }
+      ]
+    },
+    {
+      "name": "zhouxiaoka/autoclip",
+      "url": "https://github.com/zhouxiaoka/autoclip",
+      "stars": "11.5k",
+      "language": "Python",
+      "sections": {
+        "serves": "**AutoClip**, uzun videoları (podcast, röportaj, ders kaydı) **sosyal medya için kısa kliplere** otomatik dönüştüren açık kaynak bir masaüstü aracı. Sloganı: \"Bir link, tek tık, hazır klip.\"\n\nNormalde bir saatlik podcast'ten Reels/Shorts çıkarmak için birinin tüm kaydı izleyip ilginç anları bulması, kesmesi, dikeye çevirmesi, altyazı eklemesi ve başlık yazması gerekir. AutoClip bu zinciri tek adıma indiriyor:\n\n- **Link yapıştır, platform seç:** Douyin, Xiaohongshu, TikTok, Reels, YouTube Shorts, Bilibili, YouTube\n- **AI ile en iyi anları bulma:** Transkripti okuyup aday bölümleri puanlıyor, platform başına 10'a kadar klip üretiyor; fazlası yedek olarak saklanıyor\n- **Akıllı kadraj:** Konuşan kişiyi takip ederek yatay videodan dikey klip çıkarıyor\n- **Otomatik altyazı, kapak, başlık, açıklama ve hashtag**\n- **Yayın paketi:** Hepsini ZIP olarak indir ya da hesaplarını bağlayıp doğrudan yayınla\n- **Dört arayüz:** Masaüstü uygulaması, Web UI, CLI ve MCP sunucusu — hepsi aynı hattı kullanıyor\n\nKurgu ve render işlemleri senin bilgisayarında yapılıyor; yazılım ücretsiz, MIT lisanslı.",
+        "tech": "- **Tauri masaüstü kabuğu:** Electron yerine Tauri seçilmiş; daha küçük kurulum boyutu ve daha az bellek. Kurulum paketi Python ve FFmpeg'i içine gömüyor, kullanıcı hiçbir şey kurmak zorunda kalmıyor\n- **FastAPI backend + React frontend:** İş mantığı Python'da (AI ve video kütüphaneleri ekosistemi orada), arayüz React. Aynı API hem masaüstü uygulamasına hem web arayüzüne hizmet veriyor\n- **İşlem hattı (pipeline):** İndirme (yt-dlp) → transkripsiyon → LLM ile analiz ve puanlama → klip seçimi ve kadraj → FFmpeg ile render → paketleme. Her aşama ayrı olduğu için örneğin `--srt` ile hazır altyazı verip transkripsiyonu atlayabiliyorsun\n- **Esnek ASR seçenekleri:** Önce videonun kendi altyazısı denenir; yoksa yerel **Whisper** ya da **SenseVoice**, istenirse bulut transkripsiyon. Maliyet/gizlilik dengesini kullanıcı seçiyor\n- **Model bağımsız LLM katmanı:** OpenAI uyumlu herhangi bir uç nokta (özel Base URL ile), ya da **Ollama / LM Studio** ile tamamen yerel modeller. Bulut kullanılırsa sadece metin ve örnek kareler gönderiliyor\n- **MCP sunucusu:** `uvx autoclip-mcp` ile bir AI agent'a \"şu videodan Shorts çıkar\" görevi verilebiliyor; araç agent ekosistemine doğrudan bağlanıyor\n- **Docker Compose:** Sunucu kurulumu için hazır; Linux ve Intel Mac kullanıcıları için yol bu",
+        "why": "- **Günde ~130 yıldız, 11.5k toplam:** Tek kişinin geliştirdiği bir proje için güçlü ve istikrarlı bir ivme\n- **Kısa video ekonomisi:** İçerik üreticileri için uzun içeriği kliplere bölmek en çok zaman alan iş. Opus Clip gibi ücretli SaaS'lara açık kaynak, yerel çalışan bir alternatif büyük talep görüyor\n- **Maliyet şeffaflığı:** Yazılım ücretsiz; bulut model kullanılırsa bir çalıştırmanın maliyeti README'ye göre birkaç kuruş seviyesinde. Tamamen yerel modelle sıfır maliyet mümkün\n- **Platforma özgü akıllılık:** Her platformun en-boy oranı, süre limiti ve tarzı farklı; bunları bilen bir araç \"kes-yapıştır\" araçlarından ayrışıyor\n- **Agent uyumluluğu:** MCP ve CLI desteği sayesinde içerik otomasyon zincirlerine (n8n, agent iş akışları) kolayca ekleniyor\n\n**Kime hitap ediyor?** Podcast ve YouTube içerik üreticilerine, eğitim videosu çeken kurumlara, sosyal medya ajanslarına ve şirket içi webinar kayıtlarını kısa tanıtım videolarına çevirmek isteyen pazarlama ekiplerine.",
+        "evolve": "- **Platform kapsamı:** Masaüstü sürümü sadece Apple Silicon Mac ve Windows için; Linux masaüstü paketi eksik\n- **Çok dilli destek:** Şu an Çin platformları ve Çince içerik odaklı; Türkçe gibi dillerde altyazı ve başlık kalitesini artıran dil profilleri eklenebilir\n- **Tek geliştirici riski:** Bakımın sürdürülebilirliği için katkıcı topluluğu ve modüler eklenti yapısı (yeni platform/yayın hedefi eklemek gibi) önemli\n- **Analitik geri besleme:** Yayınlanan kliplerin izlenme verilerini geri çekip hangi tür anların iyi performans gösterdiğini öğrenen bir puanlama modeli, aracı gerçek bir \"büyüme\" aracına çevirir\n- **Kurumsal kullanım:** Eğitim videolarından (ör. ERP kullanıcı eğitimleri) kısa \"nasıl yapılır\" klipleri üretmek için ekran kaydına özel bir mod (konuşan kişi yerine imleç/ekran alanını takip eden kadraj) değerli olur"
+      },
+      "glossary": [
+        {
+          "term": "ASR (Otomatik Konuşma Tanıma)",
+          "def": "Konuşulan sesi otomatik olarak yazıya çeviren teknoloji."
+        },
+        {
+          "term": "Whisper",
+          "def": "OpenAI'ın açık kaynak yayınladığı, birçok dilde sesi yazıya çevirebilen konuşma tanıma modeli."
+        },
+        {
+          "term": "SenseVoice",
+          "def": "Alibaba ekibinin geliştirdiği, özellikle Çince'de güçlü, hızlı çalışan açık kaynak ses tanıma modeli."
+        },
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Çok büyük metin verisiyle eğitilmiş, metni anlayıp yeni metin üretebilen yapay zekâ modeli."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web arayüzüyle masaüstü uygulaması yapmayı sağlayan, Rust tabanlı ve Electron'dan daha hafif çerçeve."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python ile hızlı ve otomatik dokümantasyonlu web API'leri yazmayı sağlayan modern çerçeve."
+        },
+        {
+          "term": "FFmpeg",
+          "def": "Video ve sesi kesme, dönüştürme, birleştirme gibi işlemleri komut satırından yapan açık kaynak araç."
+        },
+        {
+          "term": "yt-dlp",
+          "def": "YouTube ve birçok siteden video indirmeye yarayan açık kaynak komut satırı aracı."
+        },
+        {
+          "term": "Ollama",
+          "def": "Açık kaynak dil modellerini kendi bilgisayarında kolayca indirip çalıştırmayı sağlayan araç."
+        },
+        {
+          "term": "LM Studio",
+          "def": "Yerel dil modellerini grafik arayüzle indirip çalıştıran ve OpenAI uyumlu API sunan masaüstü uygulaması."
+        },
+        {
+          "term": "OpenAI uyumlu API",
+          "def": "OpenAI'ın istek/yanıt formatını taklit eden arayüz; aynı kodla farklı model sağlayıcılarına bağlanmayı sağlar."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI asistanlarının dış araç ve veri kaynaklarıyla standart bir şekilde konuşmasını sağlayan protokol."
+        },
+        {
+          "term": "Pipeline (işlem hattı)",
+          "def": "Bir işin, her biri bir öncekinin çıktısını alan ardışık adımlara bölünmüş hali."
+        },
+        {
+          "term": "Docker Compose",
+          "def": "Birden fazla konteyneri tek bir yapılandırma dosyasıyla birlikte ayağa kaldıran araç."
+        },
+        {
+          "term": "SaaS",
+          "def": "Kurulum gerektirmeden, abonelikle internet üzerinden kullanılan yazılım hizmeti."
+        }
+      ]
+    },
+    {
+      "name": "nginx/nginx",
+      "url": "https://github.com/nginx/nginx",
+      "stars": "32.4k",
+      "language": "C",
+      "sections": {
+        "serves": "**nginx**, internetin görünmez omurgalarından biri: dünyadaki web sitelerinin çok büyük kısmının önünde duran **web sunucusu, reverse proxy ve yük dengeleyici**. Bu depo, F5'in sahibi olduğu projenin **resmî açık kaynak deposu**.\n\nnginx'in yaptığı işler sade bir dille:\n\n- **Statik dosya sunmak:** HTML, CSS, görselleri çok yüksek hızla ve az bellekle dağıtmak\n- **Reverse proxy:** Gelen istekleri arkadaki uygulama sunucularına (Node.js, Python, Java, ERP web istemcileri) yönlendirmek; dış dünya sadece nginx'i görür\n- **Yük dengeleme:** Trafiği birden fazla sunucu arasında paylaştırmak, çöken sunucuyu devreden çıkarmak\n- **TLS sonlandırma:** HTTPS şifrelemesini tek noktada yönetmek, sertifikaları merkezileştirmek\n- **Önbellekleme ve sıkıştırma:** Sık istenen yanıtları saklayıp arka uç yükünü azaltmak\n- **HTTP/2, HTTP/3 (QUIC), gRPC ve WebSocket** desteği\n\nKısacası bir uygulamayı \"internete açmak\" denildiğinde araya giren katman çoğu zaman nginx'tir.",
+        "tech": "- **C dili ve olay güdümlü mimari:** nginx'in 2000'lerdeki çıkış sebebi **C10k problemi** — aynı anda on binlerce bağlantıyı tek sunucuda tutabilmek. Apache gibi \"her bağlantıya bir süreç/thread\" modelleri yerine nginx, az sayıda worker sürecin her birinde **olay döngüsü** çalıştırıyor. İşletim sisteminin `epoll`/`kqueue` mekanizmalarıyla binlerce bağlantı tek thread'de, beklemeden işleniyor\n- **Master–worker süreç modeli:** Master süreç yapılandırmayı okuyup worker'ları yönetiyor; yapılandırma değiştiğinde bağlantıları koparmadan yeni worker'lar başlatılıyor (**zero-downtime reload**)\n- **Modüler yapı:** HTTP, stream (TCP/UDP), mail gibi işlevler modüller halinde; dinamik modüllerle derlemeden işlev eklenebiliyor\n- **Deklaratif yapılandırma dili:** `server`, `location`, `upstream` blokları ile davranış kod yazmadan tanımlanıyor\n- **Güncel yenilikler:** 1.30 serisiyle **Multipath TCP** (aynı bağlantının birden fazla ağ yolunu kullanması) ve **ECH** (TLS el sıkışmasında hangi siteye gidildiğini bile şifreleyen eklenti) desteği geldi; HTTP/3 modülü olgunlaşmaya devam ediyor\n- **GitHub'a taşınma:** Geliştirme uzun yıllar Mercurial ve e-posta listeleri üzerinden yürüdü; resmî deponun GitHub'da olması issue ve pull request ile katkıyı kolaylaştırdı",
+        "why": "- **Mütevazı ama dikkat çekici ivme:** Günde ~70 yıldız, bugünkü listedeki diğer projelere göre düşük; ancak 20 yaşını geçmiş bir altyapı projesinin trend listesine girmesi başlı başına bir sinyal\n- **Güvenlik güncellemeleri:** 2026'da HTTP/3 ve SSL upstream modüllerindeki açıklar için yayınlanan düzeltmeler, sistem yöneticilerini depoyu takip etmeye yöneltiyor\n- **AI altyapısında yeniden merkezde:** LLM API'lerinin önüne konan gateway'ler, model sunucularının (vLLM vb.) yük dengelemesi ve streaming yanıtların proxy'lenmesi için nginx hâlâ varsayılan seçim\n- **Fork rekabeti:** Angie ve freenginx gibi çatallar ortaya çıktıktan sonra resmî deponun topluluğa daha açık hale gelmesi ilgi çekiyor\n- **Eğitim değeri:** Yüksek performanslı C ağ programlamanın en iyi örneklerinden biri; kod tabanı öğrenmek için okunuyor\n\n**Kime hitap ediyor?** DevOps ve sistem yöneticilerine, backend geliştiricilere ve ERP web istemcilerini (ör. IFS Aurena) şirket ağından dışarı güvenle açmak isteyen altyapı ekiplerine.",
+        "evolve": "- **Yapılandırma deneyimi:** Hatalı bir `location` sırası ciddi güvenlik açığı doğurabiliyor. Resmî bir yapılandırma doğrulayıcı/linter ve \"dry-run\" modu büyük katkı olur\n- **Dinamik yapılandırma:** Caddy ve Envoy gibi rakipler API ile canlı yapılandırma ve otomatik HTTPS sunuyor; açık kaynak sürümde bunların eksikliği hissediliyor\n- **Bellek güvenliği:** C kod tabanı yıllardır güvenilir olsa da açıkların çoğu bellek hatalarından çıkıyor; kritik ayrıştırıcıları Rust ile yeniden yazmak (ya da bulanık test kapsamını artırmak) uzun vadeli bir yön\n- **AI trafiği için özellikler:** Token tabanlı hız sınırlama, LLM yanıtlarını anlamsal önbellekleme gibi AI gateway yetenekleri modül olarak eklenebilir\n- **Gözlemlenebilirlik:** OpenTelemetry entegrasyonunun çekirdeğe daha derin yerleşmesi, mikroservis ortamlarında sorun ayıklamayı kolaylaştırır"
+      },
+      "glossary": [
+        {
+          "term": "Web sunucusu",
+          "def": "Tarayıcılardan gelen istekleri karşılayıp web sayfalarını ve dosyaları gönderen yazılım."
+        },
+        {
+          "term": "Reverse proxy",
+          "def": "İstemcilerin isteklerini alıp arkadaki asıl sunuculara ileten, dışarıya tek bir giriş noktası sunan ara sunucu."
+        },
+        {
+          "term": "Yük dengeleyici (load balancer)",
+          "def": "Gelen trafiği birden çok sunucuya dağıtarak hiçbirinin aşırı yüklenmemesini sağlayan bileşen."
+        },
+        {
+          "term": "TLS sonlandırma",
+          "def": "HTTPS şifrelemesinin proxy'de çözülüp arka sunuculara sade bağlantıyla iletilmesi; sertifika yönetimini tek noktada toplar."
+        },
+        {
+          "term": "C10k problemi",
+          "def": "Tek bir sunucunun aynı anda on bin istemci bağlantısını verimli şekilde taşıyabilmesi sorunu."
+        },
+        {
+          "term": "Olay döngüsü (event loop)",
+          "def": "Bir programın beklemek yerine 'hazır olan' işleri sırayla ele aldığı, tek thread'de çok bağlantı yönetmeyi sağlayan yapı."
+        },
+        {
+          "term": "epoll / kqueue",
+          "def": "Linux ve BSD/macOS'ta binlerce bağlantıdan hangisinin veri gönderdiğini verimli şekilde bildiren işletim sistemi mekanizmaları."
+        },
+        {
+          "term": "Zero-downtime reload",
+          "def": "Sunucunun yapılandırmasının mevcut bağlantılar kopmadan, hizmet kesintisi olmadan yenilenmesi."
+        },
+        {
+          "term": "HTTP/3 ve QUIC",
+          "def": "UDP üzerinde çalışan, bağlantıyı daha hızlı kuran ve paket kayıplarına daha dayanıklı yeni nesil web protokolü."
+        },
+        {
+          "term": "Multipath TCP",
+          "def": "Tek bir TCP bağlantısının aynı anda birden fazla ağ yolunu (ör. Wi-Fi ve mobil veri) kullanabilmesini sağlayan eklenti."
+        },
+        {
+          "term": "ECH (Encrypted Client Hello)",
+          "def": "HTTPS bağlantısı kurulurken hangi siteye bağlanıldığı bilgisini de şifreleyerek gizliliği artıran TLS özelliği."
+        },
+        {
+          "term": "gRPC",
+          "def": "Servislerin birbirini hızlıca çağırması için Google'ın geliştirdiği, HTTP/2 üzerinde çalışan uzaktan çağrı protokolü."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Tarayıcı ile sunucu arasında sürekli açık kalan, iki yönlü gerçek zamanlı iletişim kanalı."
+        },
+        {
+          "term": "Fork (çatal)",
+          "def": "Bir açık kaynak projenin kodunun kopyalanıp bağımsız olarak ayrı bir yönde geliştirilmesi."
+        },
+        {
+          "term": "Fuzzing (bulanık test)",
+          "def": "Programa rastgele ya da bozuk girdiler vererek çökme ve güvenlik açıklarını otomatik arama tekniği."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan log, metrik ve iz (trace) verisini standart biçimde toplamak için açık kaynak çerçeve."
+        }
+      ]
+    }
+  ]
+}
