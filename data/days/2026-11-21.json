@@ -1,0 +1,321 @@
+{
+  "date": "2026-11-21",
+  "projects": [
+    {
+      "name": "odoo/odoo",
+      "url": "https://github.com/odoo/odoo",
+      "stars": "56k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Odoo**, tek bir kod tabanında toplanmış açık kaynaklı iş uygulamaları paketidir: **CRM, muhasebe ve faturalama, stok/depo yönetimi, üretim (MRP), satın alma, İK, proje yönetimi, POS, e-ticaret ve web sitesi**. Her uygulama tek başına kurulabilir; birden fazlasını kurduğunuzda birbirine bağlanıp tam bir **ERP** oluşturur.\n\nÇözdüğü problem klasik: KOBİ'ler ve orta ölçekli şirketler için SAP, Oracle veya IFS gibi kurumsal ERP'ler hem pahalı hem de devreye alması aylar süren projelerdir. Odoo, \"ihtiyacın olan modülü aç, gerisini sonra eklersin\" yaklaşımıyla bu eşiği düşürür.\n\nBugün trende girmesinin somut sebebi ise varsayılan dalın **20.0** olması ve bu sürümün merkezine **yapay zekâ ajanlarını** koymasıdır: ajanlar artık kayıt arayıp okuyabiliyor, kayıt oluşturup güncelleyebiliyor, ek dosyaları girdi olarak alabiliyor ve dış araçlar Odoo'ya **MCP** üzerinden bağlanabiliyor.",
+        "tech": "- **Python + PostgreSQL**: Sunucu tarafı Python ile yazılır, veri PostgreSQL'de durur. Tüm iş mantığı Odoo'nun kendi **ORM**'i üzerinden yürür; modeller Python sınıfı olarak tanımlanır, tablo ve kolonlar otomatik üretilir.\n- **Modül mimarisi**: Her uygulama bir *addon*'dur. Bir modül başka bir modelin alanlarını veya davranışını **kalıtım (inheritance)** ile genişletebilir. Bu, çekirdek koda dokunmadan özelleştirme yapmayı mümkün kılar — PL/SQL dünyasından gelenler için IFS'deki *customization layer* veya Oracle EBS'teki extension mantığına benzer.\n- **XML görünümler + OWL**: Ekranlar (form, liste, kanban) XML ile tanımlanır; ön yüz Odoo'nun kendi geliştirdiği bileşen tabanlı JavaScript çatısı **OWL** ile çalışır.\n- **Topluluk / Enterprise ayrımı**: Bu repo topluluk sürümüdür (LGPL lisanslı); bazı gelişmiş modüller kapalı kaynak Enterprise sürümündedir. İş modeli **open core**.\n- **20.0'daki AI katmanı**: Ajanlar Odoo kullanıcı yetkilerine saygı duyarak çalışır; otomasyon kuralları bir kayıt değiştiğinde veya zamanlanmış olarak ajan işi başlatabilir. Claude, Gemini CLI, n8n gibi **MCP istemcileri** kapsamlı (scoped) erişimle bağlanabiliyor. AI özellikleri **IAP kredisi** ile ücretlendiriliyor.\n- **Repo içinde `skills/` klasörü**: Dikkat çekici bir detay — Odoo, AI kodlama ajanları için resmi bir **Skill kütüphanesi** yayımlamış: `odoo-guidelines`, `odoo-review`, `odoo-security`, `odoo-git`, `odoo-stable-policy`, `odoo-web-guidelines`. Bunlar `.claude/skills/` altına kopyalanınca ajan, Odoo kodlama kurallarına göre yazıp gözden geçirebiliyor.",
+        "why": "- **Zamanlama**: Odoo 20 yakın zamanda çıktı ve sürüm notlarının ana teması \"otomasyondan aksiyona\" geçiş — ERP'nin yalnızca kayıt tuttuğu değil, ajanların iş yaptığı bir sistem. Bu, şu an GitHub'ın en sıcak teması olan **agent + MCP** akımıyla birebir örtüşüyor.\n- **Skills klasörü**: Kurumsal bir yazılım devinin kendi reposuna ajan becerileri koyması, son haftalarda trende giren onlarca \"skills\" reposunun ana akıma ulaştığının göstergesi. Odoo geliştiricileri ve partner firmalar bunu hemen fark etti.\n- **Kitle**: Odoo partnerleri, ERP danışmanları, KOBİ'lerde iç BT ekipleri ve — senin için önemli — **IFS/Oracle tarafından gelip açık kaynak ERP'yi merak eden** geliştiriciler. 56 bin yıldız ve 34 bin fork ile GitHub'daki en büyük ERP topluluğu.\n- **Yıldız ivmesi**: Günlük ~50 yıldız mutlak olarak küçük görünse de, 13 yıllık ve her gün yüzlerce commit alan dev bir repo için trend listesinde görünmek, sürüm dönemine özgü bir ilgi dalgasının işareti.",
+        "evolve": "- **ERP'ye özel ajan güvenliği**: Ajanların fatura kesmesi, stok hareketi yapması geri dönüşü zor işler. Onay zincirleri, \"taslak modunda çalış, insan onaylasın\" desenleri ve ajan aksiyonlarının denetim izi (audit trail) çekirdeğe daha sıkı oturtulabilir.\n- **Kredi modelinin esnekliği**: AI özelliklerinin IAP kredisine bağlı olması, kendi LLM'ini (yerel model veya kendi API anahtarı) kullanmak isteyen şirketler için engel. Topluluk tarafında \"kendi modelini getir\" addon'ları büyük ihtimalle hızla çoğalacak.\n- **Skills'in yaygınlaşması**: `odoo-review` ve `odoo-security` gibi beceriler, OCA (Odoo Community Association) modüllerinin kalite kontrolünde CI'a bağlanabilir.\n- **PL/SQL köprüsü**: IFS/Oracle ağırlıklı ekipler için Odoo ↔ Oracle veri entegrasyonu, MCP üzerinden iki ERP'yi aynı ajana bağlamak veya eski sistemden göç senaryoları ciddi bir niş. Odoo'nun MCP sunucusu, IFS tarafında benzer bir MCP katmanıyla eşleştirilirse \"ajan iki ERP arasında mutabakat yapsın\" gibi kullanımlar mümkün olur."
+      },
+      "glossary": [
+        {
+          "term": "ERP",
+          "def": "Enterprise Resource Planning; muhasebe, stok, satın alma, üretim, İK gibi şirket süreçlerini tek bir veritabanında birleştiren kurumsal yazılım."
+        },
+        {
+          "term": "ORM",
+          "def": "Object-Relational Mapping; veritabanı tablolarını koddaki nesneler gibi kullanmayı sağlayan katman. SQL yazmadan kayıt okuma/yazma yapılır."
+        },
+        {
+          "term": "Addon / modül",
+          "def": "Odoo'ya yeni özellik ekleyen veya mevcut bir özelliği değiştiren bağımsız paket. Her uygulama aslında bir modüldür."
+        },
+        {
+          "term": "Kalıtım (Inheritance)",
+          "def": "Bir modelin veya ekranın, orijinal koda dokunmadan başka bir modül tarafından genişletilmesi."
+        },
+        {
+          "term": "OWL",
+          "def": "Odoo Web Library; Odoo'nun ön yüzü için geliştirdiği, React'e benzer bileşen tabanlı JavaScript çatısı."
+        },
+        {
+          "term": "LGPL",
+          "def": "Açık kaynak bir lisans; kütüphaneyi kapalı kaynak yazılımlarla birlikte kullanmaya izin verir ama kütüphanenin kendisinde yapılan değişikliklerin paylaşılmasını ister."
+        },
+        {
+          "term": "Open core",
+          "def": "Temel ürünün açık kaynak, gelişmiş özelliklerin ücretli ve kapalı kaynak sunulduğu iş modeli."
+        },
+        {
+          "term": "AI ajanı",
+          "def": "Bir dil modelinin araç çağırarak (kayıt okuma, oluşturma, dosya işleme gibi) çok adımlı görevleri kendi başına yürüttüğü yazılım."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; AI asistanlarının dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "IAP",
+          "def": "In-App Purchase; Odoo'da uygulama içinden satın alınan kredilerle kullanılan ücretli hizmetler."
+        },
+        {
+          "term": "Skill",
+          "def": "AI kodlama ajanına belirli bir işi nasıl yapacağını anlatan yapılandırılmış talimat/dokümantasyon paketi."
+        },
+        {
+          "term": "Audit trail",
+          "def": "Sistemde kimin, ne zaman, neyi değiştirdiğini kaydeden denetim izi."
+        },
+        {
+          "term": "CI",
+          "def": "Continuous Integration; her kod değişikliğinde testlerin ve kontrollerin otomatik çalıştırılması."
+        },
+        {
+          "term": "OCA",
+          "def": "Odoo Community Association; topluluk tarafından geliştirilen açık kaynak Odoo modüllerini yöneten vakıf."
+        }
+      ]
+    },
+    {
+      "name": "bendlang/bend",
+      "url": "https://github.com/bendlang/bend",
+      "stars": "25.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Bend 2**, sloganı *\"AI hatalarını ispatla engelleyen hızlı bir dil\"* olan yeni bir programlama dilidir. Fikri şu: gelecekte insanlar kodu satır satır yazıp okumayacak; bunun yerine **niyetlerini kesin kurallar olarak** tanımlayacak, kodu AI yazacak ve derleyici bu kodun kurallara uyduğunu **matematiksel olarak kontrol** edecek.\n\nPratikte bir `LAWS.bend` dosyasına uygulamanın asla çiğnememesi gereken kurallar yazılır — örneğin *\"tüm bakiyelerin toplamı her zaman sıfırdır\"* veya *\"dizi sınırları dışına asla yazılmaz\"*. AI, kodu değiştirdiğinde bir de `PROOF.bend` yazar; `bend PROOF.bend` kontrolü geçmeyen değişiklik kabul edilmez. README'deki oyun örneğinde *\"kazanmak imkânsızdır\"* kuralı varken AI'ın eklediği bir hareket özelliği, kural ihlal ettiği için reddediliyor.\n\nYani Bend, testlerin \"örnek girdilerde çalışıyor\" demesinin ötesine geçip **\"her girdide doğru\"** garantisi vermeye çalışıyor.",
+        "tech": "- **Sözdizimi: \"Python + bağımlı tipler\"**: Okunabilir, Python'a benzer bir yüzey; ama her tip açıkça yazılır, hiçbir şey çıkarsanmaz. **Bağımlı tipler** sayesinde teoremler tip, ispatlar da sıradan fonksiyon tanımı olarak ifade edilir (örn. `x + 0 == x` tümevarımla ispatlanır).\n- **Güven tabanı**: `--verdict` modu, **Lean** ile formalize edilmiş bir çekirdek (`bendtt.lean`) kullanır. README dürüstçe ayrıştırıcının ve çekirdeğe çevirinin henüz ispatlanmadığını söylüyor.\n- **Çoklu hedef**: C, Metal, CUDA ve JavaScript'e derleniyor; Lua, Luau ve Python planlanmış. JavaScript hedefi tek çekirdekte çalışıyor.\n- **Otomatik paralellik**: Dengeli özyinelemeli çağrıları (böl-ve-yönet) derleyici kendiliğinden çekirdeklere veya **GPU** iş parçacıklarına dağıtıyor. `!` işaretiyle bir fonksiyonu GPU'da çalıştırmak mümkün. Bu, yazarı Victor Taelin'in Bend 1/HVM döneminden gelen \"paralelliği bedavaya al\" vizyonunun devamı — ama Bend 2, Bend 1 programlarını ve HVM'i taşımıyor, sıfırdan bir tasarım.\n- **Araç zinciri TypeScript/Bun**: Derleyici `bun bend2/main.ts` ile çalışıyor; bu da GitHub'ın dili TypeScript göstermesinin sebebi. Hızlı yineleme ve tarayıcıda çalışan \"pocket workshop\" gibi araçlar için mantıklı bir seçim.\n- **Ajan entegrasyonu**: README, `AGENTS.md` dosyasına *\"`bend guide` çalıştır, LAWS.bend kullan, commit öncesi `bend PROOF.bend` çalıştır\"* talimatlarının eklenmesini öneriyor — dil, AI ajanlarının birinci sınıf kullanıcı olduğu varsayımıyla tasarlanmış.\n- **Kısıtlar**: Tip sınıfı/trait yok, **taktik** veya otomatik ispat araması yok (ispatlar elle), yalnızca Nat/U32/F32 sayı tipleri, stringler bağlı liste olduğu için metin işleme yavaş. Derleyicinin *\"%99'u AI tarafından yazılmış ve tam denetlenmemiş\"*.",
+        "why": "- **Doğru soruya cevap**: AI kodlama ajanları yaygınlaştıkça en büyük korku \"AI'ın yazdığı kodu kim doğrulayacak?\" sorusu. Bend, bu soruya test yerine **ispat** ile cevap veren ilk \"ajan-öncelikli\" dillerden biri olarak konumlanıyor.\n- **Tanınmış yazar**: Victor Taelin, HVM ve Bend 1 ile paralel hesaplama topluluğunda zaten büyük ilgi görmüştü; Bend 2 duyurusu bu kitleyi yeniden harekete geçirdi.\n- **Kitle**: Fonksiyonel programlama ve tip teorisi meraklıları, Lean/Coq/Agda dünyası, finans ve oyun gibi \"değişmez kural\" kritik alanlarda çalışanlar ve AI ajanlarına güvenli sınırlar çizmek isteyen geliştiriciler.\n- **İvme**: 25.7k yıldız ve günde ~100 yıldız; README'deki dürüst \"BEND GENÇ, HATA BEKLEYİN\" uyarısına rağmen fikir merak uyandırıyor.",
+        "evolve": "- **Otomatik ispat / taktikler**: İspatların elle yazılması en büyük engel. Ancak ironik biçimde ispatları zaten AI yazıyor; taktik sistemi veya ispat araması eklenirse ajanlar çok daha hızlı yakınsar.\n- **64-bit sayılar ve verimli string**: Gerçek iş uygulamaları (para birimi, tarih, metin) için şart. Bunlar gelmeden Bend daha çok araştırma/oyuncak dil olarak kalır.\n- **Var olan dillere köprü**: Python hedefi geldiğinde, yalnızca kritik çekirdeği (örn. bakiye hesaplama) Bend'de ispatlayıp kalanını Python'da tutmak mümkün olur — en gerçekçi benimsenme yolu bu.\n- **Veritabanı ve ERP fikri**: \"Tüm bakiyelerin toplamı sıfır\" tam olarak muhasebe yevmiye kuralı. PL/SQL tarafındaki iş kuralları (çift taraflı kayıt dengesi, stok negatif olamaz) LAWS.bend tarzında tanımlanıp ajanın yazdığı paket kodu bunlara karşı doğrulanabilse, ERP özelleştirmelerinde regresyon riski ciddi azalır.\n- **Çekirdeğin tam doğrulanması**: Ayrıştırıcı ve çeviri katmanı da ispatlanırsa güven tabanı daralır ve \"ispatlı\" iddiası çok daha güçlü hâle gelir."
+      },
+      "glossary": [
+        {
+          "term": "Bağımlı tip (Dependent type)",
+          "def": "Bir tipin bir değere bağlı olabildiği tip sistemi; örneğin \"uzunluğu n olan liste\" gibi. Bu sayede programın doğruluğuna dair iddialar tipler içinde yazılabilir."
+        },
+        {
+          "term": "Formal ispat",
+          "def": "Bir programın belirtilen özelliği her olası girdi için sağladığının, derleyici/denetleyici tarafından kontrol edilen matematiksel kanıtı."
+        },
+        {
+          "term": "Teorem",
+          "def": "Doğru olduğu ispatlanması gereken bir önerme; Bend'de bir kural (law) olarak yazılır."
+        },
+        {
+          "term": "Tümevarım (Induction)",
+          "def": "Bir özelliğin önce en küçük durum için, sonra bir adımdan bir sonrakine geçişte doğru olduğunu göstererek tüm sayılar için ispatlama yöntemi."
+        },
+        {
+          "term": "Lean",
+          "def": "Matematiksel ispatları ve program doğrulamayı bilgisayarla kontrol etmeye yarayan bir ispat asistanı ve programlama dili."
+        },
+        {
+          "term": "Güven tabanı (Trusted base)",
+          "def": "Bir doğrulama sisteminde doğruluğu ispatlanmadan kabul edilmek zorunda olunan parçalar. Ne kadar küçükse o kadar güvenilir."
+        },
+        {
+          "term": "Ayrıştırıcı (Parser)",
+          "def": "Kaynak kodu okuyup derleyicinin anlayacağı yapıya çeviren bileşen."
+        },
+        {
+          "term": "CUDA",
+          "def": "NVIDIA GPU'larında genel amaçlı hesaplama yapmayı sağlayan programlama platformu."
+        },
+        {
+          "term": "Metal",
+          "def": "Apple cihazlarında GPU'ya doğrudan erişim sağlayan grafik ve hesaplama API'si."
+        },
+        {
+          "term": "Böl ve yönet (Divide and conquer)",
+          "def": "Bir problemi küçük parçalara bölüp parçaları ayrı ayrı (çoğu zaman paralel) çözüp sonuçları birleştirme yaklaşımı."
+        },
+        {
+          "term": "HVM",
+          "def": "Higher-order Virtual Machine; Bend 1'in üzerinde çalıştığı, programları otomatik paralelleştiren çalışma zamanı."
+        },
+        {
+          "term": "Bun",
+          "def": "JavaScript/TypeScript kodunu çalıştıran, Node.js'e alternatif hızlı bir çalışma zamanı."
+        },
+        {
+          "term": "Taktik (Tactic)",
+          "def": "İspat asistanlarında ispatın adımlarını otomatik üreten veya kısaltan komutlar."
+        },
+        {
+          "term": "Tip sınıfı / Trait",
+          "def": "Farklı tiplere ortak bir davranış (ör. karşılaştırma, yazdırma) tanımlamayı sağlayan dil özelliği."
+        },
+        {
+          "term": "AGENTS.md",
+          "def": "Repo kökünde durup AI kodlama ajanlarına projede nasıl çalışacaklarını anlatan talimat dosyası."
+        },
+        {
+          "term": "Bağlı liste (Linked list)",
+          "def": "Her elemanın bir sonrakini gösterdiği veri yapısı; rastgele erişimi ve büyük metin işlemeyi yavaşlatır."
+        }
+      ]
+    },
+    {
+      "name": "XiaoYouChR/Ghost-Downloader-3",
+      "url": "https://github.com/XiaoYouChR/Ghost-Downloader-3",
+      "stars": "13.9k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Ghost Downloader 3**, kendini *\"ihtiyacın olan tek indirici\"* olarak tanıtan, Windows, macOS, Linux ve Android'de çalışan bir **indirme yöneticisi**. Bir Bilibili içerik üreticisinin dosyalarını yönetmek için başlamış, şimdi neredeyse her tür indirmeyi tek arayüzde topluyor.\n\nTek uygulamada desteklenenler: **HTTP, BitTorrent/Magnet, FTP, M3U8 (HLS), MPEG-DASH ve eD2k**; YouTube ve Bilibili'den kalite seçimi, altyazı, çalma listesi ve **klip aralığı seçerek** video indirme; GitHub ve HuggingFace dosyaları için **ayna (mirror) hızlandırma**.\n\nGeliştirici açısından ilginç kısım: büyük model ağırlıklarını HuggingFace'ten çekerken yaşanan yavaşlık ve kopmalar, bu tür bir aracı AI ile uğraşan herkes için de pratik bir üretkenlik aracına çeviriyor.",
+        "tech": "- **Python + PySide6 + PyQt-Fluent-Widgets**: Arayüz Qt 6 üzerinde, Windows 11'in **Fluent Design** görünümünde. Uygulama **Nuitka** ile yerel ikili dosyaya derlenerek dağıtılıyor; böylece kullanıcının Python kurmasına gerek kalmıyor.\n- **\"Her işe en iyi motor\" yaklaşımı**: Tekerleği yeniden icat etmek yerine olgun araçları orkestra ediyor — video siteleri için **yt-dlp**, HLS/DASH için **N_m3u8DL-RE**, torrent için **libtorrent**, FTP için **aioftp**, eD2k için Kelpie, birleştirme/dönüştürme için **FFmpeg**.\n- **Asenkron çekirdek**: **uvloop / winloop** ile hızlandırılmış asyncio olay döngüsü; çok sayıda eşzamanlı bağlantıyı tek süreçte yönetiyor.\n- **Akıllı parçalama, birleştirmesiz**: Dosya parçalara bölünüp paralel indiriliyor ama parçalar doğrudan hedef dosyadaki ofsetlere yazılıyor; sonda ayrı bir \"birleştirme\" adımı yok. Bant genişliği otomatik ölçülüyor.\n- **TLS parmak izi taklidi**: **wreq** kütüphanesiyle istekler gerçek bir tarayıcının TLS el sıkışmasını taklit ediyor; böylece bot korumalı sunucular indirmeyi engellemiyor. (README bu iddiayı benchmark ile desteklemiyor.)\n- **aria2 uyumlu RPC + `ghd` CLI**: Üçüncü parti araçlar aria2'ye konuşur gibi Ghost Downloader'a iş gönderebiliyor; `ghd probe/add/tasks/wait` komutlarıyla betiklerden kontrol mümkün. İndirme sürerken URL, header veya proxy değiştirilebiliyor, ilerleme kaybolmuyor.\n- **Tarayıcı eklentisi + Feature Packs**: Eklenti sayfadaki medyayı yakalayıp oturum bilgisiyle masaüstüne aktarıyor; \"Feature Packs\" eklenti sistemi çalışır durumda, API'si henüz olgunlaşıyor. Gömülü **QuickJS-NG** ile site imza betikleri çalıştırılabiliyor.",
+        "why": "- **Günün en hızlı yükselenlerinden**: Günde 1.000+ yıldızla bugün trend listesinin en üstündekilerden biri.\n- **Boşluğu dolduruyor**: IDM gibi popüler indiriciler kapalı kaynak ve yalnızca Windows; açık kaynak tarafta aria2 güçlü ama arayüzsüz, Motrix gibi araçlar ise video sitelerini ve DASH'i kapsamıyor. Ghost Downloader hepsini **modern bir arayüz ve tek kurulumla** birleştiriyor.\n- **Çin topluluğunun gücü**: Bilibili desteği, QQ grubu ve Çince tanıtım, Çinli geliştirici topluluğundan gelen yoğun ilgiyi açıklıyor; aynı dönemde trendde olan birçok proje gibi.\n- **AI çağının yan etkisi**: Gigabaytlarca model dosyası indiren geliştiriciler için HuggingFace ayna hızlandırması ve kesintiye dayanıklı indirme gerçek bir ihtiyaç.",
+        "evolve": "- **Ajan dostu arayüz**: Zaten CLI ve RPC var; küçük bir **MCP sunucusu** eklenirse AI ajanları \"şu veri setini indir, bitince bana haber ver\" görevlerini doğrudan devredebilir.\n- **Benchmark ve şeffaflık**: Hız ve \"anti-bot görünmezliği\" iddiaları ölçülebilir karşılaştırmalarla desteklenirse güven artar. TLS taklidinin hangi senaryolarda etik/yasal sınırda kaldığı da açıkça belgelenmeli.\n- **Plugin API'sinin kamuya açılması**: Yol haritasında var; açıldığında kurumsal dosya sunucuları, S3 veya iç ağ kaynakları için topluluk eklentileri gelebilir.\n- **Kurumsal kullanım**: Bant genişliği zamanlaması, merkezi kuyruk ve paylaşımlı indirme önbelleği eklenirse ekip ortamlarında (örn. büyük ERP yama/kurulum paketlerinin dağıtımı) kullanılabilir hâle gelir.\n- **AVX bağımlılığı**: Qt 6.6+ yüzünden eski CPU'larda çalışmaması küçük ama gerçek bir erişilebilirlik sorunu."
+      },
+      "glossary": [
+        {
+          "term": "İndirme yöneticisi",
+          "def": "Dosyaları parçalara bölerek hızlı, duraklatılabilir ve kesintiye dayanıklı şekilde indiren uygulama."
+        },
+        {
+          "term": "M3U8 / HLS",
+          "def": "Videoyu küçük parçalar hâlinde sunan, Apple'ın geliştirdiği akış (streaming) formatı; M3U8 bu parçaların listesini tutan dosyadır."
+        },
+        {
+          "term": "MPEG-DASH",
+          "def": "İnternet hızına göre kaliteyi otomatik değiştiren, HLS'e benzer uyarlanabilir video akış standardı."
+        },
+        {
+          "term": "BitTorrent / Magnet",
+          "def": "Dosyanın merkezi bir sunucu yerine kullanıcılar arasında paylaşılarak indirildiği eşler arası (P2P) protokol; magnet linki dosyayı tanımlayan kısa bağlantıdır."
+        },
+        {
+          "term": "eD2k",
+          "def": "eMule gibi programların kullandığı eski bir eşler arası dosya paylaşım ağı."
+        },
+        {
+          "term": "Ayna (Mirror)",
+          "def": "Bir dosyanın başka bir sunucudaki kopyası; asıl sunucu yavaş veya erişilemez olduğunda kullanılır."
+        },
+        {
+          "term": "PySide6",
+          "def": "Qt 6 arayüz çatısının resmi Python bağlantısı; masaüstü uygulamaları Python ile yazmayı sağlar."
+        },
+        {
+          "term": "Fluent Design",
+          "def": "Microsoft'un Windows 10/11'de kullandığı görsel tasarım dili."
+        },
+        {
+          "term": "Nuitka",
+          "def": "Python kodunu C'ye çevirip bağımsız çalışan bir program dosyasına derleyen araç."
+        },
+        {
+          "term": "yt-dlp",
+          "def": "YouTube ve binlerce siteden video/ses indiren açık kaynak komut satırı aracı."
+        },
+        {
+          "term": "FFmpeg",
+          "def": "Video ve ses dosyalarını dönüştürme, birleştirme ve işleme için kullanılan standart açık kaynak araç seti."
+        },
+        {
+          "term": "asyncio / uvloop",
+          "def": "Python'da çok sayıda ağ işlemini tek iş parçacığında eşzamanlı yürütmeyi sağlayan yapı; uvloop bunun daha hızlı bir olay döngüsü sürümüdür."
+        },
+        {
+          "term": "TLS parmak izi",
+          "def": "Şifreli bağlantı kurulurken istemcinin gönderdiği ayarların oluşturduğu imza; sunucular bot mu tarayıcı mı olduğunu bununla tahmin edebilir."
+        },
+        {
+          "term": "RPC",
+          "def": "Remote Procedure Call; bir programın başka bir programdaki fonksiyonu ağ üzerinden çağırması."
+        },
+        {
+          "term": "aria2",
+          "def": "Çok protokollü, hafif, komut satırından çalışan popüler açık kaynak indirme aracı."
+        },
+        {
+          "term": "QuickJS",
+          "def": "Başka uygulamaların içine gömülebilen küçük ve hızlı bir JavaScript motoru."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; AI asistanlarının dış araçlara standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "AVX",
+          "def": "Modern işlemcilerde bulunan, çok sayıda veriyi tek komutla işlemeyi sağlayan komut seti uzantısı."
+        }
+      ]
+    },
+    {
+      "name": "phone-harness/phone-harness",
+      "url": "https://github.com/phone-harness/phone-harness",
+      "stars": "5.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "**phone-harness**, Claude Code veya Codex gibi bir kodlama ajanına **gerçek bir telefonu kullanma** yeteneği veriyor: ekranı okuyup kaydırmak, dokunmak, yazı yazmak, uygulama açmak. README'ye göre bunun için jailbreak, Xcode veya telefona herhangi bir uygulama kurmak gerekmiyor.\n\nKullanım alanları geniş: mobil uygulamanızı ajana uçtan uca test ettirmek, yalnızca mobil uygulaması olan bir servisten veri toplamak, tekrarlayan telefon işlerini (form doldurma, bildirimleri tarama) otomatikleştirmek. Masaüstü ve tarayıcı otomasyonu artık olgunlaştı; phone-harness ajanların \"son kilometresi\" olan telefonu hedefliyor.",
+        "tech": "- **iPhone tarafı — iPhone Mirroring + Vision OCR**: macOS 15'in **iPhone Yansıtma** penceresinin ekran görüntüsü alınıyor, Apple'ın **Vision** çatısıyla OCR yapılıyor; dokunma, kaydırma ve yazma bu pencereye giriş olayı olarak gönderiliyor. Akıllıca bir hile: Apple'ın kendi resmi özelliği üzerinden çalıştığı için cihaza hiçbir şey kurulmuyor.\n- **Android tarafı — ADB + erişilebilirlik ağacı**: **ADB** ile ekran görüntüsü ve giriş, **erişilebilirlik ağacı** ile ekrandaki metin ve öğeler okunuyor. USB veya Wi-Fi üzerinden.\n- **Tek API, her platform**: Ajan, `phone-harness` CLI üzerinden önceden içe aktarılmış yardımcılarla (`open_app`, `tap_text`, `type_text`, `screen`) **Python betikleri** çalıştırıyor. Bir platform için yazılan betik diğerlerinde de çalışıyor. Ajan kendi yardımcılarını `~/.phone-harness/agent-workspace` altına kaydedip zamanla kendi kütüphanesini oluşturabiliyor.\n- **Neden betik, neden tek tek araç çağrısı değil?** Her dokunuş için ayrı bir araç çağrısı yapmak yerine ajanın kısa Python betikleri yazması, döngü ve koşul gibi mantığı tek seferde ifade etmesini sağlıyor — daha az tur, daha az token.\n- **Python 3.12 + uv**: Kurulum, ajana bir kurulum istemi verilerek yapılıyor; ajan CLI'ı `uv` ile kuruyor, beceriyi (skill) kaydediyor ve kullanıcıyı adım adım yönlendiriyor. `phone-harness doctor` kurulumu kontrol ediyor.\n- **Bulut telefonlar + MCP**: Barındırılan Android (ADB) ve iPhone (HTTPS) cihazlar, tarayıcıdan canlı izleme ve bir **MCP uç noktası** sunuluyor (şimdilik yalnızca bulut cihazlar için).\n- **Bilinen sınırlar**: OCR ikonları görmüyor (etiketsiz düğmeler için görsel model gerekiyor), çoklu dokunma/kamera/Face ID yok, DRM'li video siyah görünüyor, PIN kilitli cihaz kullanıcı ister.",
+        "why": "- **Ajan \"eller\" yarışı**: Son aylarda trendde tarayıcı (browser-use, agent-browser), masaüstü (cua, agent-desktop) ve CLI kontrolü projeleri gördük. Telefon, ajanların henüz rahatça erişemediği son büyük yüzeydi; phone-harness bu boşluğa sade bir çözümle girdi.\n- **Kurulum sürtünmesi sıfıra yakın**: Appium gibi klasik mobil otomasyon araçları Xcode, sürücüler ve sertifikalarla uğraştırır. \"Telefonu bağla, ajana bir prompt ver\" yaklaşımı ilgi çekti.\n- **Ekosistem entegrasyonları**: Hermes Agent ve OpenClaw eklentileri, bu ajan kullanıcılarının hızla denemesini sağladı.\n- **Kitle**: Mobil geliştiriciler ve QA ekipleri, otomasyon meraklıları, kişisel asistan ajan kuranlar.",
+        "evolve": "- **Görsel anlama varsayılan olmalı**: OCR yalnızca metin görüyor; ekran görüntüsünü doğrudan çok kipli bir modele vermek ve ikonları da tanımak, güvenilirliği ciddi artırır.\n- **Yerel MCP sunucusu**: MCP şu an yalnızca bulut cihazlar için; yerel bağlı telefonlar için de bir MCP sunucusu, CLI kullanmayan istemcilere kapıyı açar.\n- **Güvenlik ve izin katmanı**: Telefon; banka, e-posta ve 2FA kodlarının olduğu en hassas cihaz. Uygulama bazlı izin listesi, ödeme ekranlarında insan onayı ve tüm aksiyonların kaydı (replay) şart.\n- **Test çerçevesi olarak paketleme**: Ajanın keşfettiği akışları deterministik test senaryolarına dönüştürüp CI'da tekrar çalıştırma özelliği, onu QA ekipleri için Appium alternatifine çevirebilir.\n- **Kurumsal mobil uygulamalar**: IFS gibi ERP'lerin mobil saha uygulamaları (servis, depo sayımı) için uçtan uca regresyon testleri ajana yaptırılabilir."
+      },
+      "glossary": [
+        {
+          "term": "Kodlama ajanı",
+          "def": "Claude Code veya Codex gibi, kod yazan, komut çalıştıran ve araç kullanarak görevleri kendi başına tamamlayan AI asistanı."
+        },
+        {
+          "term": "Harness",
+          "def": "Bir yapay zekâ modelini çevresindeki araçlara, dosyalara ve cihazlara bağlayan çalışma çerçevesi."
+        },
+        {
+          "term": "iPhone Mirroring",
+          "def": "macOS 15 ve iOS 18 ile gelen, iPhone ekranını Mac'te bir pencere olarak gösterip oradan kontrol etmeyi sağlayan Apple özelliği."
+        },
+        {
+          "term": "OCR",
+          "def": "Optical Character Recognition; görüntüdeki yazıları okunabilir metne çeviren teknoloji."
+        },
+        {
+          "term": "Vision (Apple)",
+          "def": "Apple'ın cihaz üzerinde görüntü analizi ve metin tanıma yapan yerleşik çatısı."
+        },
+        {
+          "term": "ADB",
+          "def": "Android Debug Bridge; bilgisayardan Android cihaza komut göndermeyi, ekran görüntüsü almayı ve giriş simüle etmeyi sağlayan resmi araç."
+        },
+        {
+          "term": "Erişilebilirlik ağacı",
+          "def": "İşletim sisteminin ekran okuyucular için tuttuğu, ekrandaki düğme, metin ve alanların yapılandırılmış listesi."
+        },
+        {
+          "term": "Jailbreak",
+          "def": "iOS'un üretici kısıtlamalarını kaldırarak cihaza yetkisiz erişim sağlama işlemi."
+        },
+        {
+          "term": "uv",
+          "def": "Python paketlerini ve sanal ortamları çok hızlı kuran, Rust ile yazılmış paket yöneticisi."
+        },
+        {
+          "term": "Skill",
+          "def": "AI ajanına belirli bir aracı veya işi nasıl kullanacağını anlatan yapılandırılmış talimat paketi."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; AI asistanlarının dış araçlara standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Çok kipli model (Multimodal)",
+          "def": "Metnin yanında görüntü, ses gibi farklı veri türlerini de anlayabilen yapay zekâ modeli."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlerken kullandığı küçük parçalar; maliyet ve hız token sayısına bağlıdır."
+        },
+        {
+          "term": "DRM",
+          "def": "Dijital hak yönetimi; telifli içeriğin kopyalanmasını veya ekran görüntüsünün alınmasını engelleyen koruma."
+        },
+        {
+          "term": "Appium",
+          "def": "Mobil uygulamaları otomatik test etmek için yaygın kullanılan açık kaynak çerçeve."
+        },
+        {
+          "term": "QA",
+          "def": "Quality Assurance; yazılımın kalite ve hatasızlığını test eden süreç ve ekip."
+        },
+        {
+          "term": "Regresyon testi",
+          "def": "Yeni bir değişikliğin daha önce çalışan özellikleri bozmadığını doğrulamak için yapılan tekrar testleri."
+        }
+      ]
+    }
+  ]
+}
