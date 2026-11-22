@@ -1,0 +1,323 @@
+{
+  "date": "2026-11-22",
+  "projects": [
+    {
+      "name": "datazip-inc/olake-go",
+      "url": "https://github.com/datazip-inc/olake-go",
+      "stars": "2.2k",
+      "language": "Go",
+      "sections": {
+        "serves": "**OLake**, operasyonel veritabanlarındaki veriyi **veri gölüne (lakehouse)** taşıyan açık kaynak bir veri aktarım motoru. Kaynak tarafında **PostgreSQL, MySQL, MongoDB, MSSQL, Oracle, DB2**, ayrıca **Kafka** ve **S3** var; hedef tarafında ise **Apache Iceberg** tabloları ya da düz **Parquet** dosyaları. Bugün Go trend listesinde **93 yeni yıldızla** yer aldı; repo kısa süre önce `olake` adından `olake-go` adına taşındı.\n\nÇözdüğü problem, veri ekiplerinin klasik derdi: Üretim veritabanındaki siparişleri, faturaları, stok hareketlerini analitik tarafa almak istiyorsun. Bugünkü tipik çözüm ya **Fivetran** gibi pahalı, ücreti satır başına büyüyen bir SaaS ya da **Debezium + Kafka + Spark/Flink** gibi işletmesi ayrı bir uzmanlık isteyen bir yığın. OLake bu ikisinin ortasında duruyor: **tek bir Go ikilisi + web arayüzü**, kaynak seç, hedef seç, tabloları işaretle, senkronu başlat.\n\n**PL/SQL / ERP dünyası için neden ilginç?** Oracle desteği (tam yükleme ve artımlı yükleme; **CDC henüz geliştirme aşamasında**) sayesinde IFS ya da Oracle EBS gibi Oracle tabanlı bir ERP'nin tablolarını, ERP'nin kendisine yük bindirmeden analitik bir kopyaya almak mümkün hale geliyor. Raporlama sorgularını üretim şemasından uzaklaştırmak, ERP sahiplerinin yıllardır çözmeye çalıştığı bir konu.",
+        "tech": "- **Go ile yazılmış çekirdek + sürücü (driver) eklentileri**: Ortak çerçeve durum (state), konfigürasyon doğrulama, loglama ve tip tespitini yönetiyor; her kaynak kendi sürücüsünü bu çerçeveye takıyor. CLI komutları (`spec`, `check`, `discover`, `sync`) Airbyte'tan tanıdık **connector protokolü** mantığını izliyor — bu, yeni kaynak eklemeyi standart hale getiriyor.\n- **Log tabanlı CDC**: Değişiklikleri sorgu atarak değil, veritabanının kendi değişiklik günlüğünden okuyor: PostgreSQL'de **WAL** (`pgoutput`), MySQL'de **binlog**, MongoDB'de **oplog**. Böylece kaynak üzerindeki yük düşük kalıyor ve silmeler dahil her değişiklik yakalanıyor.\n- **Üç senkron modu**: Her tablo için ayrı ayrı **Full Refresh**, **Incremental** (bir imleç kolonuyla, örn. `updated_at`) veya **CDC** seçilebiliyor.\n- **Apache Arrow ile yazım + Iceberg**: Veri bellekte kolon formatında (Arrow) tutulup Parquet olarak yazılıyor, ardından Iceberg tablosuna işleniyor. Glue, Hive, JDBC ve **REST katalogları** (Nessie, Polaris, Unity, Lakekeeper, AWS S3 Tables) destekleniyor — yani Snowflake, Trino, Spark, DuckDB gibi motorlar aynı tabloyu okuyabiliyor.\n- **Şema evrimi ve exactly-once**: Kaynakta kolon eklendiğinde hedef şema otomatik güncelleniyor; README tam olarak bir kez teslim (exactly-once) iddia ediyor.\n- **Performans iddiaları** (projenin kendi ölçümleri): Postgres → Iceberg tam yüklemede **saniyede ~580 bin satır** (Fivetran'dan 12,5 kat hızlı), Oracle → Iceberg **~526 bin satır/sn**, Postgres CDC **~55 bin satır/sn**. Dürüstçe, Kafka tarafında Flink'ten **1,23 kat yavaş** olduğunu da yazıyorlar.\n- **Dağıtım**: Docker Compose ile tek komutta UI + backend; Kubernetes için Helm, Airflow entegrasyonu da var. Iceberg tablo bakımı (compaction vb.) ayrı bir proje olan **OLake Fusion**'a ayrılmış. Lisans **Apache-2.0**.",
+        "why": "- **Lakehouse'un ana akım olması**: Iceberg artık Snowflake, Databricks, AWS ve Google tarafından ortak açık tablo formatı olarak destekleniyor. \"Veriyi bir kere Iceberg'e koy, istediğin motorla oku\" vaadi, veriyi oraya taşıyan araçlara talebi patlatıyor.\n- **Fivetran faturasından kaçış**: Satır başına ücretlendirilen SaaS ELT araçları büyüdükçe pahalılaşıyor. Self-hosted, Apache lisanslı ve benchmark'larda Fivetran'ı doğrudan hedef alan bir araç, maliyet baskısı altındaki veri ekiplerine çok cazip.\n- **AI ajanları için taze veri**: Ajanların ve RAG sistemlerinin operasyonel veriye yakın-gerçek-zamanlı erişmesi isteniyor; CDC ile beslenen bir lakehouse bunun en temiz yolu.\n- **Kitle**: Veri mühendisleri, Debezium/Kafka yığınını işletmekten yorulmuş platform ekipleri ve Oracle/MSSQL üzerinde koşan ERP'lerden analitik çıkarmak isteyen kurumsal BT ekipleri.",
+        "evolve": "- **Oracle CDC'nin tamamlanması**: ERP dünyası için asıl kilit bu. **LogMiner** ya da redo log tabanlı bir CDC geldiğinde, IFS/EBS gibi sistemlerden gerçek zamanlı lakehouse beslemek hiç olmadığı kadar kolaylaşır.\n- **Filtreler ve kısmi senkron**: Yol haritasındaki \"tam yüklemede filtre\" özelliği, örneğin yalnızca son iki yılın faturalarını almak gibi ERP senaryolarında hayati.\n- **Iceberg V3 desteği**: Silme vektörleri ve varyant tipi gibi yeni özellikler, CDC'den gelen yoğun güncelleme/silme trafiğini çok daha verimli işler.\n- **Kurumsal ihtiyaçlar**: Kolon bazlı maskeleme (KVKK/GDPR), satır seviyesinde filtre, veri kalitesi kontrolleri ve uçtan uca soy (lineage) bilgisi.\n- **Ajan dostu katman**: Bir MCP sunucusu ile \"şu tabloyu Iceberg'e senkronla, durumu ne?\" diyebilen bir arayüz, platform ekiplerinin işini daha da kolaylaştırabilir.\n- **Bağımsız benchmark'lar**: Şimdilik tüm hız rakamları projenin kendi ölçümü; üçüncü taraf doğrulaması güvenilirliği artırır."
+      },
+      "glossary": [
+        {
+          "term": "Lakehouse",
+          "def": "Veri gölünün (ucuz dosya depolama) esnekliğini veri ambarının (tablo, şema, işlem garantisi) düzeniyle birleştiren mimari."
+        },
+        {
+          "term": "Apache Iceberg",
+          "def": "Büyük veri dosyalarını (genelde Parquet) tablo gibi yöneten açık tablo formatı; şema değişikliği, zaman yolculuğu ve farklı motorlardan aynı anda okuma sağlar."
+        },
+        {
+          "term": "Parquet",
+          "def": "Veriyi satır satır değil kolon kolon saklayan, sıkıştırılmış dosya formatı; analitik sorgularda çok hızlıdır."
+        },
+        {
+          "term": "CDC (Change Data Capture)",
+          "def": "Veritabanında olan her ekleme, güncelleme ve silmeyi yakalayıp başka bir sisteme aktarma tekniği."
+        },
+        {
+          "term": "WAL (Write-Ahead Log)",
+          "def": "PostgreSQL'in her değişikliği önce yazdığı günlük dosyası; CDC araçları değişiklikleri buradan okur."
+        },
+        {
+          "term": "Binlog",
+          "def": "MySQL'in veri değişikliklerini kaydettiği ikili günlük; replikasyon ve CDC için kullanılır."
+        },
+        {
+          "term": "Oplog",
+          "def": "MongoDB'nin değişiklik günlüğü; kopyalar arası senkron ve CDC bu kayıt üzerinden yürür."
+        },
+        {
+          "term": "LogMiner",
+          "def": "Oracle'ın redo log dosyalarındaki değişiklikleri SQL ile okunabilir hale getiren yerleşik aracı."
+        },
+        {
+          "term": "Full Refresh",
+          "def": "Tablonun her seferinde baştan sona yeniden kopyalandığı senkron modu."
+        },
+        {
+          "term": "Incremental (artımlı) senkron",
+          "def": "Yalnızca son senkrondan sonra değişen satırların, genelde bir tarih ya da ID kolonuna bakılarak alınması."
+        },
+        {
+          "term": "ELT",
+          "def": "Veriyi önce çıkarıp (Extract) hedefe yükleyen (Load), dönüşümü (Transform) sonra hedef sistemde yapan veri entegrasyon yaklaşımı."
+        },
+        {
+          "term": "Fivetran",
+          "def": "Veritabanı ve SaaS kaynaklarından veri ambarına otomatik veri aktaran ticari, bulut tabanlı ELT hizmeti."
+        },
+        {
+          "term": "Debezium",
+          "def": "Veritabanı değişiklik günlüklerini okuyup Kafka'ya olay olarak yazan açık kaynak CDC platformu."
+        },
+        {
+          "term": "Apache Kafka",
+          "def": "Yüksek hacimli olay ve mesaj akışlarını sırayla saklayıp dağıtan dağıtık akış platformu."
+        },
+        {
+          "term": "Apache Arrow",
+          "def": "Verinin bellekte kolon formatında tutulması için standart; farklı araçlar arasında kopyasız, hızlı veri paylaşımı sağlar."
+        },
+        {
+          "term": "Katalog (Iceberg catalog)",
+          "def": "Hangi Iceberg tablosunun nerede olduğunu ve güncel sürümünü tutan kayıt servisi (Glue, Hive, REST vb.)."
+        },
+        {
+          "term": "Şema evrimi",
+          "def": "Kaynak tabloya kolon eklenmesi veya tip değişmesi gibi yapısal değişikliklerin hedefe otomatik yansıtılması."
+        },
+        {
+          "term": "Exactly-once",
+          "def": "Her kaydın hedefe ne eksik ne fazla, tam olarak bir kez yazılacağı teslim garantisi."
+        },
+        {
+          "term": "Compaction",
+          "def": "Çok sayıda küçük veri dosyasını daha az sayıda büyük dosyada birleştirerek sorgu performansını artırma bakımı."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes uygulamalarını paketleyip tek komutla kurmaya yarayan paket yöneticisi."
+        },
+        {
+          "term": "Connector protokolü",
+          "def": "Kaynak ve hedef bağlantılarının standart komutlarla (spec, check, discover, sync) konuştuğu ortak arayüz."
+        },
+        {
+          "term": "Lineage (veri soyu)",
+          "def": "Bir verinin hangi kaynaktan geldiğini ve hangi adımlardan geçtiğini gösteren iz kaydı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araçlara ve verilere standart bir yolla bağlanmasını sağlayan açık protokol."
+        }
+      ]
+    },
+    {
+      "name": "multica-ai/multica",
+      "url": "https://github.com/multica-ai/multica",
+      "stars": "57.1k",
+      "language": "Go",
+      "sections": {
+        "serves": "**Multica**, insanların ve AI kodlama ajanlarının **aynı ekipte, aynı iş panosunda** çalıştığı açık kaynak, kendi sunucunda barındırılabilen bir proje yönetim platformu. Bugün Go trend listesinde **127 yeni yıldızla** yer aldı; toplamda **57 bini aşkın yıldız** ve 7,5 bin fork'a ulaşmış durumda.\n\nFikir şu: Bugün Claude Code, Codex ya da Cursor Agent'ı kullanmak için terminal açıp ajanla tek tek konuşuyorsun. Ekip büyüdüğünde \"hangi ajan hangi işi yapıyor, ne kadar harcadı, ne bozdu?\" sorularının cevabı kayboluyor. Multica'da ajan, Linear ya da Jira'daki bir **ekip arkadaşı gibi** davranıyor: Bir **issue'yu ajana atıyorsun**, ajan işi alıyor, yorumlarla ilerlemesini bildiriyor, takıldığında soruyor ve sonunda işi bir **pull request** olarak **incelemeye** gönderiyor. Hiçbir şey insan onayı olmadan main'e girmiyor.\n\nKısacası \"ajanla sohbet\" yerine **\"ajanı yönetmek\"** için bir çalışma alanı.",
+        "tech": "- **Go backend**: Chi router, **sqlc** (SQL'den tip güvenli Go kodu üreten araç) ve gorilla/websocket. ORM yerine sqlc seçimi, sorguların elle yazılmış SQL olarak kalmasını ve performansın öngörülebilir olmasını sağlıyor — veritabanı odaklı geliştiricilerin seveceği bir karar.\n- **PostgreSQL 17**: `pg_trgm` uzantısı ile bulanık metin araması, `pgcrypto` ile şifreleme veritabanının içinde yapılıyor.\n- **İstemciler**: Web için **Next.js 16**, masaüstü için **Electron** (web arayüzü paketlerini paylaşıyor), mobil için **Expo / React Native**. Her yüzey bir **CLI ve API** ile de scriptlenebiliyor; ajanlar bile Multica'yı aynı CLI ile kullanabiliyor.\n- **Runtime + daemon modeli**: Asıl ajan çalıştırma işi senin makinende (dizüstü ya da bulut sunucusu) çalışan bir **yerel daemon** tarafından yapılıyor. Backend daemon'a WebSocket ile iş gönderiyor, daemon da kurulu ajan CLI'sini başlatıyor. Böylece **kod senin makinende kalıyor**; Multica bir model sunmuyor, senin kurup giriş yaptığın CLI'leri sürüyor.\n- **31 ajan sağlayıcısı**: Claude Code, Codex, Cursor Agent, Copilot CLI, OpenCode, Qwen Code, Kiro, Amp, Devin CLI ve daha fazlası. Bazılarında çalışan ajana **anlık yön verme (mid-run steering)** mümkün.\n- **Ekip özellikleri**: Lider ajanın iş dağıttığı **squad**'lar, tekrar kullanılabilir **skill**'ler, cron ile zamanlanmış **autopilot**'lar (günlük standup, denetim, rapor), her araç çağrısının zaman damgalı **çalışma logu**, ajan ve issue bazında **maliyet analitiği**, rol ve izin yönetimi.\n- **Dağıtım ve lisans**: Docker Compose veya Helm ile self-host; GHCR'den hazır imajlar. Lisans, Apache 2.0 metni + barındırılan hizmet, ticari gömme ve marka konusunda ek koşullar içeren özel **Multica License** — saf Apache değil, buna dikkat.",
+        "why": "- **\"Tek ajan\" döneminden \"ajan ekibi\" dönemine geçiş**: Geçen haftaki LoopForge ve AgenticOS ile aynı dalga. Şirketler artık birden fazla ajanı paralel çalıştırıyor ve bunları izlemek, faturalamak, denetlemek için bir **yönetim katmanına** ihtiyaç duyuyor.\n- **Sağlayıcı bağımsızlığı**: 31 farklı CLI desteği, \"bugün Claude, yarın Codex, öbür gün yerli bir model\" diyebilmek isteyen ekipler için güçlü bir argüman.\n- **Tanıdık metafor**: Issue, atama, yorum, review — yazılım ekiplerinin zaten bildiği akış. Yeni bir kavram öğrenmeden ajanları sürece katmayı sağlıyor.\n- **Asya pazarı**: Feishu, DingTalk, WeCom, WeChat entegrasyonları ve Çin menşeli ajanların (Qwen, Kimi, DeepSeek, Trae) desteklenmesi, yıldız ivmesinin önemli bir kısmının oradan geldiğini düşündürüyor.\n- **Kitle**: Ajanlarla iş yapan küçük yazılım ekipleri, ajan kullanımını kurumsal sürece oturtmak isteyen mühendislik yöneticileri ve kendi altyapısını isteyen self-host meraklıları.",
+        "evolve": "- **Ajan değerlendirme panosu**: Maliyet zaten ölçülüyor; **başarı oranı, review'da geri dönme sayısı, ortalama çözüm süresi** gibi kalite metrikleri eklenirse \"hangi iş için hangi ajan?\" sorusu veriyle cevaplanır.\n- **Kurumsal sistem entegrasyonları**: Jira, Azure DevOps ve ServiceNow ile iki yönlü senkron, mevcut süreçleri bırakamayan büyük şirketler için giriş kapısı olur.\n- **Güvenlik ve yalıtım**: Daemon şu an ajanı doğrudan makinede çalıştırıyor; OpenSandbox gibi bir sandbox katmanıyla entegrasyon, ajanların yetkisini sınırlamayı kolaylaştırır.\n- **Lisans netliği**: Ek koşullu özel lisans, bazı kurumların hukuk ekiplerinde soru işareti yaratabilir; daha net bir açık çekirdek modeli benimsemesi büyümeyi hızlandırabilir.\n- **ERP / PL/SQL senaryoları**: Veritabanı paketleri, migration script'leri ve test verisiyle çalışan \"DB skill\" şablonları, kurumsal geliştirme ekiplerine özel bir kullanım alanı açabilir."
+      },
+      "glossary": [
+        {
+          "term": "AI kodlama ajanı",
+          "def": "Kendisine verilen bir görevi kod okuyup yazarak, komut çalıştırarak büyük ölçüde kendi başına tamamlayan yapay zekâ aracı."
+        },
+        {
+          "term": "Issue",
+          "def": "Proje yönetim araçlarında yapılacak bir işi, hatayı ya da isteği temsil eden kayıt."
+        },
+        {
+          "term": "Pull request (PR)",
+          "def": "Bir koddaki değişikliklerin ana dala eklenmeden önce incelenmesi için açılan öneri."
+        },
+        {
+          "term": "Review gate (inceleme kapısı)",
+          "def": "Bir değişikliğin insan onayı almadan ana koda girmesini engelleyen kontrol noktası."
+        },
+        {
+          "term": "Self-host",
+          "def": "Bir yazılımı üreticinin bulutunda değil, kendi sunucunda çalıştırmak."
+        },
+        {
+          "term": "Daemon",
+          "def": "Arka planda sürekli çalışan ve gelen işleri karşılayan program."
+        },
+        {
+          "term": "Runtime",
+          "def": "Bu bağlamda ajanların fiilen çalıştığı makine; dizüstü bilgisayar ya da bulut sunucusu olabilir."
+        },
+        {
+          "term": "CLI (Komut Satırı Arayüzü)",
+          "def": "Bir programı grafik arayüz yerine terminalde komut yazarak kullanma yolu."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Sunucu ile istemci arasında sürekli açık kalan, iki yönlü gerçek zamanlı iletişim kanalı."
+        },
+        {
+          "term": "sqlc",
+          "def": "Elle yazılmış SQL sorgularından tip güvenli Go kodu üreten araç; ORM'e alternatif."
+        },
+        {
+          "term": "ORM",
+          "def": "Veritabanı tablolarını programlama dilindeki nesnelerle eşleyip SQL yazmadan veri işlemeyi sağlayan katman."
+        },
+        {
+          "term": "pg_trgm",
+          "def": "PostgreSQL'de metinleri üçlü harf gruplarına bölerek benzerlik ve bulanık arama yapan uzantı."
+        },
+        {
+          "term": "Next.js",
+          "def": "React tabanlı, sunucu tarafı render ve yönlendirme gibi özellikler sunan web uygulama çatısı."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML, JS) masaüstü uygulaması yapmayı sağlayan çatı."
+        },
+        {
+          "term": "Expo / React Native",
+          "def": "JavaScript ile iOS ve Android uygulaması geliştirmeyi sağlayan araç ve çatı."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir ajanın belirli bir işi nasıl yapacağını anlatan, tekrar kullanılabilir talimat ve dosya paketi."
+        },
+        {
+          "term": "Autopilot",
+          "def": "Multica'da belirli aralıklarla (cron ile) kendiliğinden çalışan ajan görevi."
+        },
+        {
+          "term": "Cron",
+          "def": "Görevleri belirli saat ve aralıklarda otomatik çalıştıran zamanlama sistemi ve ifade biçimi."
+        },
+        {
+          "term": "Mid-run steering",
+          "def": "Çalışmakta olan bir ajana işi durdurmadan yeni talimat gönderip yönünü değiştirme."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes uygulamalarını paketleyip tek komutla kurmaya yarayan paket yöneticisi."
+        },
+        {
+          "term": "GHCR",
+          "def": "GitHub'ın konteyner imajlarını barındırdığı kayıt servisi (GitHub Container Registry)."
+        },
+        {
+          "term": "Telemetri",
+          "def": "Yazılımın kullanım ve durum bilgilerini üreticisine otomatik göndermesi."
+        },
+        {
+          "term": "Açık çekirdek (open core)",
+          "def": "Temel ürünün açık kaynak, bazı gelişmiş özelliklerin veya kullanım haklarının ücretli/kısıtlı olduğu iş modeli."
+        }
+      ]
+    },
+    {
+      "name": "opensandbox-group/OpenSandbox",
+      "url": "https://github.com/opensandbox-group/OpenSandbox",
+      "stars": "17.8k",
+      "language": "Go",
+      "sections": {
+        "serves": "**OpenSandbox**, AI ajanlarının kod çalıştırması, komut koşturması, dosya düzenlemesi ve tarayıcı/masaüstü kullanması için **yalıtılmış, güvenli çalışma ortamları (sandbox)** sağlayan açık kaynak bir altyapı. **Agentic AI Foundation (AAIF)** çatısı altında bir proje; paket adları (`com.alibaba.opensandbox`, `@alibaba-group/opensandbox`) Alibaba kökenini işaret ediyor. Bugün Go trend listesinde yer aldı, toplamda **17,8 bin yıldıza** sahip.\n\nÇözdüğü problem: Bir ajana \"bu kodu çalıştır ve sonucuna bak\" dediğinde, o kodu **nerede** çalıştıracaksın? Kendi makinende çalıştırmak riskli (ajan bir dosyayı silebilir, bir sırrı sızdırabilir); her iş için elle konteyner kurmak yavaş. OpenSandbox, tek bir API ile **milisaniyeler içinde** yeni bir sandbox açıp, içinde komut ve kod çalıştırıp, işi bitince kapatmayı sağlıyor. Aynı API dizüstündeki Docker'da da, binlerce sandbox çalıştıran bir Kubernetes kümesinde de çalışıyor.",
+        "tech": "- **İki çalışma zamanı, tek yaşam döngüsü API'si**: Yerelde **Docker**, kümede **Kubernetes** (bir operator ile kontrol düzlemi). Geliştirici yerelde denediği kodu değiştirmeden üretime taşıyabiliyor.\n- **Firecracker mikro sanal makineleri**: Güçlü yalıtım için konteyner yerine AWS Lambda'nın da kullandığı **Firecracker** microVM'leri destekleniyor. Proje, oluşturma süresini **P50'de 64 ms**, 10 eşzamanlı istekte **P99'da ~125 ms** olarak raporluyor. Sandbox'lar bellek ve disk durumu korunarak **duraklatılıp devam ettirilebiliyor** (pause/resume) — uzun süren ajan oturumları için kritik.\n- **Ağ kontrolü**: Gelen trafik için birleşik bir **ingress gateway**, giden trafik için her sandbox'a özel **egress politikası** (örneğin \"yalnızca PyPI'a ve şirket API'sine çıkabilsin\").\n- **Credential Vault**: Ajan bir dış servisi çağırırken gerçek anahtarı görmüyor; kimlik bilgisi sandbox dışındaki bir katmanda enjekte ediliyor. Prompt injection ile sır sızdırma riskini ciddi biçimde azaltan bir tasarım.\n- **Çok dilli SDK'lar**: Python, Java/Kotlin, TypeScript, C#/.NET ve Go. Ayrıca `osb` CLI'si ve Claude Code / Cursor gibi istemcilere bağlanan bir **MCP sunucusu** var.\n- **Protokol odaklı genişletilebilirlik**: Yaşam döngüsü ve yürütme API'leri `specs/` altında yayımlanmış; kendi runtime'ını bu protokole uyarlayıp takabiliyorsun.\n- **RL ve değerlendirme için havuzlar**: Önceden ısıtılmış **kaynak havuzları** ve toplu oluşturma, binlerce paralel deneme gerektiren **pekiştirmeli öğrenme (RL)** ve ajan benchmark'ları için tasarlanmış.\n- **Lisans Apache-2.0**. README, yeni birleşik sürümlerde Cosign imzası ve köken (provenance) belgelerinin henüz olmadığını açıkça belirtip üretimde imajların digest ile sabitlenmesini öneriyor.",
+        "why": "- **Ajanlar artık kod çalıştırıyor**: Kodlama ajanları, veri analizi ajanları, tarayıcı otomasyonu... Hepsi \"güvenli bir yerde kod çalıştırma\" ihtiyacında birleşiyor. Bu alan E2B, Daytona, Modal gibi ticari servislerin elindeydi; **açık kaynak ve self-host edilebilir** güçlü bir alternatif büyük boşluk dolduruyor.\n- **Güvenlik gündemi**: Geçen haftanın devvm, AgenticOS (gVisor) ve SkillEvaluator gibi projeleri gösterdi ki \"ajanı hangi yetkiyle, nerede çalıştırıyorum?\" sorusu artık birinci sınıf mesele. Credential Vault ve egress politikaları tam bu soruya cevap.\n- **RL eğitim patlaması**: Model laboratuvarları ajanları gerçek ortamlarda eğitmek için saniyede yüzlerce sandbox açıp kapatmak zorunda. Firecracker hızları ve kaynak havuzları bu kitleye hitap ediyor.\n- **Vakıf desteği**: AAIF çatısı, projeyi tek bir şirketin ürününden çok ortak bir altyapı standardı adayı haline getiriyor.\n- **Kitle**: Ajan platformu geliştirenler, AI altyapı/platform ekipleri, model eğitimi yapan araştırmacılar ve ajanlarını kendi altyapısında çalıştırmak isteyen kurumlar.",
+        "evolve": "- **Tedarik zinciri güvenliğinin tamamlanması**: İmza ve köken belgelerinin geri gelmesi, güvenlik ürünü olarak konumlanan bir proje için öncelik olmalı.\n- **Daha fazla yalıtım seçeneği**: gVisor ve Kata Containers gibi alternatif yalıtım katmanlarının resmi desteği, farklı güvenlik/performans dengelerine imkân verir.\n- **Veritabanı sandbox'ları**: Ajanın üretim verisine dokunmadan çalışabilmesi için, örneğin bir PostgreSQL ya da Oracle şemasının anlık kopyasıyla (snapshot) açılan sandbox'lar — PL/SQL paketleri üzerinde çalışan ajanlar için çok değerli olur.\n- **Maliyet ve kota yönetimi**: Ekip ve ajan bazında CPU/bellek kotaları, kullanım raporları; Multica gibi orkestrasyon platformlarıyla hazır entegrasyon.\n- **Gözlemlenebilirlik**: Sandbox içindeki her komutun ve ağ çağrısının OpenTelemetry ile izlenmesi, ajan denetimi (audit) ihtiyacını karşılar.\n- **Windows ve GPU sandbox'ları**: Masaüstü otomasyonu ve model çıkarımı yapan ajanlar için kapsamı genişletir."
+      },
+      "glossary": [
+        {
+          "term": "Sandbox (kum havuzu)",
+          "def": "Çalışan kodun ana sisteme zarar veremeyeceği, dış dünyadan yalıtılmış güvenli çalışma ortamı."
+        },
+        {
+          "term": "Konteyner",
+          "def": "Bir uygulamayı bağımlılıklarıyla birlikte paketleyip işletim sisteminin geri kalanından ayrı çalıştıran hafif sanallaştırma birimi."
+        },
+        {
+          "term": "Docker",
+          "def": "Konteyner oluşturmak, paylaşmak ve çalıştırmak için en yaygın araç."
+        },
+        {
+          "term": "Kubernetes",
+          "def": "Çok sayıda konteyneri sunucu kümeleri üzerinde otomatik dağıtan, ölçekleyen ve yöneten orkestrasyon sistemi."
+        },
+        {
+          "term": "Operator (Kubernetes)",
+          "def": "Belirli bir uygulamanın kurulum ve işletme bilgisini koda döküp Kubernetes içinde otomatik yöneten bileşen."
+        },
+        {
+          "term": "Firecracker",
+          "def": "AWS'nin geliştirdiği, milisaniyeler içinde açılan çok hafif sanal makineler (microVM) çalıştıran açık kaynak araç."
+        },
+        {
+          "term": "MicroVM",
+          "def": "Gereksiz donanım emülasyonundan arındırılmış, konteyner kadar hızlı açılan ama sanal makine düzeyinde yalıtım sunan küçük sanal makine."
+        },
+        {
+          "term": "P50 / P99",
+          "def": "Gecikme ölçümünde isteklerin %50'sinin ve %99'unun bu sürenin altında kaldığını gösteren yüzdelik değerler."
+        },
+        {
+          "term": "Pause / resume",
+          "def": "Çalışan bir ortamı bellek ve disk durumunu koruyarak dondurup daha sonra kaldığı yerden devam ettirme."
+        },
+        {
+          "term": "Ingress / egress",
+          "def": "Bir sisteme gelen (ingress) ve sistemden dışarı çıkan (egress) ağ trafiği."
+        },
+        {
+          "term": "Egress politikası",
+          "def": "Bir ortamın internette hangi adreslere çıkabileceğini belirleyen kural seti."
+        },
+        {
+          "term": "Credential Vault",
+          "def": "API anahtarı gibi gizli bilgileri saklayıp ajanın kendisine göstermeden isteklere ekleyen güvenli kasa katmanı."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Bir AI modelini, okuduğu metnin içine gizlenmiş talimatlarla istenmeyen davranışlara yönlendirme saldırısı."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir hizmeti belirli bir programlama dilinden kolayca kullanmak için hazırlanmış kütüphane ve araç paketi."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araçlara ve verilere standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Pekiştirmeli öğrenme (RL)",
+          "def": "Bir modelin deneme-yanılma ile, aldığı ödül ve cezalara göre davranışını iyileştirdiği eğitim yöntemi."
+        },
+        {
+          "term": "Kaynak havuzu (resource pool)",
+          "def": "Talep gelmeden önce hazırda bekletilen ortamlar; istek gelince sıfırdan kurmak yerine hemen tahsis edilir."
+        },
+        {
+          "term": "Cosign",
+          "def": "Konteyner imajlarını dijital olarak imzalayıp doğrulamaya yarayan açık kaynak araç."
+        },
+        {
+          "term": "Provenance (köken belgesi)",
+          "def": "Bir yazılım paketinin hangi kaynak koddan, nerede ve nasıl derlendiğini kanıtlayan kayıt."
+        },
+        {
+          "term": "Digest ile sabitleme",
+          "def": "Bir konteyner imajını değişebilen etiket (tag) yerine içeriğinin değişmez özet değeriyle (hash) referans gösterme."
+        },
+        {
+          "term": "gVisor",
+          "def": "Google'ın, konteynerlerin sistem çağrılarını araya girip yakalayarak ek bir yalıtım katmanı sağlayan çalışma zamanı."
+        },
+        {
+          "term": "Kata Containers",
+          "def": "Her konteyneri kendi hafif sanal makinesinde çalıştırarak daha güçlü yalıtım sağlayan açık kaynak proje."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan log, metrik ve iz (trace) verisi toplamak için açık standart ve araç seti."
+        }
+      ]
+    }
+  ]
+}
