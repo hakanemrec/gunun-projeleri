@@ -1,0 +1,365 @@
+{
+  "date": "2026-11-23",
+  "projects": [
+    {
+      "name": "openai/codex-plugin-cc",
+      "url": "https://github.com/openai/codex-plugin-cc",
+      "stars": "35.4k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**codex-plugin-cc**, OpenAI'ın resmi olarak yayımladığı bir **Claude Code eklentisi (plugin)**: Claude Code içinde çalışırken, aynı oturumdan **OpenAI Codex**'e kod incelemesi yaptırmanı ya da bir görevi devretmeni sağlıyor. Bugün JavaScript trend listesinde yer aldı; toplamda yaklaşık **35.4k yıldıza** ulaşmış durumda.\n\nÇözdüğü problem basit ama gerçek: Birçok geliştirici artık tek bir ajanla değil, **birden fazla AI kodlama aracıyla** çalışıyor. Bir model kodu yazıyor, diğerinin \"ikinci göz\" olarak bakmasını istiyorsun. Normalde bu, terminaller arası kopyala-yapıştır, iki ayrı oturum ve bağlam kaybı demek. Eklenti bunu tek komuta indiriyor:\n\n- `/codex:review` — commit'lenmemiş değişikliklerin ya da branch'inin `main`'e göre farkının **salt okunur** incelemesi\n- `/codex:adversarial-review` — tasarım kararlarını, gizli varsayımları ve alternatifleri sorgulayan, odak metni verilebilen \"şeytanın avukatı\" incelemesi\n- `/codex:rescue` — bir hatayı araştırma, düzeltme denemesi ya da yarım kalan işe devam etme görevini Codex'e devretme\n- `/codex:transfer` — mevcut Claude Code oturumundan kalıcı bir Codex thread'i oluşturup `codex resume` ile kaldığın yerden devam etme\n\nKısacası: **iki rakip laboratuvarın ajanlarını aynı iş akışında, birbirini denetleyecek şekilde** kullanmanın resmi yolu.",
+        "tech": "- **Ayrı bir runtime değil, ince bir sarmalayıcı**: Eklenti, makinede kurulu global `codex` ikilisini ve onun **app server** arayüzünü kullanıyor. Yani kimlik doğrulama, `~/.codex/config.toml` ayarları ve repo checkout'u doğrudan Codex kullanımıyla aynı. Bu karar, eklentinin bakımını hafifletiyor ve kullanıcıya \"ikinci bir Codex kurulumu\" yükü getirmiyor.\n- **Claude Code eklenti sistemi üzerine kurulu**: Kurulum `/plugin marketplace add openai/codex-plugin-cc` ve `/plugin install codex@openai-codex` ile yapılıyor. Slash komutları, bir **subagent** (`codex:codex-rescue`) ve **hook**'lar tek pakette geliyor.\n- **Hook kullanımı**: `/codex:transfer`, transkripti bulmak için bir `SessionStart` hook'u kullanıyor. Opsiyonel **review gate** ise bir `Stop` hook'u ile Claude'un cevabını bitirmeden önce Codex'e hedefli bir inceleme yaptırıyor; sorun bulunursa durma engelleniyor ve Claude önce düzeltiyor.\n- **Arka plan işleri**: Uzun incelemeler ve rescue görevleri `--background` ile başlatılıp `/codex:status`, `/codex:result`, `/codex:cancel` ile yönetiliyor. Bu, ana oturumu bloklamadan paralel çalışma sağlıyor.\n- **Model ve efor seçimi**: `/codex:rescue` model ve **reasoning effort** seçimine izin veriyor; proje düzeyindeki `.codex/config.toml` yalnızca proje **güvenilir (trusted)** işaretliyse yükleniyor — repo içine gömülü ayarlarla sürpriz davranışın önüne geçen bir güvenlik kararı.\n- **Gereksinimler**: Node.js 18.18+, ChatGPT aboneliği (Free dahil) ya da OpenAI API anahtarı. Lisans **Apache-2.0**.",
+        "why": "- **Çoklu ajan iş akışlarının normalleşmesi**: 2026'da geliştiricilerin önemli bir kısmı birden fazla kodlama ajanını yan yana kullanıyor. \"Bir model yazsın, diğeri incelesin\" deseni, tek modelin kör noktalarını kapatmanın ucuz yolu olarak yaygınlaştı.\n- **Rakip ekosisteme resmi köprü**: OpenAI'ın, rakip bir aracın eklenti sistemine **resmi** bir paket çıkarması dikkat çekici bir hamle. Kullanıcı nerede ise oraya gitme stratejisi: Claude Code kullanıcısını Codex'e taşımaya çalışmak yerine, Codex'i onun iş akışına sokuyor.\n- **Adversarial review fikri**: Sadece \"hata var mı\" değil, \"bu tasarım neden böyle\" diye soran inceleme, kod kalitesi konusunda hassas ekiplere hitap ediyor.\n- **Kitle**: Claude Code'u günlük kullanan, ChatGPT aboneliği de olan bireysel geliştiriciler; PR'ları merge etmeden önce otomatik ikinci görüş isteyen ekipler.\n- README'nin dürüst uyarısı da güven veriyor: review gate'in **uzun bir Claude/Codex döngüsü** yaratıp kullanım limitlerini hızla tüketebileceği açıkça yazılmış.",
+        "evolve": "- **Maliyet bütçesi ve döngü sınırı**: Review gate için \"en fazla N tur\" ya da \"en fazla X token\" gibi bir sigorta, README'deki döngü uyarısını teknik bir garantiye çevirirdi.\n- **Yapılandırılmış bulgular**: İnceleme çıktısı serbest metin yerine dosya/satır/önem derecesi içeren bir formatta dönse, Claude bulguları otomatik düzeltme listesine çevirebilir, CI'da da kullanılabilirdi.\n- **Ters yön ve tarafsız protokol**: Benzer bir köprünün diğer ajanlar için de yazılması, sonunda ajanlar arası görev devri için ortak bir protokol ihtiyacını doğuracak. Bu eklenti o standardın erken bir prototipi gibi okunabilir.\n- **Ekip modu**: İnceleme sonuçlarının PR yorumu olarak gönderilmesi ya da ekip çapında paylaşılan inceleme kuralları (ör. \"PL/SQL paketlerinde her zaman exception handling'e bak\") kurumsal kullanımı kolaylaştırırdı.\n- **Veritabanı kodu için uzmanlaşma**: Adversarial review'a hazır odak şablonları (SQL injection, transaction sınırları, kilitlenme riski) eklenirse ERP/PL/SQL kod tabanlarında da değerli bir ikinci göz olabilir."
+      },
+      "glossary": [
+        {
+          "term": "Plugin (eklenti)",
+          "def": "Bir yazılıma sonradan takılan, ona yeni özellikler kazandıran ek paket. Ana programı değiştirmeden yeteneklerini genişletir."
+        },
+        {
+          "term": "Claude Code",
+          "def": "Anthropic'in terminalde ve IDE'lerde çalışan AI kodlama ajanı. Kod okuyup yazabilir, komut çalıştırabilir."
+        },
+        {
+          "term": "OpenAI Codex",
+          "def": "OpenAI'ın AI kodlama ajanı ve komut satırı aracı. Kod yazma, inceleme ve görev yürütme yapar."
+        },
+        {
+          "term": "Slash komutu",
+          "def": "Sohbet arayüzünde `/` ile başlayan kısayol komutları (ör. `/codex:review`). Önceden tanımlı bir işi tek komutla tetikler."
+        },
+        {
+          "term": "Subagent (alt ajan)",
+          "def": "Ana ajanın belirli bir işi devrettiği, kendi bağlamında çalışan ikincil ajan. Sonucu ana ajana raporlar."
+        },
+        {
+          "term": "Hook",
+          "def": "Belirli bir olay gerçekleştiğinde (oturum başlangıcı, ajanın durması vb.) otomatik çalışan küçük betik veya kural."
+        },
+        {
+          "term": "SessionStart / Stop hook",
+          "def": "Claude Code'da oturum açıldığında ya da ajan cevabını bitirmek üzereyken tetiklenen hook türleri."
+        },
+        {
+          "term": "Review gate",
+          "def": "Ajanın işi bitirmesine izin vermeden önce otomatik bir incelemeden geçmesini zorunlu kılan kontrol noktası."
+        },
+        {
+          "term": "Adversarial review",
+          "def": "Kodu 'çalışıyor mu' yerine 'neden böyle, ne ters gidebilir' sorusuyla, bilinçli olarak eleştirel bir bakışla inceleme yöntemi."
+        },
+        {
+          "term": "App server",
+          "def": "Bir aracın başka programlar tarafından programatik olarak kullanılabilmesi için açtığı yerel sunucu arayüzü."
+        },
+        {
+          "term": "Thread (oturum zinciri)",
+          "def": "Bir ajanla yapılan, geçmişi saklanan ve daha sonra devam ettirilebilen konuşma/görev kaydı."
+        },
+        {
+          "term": "Reasoning effort",
+          "def": "Bir modelin cevap vermeden önce ne kadar 'düşüneceğini' belirleyen ayar. Yüksek efor daha kaliteli ama daha yavaş ve pahalıdır."
+        },
+        {
+          "term": "Uncommitted changes",
+          "def": "Git'te henüz commit'lenmemiş, çalışma dizininde bekleyen değişiklikler."
+        },
+        {
+          "term": "Branch / base ref",
+          "def": "Branch, kodun ayrı bir geliştirme kolu; base ref ise karşılaştırmanın yapıldığı referans dal (genelde `main`)."
+        },
+        {
+          "term": "Background job",
+          "def": "Kullanıcıyı bekletmeden arka planda çalışan iş. Durumu sonradan sorgulanır, sonucu sonradan alınır."
+        },
+        {
+          "term": "Marketplace",
+          "def": "Eklentilerin listelendiği ve oradan kurulabildiği katalog/depo."
+        },
+        {
+          "term": "Trusted project",
+          "def": "Kullanıcının, içindeki ayar dosyalarının otomatik yüklenmesine izin verdiği güvenilir proje işareti."
+        },
+        {
+          "term": "API anahtarı",
+          "def": "Bir servise programatik erişim için kullanılan gizli kimlik bilgisi; kullanım bu anahtar üzerinden faturalanır."
+        },
+        {
+          "term": "Apache-2.0",
+          "def": "Ticari kullanıma izin veren, patent hakları konusunda da güvence içeren yaygın bir açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "vercel-labs/agent-skills",
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "stars": "34.8k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**agent-skills**, Vercel'in AI kodlama ajanları için hazırladığı resmi **skill (beceri) koleksiyonu**. Skill'ler, ajana \"bu tür bir işte nasıl davranmalısın\" bilgisini veren, talimat + opsiyonel betik + referans dokümandan oluşan paketler. Bugün JavaScript trend listesinde yer aldı; toplam **34.8k yıldız**, 3k fork.\n\nSorun şu: Genel amaçlı bir ajan React yazabilir, ama Vercel mühendislerinin yıllarca biriktirdiği \"şu hatayı yapma, şu deseni kullan\" bilgisini bilmez. Bu repo o kurumsal tecrübeyi ajanın okuyabileceği formatta paketliyor:\n\n- **react-best-practices** — 8 kategoride, etkisine göre sıralanmış 40+ performans kuralı (waterfall'ları önlemek ve bundle boyutu en kritik iki kategori)\n- **web-design-guidelines** — erişilebilirlik, formlar, animasyon, tipografi, dark mode, i18n gibi alanlarda 100+ kural\n- **writing-guidelines** — dokümantasyon ve metinler için 80+ yazım kuralı\n- **react-native-guidelines**, **react-view-transitions**, **composition-patterns**\n- **vercel-optimize** — önce Vercel metriklerini toplayıp sadece işaretlenen route'lara bakarak maliyet/performans denetimi\n- **deploy-to-vercel** — git push, CLI ya da giriş yoksa geçici deploy ile yayına alma\n\nKurulum tek satır: `npx skills add vercel-labs/agent-skills`. Ajan, ilgili bir görev algıladığında skill'i otomatik kullanıyor.",
+        "tech": "- **Agent Skills formatı**: Her skill bir klasör; zorunlu dosya **`SKILL.md`** (ajana talimatlar), opsiyonel `scripts/` (otomasyon betikleri) ve `references/` (destek dokümanları). Format agentskills.io'daki açık standarda uyuyor — yani skill'ler tek bir ajana kilitli değil.\n- **İlerlemeli yükleme (progressive disclosure) mantığı**: Skill'in kısa açıklaması bağlamda durur; ajan ancak ilgili bir iş geldiğinde tam talimatları ve referansları okur. Bu, yüzlerce kuralı bağlam penceresini doldurmadan erişilebilir tutar.\n- **Kuralların önem sırasıyla dizilmesi**: react-best-practices'te kuralların \"etkiye göre\" sıralanması bilinçli bir karar: ajan sınırlı dikkatini önce kritik konulara (waterfall, bundle) harcar.\n- **Önce veri, sonra kod**: vercel-optimize'ın önce gerçek metrikleri toplayıp sadece işaretlenen dosyalara bakması, ajanın tüm kod tabanını boş yere taramasını önleyen, token ve süre tasarrufu sağlayan bir yaklaşım.\n- **Sürüm yayını otomasyonu**: `main`'e gelen her skill değişikliği, bir **discovery index** ve her skill için ayrı artefakt içeren **değişmez (immutable) bir GitHub release** üretiyor. Bu, skill'leri sürümlenebilir ve tekrarlanabilir hale getiriyor.\n- **Lisans**: MIT.",
+        "why": "- **Skill'ler yeni \"kütüphane\" oldu**: 2026'nın en net trendlerinden biri, framework ve platform sahiplerinin kendi dokümantasyonlarını ajanların tüketebileceği skill paketlerine dönüştürmesi. Bugünkü listede Cloudflare, Azure, Expo skill repoları da var — Vercel'inki bu akımın en büyük örneklerinden.\n- **Kaynağından gelen bilgi**: Next.js'i geliştiren şirketin \"ajanın React'i böyle yazmasını istiyoruz\" demesi, topluluk listelerinden daha güvenilir bulunuyor.\n- **Pratik getiri**: Ajanların ürettiği React kodundaki tipik sorunlar (gereksiz yeniden render, ardışık veri çekme, şişkin bundle) doğrudan hedefleniyor.\n- **Platform stratejisi**: `deploy-to-vercel` ve `vercel-optimize` sayesinde ajan, kodu yazmakla kalmayıp Vercel'e yayına alıyor ve maliyetini denetliyor. Ajanlar \"varsayılan platformu\" seçerken bu skill'ler Vercel'i öne çıkarıyor.\n- **Kitle**: Next.js/React ekipleri, ajanla frontend geliştiren solo geliştiriciler, kendi şirket skill'lerini yazmak için şablon arayan platform ekipleri.",
+        "evolve": "- **Ölçülebilir etki**: Skill'li ve skill'siz ajan çıktısını karşılaştıran açık bir değerlendirme seti (ör. Lighthouse skoru, bundle boyutu farkı) kuralların gerçekten fark yarattığını kanıtlardı.\n- **Kural çakışmaları**: Birden fazla şirketin skill'i aynı projeye kurulduğunda çelişen tavsiyeler çıkacak. Öncelik/kapsam belirleme mekanizması ekosistemin sıradaki ihtiyacı.\n- **Kurumsal skill şablonu**: Bu repo, şirket içi standartların skill'e dönüştürülmesi için mükemmel bir şablon. Örneğin bir ERP ekibi kendi **PL/SQL kodlama standartlarını**, IFS özelleştirme kurallarını ya da migration prosedürlerini aynı formatta paketleyip tüm ajanlara öğretebilir.\n- **Statik analizle birleşme**: Kuralların bir kısmı ESLint benzeri otomatik kontrollere dönüştürülürse, ajan hem yazarken hem de CI'da aynı kurallarla denetlenebilir.\n- **Backend ve veritabanı skill'leri**: Koleksiyon şu an ağırlıklı frontend. Veri katmanı (cache stratejileri, sorgu optimizasyonu, edge veritabanları) için skill'ler eklenmesi doğal bir genişleme."
+      },
+      "glossary": [
+        {
+          "term": "Agent skill",
+          "def": "AI ajanına belirli bir iş türünü nasıl yapacağını öğreten talimat, betik ve referanslardan oluşan paket."
+        },
+        {
+          "term": "SKILL.md",
+          "def": "Bir skill'in ana dosyası; ajanın okuyacağı açıklama ve talimatları markdown formatında içerir."
+        },
+        {
+          "term": "Progressive disclosure (ilerlemeli açılım)",
+          "def": "Bilginin tamamını baştan vermek yerine, ihtiyaç duyuldukça adım adım yükleme yaklaşımı. Ajanın bağlamını gereksiz doldurmamayı sağlar."
+        },
+        {
+          "term": "Bağlam penceresi (context window)",
+          "def": "Bir dil modelinin aynı anda 'aklında tutabildiği' toplam metin miktarı. Dolduğunda eski bilgiler düşer ya da maliyet artar."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlerken kullandığı küçük parçalar (kelime veya kelime parçası). Maliyet ve limitler token üzerinden hesaplanır."
+        },
+        {
+          "term": "npx",
+          "def": "Node.js ile gelen, bir npm paketini kurmadan doğrudan çalıştırmaya yarayan komut."
+        },
+        {
+          "term": "Waterfall (şelale)",
+          "def": "Web uygulamalarında veri isteklerinin paralel yerine birbirini bekleyerek sırayla yapılması; sayfa yüklenmesini yavaşlatır."
+        },
+        {
+          "term": "Bundle",
+          "def": "Tarayıcıya gönderilen, birleştirilmiş ve paketlenmiş JavaScript dosyası. Büyüdükçe sayfa açılışı yavaşlar."
+        },
+        {
+          "term": "Next.js",
+          "def": "Vercel tarafından geliştirilen, React tabanlı popüler web uygulaması framework'ü."
+        },
+        {
+          "term": "React Native / Expo",
+          "def": "React ile iOS ve Android için mobil uygulama yazmayı sağlayan framework ve onun üzerine kurulu geliştirme platformu."
+        },
+        {
+          "term": "View Transition API",
+          "def": "Sayfa veya görünüm değişikliklerinde tarayıcının yerleşik animasyonlu geçişler yapmasını sağlayan web API'si."
+        },
+        {
+          "term": "Compound component",
+          "def": "Birlikte çalışan birkaç küçük bileşenin tek bir mantıksal bileşen gibi kullanıldığı React tasarım deseni."
+        },
+        {
+          "term": "Prop drilling",
+          "def": "Bir veriyi, ihtiyaç duyan derindeki bileşene ulaştırmak için aradaki tüm bileşenlerden tek tek geçirme zorunluluğu."
+        },
+        {
+          "term": "i18n",
+          "def": "Internationalization'ın kısaltması; uygulamanın farklı diller ve bölgeler için uyarlanabilir yapılması."
+        },
+        {
+          "term": "Route",
+          "def": "Bir web uygulamasında belirli bir URL yolunu karşılayan sayfa veya API uç noktası."
+        },
+        {
+          "term": "Deploy",
+          "def": "Uygulamanın sunucuya/bulut platformuna yüklenip kullanıcılara açılması."
+        },
+        {
+          "term": "Immutable release",
+          "def": "Yayınlandıktan sonra içeriği değiştirilemeyen sürüm. Aynı sürüm numarası her zaman aynı içeriği verir."
+        },
+        {
+          "term": "Discovery index",
+          "def": "Hangi skill'lerin mevcut olduğunu ve nereden indirileceğini listeleyen makine tarafından okunabilir katalog dosyası."
+        },
+        {
+          "term": "ESLint",
+          "def": "JavaScript/TypeScript kodundaki hataları ve stil ihlallerini otomatik tespit eden statik analiz aracı."
+        }
+      ]
+    },
+    {
+      "name": "jquery/jquery",
+      "url": "https://github.com/jquery/jquery",
+      "stars": "60.2k",
+      "language": "JavaScript",
+      "sections": {
+        "serves": "**jQuery**, 2006'dan beri web'in en çok kullanılan JavaScript kütüphanelerinden biri: DOM'u seçip değiştirmek, olayları dinlemek, animasyon ve AJAX isteklerini tarayıcı farklarıyla uğraşmadan, kısa bir sözdizimiyle (`$('.menu').hide()`) yapmayı sağlıyor. Bugün JavaScript trend listesinde **141 yeni yıldızla** yer aldı; toplam **60.2k yıldız**, 20.6k fork.\n\n\"jQuery hâlâ mı?\" sorusunun cevabı şu: Yeni projelerde tercih edilmese de, web'in devasa bir kısmı — WordPress temaları, kurumsal intranet uygulamaları, eski yönetim panelleri, **ERP'lerin web arayüzleri ve özel raporlama sayfaları** — hâlâ jQuery üzerinde çalışıyor. Bu kodları ayakta tutan ekipler için kütüphanenin güvenli, güncel ve hafif kalması kritik.\n\nRepo şu an **jQuery 4.x** hattında (4.0.0 Ocak 2026'da duyuruldu). Destek tablosu net: **4.x tam destek**, **3.x yalnızca kritik güncellemeler**, 2.x ve 1.x desteğin dışında. Eski sürümler için ticari destek HeroDevs ve TuxCare üzerinden sunuluyor.",
+        "tech": "- **Modüler çekirdek ve özel build'ler**: Kod `ajax`, `css`, `effects`, `deprecated`, `selector` gibi modüllere bölünmüş. `npm run build` ile kullanmadığın modülleri dışarıda bırakıp daha küçük bir dosya üretebiliyorsun. `selector` modülü çıkarılırsa, klasik Sizzle tabanlı seçici motoru yerine tarayıcının yerleşik **`querySelectorAll`**'ını kullanan temel bir motor devreye giriyor.\n- **Dört resmi çıktı**: `npm run build:all` ile `jquery.js`, `jquery.slim.js` (ajax ve efektler olmadan), ve bunların **ES modül** sürümleri `jquery.module.js` ile `jquery.slim.module.js` üretiliyor. ESM desteği, jQuery'nin modern bundler'larla (Vite, Rollup, esbuild) doğal şekilde kullanılmasını sağlıyor.\n- **Build seçenekleri**: `--esm`, `--slim`, `--amd`, `--factory` gibi bayraklarla farklı modül sistemlerine ve ortamlara (tarayıcı, Node, tarayıcı eklentileri) uygun çıktılar alınabiliyor.\n- **`deprecated` modülü**: Kaldırılması planlanan ama henüz silinmemiş metodlar ayrı bir modülde toplanmış; özel build'den çıkarılarak kodunun bu eski API'lere bağımlı olup olmadığı test edilebiliyor.\n- **4.0'ın genel yönü**: Çok eski tarayıcı desteğinin bırakılması ve uzun süredir deprecated olan yardımcı fonksiyonların (dilin artık yerleşik sunduğu `trim`, `isArray` gibi) temizlenmesiyle kod tabanı sadeleştirildi.\n- **Test altyapısı**: QUnit tabanlı testler; AJAX testleri için PHP çalıştırabilen yerel bir sunucu gerekiyor. Lisans **MIT**.",
+        "why": "- **Dev kurulu taban, güvenlik baskısı**: 3.x'in sadece kritik güncelleme almaya başlaması, milyonlarca sitenin bakımcısını \"4.x'e geçmeli miyiz?\" sorusuyla karşı karşıya bırakıyor. Güvenlik tarayıcıları ve uyumluluk denetimleri eski jQuery sürümlerini düzenli olarak işaretliyor; bu da repoya geri dönüşleri artırıyor.\n- **AI ile legacy modernizasyonu**: Ajanların eski kod tabanlarını taşımakta kullanılması yaygınlaştıkça, jQuery 3 → 4 geçişi ve \"jQuery'den vanilla JS'e\" dönüşümleri tekrar gündemde. Kaynak koda ve değişiklik geçmişine bakmak isteyen geliştiriciler repoyu ziyaret ediyor.\n- **Nostalji değil, pragmatizm**: Bugünkü trendin net bir tek tetikleyicisi görünmüyor; ancak jQuery'nin trend listesine dönmesi, \"sıkıcı ama her yerde olan\" teknolojilerin bakımına olan ilginin sürdüğünü gösteriyor.\n- **Kitle**: WordPress ve kurumsal web uygulaması bakımcıları, ERP/CRM ekranlarına özel JavaScript yazan ekipler, güvenlik ve uyumluluk sorumluları.",
+        "evolve": "- **Otomatik geçiş aracı**: jQuery Migrate'in 4.x için, kodu tarayıp değişmesi gereken çağrıları otomatik düzelten (codemod) bir sürümü, büyük legacy kod tabanlarının geçişini dramatik biçimde hızlandırırdı.\n- **Ajanlar için resmi skill**: \"jQuery 3'ten 4'e geçiş\" ya da \"jQuery kodunu vanilla JS'e çevir\" için resmi bir agent skill paketi, bugünkü skill akımıyla birleşip çok değerli olurdu.\n- **Daha agresif tree-shaking**: ES modül çıktısı, kullanılmayan metodların bundler tarafından otomatik atılabileceği şekilde parçalanırsa, özel build'e gerek kalmadan minimum boyut elde edilebilir.\n- **Kurumsal kullanıcılar için yol haritası**: ERP özelleştirmeleri ve intranet uygulamaları gibi uzun ömürlü sistemler için net bir uzun süreli destek (LTS) takvimi, planlamayı kolaylaştırırdı.\n- **Web Components ile köprü**: jQuery eklentilerini standart Web Components'e saran yardımcılar, eski UI bileşenlerini modern framework'lerle birlikte yaşatmanın yolunu açabilir."
+      },
+      "glossary": [
+        {
+          "term": "DOM",
+          "def": "Document Object Model; tarayıcının bir HTML sayfasını programlar tarafından okunup değiştirilebilen ağaç yapısı olarak temsil etmesi."
+        },
+        {
+          "term": "AJAX",
+          "def": "Sayfayı yeniden yüklemeden arka planda sunucudan veri alıp gönderme tekniği."
+        },
+        {
+          "term": "Selector (seçici)",
+          "def": "Sayfadaki belirli HTML öğelerini bulmaya yarayan ifade (ör. `.menu`, `#baslik`)."
+        },
+        {
+          "term": "querySelectorAll",
+          "def": "Tarayıcıların yerleşik olarak sunduğu, CSS seçicisiyle eşleşen tüm öğeleri döndüren fonksiyon."
+        },
+        {
+          "term": "Sizzle",
+          "def": "jQuery'nin uzun yıllar kullandığı, tarayıcılar arası tutarlı çalışan seçici motoru."
+        },
+        {
+          "term": "Build",
+          "def": "Kaynak kodun birleştirilip küçültülerek kullanıma hazır dağıtım dosyalarına dönüştürülmesi işlemi."
+        },
+        {
+          "term": "Slim build",
+          "def": "jQuery'nin AJAX ve animasyon modülleri çıkarılmış, daha küçük sürümü."
+        },
+        {
+          "term": "ES modülleri (ESM)",
+          "def": "JavaScript'in resmi modül sistemi; `import`/`export` sözdizimiyle kod parçalarının paylaşılmasını sağlar."
+        },
+        {
+          "term": "AMD",
+          "def": "Asynchronous Module Definition; ESM'den önce tarayıcıda yaygın kullanılan eski bir modül tanımlama biçimi."
+        },
+        {
+          "term": "Bundler",
+          "def": "Birçok JavaScript dosyasını ve bağımlılığı tek veya birkaç dosyada paketleyen araç (Vite, Rollup, webpack, esbuild)."
+        },
+        {
+          "term": "Minify (küçültme)",
+          "def": "Kodun boşluk, yorum ve uzun değişken adları kaldırılarak boyutunun düşürülmesi."
+        },
+        {
+          "term": "Source map",
+          "def": "Küçültülmüş kodu orijinal kaynak koduyla eşleyen, hata ayıklamayı kolaylaştıran dosya."
+        },
+        {
+          "term": "Deprecated",
+          "def": "Kullanımdan kaldırılması planlanan, hâlâ çalışan ama yeni kodda kullanılması önerilmeyen özellik."
+        },
+        {
+          "term": "Vanilla JS",
+          "def": "Herhangi bir kütüphane veya framework olmadan yazılan saf JavaScript."
+        },
+        {
+          "term": "QUnit",
+          "def": "jQuery ekibinin geliştirdiği JavaScript birim test framework'ü."
+        },
+        {
+          "term": "Codemod",
+          "def": "Kaynak kodu otomatik olarak tarayıp belirli kalıpları yeni biçime dönüştüren araç; büyük çaplı geçişlerde kullanılır."
+        },
+        {
+          "term": "Tree-shaking",
+          "def": "Bundler'ların, uygulamada hiç kullanılmayan kod parçalarını nihai paketten otomatik olarak atması."
+        },
+        {
+          "term": "LTS (Long-Term Support)",
+          "def": "Bir yazılım sürümüne uzun süre güvenlik ve hata düzeltmesi sağlanacağının taahhüt edilmesi."
+        },
+        {
+          "term": "Web Components",
+          "def": "Tarayıcıların yerleşik desteklediği, framework'ten bağımsız yeniden kullanılabilir özel HTML öğeleri oluşturma standardı."
+        }
+      ]
+    },
+    {
+      "name": "gabime/spdlog",
+      "url": "https://github.com/gabime/spdlog",
+      "stars": "29.8k",
+      "language": "C++",
+      "sections": {
+        "serves": "**spdlog**, C++ için hızlı ve kullanımı kolay bir **loglama (günlük kaydı) kütüphanesi**. Uygulamanın \"şu an ne yapıyorum, nerede hata aldım\" bilgisini dosyaya, konsola, syslog'a ya da Windows Event Log'a düşük maliyetle yazmasını sağlıyor. Bugün C++ trend listesinde **89 yeni yıldızla** yer aldı; toplam **29.8k yıldız**, 5.3k fork.\n\nLoglama sıradan görünür ama yüksek performanslı sistemlerde ciddi bir problemdir: Oyun motorları, finans uygulamaları, veritabanı motorları, gömülü sistemler saniyede yüzbinlerce olay üretir. Log yazmak ana işi yavaşlatırsa ya sistem yavaşlar ya da geliştirici log'u kapatıp kör kalır. spdlog bu ikilemi çözmeye odaklanıyor: Tek iş parçacığında saniyede **5 milyonun üzerinde** mesaj yazabildiğini benchmark'larla gösteriyor.\n\nKullanımı da Python'daki kadar sade: `spdlog::info(\"Sipariş {} işlendi, süre {} ms\", id, sure);` — formatlama, seviye filtresi, dosya döndürme hepsi hazır.",
+        "tech": "- **Header-only veya derlenmiş**: Sadece `include` klasörünü kopyalayıp C++11 derleyicisiyle kullanabilirsin; ama README, çok daha hızlı derleme süresi için CMake ile **derlenmiş sürümü** öneriyor. Bu, büyük projelerde her derlemede kütüphanenin yeniden işlenmesini önleyen pratik bir karar.\n- **fmt kütüphanesi üzerine kurulu**: Formatlama işini, C++20'deki `std::format`'ın da ilham kaynağı olan **{fmt}** kütüphanesi yapıyor. Tip güvenli, `printf`'ten güvenli ve hızlı.\n- **Sink mimarisi**: Logger'lar mesajı bir veya birden çok **sink**'e (hedefe) yollar: döndürmeli dosya (rotating), günlük dosya (daily), renkli konsol, syslog, Windows Event Log, `OutputDebugString`, Qt widget'ları. Kendi sink'ini yazmak da mümkün.\n- **Asenkron mod**: Bir **thread pool** ve kuyruk üzerinden çalışıyor; kuyruk dolunca ne olacağı seçilebiliyor: **block** (bekle, mesaj kaybetme) ya da **overrun** (en eskiyi ez, hızlı kal). Benchmark'ta 10 iş parçacığında block ~585 bin/sn, overrun ~2.6 milyon/sn.\n- **Backtrace**: Debug mesajlarını hemen yazmak yerine bir **ring buffer**'da tutup, sadece hata olduğunda dökme imkânı. Normalde sessiz, hata anında detaylı log.\n- **Diğer**: Çalışma zamanında veya derleme zamanında seviye filtreleme, periyodik flush, stopwatch, binary-to-hex çıktı ve **MDC** (Mapped Diagnostic Context; async modda yok).\n- **Platform**: Linux, BSD'ler, Solaris, AIX, Windows, macOS, Android; apt'tan vcpkg ve conan'a kadar neredeyse her paket yöneticisinde mevcut.",
+        "why": "- **C++ altyapı kodunun AI ile yeniden yazılması**: Ajanlar C++ projeleri üretirken ve modernize ederken varsayılan olarak spdlog'a uzanıyor; bu da kütüphaneye yeni bir kullanıcı ve yıldız dalgası getiriyor.\n- **Gözlemlenebilirlik (observability) baskısı**: AI çıkarım motorları, robotik çalışma zamanları ve oyun sunucuları gibi C++ ağırlıklı yeni sistemlerde, düşük gecikmeli loglama standart ihtiyaç. Bugünkü C++ listesinde de çıkarım ve robotik projeleri öne çıkıyor.\n- **\"Sağlam temel\" etkisi**: nlohmann/json ile birlikte trend listesine girmesi, geliştiricilerin popüler yeni projelerin bağımlılıklarına bakarken bu yapı taşlarını keşfettiğini düşündürüyor.\n- **Kitle**: Performansa duyarlı backend, oyun, fintech ve gömülü sistem geliştiricileri; Python/Go'dan C++'a geçip \"loglamayı nasıl düzgün yaparım\" diye soranlar.",
+        "evolve": "- **Yapılandırılmış (structured) loglama**: Mesajları düz metin yerine JSON gibi anahtar-değer formatında üretmek, log'ların Elasticsearch, Loki gibi sistemlerde sorgulanmasını kolaylaştırırdı. MDC bu yönde bir adım ama tam bir structured API değil.\n- **OpenTelemetry entegrasyonu**: Log'ları trace ve metric'lerle ilişkilendiren resmi bir OTel sink'i, modern gözlemlenebilirlik yığınlarına doğrudan bağlanmayı sağlardı.\n- **`std::format` desteği**: C++20 standart formatlamasını opsiyonel arka uç olarak sunmak, ek bağımlılık istemeyen projeler için cazip olur.\n- **Async modda MDC**: Şu an async modda desteklenmeyen bağlam bilgisi (kullanıcı ID, istek ID) desteği, yüksek trafikli sunucular için önemli bir eksik.\n- **Veritabanı dünyasıyla köprü**: Log'ları toplu olarak bir veritabanı tablosuna yazan hazır sink'ler (ör. ERP entegrasyon servislerinin işlem günlüklerini doğrudan bir denetim tablosuna aktarmak) kurumsal kullanımda işe yarardı."
+      },
+      "glossary": [
+        {
+          "term": "Loglama (logging)",
+          "def": "Bir uygulamanın çalışırken yaptığı işleri ve hataları zaman damgalı kayıtlar olarak bir yere yazması."
+        },
+        {
+          "term": "Header-only kütüphane",
+          "def": "Ayrıca derlenmesi gerekmeyen, sadece başlık dosyalarını projeye ekleyerek kullanılan C++ kütüphanesi."
+        },
+        {
+          "term": "CMake",
+          "def": "C ve C++ projelerinin derleme sürecini platformdan bağımsız biçimde tanımlayan yaygın araç."
+        },
+        {
+          "term": "{fmt} / std::format",
+          "def": "{fmt}, C++ için hızlı ve tip güvenli metin formatlama kütüphanesi; std::format ise C++20'de standarda eklenen benzeri."
+        },
+        {
+          "term": "Sink",
+          "def": "Log mesajlarının gönderildiği hedef: dosya, konsol, syslog, ağ servisi vb."
+        },
+        {
+          "term": "Rotating log",
+          "def": "Belirli bir boyuta ulaşınca yeni dosyaya geçen, eski dosyaları sınırlı sayıda tutan log dosyası düzeni."
+        },
+        {
+          "term": "syslog",
+          "def": "Unix/Linux sistemlerinde log mesajlarını merkezi olarak toplayan standart servis ve protokol."
+        },
+        {
+          "term": "Asenkron loglama",
+          "def": "Log mesajının hemen diske yazılmadığı, bir kuyruğa bırakılıp arka plandaki iş parçacığı tarafından yazıldığı yöntem; ana işi yavaşlatmaz."
+        },
+        {
+          "term": "Thread pool",
+          "def": "Önceden oluşturulmuş, gelen işleri sırayla alıp yürüten iş parçacıkları havuzu."
+        },
+        {
+          "term": "Block / overrun politikası",
+          "def": "Kuyruk dolduğunda ya yer açılana kadar beklemek (block) ya da en eski mesajın üzerine yazmak (overrun) seçeneği."
+        },
+        {
+          "term": "Ring buffer",
+          "def": "Sabit boyutlu, dolduğunda en eski kaydın üzerine yazan döngüsel bellek alanı."
+        },
+        {
+          "term": "Backtrace",
+          "def": "spdlog'da, debug mesajlarını hafızada tutup yalnızca gerektiğinde (ör. hata anında) dökme özelliği."
+        },
+        {
+          "term": "Flush",
+          "def": "Bellekte bekleyen verinin kalıcı olarak diske/hedefe yazılmaya zorlanması."
+        },
+        {
+          "term": "MDC (Mapped Diagnostic Context)",
+          "def": "Her log satırına otomatik eklenen bağlam bilgisi (kullanıcı ID, istek ID gibi) tutan anahtar-değer yapısı."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Bir yazılımın performansını standart koşullarda ölçüp karşılaştırmak için yapılan test."
+        },
+        {
+          "term": "Observability (gözlemlenebilirlik)",
+          "def": "Bir sistemin iç durumunu log, metrik ve trace verilerinden anlayabilme yeteneği."
+        },
+        {
+          "term": "Structured logging",
+          "def": "Log'ları düz metin yerine JSON gibi alanlara ayrılmış formatta yazma; makinelerin sorgulamasını kolaylaştırır."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Log, metrik ve trace verilerini toplamak ve göndermek için kullanılan açık, satıcıdan bağımsız standart."
+        },
+        {
+          "term": "vcpkg / conan",
+          "def": "C++ kütüphanelerini indirip projeye eklemeyi kolaylaştıran paket yöneticileri."
+        }
+      ]
+    }
+  ]
+}
