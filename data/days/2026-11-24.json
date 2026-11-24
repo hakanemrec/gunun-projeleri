@@ -1,0 +1,321 @@
+{
+  "date": "2026-11-24",
+  "projects": [
+    {
+      "name": "FlashML-org/FreeVideo",
+      "url": "https://github.com/FlashML-org/FreeVideo",
+      "stars": "4.8k",
+      "language": "Python",
+      "sections": {
+        "serves": "**FreeVideo**, açık ağırlıklı **MiniMax H3** video üretim modelini **kendi bilgisayarındaki ekran kartıyla** çalıştırmanı sağlayan yerel bir **çıkarım motoru (inference engine)**. Proje iddiasını tek cümleyle koyuyor: **8 GB VRAM ve 16 GB RAM** ile video üretmek. Bugün Python trend listesinde günde ~**300 yıldız** ile öne çıktı; toplamda ~**4.8k yıldız**.\n\nÇözdüğü problem net: Kaliteli video üretim modelleri genelde ya bulut servislerinin arkasında (dakika başı ücret, sansür, kuyruk) ya da 24-80 GB belleğe sahip pahalı GPU'larda çalışıyor. FreeVideo, aynı modeli **RTX 3060/3070 sınıfı** bir oyuncu kartına sığdırmaya çalışıyor.\n\nNeler sunuyor:\n- **Metinden video**, ilk/son kare verip arasını doldurma, görsel/video/ses referansıyla üretim\n- **Dakika uzunluğunda video** ve basit bir **zaman çizelgesi (timeline)** düzenleme görünümü (v0.4.0)\n- v0.5.0 ile **H3 Image**: 16 MP'ye kadar durağan görsel üretimi\n- Dört kalite seviyesi (Light → Max) ve tam render öncesi **yarım çözünürlüklü önizleme**\n- Üretilen videonun içine iş akışını gömme: videoyu tuvale sürükleyince prompt, seed ve ayarlar geri geliyor\n- Windows (imzalı .exe), Linux (AppImage / sunucu modu) ve önizleme aşamasında Apple Silicon desteği",
+        "tech": "**Temel:** Python çekirdek (`freevideo_engine`), üzerinde **ComfyUI** tabanlı bir yaratıcı çalışma alanı. Mevcut ComfyUI kurulumu olanlar repo'yu doğrudan `custom_nodes` klasörüne klonlayarak da kullanabiliyor. Diffusers, **SageAttention** ve arayüz için Qt for Python kullanılıyor.\n\n**Model tarafı:** OpenVDN'in **8 adımlı VDN-H3** sürümü üzerine kurulu. Klasik difüzyon modelleri 30-50 adımda örnekleme yaparken **8 adım** demek, aynı GPU'da kabaca birkaç kat daha hızlı üretim. Model, **Video DeltaNet**'in **hibrit dikkat (hybrid attention)** mimarisini kullanıyor; uzun videolarda maliyeti kare sayısıyla karesel büyüyen klasik dikkat yerine kısmen doğrusal büyüyen bir yapı, dakika uzunluğunda video iddiasının temeli bu.\n\n**Belleğe sığdırma hileleri — projenin asıl değeri:**\n- **GPU'ya göre ağırlık formatı:** GeForce RTX 30/40/50 (Ampere ve sonrası tüketici kartları) için **int8**, yeni nesil iş istasyonu/veri merkezi kartları için **FP8**. v0.3.0'daki int8 model, RTX 3090'da 5 saniyelik klibi ~**2.3x** hızlandırmış.\n- **Weight streaming + asenkron prefetch:** Modelin tamamı VRAM'e yüklenmiyor; o an gereken katmanlar GPU'ya akıtılırken bir sonraki katman arka planda hazırlanıyor.\n- **Parçalı hesaplama (chunked computation):** Büyük tensör işlemleri dilimlenerek tepe bellek kullanımı düşürülüyor.\n- **Uyarlanabilir yürütme planlayıcısı:** VRAM, sistem RAM'i ve disk arasında hangi ağırlığın nerede, hangi hassasiyette duracağına donanıma bakarak karar veriyor. Hangi dikkat kernel'larının mevcut olduğunu çalışma anında yokluyor.\n\n**Lisans ikiliği:** Kod **Apache 2.0**, fakat model ağırlıkları **MiniMax H3 Community License** altında — bölgesel ve kabul edilebilir kullanım kısıtları var. Ticari kullanım düşünen biri için bu ayrım kritik.",
+        "why": "- **Zamanlama:** Repo 2 Ekim'de açıldı ve yaklaşık her hafta anlamlı bir sürüm çıktı (LoRA desteği, int8, önizleme, uzun video, H3 Image). Bu kadar sık ve görünür ilerleme, yıldız ivmesini canlı tutuyor; 10 Kasım'daki v0.5.0 son dalganın tetikleyicisi.\n- **\"Elimdeki donanım yeter\" vaadi:** Yerel AI topluluğunun (r/LocalLLaMA, ComfyUI kullanıcıları) en büyük derdi VRAM. 8 GB ile video üretimi, milyonlarca orta segment oyuncu kartını birden \"AI video makinesine\" çeviriyor.\n- **Tek tık kurulum:** ComfyUI güçlü ama kurulumu ve bağımlılık cehennemi meşhur. İmzalı .exe, DMG ve AppImage ile teknik olmayan içerik üreticilerine de kapı açılıyor.\n- **Ajan entegrasyonu:** v0.4.0'da Claude Code ve Codex gibi ajanların motoru sürebilmesi, \"ajan bana video kurgusu yapsın\" senaryosunu ilk kez yerelde mümkün kılıyor.\n- **Kitle:** İçerik üreticileri, bağımsız oyun/animasyon ekipleri, bulut maliyetinden ya da içerik filtrelerinden kaçmak isteyenler, ve Çin topluluğu (QQ/WeChat destek kanalları, Quark üzerinden paketler).\n\nDikkat çeken bir sinyal: **819 açık issue**. Bu hem büyük ilginin hem de çok çeşitli donanımda kararlılığın henüz oturmadığının işareti.",
+        "evolve": "- **AMD ve Intel GPU desteği:** Şu an tam destek yalnızca compute capability 8.0+ NVIDIA kartlarda. ROCm veya Vulkan/DirectML arka ucu, kitleyi ciddi biçimde genişletir.\n- **Apple Silicon'ı birinci sınıf hale getirmek:** Mac önizlemede ve notarize edilmemiş; birleşik bellek (unified memory) avantajı düşünüldüğünde Mac'ler aslında bu iş için doğal aday.\n- **Kararlılık ve teşhis aracı:** Yüzlerce issue'nun önemli kısmı muhtemelen donanım/sürücü kombinasyonlarından geliyor. Otomatik sistem raporu üreten bir \"doctor\" komutu destek yükünü azaltır.\n- **Model bağımsızlığı:** Planlayıcı ve weight streaming katmanı MiniMax H3'e özgü değil. Diğer açık video modellerine (ve hatta büyük görüntü modellerine) genellenirse FreeVideo bir \"düşük VRAM video runtime'ı\" standardına dönüşebilir.\n- **Lisans netliği:** Model lisansındaki bölgesel kısıtlar ticari kullanıcılar için belirsizlik yaratıyor; arayüzde kullanım koşullarını açıkça gösteren bir uyarı/seçim ekranı iyi olur.\n- **Sunucu modu üzerine API:** `freevideo server` zaten var; OpenAI benzeri bir HTTP API ve kuyruk yönetimi eklenirse küçük ekipler kendi \"mini video bulutlarını\" kurabilir.\n- **Güvenlik:** Antivirüslerin dosyaları karantinaya alması ve bazı paketlerin üçüncü taraf barındırmada olması güven sorunu. Tüm paketler için imza ve hash doğrulaması standart hale gelmeli."
+      },
+      "glossary": [
+        {
+          "term": "Çıkarım motoru (inference engine)",
+          "def": "Önceden eğitilmiş bir yapay zekâ modelini çalıştırıp çıktı üreten yazılım katmanı. Modeli eğitmez, yalnızca kullanır."
+        },
+        {
+          "term": "VRAM",
+          "def": "Ekran kartının kendi belleği. AI modellerinin ağırlıkları hesaplama sırasında burada durur; yetmezse model ya çalışmaz ya çok yavaşlar."
+        },
+        {
+          "term": "Difüzyon modeli",
+          "def": "Gürültüden başlayıp adım adım gürültüyü temizleyerek görsel veya video üreten model türü. Adım sayısı azaldıkça üretim hızlanır."
+        },
+        {
+          "term": "Dikkat mekanizması (attention)",
+          "def": "Modelin girdinin hangi parçalarına ne kadar odaklanacağını hesapladığı yapı. Klasik hâli uzun girdilerde çok bellek ve hesap tüketir."
+        },
+        {
+          "term": "Hibrit dikkat (hybrid attention)",
+          "def": "Klasik dikkat ile daha ucuz, doğrusal ölçeklenen yöntemleri birlikte kullanan mimari. Uzun videolar gibi büyük girdilerde maliyeti düşürür."
+        },
+        {
+          "term": "Kuantizasyon (int8 / FP8)",
+          "def": "Model ağırlıklarını daha az bitle saklayarak bellek ve hesap ihtiyacını azaltma tekniği. int8 tam sayı, FP8 8 bitlik ondalık formattır; az miktarda kalite kaybı karşılığında hız kazanılır."
+        },
+        {
+          "term": "Weight streaming",
+          "def": "Modelin tamamını GPU belleğine yüklemek yerine, o an gereken katmanları sırayla RAM'den GPU'ya akıtma yöntemi."
+        },
+        {
+          "term": "Prefetch",
+          "def": "Bir sonraki adımda ihtiyaç duyulacak veriyi, şu anki işlem sürerken arka planda önceden hazırlama."
+        },
+        {
+          "term": "Compute capability",
+          "def": "NVIDIA'nın GPU nesillerini tanımlamak için kullandığı sürüm numarası. 8.0 ve üstü kabaca RTX 30 serisi ve sonrasını kapsar."
+        },
+        {
+          "term": "LoRA",
+          "def": "Büyük bir modeli baştan eğitmeden, küçük ek ağırlıklarla belirli bir stile veya konuya uyarlamayı sağlayan hafif ince ayar yöntemi."
+        },
+        {
+          "term": "ComfyUI",
+          "def": "Görsel/video üretim modellerini düğüm (node) tabanlı bir arayüzle, kutuları birbirine bağlayarak çalıştırmayı sağlayan popüler açık kaynak araç."
+        },
+        {
+          "term": "Seed",
+          "def": "Rastgele üretimin başlangıç değeri. Aynı seed ve ayarlarla aynı sonucu yeniden üretmeyi mümkün kılar."
+        },
+        {
+          "term": "Kernel",
+          "def": "GPU üzerinde çalışan, belirli bir hesaplamayı (ör. dikkat hesabı) yapan optimize edilmiş küçük program."
+        },
+        {
+          "term": "AppImage",
+          "def": "Linux'ta kurulum gerektirmeden, tek dosya olarak çalıştırılabilen uygulama paket formatı."
+        },
+        {
+          "term": "Notarizasyon",
+          "def": "Apple'ın, macOS uygulamalarını zararlı yazılım taramasından geçirip onayladığı süreç. Onaysız uygulamalar ilk açılışta uyarı verir."
+        }
+      ]
+    },
+    {
+      "name": "agentscope-ai/agentscope",
+      "url": "https://github.com/agentscope-ai/agentscope",
+      "stars": "36.6k",
+      "language": "Python",
+      "sections": {
+        "serves": "**AgentScope**, AI ajanlarını prototipten **üretime (production)** taşımak için tasarlanmış açık kaynak bir Python çatısı (framework). Kökeni Alibaba ekosistemine dayanıyor; şu an **2.0** sürümüyle kendini \"üretime hazır, kullanımı kolay ajan çatısı\" olarak tanımlıyor. Bugün Python trendinde, toplamda ~**36.6k yıldız**.\n\nÇözdüğü problem: Bir LLM'e birkaç araç bağlayıp demo yapmak kolay; ama o ajanı **çok kullanıcılı, çok oturumlu, izin kontrollü, kesilip devam ettirilebilen, sandbox içinde kod çalıştıran** bir servise dönüştürmek aylar alıyor. AgentScope bu \"son %80\"lik kısmı hazır parçalar olarak sunmaya çalışıyor.\n\nİki katmanı var:\n- **SDK:** ReAct döngüsü, araç seti (Python araçları, **MCP** sunucuları, skill'ler), model soyutlaması, bağlam sıkıştırma, olay akışı, bellek, izin/onay mekanizması\n- **Ajan servisi:** FastAPI backend + hazır Web UI; ekip (lider-işçi) orkestrasyonu, Feishu/Discord gibi mesajlaşma kanalları, çok kiracılı **RAG**, zamanlanmış görevler, MCP & Skill Hub\n\nFelsefesi dikkat çekici: Ağır prompt kalıpları ve sabit iş akışları yerine **modelin kendi akıl yürütme ve araç kullanma yeteneğine** yaslanmak.",
+        "tech": "**Dil ve gereksinim:** Python 3.11+, Web UI tarafında pnpm ile JS/TS. Lisans **Apache 2.0**.\n\n**ReAct çekirdeği:**\n- Yapılandırılmış çıktı (structured output), **gerçek zamanlı kesme ve kaldığı yerden devam (interrupt & resume)** — kullanıcı ajanı ortasında durdurup yön verebiliyor\n- Araçları sıralı ya da **eşzamanlı toplu** çalıştırma; uzun süren araçları arka plana atıp sonuç gelince ajanı \"uyandırma\"\n- Hazır kodlama araçları: shell, dosya okuma/yazma/düzenleme, arama, görev ve plan araçları — yani Claude Code benzeri bir kodlama ajanı kutudan çıkıyor\n\n**Middleware mimarisi — en önemli tasarım kararı:** Yanıt, akıl yürütme, eylem, model çağrısı, izin kontrolü, sıkıştırma ve sistem prompt'u aşamalarına takılabilen **birleştirilebilir kancalar (hooks)**. RAG, bellek enjeksiyonu, model yönlendirme (`ModelRouterMiddleware`) hepsi bu kancalarla ekleniyor. Bu, çekirdeği küçük tutup her şeyi tak-çıkar yapmayı sağlıyor.\n\n**Bağlam yönetimi:** Otomatik **compaction** (eski konuşmayı özetleme) ve büyük araç çıktılarını bağlamdan dışarı **offload** etme — uzun oturumların token limitine çarpmaması için.\n\n**Sandbox seçenekleri:** Yerel, Docker, Apple Container, Bubblewrap, E2B, OpenSandbox, Daytona, Kubernetes. Ajanın çalıştırdığı kod izole bir ortamda kalıyor.\n\n**Model desteği:** OpenAI, Anthropic, Gemini, DashScope (Qwen), DeepSeek, Moonshot, Volcengine, xAI, Ollama ve son olarak MiniMax. Ayrıca gerçek zamanlı **ses ajanı** (WebRTC, ses klonlama) deneysel olarak eklendi.\n\n**Bellek:** ReMe ve Mem0 arasında değiştirilebilir arka uç. **Kalıcılık:** SQL/NoSQL üzerinde ajan durumu ve oturumlar.",
+        "why": "- **Pazarın olgunlaşması:** 2025'te herkes \"bir ajan yazdı\"; 2026'da soru \"bunu 500 kullanıcıya nasıl güvenle açarım?\" oldu. AgentScope 2.0, tam bu soruya hazır backend + UI ile cevap veriyor.\n- **Hızlı özellik akışı:** Eylül-Ekim'de SOP desteği, `TeamPipeline`, model yönlendirme, realtime ses ve ses klonlama peş peşe geldi. Her sürüm yeni bir kitleye hitap ediyor.\n- **Çin ekosistemiyle güçlü bağ:** DashScope/Qwen varsayılan örnekler, Feishu ve DingTalk entegrasyonu — Çin'deki kurumsal ekipler için LangChain/LangGraph'a doğal bir alternatif.\n- **Akademik temel:** 2024 ve 2025'te arXiv makaleleri var; bu, araştırmacılar arasında güvenilirlik sağlıyor.\n- **Sandbox çeşitliliği:** Güvenlik ekiplerinin \"ajan kodu nerede çalışıyor?\" sorusuna sekiz farklı izolasyon seçeneğiyle yanıt verebilmek kurumsal benimsemeyi kolaylaştırıyor.\n\n**Kime hitap ediyor:** İç araç/asistan kuran kurumsal backend ekipleri, çok kanallı (Discord, Feishu) bot geliştirenler, ve kendi \"şirket içi Claude Code\"unu kurmak isteyen platform ekipleri.\n\n**ERP açısından not:** Middleware + izin/HITL (insan onayı) modeli, ERP gibi hassas sistemlerde \"ajan önerir, insan onaylar\" akışını kurmak için iyi bir iskelet sunuyor.",
+        "evolve": "- **Gözlemlenebilirlik (observability):** Olay veri yolu (event bus) zaten var; OpenTelemetry ile standart iz (trace) dışa aktarımı ve maliyet/token panosu eklenirse üretim ekiplerinin en büyük ihtiyacı karşılanır.\n- **Değerlendirme (eval) katmanı:** Ajan değişikliklerinin kaliteyi bozup bozmadığını ölçen yerleşik bir test/eval çerçevesi eksik görünüyor.\n- **Batı ekosistemine açılım:** Slack, Microsoft Teams ve e-posta kanalları; varsayılan örneklerin Qwen dışı modellerle de sunulması küresel benimsemeyi hızlandırır.\n- **Kurumsal veri bağlayıcıları:** RAG servisi blob depolama üzerine kurulu. Veritabanı (PostgreSQL, Oracle) ve ERP API'leri için hazır bağlayıcılar, ajanların kurumsal veriye güvenli erişimini kolaylaştırır — IFS/Oracle tabanlı sistemler için özellikle değerli.\n- **SOP desteğini olgunlaştırmak:** Deneysel SOP (standart işletim prosedürü) özelliği, iş süreçlerini adım adım ajan akışlarına dönüştürmek için büyük fırsat; görsel bir SOP editörü fark yaratır.\n- **Sürüm yönetimi:** GitHub Releases boş görünüyor; düzenli sürüm notları ve geçiş (migration) rehberleri, 1.x → 2.0 geçişi yapan kullanıcılar için şart."
+      },
+      "glossary": [
+        {
+          "term": "Framework (çatı)",
+          "def": "Belirli tür uygulamaları yazmayı kolaylaştıran, hazır yapı taşları ve kurallar sunan yazılım iskeleti."
+        },
+        {
+          "term": "AI ajanı",
+          "def": "Bir dil modelinin, hedefe ulaşmak için kendi başına adım planlayıp araç (dosya, web, komut satırı vb.) kullandığı sistem."
+        },
+        {
+          "term": "ReAct",
+          "def": "Modelin dönüşümlü olarak düşünüp (reason) eylem yaptığı (act), sonra sonucu gözlemleyip tekrar düşündüğü ajan döngüsü deseni."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir ajana belirli bir işi nasıl yapacağını öğreten, talimat ve yardımcı dosyalardan oluşan paket."
+        },
+        {
+          "term": "RAG",
+          "def": "Retrieval-Augmented Generation: Model yanıt vermeden önce ilgili belgeleri bir veri tabanından bulup bağlama ekleme yöntemi."
+        },
+        {
+          "term": "Middleware",
+          "def": "Bir isteğin işlenme hattına araya girip ek davranış (loglama, izin kontrolü, veri ekleme) kazandıran tak-çıkar katman."
+        },
+        {
+          "term": "Hook (kanca)",
+          "def": "Bir işlemin belirli anında otomatik çağrılan, dışarıdan eklenebilen kod noktası."
+        },
+        {
+          "term": "HITL (Human-in-the-loop)",
+          "def": "Kritik adımlarda ajanın devam etmeden önce insan onayı beklediği çalışma modeli."
+        },
+        {
+          "term": "Compaction",
+          "def": "Uzun konuşma geçmişini özetleyerek modelin bağlam penceresine sığacak hâle getirme işlemi."
+        },
+        {
+          "term": "Bağlam penceresi (context window)",
+          "def": "Bir dil modelinin tek seferde görebildiği maksimum metin (token) miktarı."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Çalıştırılan kodun sistemin geri kalanına zarar veremeyeceği izole, kısıtlı çalışma ortamı."
+        },
+        {
+          "term": "Çok kiracılı (multi-tenant)",
+          "def": "Tek bir uygulama kurulumunun, verileri birbirinden ayrı tutularak birden çok müşteri veya ekip tarafından kullanılması."
+        },
+        {
+          "term": "FastAPI",
+          "def": "Python'da hızlı ve tip güvenli web API'leri yazmak için kullanılan popüler kütüphane."
+        },
+        {
+          "term": "WebRTC",
+          "def": "Tarayıcılar ve uygulamalar arasında düşük gecikmeli gerçek zamanlı ses/görüntü iletimi sağlayan teknoloji."
+        },
+        {
+          "term": "SOP",
+          "def": "Standart İşletim Prosedürü: Bir işin hangi adımlarla, hangi sırayla yapılacağını tanımlayan yazılı süreç."
+        },
+        {
+          "term": "Token",
+          "def": "Dil modellerinin metni işlerken kullandığı küçük parçalar (kelime veya kelime parçası). Maliyet ve limitler token üzerinden hesaplanır."
+        }
+      ]
+    },
+    {
+      "name": "pola-rs/polars",
+      "url": "https://github.com/pola-rs/polars",
+      "stars": "40.5k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Polars**, Rust ile yazılmış, son derece hızlı bir **DataFrame ve SQL sorgu motoru**. Python dünyasında **pandas**'ın modern ve çok daha hızlı alternatifi olarak tanınıyor ama kendini artık bir \"analitik sorgu motoru\" olarak konumluyor. Bugün Rust trend listesinde; toplamda ~**40.5k yıldız**, MIT lisanslı.\n\nÇözdüğü problem: Veri analizi yapanların çoğu milyonlarca satırlık CSV/Parquet dosyalarını pandas ile işlerken iki duvara çarpıyor:\n- **Yavaşlık:** pandas büyük ölçüde tek çekirdekte çalışıyor.\n- **Bellek:** Veri RAM'den büyükse ya çöküyor ya da Spark gibi ağır bir dağıtık sisteme geçmek gerekiyor.\n\nPolars bu ikisine şöyle yanıt veriyor:\n- **Tüm CPU çekirdeklerini** kullanan, vektörize (SIMD) çalışan paralel motor\n- **Lazy (tembel) sorgular:** Önce ne istediğini tarif ediyorsun, motor planı optimize edip sonra çalıştırıyor\n- **RAM'i aşan veriler** için diske taşma (out-of-core) desteği\n- DataFrame API'si, **SQL** ya da ikisini karışık yazabilme — hepsi aynı optimize ediciden geçiyor\n- Python, Rust, Node.js ve R bağlamaları; isteğe bağlı **NVIDIA GPU** hızlandırma ve küme üzerinde **dağıtık** çalıştırma\n\nKısacası: Tek bir dizüstü bilgisayarda, eskiden küçük bir Spark kümesi gerektiren analizleri yapabilmek.",
+        "tech": "**Rust çekirdek:** Bellek güvenliği ve C++ seviyesinde performans. `crates/` altında motor, `py-polars/` altında **PyO3** + **maturin** ile üretilen Python bağlaması. Bu sayede Python kullanıcısı Rust hızını hiç Rust yazmadan alıyor.\n\n**Apache Arrow bellek formatı:** Veriler **sütun bazlı (columnar)** saklanıyor. Analitik sorgular genelde az sayıda sütunu çok sayıda satırda işlediği için bu düzen CPU önbelleğini verimli kullanıyor ve SIMD'e uygun. Arrow standardı sayesinde DuckDB, PyArrow gibi araçlarla **sıfır kopya (zero-copy)** veri paylaşımı mümkün.\n\n**Lazy motor ve sorgu optimize edici — asıl sihir burada:**\n- `scan_parquet(...).filter(...).group_by(...).agg(...).collect()` gibi bir zincir hemen çalışmıyor; önce bir **sorgu planına** dönüşüyor.\n- Optimize edici, filtreleri veri okuma anına iter (**predicate pushdown**), yalnızca gereken sütunları okur (**projection pushdown**), gereksiz adımları birleştirir.\n- Bu, klasik veritabanlarının onlarca yıllık tekniklerini DataFrame dünyasına taşımak demek.\n\n**SQL katmanı:** `pl.sql(...)` CTE, join, `RANK() OVER` gibi pencere fonksiyonları ve `read_parquet(...)` tablo fonksiyonlarını destekliyor. Kapsamdaki DataFrame'lere isimle başvurulabiliyor ve sonuç yine bir `LazyFrame` — yani SQL ile ifade API'si zincirlenebiliyor.\n\n**Genişletilebilirlik:** Rust ile yazılan **I/O ve ifade (expression) eklentileri**.\n\n**Pratik derleme detayları:** Varsayılan ikili dosyalar AVX2 destekli modern CPU'lar için; eski işlemciler için `LTS_CPU=1` derlemesi; 2^32 (~4.2 milyar) satırı aşan veri için özel sürüm.",
+        "why": "- **Ajan çağının veri motoru:** README artık bir **agent skill** ve **MCP entegrasyonu** linkliyor. AI kodlama ajanları veri analizi yazarken Polars'ı giderek daha çok tercih ediyor; tutarlı, tip disiplinli ifade API'si LLM'lerin hata yapma olasılığını azaltıyor. Bugünkü yıldız ivmesinin önemli bir kısmı bu ekosistem görünürlüğünden geliyor.\n- **\"Tek makine yeter\" akımı:** DuckDB ile birlikte Polars, \"büyük veri için hemen Spark kümesi kurma\" refleksini kırıyor. Bulut maliyetlerinin sorgulandığı dönemde bu çok çekici.\n- **pandas yorgunluğu:** pandas'ın tutarsız API'si ve bellek iştahı yıllardır şikâyet konusu; Polars daha temiz bir model sunuyor.\n- **Kurumsallaşma:** Dağıtık Polars ve GPU desteği, projenin hobi kütüphanesinden ticari arkası olan ciddi bir altyapıya dönüştüğünü gösteriyor.\n\n**Kime hitap ediyor:** Veri analistleri, veri mühendisleri, ML pipeline'ı yazanlar ve — özellikle — veritabanından toplu veri çekip rapor/dönüşüm yapan ekipler.\n\n**PL/SQL & ERP kesişimi:** ERP sistemlerinden (IFS, Oracle EBS vb.) çekilen ham tabloların raporlama, mutabakat ya da veri taşıma (migration) öncesi temizliği tipik bir iş yükü. Polars'ın SQL arayüzü, PL/SQL bilen birinin bu dönüşümleri veritabanını yormadan, aşina olduğu SQL sözdizimiyle yerelde yapmasını sağlıyor.",
+        "evolve": "- **Daha zengin veritabanı bağlayıcıları:** Oracle gibi kurumsal veritabanlarından doğrudan, paralel ve Arrow-native okuma (ör. ADBC üzerinden) yerleşik ve birinci sınıf hale gelirse ERP/veri ambarı ekipleri için büyük kazanç olur.\n- **SQL kapsamını genişletmek:** `MERGE`, daha fazla pencere fonksiyonu ve diyalekt uyumluluğu (Oracle/PostgreSQL), mevcut SQL sorgularını neredeyse değiştirmeden taşımayı sağlar.\n- **Streaming'i görünür kılmak:** Out-of-core yeteneği var ama dokümantasyonda daha net anlatılmalı; hangi operasyonun bellekte, hangisinin diske taşarak çalıştığını gösteren bir `explain` çıktısı kullanıcıya güven verir.\n- **GPU desteğinin olgunlaşması:** Hangi operasyonların GPU'da çalıştığına dair net bir kapsam tablosu ve otomatik geri dönüş (fallback) raporlaması.\n- **Ajanlar için güvenli mod:** MCP entegrasyonu üzerinde salt okunur, kaynak limitli bir çalışma modu; ajanların büyük veri setlerinde kontrolsüz sorgu çalıştırmasını engeller.\n- **2.4k açık issue:** Topluluk büyüklüğünün doğal sonucu ama önceliklendirme ve triage otomasyonu, projenin sürdürülebilirliği için önemli."
+      },
+      "glossary": [
+        {
+          "term": "DataFrame",
+          "def": "Satır ve sütunlardan oluşan, Excel tablosuna benzeyen, programlama dilleri içinde veri analizi için kullanılan veri yapısı."
+        },
+        {
+          "term": "pandas",
+          "def": "Python'un en yaygın veri analizi kütüphanesi. Esnek ama büyük verilerde yavaş ve bellek açısından savurgan olabilir."
+        },
+        {
+          "term": "Sorgu motoru (query engine)",
+          "def": "Bir veri sorgusunu alıp en verimli şekilde nasıl çalıştırılacağını planlayan ve yürüten yazılım bileşeni."
+        },
+        {
+          "term": "Lazy evaluation (tembel değerlendirme)",
+          "def": "İşlemlerin yazıldığı anda değil, sonuç istendiğinde toplu olarak ve optimize edilerek çalıştırılması."
+        },
+        {
+          "term": "Sorgu optimize edici (query optimizer)",
+          "def": "Bir sorgunun aynı sonucu daha az iş yaparak üretecek şekilde yeniden düzenlenmesini sağlayan bileşen."
+        },
+        {
+          "term": "Predicate / projection pushdown",
+          "def": "Filtreleri (predicate) ve sütun seçimini (projection) veriyi okuma aşamasına kadar geriye iterek gereksiz verinin hiç okunmamasını sağlayan optimizasyonlar."
+        },
+        {
+          "term": "Apache Arrow",
+          "def": "Verinin bellekte sütun bazlı nasıl tutulacağını tanımlayan açık standart. Farklı araçların veriyi kopyalamadan paylaşmasını sağlar."
+        },
+        {
+          "term": "Sütun bazlı depolama (columnar)",
+          "def": "Verinin satır satır değil, sütun sütun saklanması. Analitik sorgularda yalnızca gereken sütunlar okunduğu için çok daha hızlıdır."
+        },
+        {
+          "term": "Zero-copy",
+          "def": "Verinin bir yerden başka bir yere kopyalanmadan, aynı bellek alanı üzerinden paylaşılması."
+        },
+        {
+          "term": "SIMD",
+          "def": "İşlemcinin tek bir komutla birden çok veri üzerinde aynı anda işlem yapmasını sağlayan özelliği. AVX2 bunun yaygın bir örneğidir."
+        },
+        {
+          "term": "Out-of-core",
+          "def": "Belleğe sığmayan verilerin parça parça işlenip gerekirse geçici olarak diske yazılarak işlenmesi."
+        },
+        {
+          "term": "Parquet",
+          "def": "Büyük veri dünyasında yaygın, sıkıştırılmış ve sütun bazlı bir dosya formatı."
+        },
+        {
+          "term": "CTE",
+          "def": "Common Table Expression: SQL'de `WITH` ile tanımlanan, sorgu içinde geçici olarak isimlendirilmiş alt sorgu."
+        },
+        {
+          "term": "Pencere fonksiyonu (window function)",
+          "def": "SQL'de satırları gruplamadan, her satır için ilgili satır kümesi üzerinden sıralama veya toplam gibi hesaplar yapan fonksiyon (ör. RANK() OVER)."
+        },
+        {
+          "term": "PyO3 / maturin",
+          "def": "Rust ile yazılmış kodu Python paketi olarak kullanılabilir hale getiren araçlar."
+        },
+        {
+          "term": "Spark",
+          "def": "Büyük verileri birçok bilgisayardan oluşan bir kümede dağıtarak işleyen popüler sistem."
+        },
+        {
+          "term": "ADBC",
+          "def": "Arrow Database Connectivity: Veritabanlarından veriyi doğrudan Arrow formatında çekmeyi sağlayan bağlantı standardı."
+        }
+      ]
+    },
+    {
+      "name": "rustdesk/rustdesk",
+      "url": "https://github.com/rustdesk/rustdesk",
+      "stars": "131.1k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**RustDesk**, açık kaynak, **kendi sunucunda barındırılabilen (self-hosted)** bir uzak masaüstü uygulaması. TeamViewer ve AnyDesk'in açık kaynak alternatifi olarak konumlanıyor. Bugün Rust trend listesinde günde ~**220 yıldızla** öne çıktı; toplamda ~**131k yıldız** ile GitHub'ın en popüler Rust projelerinden biri.\n\nÇözdüğü problem: Uzak destek ve uzaktan çalışma için kullanılan ticari araçlarda üç sıkıntı var:\n- **Lisans maliyeti ve \"ticari kullanım tespit edildi\" engelleri**\n- **Veri egemenliği:** Bağlantılar üreticinin sunucularından geçiyor; regülasyona tabi kurumlar için sorun\n- **Kapalı kod:** Ne yaptığını denetleyemiyorsun\n\nRustDesk'in yanıtı:\n- Kutudan çıktığı gibi çalışan ücretsiz istemci (Windows, macOS, Linux, Android, iOS)\n- Bağlantıyı koordine eden **buluşma (rendezvous) ve aktarma (relay) sunucusunu kendin kurabilme** — verin kendi altyapında kalıyor\n- Ekran paylaşımı, klavye/fare kontrolü, ses, pano (clipboard) ve **dosya transferi**\n- Daha gelişmiş yönetim için ticari bir **Server Pro** katmanı\n\nBT destek ekipleri, MSP'ler (yönetilen hizmet sağlayıcıları), saha danışmanları ve evden aile bilgisayarına destek veren herkes için pratik bir araç.",
+        "tech": "**Rust çekirdek:** Ağ iletişimi, ekran yakalama ve platform entegrasyonu Rust'ta. Uzak masaüstü gibi düşük gecikme gerektiren, bellek hatalarının güvenlik açığına dönüşebileceği bir alanda Rust'ın **bellek güvenliği** doğru bir seçim.\n\n**Modüler kütüphaneler (`libs/`):**\n- `hbb_common`: yapılandırma ve TCP/UDP sarmalayıcıları, sunucuyla ortak\n- `scrap`: ekran yakalama ve video codec'leri\n- `enigo`: platforma özel klavye/fare kontrolü\n- `clipboard`: Windows/Linux/macOS arasında dosya kopyala-yapıştır\n- `base`: protobuf mesajları, dosya transferi, klavye işleme\n\n**Arayüz:** Masaüstü ve mobilde **Flutter**. Eski Sciter arayüzü kullanımdan kaldırıldı; tek bir UI kod tabanıyla beş platformu desteklemek bakım yükünü ciddi azaltıyor.\n\n**Video:** libvpx (VP8/VP9), aom (AV1), libyuv (renk dönüşümü) ve ses için opus — hepsi **vcpkg** ile yönetiliyor. Bant genişliği/kalite dengesine göre codec seçimi yapılabiliyor.\n\n**Bağlantı kurma (NAT traversal):**\n1. İki istemci de **rendezvous sunucusuna** (topluluğun bildiği adıyla hbbs) kaydolur.\n2. Sunucu, iki tarafın birbirine doğrudan ulaşabilmesi için **TCP hole punching** dener — başarılı olursa trafik doğrudan uçtan uca akar.\n3. Ağ yapısı (ör. katı NAT, kurumsal firewall) buna izin vermezse trafik **relay sunucusu** (hbbr) üzerinden aktarılır.\n\nBu mimari sayesinde sunucu yalnızca \"tanıştırıcı\" rolünde kalıyor; çoğu bağlantıda ekran görüntüsü sunucudan geçmiyor bile.\n\n**Lisans:** **AGPL-3.0** — değiştirilmiş sürümü ağ üzerinden hizmet olarak sunan herkes kaynak kodunu paylaşmak zorunda. Bu, ticari bir firmanın projeyi kapatıp satmasını zorlaştırıyor.",
+        "why": "- **Kalıcı ihtiyaç, kalıcı ilgi:** RustDesk yeni bir proje değil; ama uzak masaüstü ihtiyacı hiç bitmiyor ve proje düzenli olarak trend listelerine geri dönüyor. Bugünkü ~220 yıldız, istikrarlı organik büyümenin göstergesi.\n- **Self-hosting akımı:** Homelab topluluğu, KVKK/GDPR uyumu arayan şirketler ve \"SaaS fiyat artışı yorgunluğu\" yaşayan ekipler kendi altyapısına dönüyor. RustDesk bu akımın amiral gemilerinden.\n- **Ticari rakiplerin fiyat politikası:** Ücretsiz kullanımı kısıtlayan ve ticari kullanım tespit uyarıları veren rakipler, kullanıcıları sürekli açık kaynak alternatife itiyor.\n- **Güvenlik algısı:** Uzak masaüstü araçları dolandırıcıların sık kullandığı bir vektör; kodu açık ve sunucusu kendi kontrolünde olan bir araç, kurumsal güvenlik ekiplerine daha denetlenebilir geliyor.\n\n**Kime hitap ediyor:** BT destek ekipleri, MSP'ler, sistem yöneticileri, homelab meraklıları.\n\n**ERP danışmanlığı açısından:** IFS/Oracle gibi ERP projelerinde danışmanların müşteri ortamlarına bağlanması sık rastlanan bir ihtiyaç. Müşterinin kendi sunucusunda barındırdığı RustDesk, bağlantı kayıtlarını ve verileri müşteri altyapısında tutarak güvenlik denetimlerini kolaylaştırabilir.",
+        "evolve": "- **Wayland desteğinin olgunlaşması:** Linux masaüstleri hızla Wayland'a geçiyor; ekran yakalama ve giriş simülasyonu burada X11'e göre çok daha kısıtlı. Bu alandaki iyileştirmeler Linux kullanıcıları için kritik.\n- **Güvenlik dokümantasyonu:** README şifreleme şeması hakkında teknik detay vermiyor. Anahtar değişimi, uçtan uca şifreleme ve sunucunun neyi görebildiğini anlatan bir güvenlik beyaz kâğıdı (whitepaper) ve bağımsız denetim raporu kurumsal benimsemeyi hızlandırır.\n- **Kimlik yönetimi entegrasyonu:** Açık kaynak sürümde SSO (OIDC/SAML), LDAP ve merkezi erişim politikaları sınırlı; bunların bir kısmı Pro'da. Hangi özelliğin nerede olduğu net olmalı.\n- **Oturum kaydı ve denetim izi:** Regülasyona tabi sektörler için oturum video kaydı ve detaylı log, standart açık kaynak özellik olarak değerli olur.\n- **Dolandırıcılığa karşı koruma:** \"Telefonda biri sizden RustDesk kurmanızı istiyorsa dikkat\" gibi uyarılar ve tanımadık ID'lerden gelen bağlantılarda ekstra onay adımı, kötüye kullanımı azaltır.\n- **Web istemcisi:** Kurulum gerektirmeden tarayıcıdan bağlanabilme, hızlı destek senaryolarında büyük kolaylık sağlar."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımın üreticinin bulutunda değil, kullanıcının kendi sunucusunda veya altyapısında çalıştırılması."
+        },
+        {
+          "term": "Uzak masaüstü (remote desktop)",
+          "def": "Başka bir bilgisayarın ekranını görüp klavye ve fareyle sanki başındaymış gibi kontrol etmeyi sağlayan teknoloji."
+        },
+        {
+          "term": "NAT",
+          "def": "Ev ve ofis ağlarındaki cihazların tek bir genel IP adresini paylaşmasını sağlayan yöntem. İnternetten bu cihazlara doğrudan ulaşmayı zorlaştırır."
+        },
+        {
+          "term": "NAT traversal",
+          "def": "NAT arkasındaki iki cihazın birbirine doğrudan bağlanabilmesi için kullanılan teknikler bütünü."
+        },
+        {
+          "term": "Hole punching",
+          "def": "İki cihazın aynı anda birbirine bağlantı deneyerek NAT/firewall üzerinde geçici bir geçiş yolu açması tekniği."
+        },
+        {
+          "term": "Rendezvous sunucusu",
+          "def": "İki cihazın birbirini bulup bağlantı bilgilerini paylaşmasını sağlayan \"tanıştırıcı\" sunucu. Asıl trafiği genelde taşımaz."
+        },
+        {
+          "term": "Relay sunucusu",
+          "def": "Doğrudan bağlantı kurulamadığında iki cihaz arasındaki trafiği aktaran ara sunucu."
+        },
+        {
+          "term": "Codec",
+          "def": "Görüntü veya sesi sıkıştırıp açan algoritma. VP9, AV1 ve Opus yaygın açık codec'lerdir."
+        },
+        {
+          "term": "Flutter",
+          "def": "Google'ın, tek bir kod tabanından mobil, masaüstü ve web uygulamaları üretmeyi sağlayan arayüz çatısı."
+        },
+        {
+          "term": "Protobuf",
+          "def": "Protocol Buffers: Verileri küçük ve hızlı bir ikili formatta paketleyip ağ üzerinden göndermeyi sağlayan serileştirme formatı."
+        },
+        {
+          "term": "vcpkg",
+          "def": "Microsoft'un C/C++ kütüphanelerini indirip derlemeyi kolaylaştıran paket yöneticisi."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Değiştirilmiş yazılımı ağ üzerinden hizmet olarak sunanların bile kaynak kodunu paylaşmasını zorunlu kılan güçlü bir açık kaynak lisansı."
+        },
+        {
+          "term": "MSP",
+          "def": "Managed Service Provider: Başka şirketlerin BT altyapısını uzaktan yöneten hizmet sağlayıcı firma."
+        },
+        {
+          "term": "Wayland",
+          "def": "Linux'ta eski X11'in yerini alan modern görüntü sunucusu protokolü. Daha güvenli ama ekran yakalamayı daha kısıtlı hale getirir."
+        },
+        {
+          "term": "SSO",
+          "def": "Single Sign-On: Tek bir kurumsal hesapla birçok uygulamaya ayrı ayrı şifre girmeden erişebilme."
+        },
+        {
+          "term": "Bellek güvenliği (memory safety)",
+          "def": "Programın bellekte yanlış yerlere erişmesini derleme aşamasında engelleyen özellik. Birçok güvenlik açığının kökünü keser; Rust'ın temel avantajıdır."
+        }
+      ]
+    }
+  ]
+}
