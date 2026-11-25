@@ -1,0 +1,305 @@
+{
+  "date": "2026-11-25",
+  "projects": [
+    {
+      "name": "awslabs/cli-agent-orchestrator",
+      "url": "https://github.com/awslabs/cli-agent-orchestrator",
+      "stars": "1.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "**CLI Agent Orchestrator (CAO)**, AWS Labs'in açık kaynak **çoklu ajan orkestrasyon** aracı. Fikir basit: Tek bir AI kodlama ajanına her işi yüklemek yerine, bir **süpervizör ajan** işi parçalara bölüyor ve **uzman ajanlara** paralel ya da sıralı olarak dağıtıyor. Bugün Python trend listesinde, toplam ~**1.7k yıldız**la küçük ama dikkat çekici bir AWS projesi olarak göründü.\n\nÇözdüğü problem: Claude Code, Codex, Kiro, Copilot CLI gibi araçların her biri tek başına güçlü ama **birlikte çalıştırmak** dağınık. Birkaç terminal açıp elle kopyala-yapıştır yapmak yerine CAO bu ajanları tek bir merkezden başlatıyor, izliyor ve birbirine iş devrettiriyor.\n\nÖne çıkanlar:\n- **13 farklı CLI** desteği: Kiro CLI (varsayılan), Claude Code, Codex CLI, Copilot CLI, Cursor CLI, OpenCode, Qwen Code, Kimi CLI, Grok Build ve diğerleri\n- 9889 portunda **web arayüzü** ile ajan filosunu canlı izleme\n- **Flows** (zamanlanmış çalıştırmalar) ve **workflows** (çok adımlı iş hatları)\n- Ajan profilleri, **skill**'ler ve isteğe bağlı kendi kendine öğrenen **kalıcı hafıza**\n- Tek kullanımlık yardımcı ajanlar ve **izin listesi (allowlist)** ile araç kısıtlama",
+        "tech": "**Mimari:** Merkezde yerel bir `cao-server` var. Bu sunucu her sağlayıcı CLI'ı **ayrı bir tmux oturumunda** başlatıyor ve süpervizör ajana işçileri yönetmesi için araçlar veriyor (devretme, mesaj gönderme, sonucu bekleme).\n\n**Neden tmux?** Projenin en ilginç kararı bu. Her ajan bir API çağrısına indirgenmek yerine **tam bir CLI süreci** olarak kalıyor. Böylece:\n- Her aracın **kendi kimlik doğrulaması** (abonelik, OAuth) olduğu gibi kullanılıyor; ayrıca API anahtarı gerekmiyor\n- Araçların yerel özellikleri (kendi skill'leri, MCP sunucuları, izin modları) kaybolmuyor\n- İnsan istediği an tmux oturumuna bağlanıp ajanın ne yaptığını **gözüyle görebiliyor** veya müdahale edebiliyor\n\n**Teknoloji yığını:** Python 3.11+, paket yönetimi için **uv**, tmux 3.3+. Kurulum tek satır: `uv tool install ...`, ardından `cao install code_supervisor`, `cao-server` ve `cao launch`. Bir **TUI**, web uygulaması ve Docusaurus tabanlı dokümantasyon da repo'da.\n\n**MCP entegrasyonu:** Kontrol düzlemi olarak bir **operasyon MCP sunucusu** ve ajan filosunu sohbet istemcisinin içinde çizen **MCP Apps** desteği var. Yani başka bir ajan da CAO'yu araç olarak kullanabiliyor.\n\n**Dağıtım:** Yerelin ötesinde **Kubernetes/EKS** örneği ve bir EC2 makinesinde çalışan **Remote CAO** kurulumu sunuluyor. Eklentiler (agent plugins) varsayılan olarak **kapalı** — güvenlik açısından bilinçli bir tercih. Lisans **Apache 2.0**.",
+        "why": "- **Zamanlama:** 2026 sonbaharında konuşma \"hangi kodlama ajanı en iyi?\" sorusundan \"birden fazla ajanı nasıl birlikte çalıştırırım?\" sorusuna kaydı. Son haftalarda Tencent/LoopForge, multica ve OpenSandbox gibi orkestrasyon/altyapı projelerinin art arda trend olması bu dalganın parçası.\n- **Sağlayıcıdan bağımsızlık:** AWS'nin kendi Kiro CLI'ını varsayılan yapması doğal, ama Claude Code, Codex ve Copilot'u da birinci sınıf desteklemesi ekiplerin elindeki abonelikleri **karıştırarak** kullanmasına izin veriyor. \"Planlamayı bir model, testi başka bir model yapsın\" senaryosu kolaylaşıyor.\n- **Kurumsal güven:** awslabs etiketi, büyük şirketlerde \"deneyebilir miyiz?\" sorusunu hızlandırıyor. EKS ve EC2 örnekleri doğrudan kurumsal kitleye konuşuyor.\n- **Görünürlük:** Ajanların kara kutu olmaması (tmux + web UI) özellikle ajanlara henüz tam güvenmeyen geliştiriciler için önemli.\n- **Kitle:** Birden fazla AI CLI kullanan geliştiriciler, platform ekipleri ve AI-DLC (AI destekli yazılım geliştirme yaşam döngüsü) deneyen kurumlar.\n\nGünlük yıldız sayısı (~20-25) mütevazı; bu bir patlama değil, **istikrarlı ilgi** sinyali. 832 commit ve 152 açık issue projenin aktif geliştirildiğini gösteriyor.",
+        "evolve": "- **Maliyet ve token görünürlüğü:** Birden çok ajan paralel çalışınca fatura hızla büyür. Ajan başına token/maliyet paneli ve bütçe limiti büyük eksik.\n- **Çakışma yönetimi:** Paralel ajanlar aynı dosyalara dokunduğunda ne olacağı kritik. Ajan başına otomatik **git worktree** ve birleştirme stratejisi standart hale gelmeli.\n- **Windows desteği:** tmux bağımlılığı Windows kullanıcılarını WSL'e mecbur bırakıyor; yerel bir süreç yöneticisi alternatifi kitleyi genişletir.\n- **Değerlendirme (eval) katmanı:** Hangi ajan kombinasyonunun hangi işte daha iyi olduğunu ölçen yerleşik bir karşılaştırma aracı, orkestrasyonu sezgiden veriye taşır.\n- **Kurumsal kod tabanları için şablonlar:** Örneğin PL/SQL paketleri veya ERP özelleştirmeleri için \"bir ajan kodu analiz etsin, biri test verisi üretsin, biri inceleme yapsın\" gibi hazır süpervizör profilleri, legacy sistemlerle çalışan ekipler için doğrudan değer üretir.\n- **Güvenlik denetimi:** Ajanların hangi komutu ne zaman çalıştırdığına dair değiştirilemez bir **denetim kaydı (audit log)**, kurumsal benimseme için şart."
+      },
+      "glossary": [
+        {
+          "term": "Orkestrasyon",
+          "def": "Birden fazla bileşenin (burada AI ajanlarının) ne zaman, hangi sırayla ve nasıl birlikte çalışacağını merkezi olarak yönetmek."
+        },
+        {
+          "term": "Süpervizör ajan",
+          "def": "İşi alt görevlere bölen, bunları diğer ajanlara dağıtan ve sonuçları toplayan yönetici rolündeki AI ajanı."
+        },
+        {
+          "term": "CLI (Komut satırı arayüzü)",
+          "def": "Bir programı fareyle değil, terminale yazılan komutlarla kullanma yöntemi."
+        },
+        {
+          "term": "tmux",
+          "def": "Tek bir terminal içinde birden fazla oturumu arka planda çalışır tutan ve istenince bu oturumlara yeniden bağlanmayı sağlayan araç."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "AI modellerinin dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "MCP Apps",
+          "def": "Bir MCP sunucusunun, sohbet istemcisinin içinde etkileşimli arayüz parçaları göstermesini sağlayan uzantı."
+        },
+        {
+          "term": "Skill",
+          "def": "Bir AI ajanına belirli bir işi nasıl yapacağını anlatan, talimat ve yardımcı dosyalardan oluşan paket."
+        },
+        {
+          "term": "Allowlist (izin listesi)",
+          "def": "Yalnızca listede açıkça belirtilen işlemlere izin veren, geri kalanını engelleyen güvenlik yaklaşımı."
+        },
+        {
+          "term": "uv",
+          "def": "Python paketlerini ve araçlarını çok hızlı kuran, Rust ile yazılmış modern paket yöneticisi."
+        },
+        {
+          "term": "EKS",
+          "def": "AWS'nin yönetilen Kubernetes hizmeti; konteynerleri çok sayıda sunucuda otomatik çalıştırıp ölçeklemeyi sağlar."
+        },
+        {
+          "term": "Git worktree",
+          "def": "Aynı depodan birden fazla çalışma klasörü açarak farklı dalları aynı anda, birbirini bozmadan düzenlemeyi sağlayan git özelliği."
+        },
+        {
+          "term": "Audit log (denetim kaydı)",
+          "def": "Sistemde kimin ne zaman ne yaptığını sonradan incelenebilecek şekilde kaydeden günlük."
+        }
+      ]
+    },
+    {
+      "name": "tianma-if/edgeever",
+      "url": "https://github.com/tianma-if/edgeever",
+      "stars": "3.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**EdgeEver**, Evernote ve Obsidian'a alternatif olarak konumlanan, **kendi sunucunda barındırabileceğin (self-hosted)** açık kaynak bir not ve bilgi tabanı uygulaması. Evernote'un tanıdık **üç panelli düzenini** (defter ağacı, not listesi, editör) koruyor ama üstüne **AI ajan entegrasyonu** ekliyor. Bugün TypeScript trend listesinde, ~**3.5k yıldız** ve dikkat çekici şekilde ~**1.8k fork** ile göründü.\n\nÇözdüğü problem: Not uygulamaları ya kapalı ve abonelikli bulutlara kilitli (Evernote, Notion) ya da güçlü ama senkronizasyonu zahmetli (Obsidian). EdgeEver, **Cloudflare'in ücretsiz katmanında** sıfır sunucuyla ya da Docker ile kendi NAS'ında çalışabiliyor.\n\nNeler sunuyor:\n- **Çift modlu editör:** Zengin metin (WYSIWYG) ile Markdown arasında geçiş, matematik ve kimya formülleri, revizyon geçmişi\n- **Zengin not türleri:** AI ile üretilen çok boyutlu tablolar, zihin haritaları, Mermaid diyagramları, infografikler\n- **İçerik toplama:** 20+ platform için ayrıştırıcılı web clipper, mobil paylaşım menüsü, ekran yakalama\n- **Tek tıkla içe aktarma:** Evernote, Obsidian, Notion, Joplin, SiYuan, flomo\n- **Yayınlama:** Defteri statik site olarak yayınlama, şifreli ve süreli paylaşım linkleri\n- Web, macOS, Windows, Linux, Android ve iOS istemcileri",
+        "tech": "**Monorepo:** **Bun workspaces** ile web, tarayıcı eklentisi, API, Android, iOS, masaüstü ve tanıtım sitesi tek repoda; ortak paketler paylaşılıyor.\n\n**Ön yüz:** Vite + React + React Router, veri çekme için **TanStack Query**, arayüz için Tailwind CSS + shadcn/ui + Radix UI. Editör **TipTap/ProseMirror** üzerine kurulu — zengin metin dünyasının en olgun temeli.\n\n**Mobil ve masaüstü:** Android için Expo/React Native, iOS için ise **yerel SwiftUI** (iOS 17+). Masaüstünde Electron kabuğu, ama yerel veri, çevrimdışı çalışma ve yedekleme işini bir **Rust sidecar** süreci üstleniyor. Electron'un ağırlığını veri katmanında Rust ile dengelemek akıllıca bir karar.\n\n**Arka uç:** Tek bir **Hono + Zod** uygulaması hem REST API hem **Remote MCP** sunuyor. Aynı kod iki ortamda çalışıyor:\n- **Cloudflare:** Workers (sunucusuz çalışma), **D1** (SQLite tabanlı veritabanı), **R2** (dosya depolama)\n- **Docker:** Bun + SQLite + yerel disk veya S3 uyumlu depolama\n\n**Veri modeli — üçlü saklama:** Her not üç biçimde tutuluyor: düzenleme için **TipTap JSON**, taşınabilirlik için **Markdown**, arama için **düz metin**. Bu, \"verim kilitli kalmasın\" kaygısına doğrudan cevap.\n\n**Senkronizasyon:** **Çevrimdışı öncelikli (offline-first)**: yerel SQLite + artımlı senkron + kuyruk. Düzenlemeler ~30 saniyelik hareketsizlikten sonra yükleniyor, uzak değişiklikler 5 dakikada bir yoklanıyor.\n\n**AI tarafı:** Kendi anahtarını getir (**BYOK**) modeliyle OpenAI, Anthropic, Gemini veya özel uç noktalar. Lisans **AGPL-3.0**.",
+        "why": "- **MCP ile notlar ajanların hafızası oluyor:** En güçlü kanca bu. Yerleşik **Remote MCP** ve defter bazında kapsamlandırılabilen API token'ları sayesinde Claude Code veya Codex notları okuyup yazabiliyor, etiket ve şablon yönetebiliyor. Masaüstünde **ACP** ile yerel ajanları sürme desteği de var. \"İkinci beyin\" artık AI ajanların da kullandığı bir beyin.\n- **Sıfır maliyetli self-hosting:** Cloudflare'in ücretsiz katmanında çalışması, sunucu yönetmek istemeyen ama verisinin sahibi olmak isteyen geniş bir kitleyi yakalıyor.\n- **Evernote göçmenleri:** Evernote'un fiyat artışları ve kısıtlamaları sonrası tanıdık bir arayüz arayan kullanıcılar için doğal bir liman.\n- **Çin pazarı:** WeChat sohbet arşivleme, flomo/SiYuan içe aktarımı gibi özellikler güçlü bir Çin topluluğu olduğunu gösteriyor; yüksek fork sayısının bir kısmı da buradan geliyor olabilir.\n- **Kitle:** Bilgi işçileri, kendi verisini kontrol etmek isteyenler, AI ajanlarına kalıcı bağlam sağlamak isteyen geliştiriciler, küçük ekipler (çok hesaplı yönetim sayesinde).\n\n3.439 commit ve sadece 63 açık issue, hızlı ama düzenli ilerleyen bir projeye işaret ediyor.",
+        "evolve": "- **Gerçek zamanlı ortak düzenleme:** 30 saniye / 5 dakika aralıklı senkron tek kişi için yeterli ama ekipler için zayıf. **CRDT** tabanlı (ör. Yjs) gerçek zamanlı iş birliği, Notion'a karşı en büyük eksik.\n- **Uçtan uca şifreleme:** Cloudflare'de barındırmak \"kendi verim\" iddiasını kısmen zayıflatıyor; istemci tarafı şifreleme seçeneği güveni artırır.\n- **Anlamsal arama:** Düz metin araması var; notların **vektör gömmeleriyle (embedding)** anlam bazlı aranması ve ajanlara RAG kaynağı olarak sunulması doğal bir sonraki adım.\n- **Çakışma çözümü arayüzü:** Çevrimdışı öncelikli sistemlerde iki cihazda aynı not düzenlendiğinde ne olduğu net gösterilmeli.\n- **Kurumsal bilgi tabanı senaryosu:** Ekiplerin teknik dokümantasyonu (ör. ERP özelleştirme notları, SQL betik arşivi) EdgeEver'de tutulup MCP ile kodlama ajanlarına açılırsa, kurum içi bilgi doğrudan geliştirme akışına girer.\n- **Lisans dengesi:** AGPL kurumsal kullanımda çekince yaratabiliyor; eklenti API'sinin daha serbest lisanslanması ekosistemi büyütür."
+      },
+      "glossary": [
+        {
+          "term": "Self-hosted",
+          "def": "Bir yazılımı üreticinin bulutu yerine kendi sunucunda, bilgisayarında veya hesabında çalıştırmak; veri senin kontrolünde kalır."
+        },
+        {
+          "term": "WYSIWYG",
+          "def": "\"Ne görüyorsan onu alırsın\"; metni yazarken son hâlini (kalın, başlık, tablo) doğrudan gördüğün editör türü."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla uygulama ve paketin tek bir kod deposunda birlikte tutulması."
+        },
+        {
+          "term": "Bun",
+          "def": "JavaScript/TypeScript kodunu çalıştıran, Node.js'e alternatif, hızlı bir çalışma ortamı ve paket yöneticisi."
+        },
+        {
+          "term": "TipTap / ProseMirror",
+          "def": "Web'de zengin metin editörü yapmak için kullanılan kütüphaneler; belgeyi yapılandırılmış bir ağaç olarak tutarlar."
+        },
+        {
+          "term": "Sidecar",
+          "def": "Ana uygulamanın yanında çalışan ve belirli bir işi (burada veritabanı ve yedekleme) üstlenen yardımcı süreç."
+        },
+        {
+          "term": "Hono",
+          "def": "Cloudflare Workers gibi farklı ortamlarda çalışabilen, hafif bir TypeScript web sunucusu çatısı."
+        },
+        {
+          "term": "Zod",
+          "def": "TypeScript'te gelen verinin beklenen şekle uyup uymadığını doğrulayan şema kütüphanesi."
+        },
+        {
+          "term": "Cloudflare Workers / D1 / R2",
+          "def": "Cloudflare'in sunucusuz kod çalıştırma (Workers), SQLite tabanlı veritabanı (D1) ve dosya depolama (R2) hizmetleri."
+        },
+        {
+          "term": "Serverless (sunucusuz)",
+          "def": "Sunucu kurup yönetmeden kodun sadece istek geldiğinde bulutta çalıştırıldığı model."
+        },
+        {
+          "term": "Offline-first",
+          "def": "Uygulamanın önce yerel veriyle çalıştığı, internet gelince değişiklikleri arka planda senkronize ettiği tasarım yaklaşımı."
+        },
+        {
+          "term": "BYOK",
+          "def": "\"Kendi anahtarını getir\"; uygulamanın AI özelliklerini kullanıcının kendi API anahtarıyla çalıştırması."
+        },
+        {
+          "term": "Remote MCP",
+          "def": "MCP sunucusunun internet üzerinden erişilebilir olması; uzaktaki AI ajanların uygulamaya bağlanmasını sağlar."
+        },
+        {
+          "term": "ACP (Agent Client Protocol)",
+          "def": "Bir uygulamanın Claude Code veya Codex gibi kodlama ajanlarını standart bir arayüzle başlatıp yönetmesini sağlayan protokol."
+        },
+        {
+          "term": "CRDT",
+          "def": "Birden fazla kişinin aynı belgeyi aynı anda düzenlemesine izin veren ve çakışmaları otomatik birleştiren veri yapısı."
+        },
+        {
+          "term": "Embedding (vektör gömme)",
+          "def": "Metnin anlamını sayı dizisine dönüştürme; benzer anlamlı metinler birbirine yakın sayılar alır, böylece anlam bazlı arama yapılır."
+        },
+        {
+          "term": "RAG",
+          "def": "Bir AI modelinin cevap üretmeden önce ilgili belgeleri bulup bağlam olarak kullanması tekniği."
+        },
+        {
+          "term": "AGPL-3.0",
+          "def": "Yazılımı değiştirip ağ üzerinden hizmet olarak sunan herkesin kaynak kodunu da paylaşmasını zorunlu kılan açık kaynak lisansı."
+        }
+      ]
+    },
+    {
+      "name": "perspective-dev/perspective",
+      "url": "https://github.com/perspective-dev/perspective",
+      "stars": "11.8k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Perspective**, **büyük ve canlı akan (streaming) veri setleri** için tasarlanmış açık kaynak bir **veri tablosu + pivot tablo + grafik** bileşeni. Kökeni finans dünyası (J.P. Morgan'da doğup açık kaynağa çıktı) ve bugün **OpenJS Foundation** üyesi. Rust trend listesinde ~**11.8k yıldız**la yer aldı.\n\nÇözdüğü problem: Milyonlarca satırlık ya da saniyede binlerce güncelleme alan bir veriyi tarayıcıda göstermek klasik grafik kütüphanelerini dizlerinin üstüne çöktürür. Perspective ise hesaplamayı tarayıcıda **WebAssembly** ile ya da sunucuda yapıp **sadece ekranda görünen satırları** istemciye gönderiyor.\n\nNeler sunuyor:\n- **Sürükle-bırak yapılandırma:** Grupla, pivotla, filtrele, sırala — kod yazmadan\n- **Sanal kaydırmalı, düzenlenebilir veri tablosu (grid)**\n- **WebGL** tabanlı 15+ grafik türü ve harita görünümleri\n- **Gerçek zamanlı görünümler:** Veri değiştikçe pivot ve grafikler anında güncellenir\n- **Jupyter widget'ı**, React bileşenleri, Python/Node.js/Rust sunucu bağlamaları\n- **Sanal sunucular:** Veriyi kopyalamadan doğrudan **DuckDB, ClickHouse, PostgreSQL, Polars** üzerinde çalışma",
+        "tech": "**Çekirdek:** C++ ile yazılmış bir **akış sorgu motoru**, **WebAssembly**'ye derleniyor; ayrıca Python ve Rust sürümleri var. Motor **artımlı güncelleme** yapıyor: yeni satır geldiğinde tüm tabloyu baştan hesaplamak yerine sadece etkilenen toplamları güncelliyor. Repo'nun GitHub tarafından \"Rust\" olarak etiketlenmesi, son yıllarda istemci, sunucu ve arayüz katmanlarının önemli kısmının Rust'a taşınmasından geliyor.\n\n**Veri alışverişi:** **Apache Arrow** birincil format. Arrow'un sütun tabanlı ikili yapısı sayesinde veri, JSON'a çevrilmeden doğrudan motor ile istemci arasında taşınıyor — büyük veri setlerinde dramatik hız farkı.\n\n**Bellek sınırı aşıldı:** WebAssembly'nin klasik 32-bit adres alanı 4 GB ile sınırlı. Perspective **memory64** destekli 64-bit bir yapı da sunuyor; tarayıcıda **4 GB'tan büyük** veri setleriyle çalışmak mümkün.\n\n**İstemci/sunucu esnekliği:** Aynı Client API üç şekilde çalışıyor:\n- **Süreç içinde** (aynı sayfada)\n- **Web Worker'da** (arayüzü dondurmadan arka planda)\n- **Uzakta, WebSocket üzerinden** (Python aiohttp/Starlette/Tornado, Node.js veya Rust sunucusu)\n\n**Sanal sunucular — en stratejik özellik:** Görünüm yapılandırmasını (grupla, filtrele, sırala) hedef veritabanının **yerel sorgusuna** çeviriyor. Yani PostgreSQL'deki tabloyu Perspective'e kopyalamadan, sorguyu veritabanında çalıştırıp sadece sonucu çekiyor.\n\n**İfade dili:** Hesaplanmış sütunlar için **ExprTK** tabanlı bir formül dili. Lisans **Apache 2.0**.",
+        "why": "- **\"Veritabanının önüne direkt arayüz\" eğilimi:** DuckDB ve Polars'ın yükselişiyle analistler veriyi BI aracına taşımak yerine **veri nerede ise orada** analiz etmek istiyor. Perspective'in sanal sunucuları tam bu ihtiyaca oturuyor. Dün Polars'ın trend olması da aynı dalganın parçası.\n- **AI ajanları ve dashboard'lar:** Ajanlar artık veri analizi yapıp sonucu görselleştiriyor; hazır, güçlü, gömülebilir bir grid/pivot bileşeni bu akışın doğal çıktı katmanı.\n- **Kanıtlanmış performans:** Finans sektöründe gerçek zamanlı piyasa verisiyle sınanmış olması, \"büyük veride çöker mi?\" sorusuna güven veriyor.\n- **Jupyter kullanıcıları:** anywidget tabanlı widget, notebook içinde Excel pivot tablosu rahatlığı sunuyor.\n- **Kitle:** Veri mühendisleri, finans ve operasyon ekipleri, iç araç (internal tool) geliştirenler, gerçek zamanlı izleme panelleri kuranlar.\n\n6.874 commit ve sadece 29 açık issue, olgun ve iyi bakılan bir proje profili. Günlük yıldız artışı (~28) mütevazı; bu bir hype değil, **uzun soluklu bir altyapı projesinin yeniden keşfi**.",
+        "evolve": "- **Oracle ve SQL Server sanal sunucuları:** PostgreSQL ve ClickHouse var; **Oracle** desteği eklenirse ERP verisi (ör. IFS veya E-Business Suite tabloları) kopyalanmadan doğrudan pivotlanabilir. Kurumsal dünyada büyük bir kapı açar.\n- **Doğal dil ile görünüm oluşturma:** \"Bölge bazında aylık satışı göster\" cümlesini Perspective görünüm yapılandırmasına çeviren bir LLM katmanı, sürükle-bırakı bile gereksiz kılar.\n- **MCP sunucusu:** Ajanların Perspective görünümlerini oluşturup paylaşabildiği bir MCP arayüzü, AI analiz akışlarına doğrudan entegrasyon sağlar.\n- **Dokümantasyon ve öğrenme eğrisi:** Güçlü ama yeni gelenler için karmaşık; hazır dashboard şablonları ve uçtan uca örnekler benimsenmeyi hızlandırır.\n- **Yetkilendirme:** Satır bazlı güvenlik (row-level security) ve kullanıcıya göre filtrelenmiş görünümler, kurumsal paylaşım için kritik.\n- **Dışa aktarma:** Pivot sonuçlarını biçimlendirilmiş Excel'e aktarma, iş kullanıcılarının en sık isteyeceği özellik."
+      },
+      "glossary": [
+        {
+          "term": "Streaming veri",
+          "def": "Sürekli ve kesintisiz gelen veri akışı; örneğin borsa fiyatları veya sensör ölçümleri."
+        },
+        {
+          "term": "Pivot tablo",
+          "def": "Ham veriyi seçilen sütunlara göre gruplayıp toplam, ortalama gibi özetler çıkaran tablo türü."
+        },
+        {
+          "term": "WebAssembly (Wasm)",
+          "def": "C++ veya Rust gibi dillerde yazılmış kodun tarayıcıda neredeyse yerel hızda çalışmasını sağlayan ikili format."
+        },
+        {
+          "term": "memory64",
+          "def": "WebAssembly'nin 64-bit bellek adreslemesine izin veren uzantısı; 4 GB sınırını kaldırır."
+        },
+        {
+          "term": "WebGL",
+          "def": "Tarayıcıda ekran kartını kullanarak hızlı 2D/3D grafik çizmeyi sağlayan teknoloji."
+        },
+        {
+          "term": "Apache Arrow",
+          "def": "Verinin sütun sütun, bellekte doğrudan işlenebilir şekilde tutulduğu standart format; sistemler arasında dönüştürmeden veri paylaşmayı sağlar."
+        },
+        {
+          "term": "Artımlı güncelleme (incremental update)",
+          "def": "Veri değiştiğinde her şeyi baştan hesaplamak yerine yalnızca etkilenen sonuçları yeniden hesaplamak."
+        },
+        {
+          "term": "Sanal kaydırma (virtual scrolling)",
+          "def": "Çok uzun listelerde sadece ekranda görünen satırları çizip, kaydırdıkça yenilerini oluşturan teknik."
+        },
+        {
+          "term": "Web Worker",
+          "def": "Tarayıcıda ağır hesaplamaları arka planda çalıştırıp sayfanın donmasını engelleyen mekanizma."
+        },
+        {
+          "term": "WebSocket",
+          "def": "Tarayıcı ile sunucu arasında açık kalan, iki yönlü ve anlık veri iletimine izin veren bağlantı türü."
+        },
+        {
+          "term": "DuckDB",
+          "def": "Analitik sorgular için tasarlanmış, kurulum gerektirmeyen, gömülü çalışan hızlı bir veritabanı."
+        },
+        {
+          "term": "ClickHouse",
+          "def": "Çok büyük veri setleri üzerinde analitik sorguları hızla çalıştıran sütun tabanlı veritabanı."
+        },
+        {
+          "term": "Polars",
+          "def": "Rust ile yazılmış, Python'dan da kullanılabilen hızlı veri çerçevesi (DataFrame) kütüphanesi."
+        },
+        {
+          "term": "Jupyter",
+          "def": "Kod, grafik ve açıklamaları tek bir etkileşimli belgede birleştiren, veri biliminde yaygın not defteri ortamı."
+        },
+        {
+          "term": "Row-level security",
+          "def": "Aynı tabloda her kullanıcının sadece görmeye yetkili olduğu satırları görmesini sağlayan güvenlik kuralı."
+        }
+      ]
+    },
+    {
+      "name": "SWE-agent/mini-swe-agent",
+      "url": "https://github.com/SWE-agent/mini-swe-agent",
+      "stars": "10.1k",
+      "language": "Python",
+      "sections": {
+        "serves": "**mini-swe-agent**, Princeton ve Stanford'daki **SWE-agent** ekibinin \"**100 satırlık AI ajanı**\" sloganıyla sunduğu minimal yazılım mühendisliği ajanı. GitHub issue'larını çözmek ve komut satırı görevlerinde yardımcı olmak için tasarlandı. Bugün Python trend listesinde ~**10.1k yıldız**la yer aldı.\n\nÇözdüğü problem: Modern kodlama ajanları (Claude Code, Codex vb.) güçlü ama **karmaşık**: onlarca araç, büyük yapılandırmalar, kapalı kaynak parçalar. Araştırmacı ya da kendi ajanını kurmak isteyen bir geliştirici için \"ajan aslında ne yapıyor?\" sorusunun cevabı kayboluyor. mini-swe-agent bu karmaşıklığı neredeyse sıfıra indiriyor ve **şaşırtıcı biçimde hâlâ çok iyi çalışıyor**.\n\nÖne çıkanlar:\n- Ajan sınıfı **~100 satır Python**; ağır bağımlılık yok\n- **SWE-bench Verified'da %74'ün üzerinde** başarı\n- `mini` CLI, toplu SWE-bench çalıştırma, **trajectory tarayıcısı** ve Python API\n- Meta, NVIDIA, IBM, Nebius, Anyscale gibi kurumlarda kullanılıyor (README'ye göre)\n- **MIT lisansı**",
+        "tech": "**Tasarım ilkeleri — projenin özü:**\n\n- **Sadece bash:** Ajanın elinde tek araç var: **bash komutu çalıştırmak**. Dosya okuma `cat`, düzenleme `sed`, arama `grep` ile. Modelin **tool calling** arayüzü bile kullanılmıyor; model cevabında bir komut yazıyor, ajan onu ayıklayıp çalıştırıyor. Sonuç: Araç çağırma desteği olmayan modeller dahil **neredeyse her LLM** ile çalışıyor.\n- **Doğrusal geçmiş:** Her adım mesaj listesinin sonuna ekleniyor; geçmiş özetlenmiyor ya da yeniden yazılmıyor. Böylece **trajectory (ajanın izlediği yol) ile modele giden bağlam birebir aynı**. Bu hem hata ayıklamayı hem de bu kayıtlarla model **ince ayarı (fine-tuning)** yapmayı kolaylaştırıyor.\n- **Durumsuz eylemler:** Her komut kalıcı bir shell oturumunda değil, bağımsız bir `subprocess.run` ile çalışıyor. `cd` gibi durum değişiklikleri bir sonraki komuta taşınmıyor; bu bir kısıt gibi görünse de **sandbox'lamayı ve ölçeklemeyi** çok kolaylaştırıyor — her komutu bir Docker konteynerine göndermek yeterli.\n\n**Model desteği:** **litellm**, OpenRouter, Portkey üzerinden yüzlerce model; `/completion` ve `/response` uç noktaları ve **interleaved thinking** (araç çağrıları arasında düşünme) desteği.\n\n**Çalışma ortamları:** Yerel, Docker/Podman, Singularity/Apptainer (HPC kümeleri için), **Bubblewrap** (hafif Linux sandbox'ı) ve Contree. Bu çeşitlilik araştırma kümelerinde binlerce paralel çalıştırma için kritik.\n\n**v2:** Proje ikinci ana sürümünde; v1 kullanıcıları için geçiş rehberi var.",
+        "why": "- **\"Az, çoktur\" kanıtı:** SWE-bench'te %74+ skor, 100 satırlık bir döngüyle elde ediliyor. Bu, ajan başarısının büyük kısmının **modelden** geldiğini, karmaşık iskelelerin (scaffolding) sanıldığı kadar belirleyici olmadığını gösteriyor. Bu tez, ajan ekosisteminde güçlü bir tartışma başlattı.\n- **Yeni benchmark sonuçları:** README'deki son haberler DeepSWE'de Claude Code ve Codex'i geçtiğini, Ramp'in SWE-Bench'i ve yeni **ProgramBench** sonuçlarını öne çıkarıyor — bu tür iddialar her zaman yeni ilgi dalgası getiriyor.\n- **Araştırma standardı:** Model geliştiren laboratuvarlar yeni modelleri değerlendirmek için **sade, tekrarlanabilir** bir ajana ihtiyaç duyuyor. mini-swe-agent bu rolün fiilî standardına dönüşüyor; büyük şirketlerin kullanıcı listesi bunu destekliyor.\n- **Eğitim değeri:** \"Bir kodlama ajanı nasıl çalışır?\" sorusunu bir öğleden sonrada anlamak isteyen her geliştirici için en iyi okuma materyali.\n- **Kitle:** AI araştırmacıları, model değerlendirme ekipleri, kendi iç ajanını kurmak isteyen şirketler, ajan mimarisini öğrenmek isteyen geliştiriciler.\n\n107 açık PR, topluluğun katkı vermeye istekli olduğunu gösteriyor.",
+        "evolve": "- **Bağlam yönetimi:** Doğrusal geçmiş uzun görevlerde bağlam penceresini hızla dolduruyor. İsteğe bağlı, şeffaf bir **sıkıştırma (compaction)** stratejisi — minimalizmi bozmadan — uzun görevlerde başarıyı artırır.\n- **Maliyet raporlaması:** Benchmark sonuçlarının yanında görev başına **token ve dolar maliyeti** standart olarak raporlanırsa, model karşılaştırmaları çok daha anlamlı olur.\n- **Güvenlik varsayılanları:** Yerel modda ajanın her bash komutunu çalıştırabilmesi riskli; varsayılan olarak onay isteyen veya sandbox'lı bir mod yeni kullanıcıları korur.\n- **Alan özel kurulumlar:** Örneğin bir **PL/SQL** deposu için `sqlplus`/`sqlcl` ile test çalıştıran hazır bir yapılandırma, legacy veritabanı kodu üzerinde ajan denemek isteyen ekiplere kolay bir başlangıç sunar; bash-only tasarım bu tür araçları eklemeyi zaten çok kolay kılıyor.\n- **Trajectory analitiği:** Binlerce çalıştırmadan \"ajan en çok nerede takılıyor?\" sorusunu yanıtlayan otomatik analiz araçları, hem araştırmacılara hem model eğitimine veri sağlar.\n- **Eğitim materyali:** Kod zaten kısa; satır satır açıklamalı bir rehber, projeyi ajan geliştirmenin \"Hello World\"ü yapar."
+      },
+      "glossary": [
+        {
+          "term": "AI ajanı",
+          "def": "Bir hedefe ulaşmak için kendi başına adımlar planlayan, araç kullanan ve sonuçlara göre davranışını ayarlayan yapay zekâ programı."
+        },
+        {
+          "term": "SWE-bench Verified",
+          "def": "Gerçek GitHub issue'larından oluşan, AI ajanlarının yazılım hatalarını ne kadar çözebildiğini ölçen, insanlarca doğrulanmış test seti."
+        },
+        {
+          "term": "Tool calling",
+          "def": "Bir LLM'in cevabında yapılandırılmış biçimde \"şu aracı şu parametrelerle çağır\" demesini sağlayan model özelliği."
+        },
+        {
+          "term": "Trajectory",
+          "def": "Bir ajanın görev boyunca attığı tüm adımların, komutların ve aldığı çıktıların sıralı kaydı."
+        },
+        {
+          "term": "Bağlam (context)",
+          "def": "Modele tek seferde gönderilen ve cevabını üretirken dikkate aldığı tüm metin."
+        },
+        {
+          "term": "Fine-tuning (ince ayar)",
+          "def": "Önceden eğitilmiş bir modeli, belirli bir görev için ek örneklerle yeniden eğiterek o işte daha iyi hâle getirmek."
+        },
+        {
+          "term": "Durumsuz (stateless)",
+          "def": "Her işlemin öncekilerden bağımsız çalıştığı, arada bir hafıza veya oturum tutulmadığı yapı."
+        },
+        {
+          "term": "subprocess",
+          "def": "Bir programın içinden başka bir komutu ayrı bir süreç olarak çalıştırma yöntemi."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Bir programın sistemin geri kalanına zarar veremeyeceği şekilde izole edildiği güvenli çalışma alanı."
+        },
+        {
+          "term": "Scaffolding (iskele)",
+          "def": "Bir LLM'i ajana dönüştüren çevre kod: araçlar, döngü, istem şablonları ve hafıza yönetimi."
+        },
+        {
+          "term": "litellm",
+          "def": "Yüzlerce farklı LLM sağlayıcısını tek ve ortak bir arayüzle çağırmayı sağlayan Python kütüphanesi."
+        },
+        {
+          "term": "Interleaved thinking",
+          "def": "Modelin araç çağrıları arasında düşünme adımları yapabilmesi; her sonuçtan sonra yeniden akıl yürütmesi."
+        },
+        {
+          "term": "Singularity / Apptainer",
+          "def": "Üniversite ve araştırma kümelerinde (HPC) yaygın kullanılan, Docker'a benzer konteyner teknolojisi."
+        },
+        {
+          "term": "Bubblewrap",
+          "def": "Linux'ta bir programı hafif şekilde izole ederek sadece izin verilen dosya ve kaynaklara erişmesini sağlayan araç."
+        },
+        {
+          "term": "Benchmark",
+          "def": "Farklı sistemlerin performansını karşılaştırmak için kullanılan standart test veya ölçüm seti."
+        },
+        {
+          "term": "Compaction (sıkıştırma)",
+          "def": "Uzayan konuşma geçmişini özetleyerek bağlam penceresinde yer açma tekniği."
+        }
+      ]
+    }
+  ]
+}
