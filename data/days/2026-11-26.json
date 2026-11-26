@@ -1,0 +1,329 @@
+{
+  "date": "2026-11-26",
+  "projects": [
+    {
+      "name": "mastra-ai/mastra",
+      "url": "https://github.com/mastra-ai/mastra",
+      "stars": "29.8k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Mastra**, AI destekli uygulamaları ve **ajanları** (agent) **TypeScript** ile yazmak için hazırlanmış açık kaynak bir framework. Y Combinator W25 mezunu bir ekibin projesi; bugün TypeScript trend listesinde ~**29.8k yıldız**la yer aldı.\n\nÇözdüğü problem: Python dünyasında LangChain, LlamaIndex gibi araçlar bolken, web geliştiricilerinin büyük çoğunluğu **JavaScript/TypeScript** ekosisteminde yaşıyor. Mastra, bu kitleye \"Python'a geçmeden, alıştığın Next.js / Node projesinin içinde ajan kur\" diyor.\n\nSunduğu yapı taşları:\n- **Model yönlendirme (model routing):** OpenAI, Anthropic, Gemini dahil **40+ sağlayıcıya** tek arayüzden erişim\n- **Ajanlar:** LLM + araç (tool) kullanarak açık uçlu görevleri, bir durma koşuluna ya da nihai cevaba kadar döngüyle çözen yapılar\n- **Workflow'lar:** `.then()`, `.branch()`, `.parallel()` ile adımları açıkça tanımlanan **graf tabanlı** iş akışları\n- **Human-in-the-loop:** Ajan ya da akış durup kullanıcı onayı bekleyebiliyor; durum saklandığı için sonradan kaldığı yerden devam ediyor\n- **RAG ve hafıza:** Konuşma geçmişi, veritabanı/dosya/API'den bilgi çekme ve uzun vadeli **Observational Memory**\n- **MCP sunucusu yazma**, **eval** (değerlendirme) ve **gözlemlenebilirlik (observability)** araçları\n- **Mastra Studio:** `localhost:4111` üzerinde ajanları, akışları ve araçları deneyip izlediğin yerel arayüz",
+        "tech": "**Dil ve çalışma ortamı:** Tamamı **TypeScript / Node.js**. Bu bilinçli bir tercih: Ajan kodu, ürünün geri kalanıyla (React, Next.js arayüzü, API katmanı) aynı dilde ve aynı **tip sistemiyle** yazılıyor. Araç tanımlarındaki girdi/çıktı şemaları derleme anında kontrol edilebiliyor, bu da LLM'e yanlış formatta veri gitmesi gibi hataları erken yakalıyor.\n\n**Monorepo mimarisi:** Proje **pnpm + Turborepo** ile yönetilen dev bir monorepo. Klasör yapısı framework'ün modüler felsefesini gösteriyor:\n- `packages/` — çekirdek (`@mastra/core`)\n- `stores/` — hafıza ve durum için farklı depolama arka uçları\n- `server-adapters/`, `deployers/` — farklı sunucu ve bulut ortamlarına dağıtım\n- `voice/`, `observability/`, `auth/`, `pubsub/` — isteğe bağlı yetenekler\n- `ee/` — kurumsal lisanslı kısım\n\nBu yapı sayesinde ihtiyacın olmayan parçayı kurmuyorsun; sadece çekirdek + seçtiğin depolama + seçtiğin model sağlayıcısı.\n\n**Ajan ile workflow ayrımı:** Mastra'nın en önemli tasarım kararı bu ikisini ayırması. **Ajan** belirsiz işler için (LLM kendi karar veriyor), **workflow** ise öngörülebilir süreçler için (adımlar kodda sabit). Gerçek ürünlerde ikisi iç içe kullanılıyor: Workflow'un bir adımı ajan olabiliyor. Bu, \"her şeyi LLM'e bırak\" yaklaşımının yarattığı **öngörülemezlik** sorununa pratik bir cevap.\n\n**Ekosistem uyumu:** Vercel **AI SDK UI** ve **CopilotKit** ile entegre; yani sohbet arayüzü için tekerleği yeniden icat etmiyor. Kendi yazdığın ajanı **MCP sunucusu** olarak dışarı açabildiğin için Claude Code ya da Cursor gibi araçlar da onu kullanabiliyor.\n\n**Lisans:** Çekirdek **Apache 2.0**; `ee/` klasörleri ise **source-available** — geliştirme/testte serbest, üretimde kurumsal lisans gerekiyor. Bu, son dönemde açık kaynak şirketlerinde sık görülen **open-core** modeli.\n\nKurulum tek satır: `npm create mastra@latest`.",
+        "why": "**Zamanlama:** 2026'da \"ajan\" kavramı deneme aşamasından üretim aşamasına geçti. Şirketler artık \"chatbot demo\"su değil, **onay mekanizmalı, izlenebilir, test edilebilir** ajan süreçleri istiyor. Mastra'nın human-in-the-loop, eval ve observability'yi çekirdeğe koyması tam bu ihtiyaca denk geliyor.\n\n**Kitle:** En büyük kitle **full-stack web geliştiricileri**. Next.js ile ürün yazan bir ekip için Python mikroservisi ayağa kaldırıp ajanı oraya koymak ekstra karmaşa demek. Mastra bu sürtünmeyi ortadan kaldırıyor. TypeScript dünyasında Vercel AI SDK daha \"düşük seviye\" kalırken Mastra onun üstüne hafıza, workflow ve dağıtım katmanını koyuyor.\n\n**Yıldız ivmesi:** Bugünkü artış (~30 yıldız/gün) patlama değil, **istikrarlı bir tırmanış**. ~24 bin commit ve 3.1k fork, projenin \"haftalık hype\" değil olgun bir ekosistem olduğunu gösteriyor. Trend listesine düzenli giren, kalıcı bir altyapı projesi profili.\n\n**Dikkat çeken bir detay:** Dış katkıcılara PR yerine **kaliteli issue** açmalarını öneriyorlar. Bu, AI ile üretilmiş düşük kaliteli PR seline karşı birçok büyük projenin aldığı yeni bir önlem.",
+        "evolve": "- **Python köprüsü:** Veri bilimi ekipleri Python'da, ürün ekipleri TypeScript'te. Python'da yazılmış araçları/modelleri Mastra ajanına sorunsuz bağlayan resmi bir köprü iki dünyayı birleştirebilir.\n- **Kurumsal sistem entegrasyonları:** ERP (SAP, IFS, Oracle EBS) için hazır araç paketleri — örneğin bir IFS projesinin iş emirlerini okuyan, onay bekleyen ve sonra kaydı güncelleyen bir **onaylı workflow şablonu** — Mastra'yı iş uygulamaları dünyasında çok daha cazip yapar. Human-in-the-loop zaten bunun için biçilmiş kaftan.\n- **Lisans netliği:** `ee/` sınırı büyüdükçe topluluk \"hangi özellik ücretli olacak?\" kaygısı taşıyabilir. Net bir yol haritası güveni artırır.\n- **Maliyet görünürlüğü:** Observability katmanına ajan başına **token/maliyet bütçesi** ve limit aşımında otomatik durdurma eklenmesi üretim kullanımında çok değerli olur.\n- **Görsel workflow editörü:** Studio şu an test ve izleme odaklı; sürükle-bırak ile workflow tasarlayıp koda dönüştürme, teknik olmayan ekip üyelerini de oyuna dahil eder."
+      },
+      "glossary": [
+        {
+          "term": "Framework",
+          "def": "Bir uygulamayı sıfırdan yazmak yerine hazır yapı taşları ve kurallar sunan yazılım iskeleti."
+        },
+        {
+          "term": "Ajan (Agent)",
+          "def": "Bir hedefe ulaşmak için LLM'i kullanarak kendi başına karar veren, araç çağıran ve adım adım ilerleyen yazılım."
+        },
+        {
+          "term": "LLM",
+          "def": "Büyük Dil Modeli; GPT, Claude gibi metin anlayıp üreten yapay zekâ modelleri."
+        },
+        {
+          "term": "TypeScript",
+          "def": "JavaScript'e tip denetimi ekleyen programlama dili; hataları kod çalışmadan önce yakalamaya yardım eder."
+        },
+        {
+          "term": "Model routing",
+          "def": "Aynı kodla farklı yapay zekâ sağlayıcılarının modellerine istek gönderebilmeyi sağlayan yönlendirme katmanı."
+        },
+        {
+          "term": "Workflow",
+          "def": "Adımları ve sıralaması önceden tanımlanmış iş akışı."
+        },
+        {
+          "term": "Human-in-the-loop",
+          "def": "Otomatik bir sürecin kritik noktalarda durup insan onayı beklemesi."
+        },
+        {
+          "term": "RAG",
+          "def": "Retrieval-Augmented Generation; modelin cevap vermeden önce ilgili bilgiyi bir veri kaynağından çekip kullanması."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zekâ uygulamalarının dış araçlara ve verilere standart bir yolla bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Eval",
+          "def": "Bir yapay zekâ sisteminin çıktılarını belirli ölçütlere göre otomatik test edip puanlama."
+        },
+        {
+          "term": "Observability",
+          "def": "Çalışan bir sistemin içinde ne olduğunu loglar, metrikler ve izler üzerinden görebilme yeteneği."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden fazla paketin veya projenin tek bir depoda birlikte yönetilmesi."
+        },
+        {
+          "term": "pnpm / Turborepo",
+          "def": "pnpm hızlı bir JavaScript paket yöneticisi; Turborepo ise monorepo içindeki derleme ve testleri hızlandıran araç."
+        },
+        {
+          "term": "Open-core",
+          "def": "Temel ürünün açık kaynak, bazı gelişmiş/kurumsal özelliklerin ücretli olduğu iş modeli."
+        },
+        {
+          "term": "Source-available",
+          "def": "Kaynak kodu görülebilen ama açık kaynak lisansı kadar serbest kullanılamayan yazılım."
+        },
+        {
+          "term": "Next.js",
+          "def": "React tabanlı, hem sunucu hem istemci tarafını kapsayan popüler web framework'ü."
+        }
+      ]
+    },
+    {
+      "name": "janhq/jan",
+      "url": "https://github.com/janhq/jan",
+      "stars": "46.2k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Jan**, kendini \"bilgisayarında **%100 çevrimdışı** çalışan açık kaynak ChatGPT alternatifi\" olarak tanımlayan bir masaüstü uygulaması. Bugün Rust trend listesinde ~**46.2k yıldız**la öne çıktı.\n\nÇözdüğü problem çok net: ChatGPT benzeri bir deneyim istiyorsun ama **verilerinin şirket dışına çıkmasını** istemiyorsun ya da internet bağlantın her zaman yok. Jan, Hugging Face'ten açık modelleri (Llama, Gemma, Qwen, GPT-oss vb.) indirip **kendi donanımında** çalıştırmanı sağlıyor.\n\nÖne çıkanlar:\n- **Yerel modeller:** Tek tıkla model indirme ve çalıştırma\n- **Bulut entegrasyonu:** İstersen OpenAI, Anthropic, Mistral, Groq gibi sağlayıcılara da bağlanabiliyorsun — yerel ve bulut aynı arayüzde\n- **Özel asistanlar:** Belirli görevler için talimatları önceden ayarlanmış asistanlar\n- **OpenAI uyumlu yerel API:** `localhost:1337` üzerinden diğer uygulamalar Jan'ı sanki OpenAI'mış gibi kullanabiliyor\n- **MCP desteği:** Yerel modele araç kullandırarak ajan yetenekleri kazandırma\n- Windows, macOS ve Linux desteği; **Apache 2.0** lisans",
+        "tech": "**Masaüstü kabuğu: Tauri + Rust.** Jan, Electron yerine **Tauri** kullanıyor. Fark önemli: Electron her uygulamayla birlikte koca bir Chromium tarayıcı paketlerken, Tauri işletim sisteminin kendi web görünümünü kullanıyor ve arka ucu **Rust** ile yazılıyor. Sonuç: daha küçük kurulum dosyası, daha az RAM tüketimi. Yerel LLM çalıştıran bir uygulamada bu kritik, çünkü RAM'in her megabaytı modele lazım.\n\n**Arayüz: TypeScript.** `web-app`, `core`, `extensions` klasörleri arayüzün ve eklenti sisteminin TypeScript ile yazıldığını gösteriyor. **Eklenti (extension)** mimarisi sayesinde yeni model sağlayıcıları ya da özellikler çekirdeğe dokunmadan eklenebiliyor.\n\n**Çıkarım motoru: llama.cpp.** Modelleri çalıştıran asıl beyin **llama.cpp**. Jan bunu farklı donanımlar için ayrı varyantlarla paketliyor:\n- `cpu` — her yerde çalışan temel sürüm\n- `metal` — Apple Silicon GPU'ları\n- `cuda12` / `cuda13` — NVIDIA kartları\n- `vulkan` — AMD, Intel Arc dahil geniş GPU desteği\n- `hip/rocm` — AMD'nin kendi hesaplama altyapısı\n\nRepoda bir `mlx-server` klasörü de var; bu Apple'ın **MLX** framework'üne yönelik ek bir motor desteğine işaret ediyor.\n\n**OpenAI uyumlu API kararı:** Bu belki de en akıllıca tercih. Piyasadaki araçların büyük kısmı OpenAI API formatını konuşuyor. Jan bu formatı taklit ettiği için VS Code eklentileri, otomasyon scriptleri ya da kendi yazdığın uygulamalar adres değişikliğiyle Jan'daki yerel modeli kullanabiliyor.\n\n**Donanım rehberi:** README'ye göre 3B model için 8GB, 7B için 16GB, 13B için 32GB RAM öneriliyor — yani sıradan bir dizüstü bile küçük modelleri rahatça çalıştırabiliyor.",
+        "why": "**Gizlilik kaygısı büyüyor:** Kurumlar çalışanlarının şirket verisini bulut tabanlı sohbet botlarına yapıştırmasından giderek daha fazla endişe ediyor. KVKK/GDPR gibi düzenlemeler de bunu zorlaştırıyor. \"Model benim makinemde, veri dışarı çıkmıyor\" cümlesi güçlü bir satış argümanı.\n\n**Açık modeller yeterince iyi hale geldi:** Qwen, Gemma, GPT-oss gibi açık ağırlıklı modeller günlük işlerin (özetleme, taslak yazma, kod açıklama) çoğunda artık \"yeterince iyi\". Yerel çalıştırmanın önündeki kalite engeli büyük ölçüde kalktı.\n\n**Kitle:** Gizlilik odaklı bireyler, internet erişimi kısıtlı ortamlarda çalışanlar, kendi verisiyle deney yapmak isteyen geliştiriciler ve hassas veriyle çalışan kurumlar (sağlık, hukuk, finans, kamu).\n\n**Rakipler ve konum:** LM Studio (kapalı kaynak) ve Ollama (daha çok komut satırı odaklı) ile aynı alanda. Jan'ın farkı **tamamen açık kaynak + şık masaüstü arayüz + bulut/yerel hibrit** olması. Bugünkü ~45 yıldızlık artış, yıllardır süren istikrarlı bir büyümenin parçası; proje 9.5 bin commit'le olgun.",
+        "evolve": "- **Kurumsal dağıtım:** Bir şirketin onaylı modelleri ve politikalarıyla önceden ayarlanmış Jan'ı tüm çalışanlara merkezi olarak dağıtabileceği bir yönetim paneli büyük fırsat. Şu an daha çok bireysel kullanıma odaklı.\n- **Yerel RAG'in güçlendirilmesi:** Belgelerini (PDF, Word, e-posta) yerel bir vektör indeksine koyup hiçbir şey dışarı çıkmadan sorgulamak, \"yerel ChatGPT\"nin en çok istenen özelliği olur.\n- **Kurumsal veritabanlarına MCP ile bağlanma:** Örneğin bir Oracle/IFS veritabanına salt-okunur MCP bağlantısıyla, şirket verisini **hiç buluta göndermeden** doğal dilde sorgulamak — ERP dünyasında gizlilik engelini kaldıracak bir senaryo.\n- **Model öneri sihirbazı:** Kullanıcının donanımını otomatik tespit edip \"senin makinende en iyi çalışacak model bu\" diyen akıllı bir rehber, teknik olmayan kullanıcılar için giriş bariyerini düşürür.\n- **Mobil sürüm:** Telefonlarda küçük modeller artık çalışabiliyor; senkronize bir mobil Jan doğal bir sonraki adım."
+      },
+      "glossary": [
+        {
+          "term": "Çevrimdışı (offline)",
+          "def": "İnternet bağlantısı olmadan çalışabilme."
+        },
+        {
+          "term": "Açık ağırlıklı model",
+          "def": "Eğitilmiş model dosyaları herkese açık paylaşılan, indirilip kendi bilgisayarında çalıştırılabilen yapay zekâ modeli."
+        },
+        {
+          "term": "Hugging Face",
+          "def": "Yapay zekâ modellerinin ve veri setlerinin paylaşıldığı en büyük çevrimiçi platform."
+        },
+        {
+          "term": "Tauri",
+          "def": "Web teknolojileriyle masaüstü uygulaması yapmayı sağlayan, Rust tabanlı ve Electron'dan daha hafif bir framework."
+        },
+        {
+          "term": "Electron",
+          "def": "Chromium tarayıcıyı paketleyerek web uygulamalarını masaüstü uygulamasına dönüştüren yaygın ama ağır bir framework."
+        },
+        {
+          "term": "Rust",
+          "def": "Bellek güvenliği ve yüksek performansıyla bilinen sistem programlama dili."
+        },
+        {
+          "term": "llama.cpp",
+          "def": "LLM'leri sıradan bilgisayarlarda (CPU veya GPU üzerinde) verimli şekilde çalıştıran açık kaynak C/C++ motoru."
+        },
+        {
+          "term": "Çıkarım (inference)",
+          "def": "Eğitilmiş bir modelin yeni bir girdiye cevap üretmesi işlemi."
+        },
+        {
+          "term": "CUDA",
+          "def": "NVIDIA ekran kartlarında genel amaçlı hesaplama yapmayı sağlayan platform."
+        },
+        {
+          "term": "Metal",
+          "def": "Apple cihazlarında GPU'yu kullanmayı sağlayan grafik ve hesaplama altyapısı."
+        },
+        {
+          "term": "Vulkan",
+          "def": "Farklı üreticilerin ekran kartlarında çalışan açık, düşük seviyeli grafik/hesaplama standardı."
+        },
+        {
+          "term": "ROCm / HIP",
+          "def": "AMD ekran kartlarında genel amaçlı hesaplama için kullanılan yazılım altyapısı."
+        },
+        {
+          "term": "MLX",
+          "def": "Apple'ın kendi çipleri için geliştirdiği makine öğrenmesi framework'ü."
+        },
+        {
+          "term": "OpenAI uyumlu API",
+          "def": "OpenAI'ın istek/yanıt formatını taklit eden arayüz; böylece OpenAI için yazılmış araçlar başka modellerle de çalışabilir."
+        },
+        {
+          "term": "MCP",
+          "def": "Model Context Protocol; yapay zekâ uygulamalarının dış araçlara ve verilere standart bir yolla bağlanmasını sağlayan protokol."
+        },
+        {
+          "term": "Vektör indeksi",
+          "def": "Metinlerin anlamını sayısal vektörlere çevirip benzer içerikleri hızlıca bulmayı sağlayan veri yapısı."
+        }
+      ]
+    },
+    {
+      "name": "TencentCloud/CubeSandbox",
+      "url": "https://github.com/TencentCloud/CubeSandbox",
+      "stars": "13.5k",
+      "language": "Go",
+      "sections": {
+        "serves": "**CubeSandbox**, Tencent Cloud'un AI ajanları için geliştirdiği açık kaynak **sandbox (izole çalışma ortamı)** servisi. Kendini \"anlık, eşzamanlı, güvenli ve hafif\" diye tanımlıyor. Bugün Go trend listesinde ~**13.5k yıldız**la yer aldı.\n\nÇözdüğü problem: AI ajanları artık kod yazıp **çalıştırıyor**. Bir kodlama ajanı, veri analizi asistanı ya da \"bilgisayar kullanan\" bir ajan, LLM'in ürettiği ve kimsenin önceden incelemediği kodu yürütüyor. Bu kodu doğrudan sunucunda çalıştırmak tehlikeli: Yanlışlıkla dosya silebilir, gizli anahtarları sızdırabilir ya da kötü niyetli bir prompt injection ile ele geçirilebilir.\n\nCubeSandbox her ajan görevine kendi **ayrı çekirdeği olan mini bir sanal makine (microVM)** veriyor ve bunu **60 milisaniyenin altında** ayağa kaldırdığını söylüyor.\n\nÖne çıkanlar:\n- Donanım seviyesinde izolasyon (**KVM** tabanlı microVM)\n- **E2B SDK uyumluluğu:** E2B bulutundan tek ortam değişkeniyle geçiş\n- Boşta kalan sandbox'ları otomatik **duraklatma/devam ettirme**\n- **Snapshot, klonlama ve geri alma** — bir ajanın durumunu kaydedip oradan dallanma\n- Sandbox başına **5MB altı** bellek ek yükü\n- Web konsolu, Prometheus/Grafana entegrasyonu, ARM64 desteği; **Apache 2.0** lisans",
+        "tech": "**İzolasyon modeli: Neden konteyner değil microVM?** Docker konteynerleri aynı işletim sistemi çekirdeğini paylaşır; çekirdekte bir açık varsa bir konteynerden diğerine geçmek mümkün olabilir. Klasik sanal makineler bu riski ortadan kaldırır ama açılmaları saniyeler sürer ve çok bellek yer. **MicroVM** ikisinin ortası: Her sandbox'ın **kendi çekirdeği** var (VM güvenliği), ama gereksiz donanım emülasyonu atıldığı için çok hızlı açılıyor (konteyner hızına yakın).\n\n**Hız nereden geliyor?**\n- **Kaynak havuzu (pooling):** Önceden hazırlanmış VM'ler bekletiliyor\n- **Snapshot klonlama:** Sıfırdan boot etmek yerine hazır bir anlık görüntüden kopya çıkarılıyor\n- **Copy-on-write (CoW):** Ortak dosyalar paylaşılıyor, sadece değişen kısım kopyalanıyor — bu yoğunluğun da sırrı\n\nVendor rakamları: 50 eşzamanlı oluşturmada ortalama **67ms**, P99 **137ms**. (Not: Bunlar Tencent'in kendi bare-metal ölçümleri.)\n\n**Bileşen mimarisi:**\n- **CubeAPI** — Rust ile yazılmış, E2B uyumlu REST geçidi\n- **CubeMaster** — küme orkestratörü, zamanlama\n- **Cubelet** — her düğümde sandbox yaşam döngüsünü yöneten ajan (Kubernetes'teki kubelet'e benzer)\n- **CubeVS** — **eBPF** tabanlı sanal switch; ağ politikaları doğrudan çekirdekte uygulanıyor\n- **CubeEgress** — OpenResty tabanlı çıkış geçidi: alan adı filtreleme, denetim ve **kimlik bilgisi enjeksiyonu**\n- **CubeHypervisor / CubeShim** — KVM microVM yönetimi ve containerd Shim v2 entegrasyonu\n\n**Kimlik bilgisi enjeksiyonu** özellikle zekice: Ajanın kodu bir API anahtarını hiç görmüyor; istek dışarı çıkarken geçit anahtarı ekliyor. Böylece ele geçirilmiş bir ajan bile anahtarı çalamıyor.\n\nProje **Cloud Hypervisor**, **Kata Containers** ve **virtiofsd** gibi olgun açık kaynak projelerin üzerine inşa edilmiş — tekerleği yeniden icat etmiyor, birleştiriyor.",
+        "why": "**Ajanların \"eli\" büyüdü:** 2026'da kodlama ajanları, veri analizi ajanları, tarayıcı kullanan ajanlar yaygınlaştı. Hepsinin ortak ihtiyacı: **Güvenle kod çalıştırabileceği atılabilir bir bilgisayar.** Bu alan şu an AI altyapısının en sıcak noktalarından biri.\n\n**E2B'ye açık kaynak alternatif:** E2B bu pazarın öncü bulut hizmeti. CubeSandbox'ın E2B API'siyle uyumlu olması, \"aynı kodu kendi sunucunda, kendi maliyetinle çalıştır\" seçeneği sunuyor. Veri egemenliği önemli olan kurumlar ve yüksek hacimli kullanıcılar için güçlü bir teklif.\n\n**Kitle:** Ajan platformu kuran şirketler, kendi altyapısında kod çalıştırma servisi sunmak isteyen bulut ekipleri, RL (pekiştirmeli öğrenme) ile model eğiten ve binlerce paralel ortam ihtiyacı olan araştırma ekipleri.\n\n**Bağlam:** Aynı gün Go listesinde **OpenSandbox** da var — ajan sandbox'ları ayrı bir kategori olarak olgunlaşıyor. CubeSandbox'ın bugünkü artışı mütevazı (~13 yıldız), ama 13.5k toplam yıldız ve v0.8.0 sürümü projenin ciddi ilgi gördüğünü gösteriyor. Tencent gibi büyük bir bulut sağlayıcısının arkasında olması da güven veriyor.",
+        "evolve": "- **GPU sandbox'ları:** Yol haritasında var. Ajanların model eğitip çalıştırabileceği GPU'lu izole ortamlar, ML iş yüklerinde büyük kapı açar.\n- **Kolay kurulum:** Şu an KVM destekli x86_64 Linux ve tercihen bare-metal ya da PVM'li VM gerekiyor. Tek komutla dizüstünde deneme imkânı (performans pahasına bile olsa) geliştirici benimsemesini hızlandırır.\n- **Bağımsız benchmark'lar:** Rakamlar şimdilik vendor kaynaklı; Firecracker tabanlı çözümlerle karşılaştırmalı, üçüncü taraf ölçümler güveni artırır.\n- **Kurumsal veri erişimi için hazır politikalar:** Örneğin \"bu sandbox sadece şu veritabanına, sadece salt-okunur bağlanabilir\" gibi şablonlar, ERP verisi üzerinde analiz yapan ajanları güvenle çalıştırmak için ideal olur.\n- **Hata kurtarma (fault recovery):** Yol haritasında; üretim ortamında düğüm çöktüğünde sandbox'ın başka düğümde snapshot'tan devam etmesi kritik bir eksik."
+      },
+      "glossary": [
+        {
+          "term": "Sandbox",
+          "def": "Kodun ana sistemden yalıtılmış, zarar veremeyeceği güvenli bir ortamda çalıştırılması."
+        },
+        {
+          "term": "MicroVM",
+          "def": "Gereksiz donanım emülasyonu çıkarılmış, milisaniyeler içinde açılabilen çok hafif sanal makine."
+        },
+        {
+          "term": "KVM",
+          "def": "Linux çekirdeğine gömülü, donanım destekli sanallaştırma teknolojisi."
+        },
+        {
+          "term": "Konteyner",
+          "def": "Uygulamayı bağımlılıklarıyla paketleyip izole çalıştıran ama işletim sistemi çekirdeğini paylaşan hafif yapı (ör. Docker)."
+        },
+        {
+          "term": "Çekirdek (kernel)",
+          "def": "İşletim sisteminin donanımla doğrudan konuşan, en temel ve en yetkili parçası."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Yapay zekâya verilen içeriğin içine gizlenmiş kötü niyetli talimatlarla modelin yönlendirilmesi saldırısı."
+        },
+        {
+          "term": "Snapshot",
+          "def": "Bir sistemin belirli bir andaki tam durumunun kaydedilmiş kopyası."
+        },
+        {
+          "term": "Copy-on-write (CoW)",
+          "def": "Veri değiştirilene kadar kopyalanmayıp paylaşılması; sadece değişiklik olduğunda kopyalanması tekniği."
+        },
+        {
+          "term": "eBPF",
+          "def": "Linux çekirdeği içinde güvenli şekilde küçük programlar çalıştırarak ağ ve güvenlik kuralları uygulamayı sağlayan teknoloji."
+        },
+        {
+          "term": "E2B",
+          "def": "AI ajanları için bulut tabanlı kod çalıştırma sandbox'ı sunan servis ve SDK'sı."
+        },
+        {
+          "term": "SDK",
+          "def": "Bir servisi kendi kodundan kolayca kullanmanı sağlayan hazır kütüphane ve araç seti."
+        },
+        {
+          "term": "Orkestratör",
+          "def": "Çok sayıda iş yükünü hangi makinede ne zaman çalışacağına karar vererek yöneten bileşen."
+        },
+        {
+          "term": "Egress",
+          "def": "Bir sistemden dış dünyaya giden ağ trafiği."
+        },
+        {
+          "term": "containerd",
+          "def": "Konteynerlerin yaşam döngüsünü yöneten endüstri standardı çalışma zamanı."
+        },
+        {
+          "term": "P95 / P99",
+          "def": "İsteklerin %95'inin / %99'unun bu süreden daha hızlı tamamlandığını gösteren gecikme ölçüsü."
+        },
+        {
+          "term": "Bare-metal",
+          "def": "Sanallaştırma katmanı olmadan doğrudan fiziksel sunucu üzerinde çalışma."
+        }
+      ]
+    },
+    {
+      "name": "apache/airflow",
+      "url": "https://github.com/apache/airflow",
+      "stars": "47.7k",
+      "language": "Python",
+      "sections": {
+        "serves": "**Apache Airflow**, iş akışlarını **kod olarak** yazmayı, zamanlamayı ve izlemeyi sağlayan açık kaynak platform. 2014'te Airbnb'de doğdu, bugün Apache Software Foundation çatısı altında ve veri mühendisliğinin fiili standartlarından biri. Python trend listesinde ~**47.7k yıldız**la göründü.\n\nÇözdüğü problem: Bir şirkette her gece çalışması gereken onlarca iş var — \"önce ERP'den satış verisini çek, sonra temizle, sonra veri ambarına yükle, sonra raporu üret, hata olursa e-posta at\". Bunları **cron** ile ayrı ayrı zamanlamak, bağımlılıkları takip etmek ve hata olduğunda nerede kırıldığını bulmak kâbus. Airflow bu işleri **DAG** adı verilen bağımlılık grafikleriyle tanımlıyor.\n\nTemel prensipler:\n- **Dinamik:** Akışlar Python koduyla tanımlandığı için döngüyle 100 benzer akış üretmek mümkün\n- **Genişletilebilir:** Hazır **operatörler** ve ayrı yayınlanan **provider** paketleriyle neredeyse her sisteme (AWS, GCP, Postgres, Oracle, Snowflake...) bağlanma\n- **Esnek:** **Jinja** şablonlarıyla parametreleştirme (ör. \"bugünün tarihi\" otomatik enjekte)\n\nGüncel kararlı sürüm **3.4.0**; 2.x serisi artık destek dışı (EOL).",
+        "tech": "**DAG: Merkezdeki kavram.** Her akış, görevlerden (task) ve aralarındaki bağımlılıklardan oluşan, döngü içermeyen bir graf. Airflow, bir görev ancak bağımlı olduğu görevler başarıyla bitince çalışacak şekilde planlama yapıyor. Tasarım felsefesi net: Görevler **idempotent** olmalı (aynı görevi iki kez çalıştırmak aynı sonucu vermeli) ve görevler arasında büyük veri değil sadece küçük **metadata** (XCom ile) taşınmalı.\n\n**Mimari parçalar:**\n- **Scheduler:** Hangi görevin ne zaman çalışacağına karar veren beyin\n- **Executor:** Görevlerin nerede çalışacağını belirler — **CeleryExecutor** (iş kuyruğu + worker havuzu) veya **KubernetesExecutor** (her görev için ayrı pod)\n- **Worker'lar:** Görevleri fiilen çalıştıranlar\n- **Metadata veritabanı:** Tüm çalışma geçmişi ve durumlar burada — üretimde **PostgreSQL** (14–18) veya **MySQL** (8.x); SQLite sadece yerel geliştirme için\n- **Web arayüzü:** Dags, Assets, Grid, Graph, Backfill gibi görünümlerle izleme\n\n**Airflow 3 ile gelen büyük dönüşüm:** 3.x serisi, Airflow'un uzun yıllardır en büyük mimari değişikliği. Öne çıkanlar:\n- **Task SDK:** Görev kodu ile Airflow çekirdeği arasına net bir arayüz kondu. Repoda `task-sdk`'nin yanında **`go-sdk`, `java-sdk`, `ts-sdk`** klasörleri olması dikkat çekici — görevlerin Python dışındaki dillerde de yazılabildiği bir geleceğe işaret ediyor.\n- **Assets:** Eski \"dataset\" kavramı **asset** oldu; akışlar zamana göre değil \"şu tablo güncellendiğinde çalış\" mantığıyla **veri odaklı** tetiklenebiliyor.\n- **Modern arayüz** ve asset bağımlılık görünümü\n\n**Platform desteği:** Python 3.11–3.14, Kubernetes 1.31–1.37, AMD64 ve ARM64. Kurulum resmi olarak `pip` veya **`uv`** ile ve tekrar üretilebilir kurulum için **constraint dosyalarıyla** yapılıyor.",
+        "why": "**Neden şimdi trend?** Airflow her gün yüzlerce yıldız alan bir \"yeni proje\" değil; bugünkü ~17 yıldızlık artışla listeye girmesi, **AI pipeline orkestrasyonu** ilgisinin klasik veri araçlarına da yansıdığını gösteriyor. README de bunu açıkça söylüyor: Airflow giderek daha fazla **ML ve AI/LLM pipeline'larını** yönetmek için kullanılıyor — ama ajanın kendisi olarak değil, ajanların etrafındaki güvenilir iş akışı katmanı olarak.\n\nÖrnek: Her gece yeni dokümanları çekip parçalara ayıran, embedding'lerini üretip vektör veritabanına yükleyen bir RAG besleme hattı. Bu tam bir Airflow işi.\n\n**Kitle:** Veri mühendisleri, analitik ekipleri, MLOps ekipleri ve — özellikle önemli — **kurumsal entegrasyon ekipleri**. 18.4k fork ve ~500 bilinen kurumsal kullanıcı, Airflow'un \"kimse kovulmaz\" seçeneği olduğunu gösteriyor.\n\n**ERP/PL-SQL dünyasıyla kesişim:** Oracle tabanlı ERP'lerde (IFS, Oracle EBS) gece çalışan PL/SQL batch işleri, veri ambarı yüklemeleri ve raporlama zincirleri genellikle veritabanı job'ları veya cron ile dağınık şekilde yönetilir. Airflow'un **Oracle provider'ı** ile bu PL/SQL prosedürleri tek bir DAG içinde sıralanabilir, bağımlılıkları görselleştirilebilir, başarısız adım tek tıkla yeniden çalıştırılabilir ve geçmiş dönem için **backfill** yapılabilir.",
+        "evolve": "- **Çok dilli görevler:** Go/Java/TS SDK'ları olgunlaşırsa Airflow, \"Python bilmeyen ekipler de kullanabilir\" seviyesine çıkar. Java SDK özellikle kurumsal (ERP, bankacılık) dünyasında büyük kapı açar.\n- **Daha hafif başlangıç:** Airflow'un en çok eleştirilen yanı kurulum ve işletme ağırlığı (scheduler, DB, worker...). Tek süreçte çalışan, küçük ekipler için \"mini Airflow\" modu; Prefect, Dagster gibi daha hafif rakiplere karşı rekabeti güçlendirir.\n- **AI asistanlı DAG yazımı:** \"Her gece IFS'ten açık siparişleri çek, Postgres'e yükle\" gibi doğal dil tarifinden DAG iskeleti üreten bir MCP sunucusu veya resmi araç, Airflow'u ajan çağına bağlar.\n- **LLM görevleri için yerleşik maliyet/kota takibi:** Bir DAG içindeki LLM çağrılarının token maliyetini asset bazında raporlamak, AI pipeline'ları için çok istenen bir özellik olur.\n- **PL/SQL odaklı hazır şablonlar:** Oracle job'larından (DBMS_SCHEDULER) Airflow'a göç rehberi ve otomatik dönüştürücü, ERP ekiplerinin geçişini ciddi kolaylaştırır."
+      },
+      "glossary": [
+        {
+          "term": "Orkestrasyon",
+          "def": "Birden çok işin doğru sırada, doğru zamanda ve birbirine bağımlı şekilde otomatik çalıştırılmasını yönetmek."
+        },
+        {
+          "term": "DAG",
+          "def": "Directed Acyclic Graph; yönlü ve döngü içermeyen graf. Airflow'da görevlerin ve aralarındaki bağımlılıkların tanımı."
+        },
+        {
+          "term": "Cron",
+          "def": "Unix sistemlerinde komutları belirli zamanlarda otomatik çalıştıran klasik zamanlayıcı."
+        },
+        {
+          "term": "Operatör",
+          "def": "Airflow'da belirli bir iş türünü (SQL çalıştırma, dosya kopyalama vb.) yapan hazır görev şablonu."
+        },
+        {
+          "term": "Provider",
+          "def": "Airflow'a belirli bir sistemle (AWS, Oracle, Postgres vb.) çalışma yeteneği kazandıran ayrı yüklenebilir paket."
+        },
+        {
+          "term": "Jinja",
+          "def": "Metin içine değişken ve mantık yerleştirmeyi sağlayan Python şablon motoru."
+        },
+        {
+          "term": "İdempotent",
+          "def": "Aynı işlemin bir kez de yapılsa birden çok kez de yapılsa aynı sonucu vermesi."
+        },
+        {
+          "term": "XCom",
+          "def": "Airflow'da görevler arasında küçük veri parçalarının (metadata) paylaşılma mekanizması."
+        },
+        {
+          "term": "Scheduler",
+          "def": "Görevlerin ne zaman çalışacağına karar veren zamanlayıcı bileşen."
+        },
+        {
+          "term": "Executor",
+          "def": "Görevlerin hangi altyapıda (yerel, Celery, Kubernetes) çalıştırılacağını belirleyen bileşen."
+        },
+        {
+          "term": "Celery",
+          "def": "Python'da işleri bir kuyruk üzerinden çok sayıda worker'a dağıtan görev kuyruğu sistemi."
+        },
+        {
+          "term": "Kubernetes",
+          "def": "Konteynerleri çok sayıda sunucu üzerinde otomatik dağıtan ve yöneten platform."
+        },
+        {
+          "term": "Metadata veritabanı",
+          "def": "Airflow'un tüm akışların, çalışmaların ve durumların kaydını tuttuğu veritabanı."
+        },
+        {
+          "term": "Backfill",
+          "def": "Geçmiş tarihler için bir akışı sonradan toplu olarak çalıştırma."
+        },
+        {
+          "term": "Asset",
+          "def": "Airflow 3'te bir tablo veya dosya gibi veri varlığı; güncellendiğinde bağlı akışları tetikleyebilir."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını temsil eden sayı dizisi; benzer metinleri bulmak için kullanılır."
+        },
+        {
+          "term": "MLOps",
+          "def": "Makine öğrenmesi modellerinin geliştirilip üretime alınması ve işletilmesi süreçlerinin bütünü."
+        },
+        {
+          "term": "PL/SQL",
+          "def": "Oracle veritabanının SQL'e prosedürel programlama ekleyen kendi dili."
+        },
+        {
+          "term": "uv",
+          "def": "Python için çok hızlı paket ve proje yöneticisi."
+        }
+      ]
+    }
+  ]
+}
