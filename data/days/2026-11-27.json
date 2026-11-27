@@ -1,0 +1,263 @@
+{
+  "date": "2026-11-27",
+  "projects": [
+    {
+      "name": "samuelgursky/davinci-resolve-mcp",
+      "url": "https://github.com/samuelgursky/davinci-resolve-mcp",
+      "stars": "4.4k",
+      "language": "Python",
+      "sections": {
+        "serves": "**DaVinci Resolve MCP Server**, profesyonel video kurgu ve renk düzenleme yazılımı **DaVinci Resolve**'u yapay zekâ asistanlarının kontrol edebilmesini sağlayan açık kaynak bir **MCP sunucusu**. Claude, Cursor ya da Codex CLI gibi bir asistana \"bu klasördeki çekimleri Media Pool'a al, slate alkışlarına göre senkronla, ilk kaba kurguyu çıkar\" demek mümkün hale geliyor.\n\nÇözdüğü problem: Resolve'un güçlü bir **Scripting API**'si var, ama onu kullanmak Python bilgisi ve uzun dokümantasyon okuma gerektiriyor. Kurgucuların çoğu bu yüzden tekrar eden işleri (medya düzenleme, marker koyma, render kuyruğu, proje kurulumu) elle yapıyor. Bu proje API'yi asistanın anlayacağı **araçlar (tools)** halinde paketliyor.\n\nÖne çıkanlar:\n- **API kapsamı:** Resolve API'sindeki **361 metodun tamamı** kapsanıyor; bunların 349'u canlı olarak test edilmiş\n- **İki mod:** Varsayılan **compound** sunucu 37 araçla gelir, ilgili işlemleri tek araç altında toplar. **Granular** sunucu ise her API metodu için ayrı bir araç sunar (390 araç)\n- **Orijinal medyaya dokunmama:** Analiz işleri kaynak dosyaları okur ama yalnızca yan dosyalara (sidecar) ya da analiz klasörlerine yazar\n- **Medya analizi:** 2-pop ve slate alkışı tespiti, transkripsiyon, metadata'yı Media Pool'a geri yazma\n- **Çevrimdışı sunucu:** Node ile yazılmış ek sunucu, Resolve açık olmadan `.drp`, `.drt`, `.drx` proje dosyalarını okuyup düzenleyebiliyor\n- Tarayıcıda çalışan yerel bir **kontrol paneli**",
+        "tech": "**Dil ve bağlantı:** Ana sunucu **Python** ile yazılmış ve Resolve'a resmi yoldan, `scriptapp(\"Resolve\")` çağrısıyla bağlanıyor. Bunun için Resolve ayarlarında harici scripting'in **Local** olarak açılması gerekiyor. Python 3.10+ şart; en sorunsuz aralık 3.10–3.12.\n\n**Taşıma katmanı (transport):** Varsayılan kurulum **stdio** üzerinden çalışıyor: MCP istemcisi sunucuyu yerel bir süreç olarak başlatıyor ve ağda hiçbir port açılmıyor. Kontrol paneli ya da ağ üzerinden MCP gibi isteğe bağlı HTTP yüzeyleri yalnızca **loopback**'e bağlanıyor ve her açılışta üretilen bir **bearer token** istiyor.\n\n**Neden compound tasarım?** 390 aracın hepsini modele vermek **context** penceresini doldurur ve modelin doğru aracı seçmesini zorlaştırır. Compound sunucu, ilgili işlemleri bir `action` parametresiyle tek aracın altında topluyor; böylece model daha az araç tanımı okuyor.\n\n**Güvenlik ve izlenebilirlik kararları:**\n- **Operation envelope:** Her araç çağrısı `status`, `verification`, `changes`, `warnings` ve `execution_id` içeren standart bir blok döndürüyor; asistan ne değiştiğini kendi doğrulayabiliyor\n- **Execution trace:** Çok adımlı işlemler tek bir iz altında toplanıyor ve Markdown ya da JSON **denetim raporu** olarak dışa aktarılabiliyor\n- **Verified-Trap Guard:** API'nin bilinen tehlikeli davranışları işaretlenmiş. Örneğin `CopyGrades` geri alınabilir bir versiyon bırakmadan renk ayarlarının üzerine yazdığı için, çağıran açıkça `acknowledge_trap: true` göndermedikçe reddediliyor\n\n**Ücretsiz sürüm köprüsü:** Resolve'un ücretsiz sürümü harici scripting'e izin vermiyor. Proje, Resolve'un içinde çalışan bir script ile bu nesneyi **HMAC** imzalı istekler ve tek kullanımlık **nonce**'larla korunan yerel bir dinleyiciye açıyor. Geliştirici bu köprünün kırılgan olduğunu açıkça yazıyor: Resolve 21.1'de Python scripting'in Studio'ya taşındığı bildiriliyor.\n\n**Kurulum:** `npx davinci-resolve-mcp setup` komutu yönetilen bir kopya kurup Python yükleyicisini çalıştırıyor. Claude Desktop, Claude Code, Cursor, VS Code, Zed, JetBrains gibi bir düzine istemcinin ayarları otomatik yapılıyor. Whisper, librosa gibi ağır bağımlılıklar isteğe bağlı; eksikse ilgili özellik kurulum talimatıyla birlikte reddediyor.",
+        "why": "**Zamanlama:** MCP artık kod dışındaki profesyonel masaüstü yazılımlara da yayılıyor. Blender, Figma ve Photoshop için MCP sunucuları gördük; video kurgu bu dalganın doğal bir sonraki adımı. Resolve; YouTube içerik üreticilerinden post-prodüksiyon stüdyolarına kadar çok geniş bir kitlenin kullandığı bir yazılım.\n\n**Kime hitap ediyor?**\n- **İçerik üreticileri ve kurgucular:** Medya içe aktarma, senkronlama, marker koyma ve render kuyruğu gibi sıkıcı işleri asistana bırakmak isteyenler\n- **Post-prodüksiyon ekipleri:** Denetim raporları ve işlem izleri sayesinde \"yapay zekâ projeye ne yaptı?\" sorusunu cevaplayabilmek\n- **Pipeline geliştiricileri (pipeline TD):** Resolve otomasyonunu Python yazmadan prototiplemek\n\n**Güven veren dürüstlük:** README, aracın neyi **yapmadığını** açıkça listeliyor: `rank_takes` performansın kalitesini değil akıcılığı ölçüyor, araç estetik yargıda bulunmuyor ve çıktısı yalnızca bir ilk kaba kurgu. Yaratıcı sektörde \"yapay zekâ işimi elimden alacak\" endişesi güçlüyken, bu konumlandırma aracı bir **asistan** olarak sunuyor ve benimsenmesini kolaylaştırıyor.\n\nBugünkü ivme (Python trend listesinde) mütevazı ama istikrarlı; 1.300'ü aşkın commit ve az sayıda açık issue, olgun ve bakımı yapılan bir proje izlenimi veriyor.",
+        "evolve": "- **Ücretsiz sürüm riski:** Resolve 21.1 ile ücretsiz sürümde Python scripting'in kalkmış olması, kitlenin büyük kısmını dışarıda bırakabilir. Çevrimdışı `.drp` düzenleyici bu boşluğu dolduracak şekilde büyütülebilir\n- **Görsel anlama:** Şu an analiz büyük ölçüde ses ve metadata üzerinden yapılıyor. Kare yakalayıp çok modlu bir modele gösteren bir \"bu sahnede ne var?\" aracı, B-roll seçimi gibi işleri mümkün kılar\n- **Edit karar listeleri:** EDL/XML/OTIO (OpenTimelineIO) desteği ile Premiere ya da Avid'den gelen projelerin asistan tarafından dönüştürülmesi\n- **Ekip iş akışları:** Execution trace'ler review araçlarına (Frame.io benzeri) bağlanırsa müşteri onay sürecine otomatik not düşülebilir\n- **Geri alma:** Trap Guard iyi bir başlangıç; her riskli işlem öncesi otomatik timeline/proje anlık görüntüsü (snapshot) almak güveni daha da artırır\n- **Sınır:** Granular moddaki 390 araç, küçük ya da yerel modeller için hâlâ ağır; araçların göreve göre dinamik yüklenmesi büyük fark yaratır"
+      },
+      "glossary": [
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ asistanlarının harici araçlara ve verilere standart bir şekilde bağlanmasını sağlayan açık protokol. Bir uygulama için bir kez MCP sunucusu yazılırsa, MCP destekleyen tüm asistanlar onu kullanabilir."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "Bir yazılımın yeteneklerini MCP protokolüyle yapay zekâ asistanlarına açan küçük program. Asistan bu sunucudaki araçları çağırarak yazılımı kontrol eder."
+        },
+        {
+          "term": "Scripting API",
+          "def": "Bir yazılımın kod yazarak kontrol edilmesini sağlayan programlama arayüzü. Resolve'da Python veya Lua ile proje açmak, klip eklemek, render başlatmak gibi işler bu arayüzle yapılır."
+        },
+        {
+          "term": "Araç (tool)",
+          "def": "Yapay zekâ modelinin çağırabildiği, adı ve parametreleri tanımlı bir fonksiyon. Model ne zaman hangi aracı kullanacağına kendisi karar verir."
+        },
+        {
+          "term": "Media Pool",
+          "def": "DaVinci Resolve'da projeye aktarılan tüm video, ses ve görsel dosyaların düzenlendiği kütüphane bölümü."
+        },
+        {
+          "term": "Slate / 2-pop",
+          "def": "Çekimde görüntü ile sesi eşlemek için kullanılan işaretler. Slate, çekim başında vurulan klaket; 2-pop ise programın başlamasından iki saniye önce çalan kısa bip sesidir."
+        },
+        {
+          "term": "Sidecar dosya",
+          "def": "Orijinal dosyanın yanında duran, ona ait ek bilgileri (analiz sonucu, altyazı, metadata) taşıyan ayrı dosya. Orijinali değiştirmeden bilgi eklemenin yoludur."
+        },
+        {
+          "term": "stdio",
+          "def": "Bir programın standart girdi ve çıktı kanalları. MCP'de istemci sunucuyu yerel bir süreç olarak başlatır ve bu kanallar üzerinden konuşur; ağ portu açılmaz."
+        },
+        {
+          "term": "Loopback",
+          "def": "Bilgisayarın yalnızca kendi kendisiyle konuştuğu ağ adresi (127.0.0.1). Bu adrese bağlanan bir servise dışarıdan erişilemez."
+        },
+        {
+          "term": "Bearer token",
+          "def": "Bir isteğe eklenen ve sahibine erişim hakkı veren gizli anahtar. Token'ı bilmeyen istek reddedilir."
+        },
+        {
+          "term": "HMAC",
+          "def": "Bir mesajın gizli bir anahtarla imzalanmasını sağlayan yöntem. Alıcı imzayı kontrol ederek mesajın değiştirilmediğini ve doğru kaynaktan geldiğini anlar."
+        },
+        {
+          "term": "Nonce",
+          "def": "Yalnızca bir kez kullanılan rastgele sayı. Aynı isteğin kaydedilip tekrar gönderilmesini (replay saldırısı) engeller."
+        },
+        {
+          "term": "Context penceresi",
+          "def": "Bir dil modelinin aynı anda görebildiği metin miktarı. Araç tanımları da bu alanı kapladığı için çok fazla araç modelin işini zorlaştırır."
+        },
+        {
+          "term": "Execution trace",
+          "def": "Çok adımlı bir işlemin her adımının sırasıyla kaydedildiği iz. Sonradan neyin, ne zaman, hangi sonuçla yapıldığını incelemeyi sağlar."
+        },
+        {
+          "term": "OpenTimelineIO (OTIO)",
+          "def": "Farklı kurgu programları arasında zaman çizelgesi (timeline) bilgisini taşımak için geliştirilmiş açık dosya formatı ve kütüphane."
+        }
+      ]
+    },
+    {
+      "name": "0xPlaygrounds/rig",
+      "url": "https://github.com/0xPlaygrounds/rig",
+      "stars": "9.3k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Rig**, büyük dil modelleri (LLM) üzerine uygulama geliştirmek için yazılmış bir **Rust** kütüphanesi. Sloganı: *\"Build modular and scalable LLM Applications in Rust\"*. Bugün Rust trend listesinde yer aldı.\n\nÇözdüğü problem: LLM uygulaması yazmanın ana dili şu an Python ve TypeScript. Ama performans, bellek güvenliği ve tek dosyalık dağıtım isteyen ekipler (altyapı, oyun, gömülü sistem, yüksek trafikli backend) Rust'ta kalmak istiyor. Rig onlara \"LangChain benzeri yapı taşlarını Rust'ın tip sistemiyle\" sunuyor.\n\nNeler var?\n- **Tek arayüz, 20+ sağlayıcı:** OpenAI, Gemini, Bedrock, Vertex AI ve yerel modeller (Candle) için ortak bir arayüz. Sadece metin değil; **embedding**, transkripsiyon, ses ve görsel modelleri de kapsanıyor\n- **Ajanlar:** Araç (tool) kullanabilen, **streaming** destekli ve tipli **hook**'larla genişletilebilen ajan yapısı\n- **Vektör veritabanları:** LanceDB, Qdrant, PostgreSQL gibi bir düzine vektör deposu, ayrı **crate**'ler olarak\n- **MCP desteği:** `rig-rmcp` ile MCP araçlarını ajana bağlama\n- **Gözlemlenebilirlik:** **OpenTelemetry GenAI** standartlarına uygun izleme\n- **Kodlama ajanı:** Repoda ayrıca kütüphanenin üzerine kurulmuş, `rig` adlı bir terminal kodlama ajanı da var",
+        "tech": "**Crate mimarisi:** Rig tek parça bir kütüphane yerine küçük parçalara bölünmüş bir **workspace**:\n- `rig` — bir **facade**: `rig-core`'u ve varsayılan özellikleri (ajan, derive makroları, rustls ile reqwest HTTP istemcisi) tek bağımlılıkta toplar\n- `rig-core` — mesajlar, model arayüzleri, araçlar, sağlayıcılar\n- `rig-agent`, `rig-memory` (kayıtlı konuşmalar), `rig-cassette` (kayıt ve tekrar oynatma), `rig-rmcp` (MCP)\n- `rig-http` — taşıma katmanı için **trait**'ler; `rig-reqwest` ve `rig-tungstenite` (WebSocket) uygulamaları\n\n**Neden böyle?** Rust'ta derleme süresi ve ikili dosya boyutu, eklenen her bağımlılıkla büyür. **Feature flag**'ler ve ayrı crate'ler sayesinde Qdrant kullanmayan biri Qdrant istemcisini derlemek zorunda kalmıyor. Taşıma katmanının trait arkasına alınması da farklı ortamlara uyum sağlıyor: `rig-core` ve `rig-agent` tarayıcıda çalışan **WASM** hedefine derlenebiliyor.\n\n**rig-cassette** dikkat çekici bir karar: LLM çağrılarını bir kez kaydedip testlerde tekrar oynatmak, hem testleri hızlı ve **deterministik** yapıyor hem de her test çalıştırıldığında API ücreti ödemeyi engelliyor.\n\n**Kullanım örneği:** README'deki örnek oldukça kısa: `OPENAI_API_KEY` ortam değişkeninden okunuyor, `AgentBuilder` ile bir ajan oluşturulup bir **preamble** (sistem talimatı) veriliyor ve `prompt` çağrılıyor. Asenkron çalışma için `tokio` kullanılıyor.\n\n**Kodlama ajanı tarafı:** `rig-cli`, `rig-harness`, `rig-ecs` ve `rig-tui` gibi crate'lerden oluşuyor. İlginç olan, ajanın **Bevy** oyun motorunun **ECS** mimarisi ve plugin sistemi üzerine kurulmuş olması: araçlar, komutlar, oturumlar ve terminal arayüzü ayrı plugin'ler; her biri kapatılabiliyor, değiştirilebiliyor ya da genişletilebiliyor. `/reload` komutu ajanı oturumu kaybetmeden yeniden derliyor.\n\n**Uyarılar:** Proje henüz **1.0 öncesi**; sürümler API'yi kırabiliyor, bu yüzden güncelleme öncesi changelog okumak gerekiyor. Kodlama ajanı Rust 1.97.1+ istiyor, yalnızca Linux ve macOS'ta çalışıyor ve ilk çalıştırmada derleme birkaç dakika sürüyor.",
+        "why": "**Rust + AI ivmesi:** Son aylarda trend listelerinde Rust ile yazılmış AI araçları (token tasarrufu sağlayan CLI proxy'leri, yerel model çalıştırıcılar, sandbox'lar) sık görülüyor. Bu araçları yazanların ihtiyaç duyduğu \"Rust'ta LangChain\" boşluğunu dolduran en olgun adaylardan biri Rig; 1.900'ü aşkın commit ve 1k fork bunu destekliyor.\n\n**Kodlama ajanı etkisi:** Kütüphanenin üzerine kurulmuş, plugin tabanlı bir terminal kodlama ajanı eklenmesi projeyi yeni bir kitleye taşıdı. Claude Code, Codex ve OpenCode gibi araçların popülerleştirdiği kategoride, tamamen hacklenebilir ve Rust ile yazılmış bir alternatif ilgi çekiyor.\n\n**Kime hitap ediyor?**\n- Mevcut Rust backend'ine LLM özelliği eklemek isteyen ekipler\n- Python çalışma zamanı istemeyen, tek binary dağıtmak isteyen CLI/altyapı geliştiricileri\n- Tarayıcıda (WASM) çalışan ajan deneyleri yapanlar\n- Kendi kodlama ajanını sıfırdan değil, hazır plugin'lerle kurmak isteyenler\n\n**Gözlemlenebilirlik:** OpenTelemetry GenAI uyumu, kurumsal ekiplerin mevcut izleme altyapılarına (Grafana, Datadog vb.) doğrudan bağlanabilmesi anlamına geliyor. Bu da \"deney\" seviyesinden \"üretim\" seviyesine geçişte önemli bir artı.",
+        "evolve": "- **1.0 ve API kararlılığı:** Kurumsal benimsemenin önündeki en büyük engel sürekli kırılan API. Çekirdek trait'ler için kararlı bir 1.0 sürümü güveni artırır\n- **Dokümantasyon:** README'de extractor, pipeline gibi yüksek seviyeli kavramlar az anlatılıyor; Python dünyasındaki kadar zengin örnek ve tarif (cookbook) eksik\n- **Windows desteği:** Kodlama ajanının Windows'ta çalışmaması, geliştirici kitlesinin önemli bir kısmını dışarıda bırakıyor\n- **Yapılandırılmış çıktı ve değerlendirme:** Tipli şemalarla çıktı doğrulama ve `rig-cassette` kayıtları üzerinden otomatik **eval** (değerlendirme) setleri doğal bir sonraki adım\n- **Veritabanı entegrasyonu:** PostgreSQL vektör desteği var; Oracle gibi kurumsal veritabanlarının vektör özelliklerine (ör. Oracle 23ai vector search) adaptör eklenirse ERP/kurumsal veri üzerinde RAG yapan ekipler için Rust bir seçenek haline gelir\n- **Ajan-arası protokoller:** `rig-acp` başlangıcı iyi; çoklu ajan orkestrasyonu için daha üst seviye bir yapı projeyi Mastra ya da LangGraph ile yarışır hale getirebilir"
+      },
+      "glossary": [
+        {
+          "term": "LLM (Büyük Dil Modeli)",
+          "def": "Çok büyük metin verileriyle eğitilmiş, metin anlayıp üretebilen yapay zekâ modeli. ChatGPT, Claude ve Gemini bu modellere örnektir."
+        },
+        {
+          "term": "Rust",
+          "def": "Bellek güvenliğini derleme anında garanti eden, C/C++ kadar hızlı çalışan modern bir programlama dili."
+        },
+        {
+          "term": "Crate",
+          "def": "Rust dünyasında paket ya da kütüphane birimi. Python'daki pip paketinin veya npm paketinin karşılığıdır."
+        },
+        {
+          "term": "Workspace",
+          "def": "Birden fazla Rust crate'inin tek bir repoda birlikte geliştirilip derlendiği proje yapısı."
+        },
+        {
+          "term": "Facade",
+          "def": "Birçok alt bileşeni tek ve basit bir giriş noktası altında toplayan tasarım deseni. Kullanıcı tek paketi ekler, alt parçalarla uğraşmaz."
+        },
+        {
+          "term": "Trait",
+          "def": "Rust'ta bir türün sahip olması gereken davranışları (fonksiyonları) tanımlayan sözleşme. Diğer dillerdeki interface kavramına benzer."
+        },
+        {
+          "term": "Feature flag",
+          "def": "Bir kütüphanenin bazı bölümlerini derleme sırasında açıp kapatmayı sağlayan seçenek. Gereksiz kodu derlememek için kullanılır."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını temsil eden sayı dizisi (vektör). Anlamca benzer metinlerin vektörleri birbirine yakın olur; arama ve eşleştirme için kullanılır."
+        },
+        {
+          "term": "Vektör veritabanı",
+          "def": "Embedding vektörlerini saklayan ve verilen bir vektöre en çok benzeyenleri hızlıca bulan veritabanı türü. RAG sistemlerinin temel parçasıdır."
+        },
+        {
+          "term": "RAG (Retrieval-Augmented Generation)",
+          "def": "Modelin cevap üretmeden önce ilgili belgeleri bir kaynaktan bulup bağlama eklediği yöntem. Böylece model kendi eğitim verisinde olmayan bilgilere dayanarak cevap verebilir."
+        },
+        {
+          "term": "Streaming",
+          "def": "Modelin cevabını tamamlanmasını beklemeden parça parça göndermesi. Kullanıcı metni yazılırken görür."
+        },
+        {
+          "term": "Hook",
+          "def": "Bir işlemin belirli anlarında (ör. araç çağrılmadan önce) devreye giren ve davranışı değiştirmeyi sağlayan kod noktası."
+        },
+        {
+          "term": "WASM (WebAssembly)",
+          "def": "Tarayıcıda neredeyse yerel hızda çalışabilen ikili kod formatı. Rust, C++ gibi dillerde yazılan kod tarayıcıda çalıştırılabilir."
+        },
+        {
+          "term": "OpenTelemetry",
+          "def": "Uygulamalardan iz (trace), metrik ve log toplamak için açık bir standart. GenAI kuralları, LLM çağrılarının bu standartta nasıl kaydedileceğini tanımlar."
+        },
+        {
+          "term": "Deterministik",
+          "def": "Aynı girdiyle her seferinde aynı sonucu veren. Kayıtlı LLM cevaplarıyla çalışan testler bu yüzden güvenilirdir."
+        },
+        {
+          "term": "Preamble",
+          "def": "Ajana konuşma başında verilen sistem talimatı; ajanın rolünü ve davranış kurallarını belirler."
+        },
+        {
+          "term": "ECS (Entity Component System)",
+          "def": "Oyun motorlarında yaygın olan bir mimari. Nesneler (entity) bileşenlerden (component) oluşur, davranışlar ise bu bileşenler üzerinde çalışan sistemlerle tanımlanır."
+        },
+        {
+          "term": "Bevy",
+          "def": "Rust ile yazılmış, ECS tabanlı açık kaynak oyun motoru. Plugin sistemi sayesinde her özellik bağımsız bir modül olarak eklenip çıkarılabilir."
+        },
+        {
+          "term": "Eval",
+          "def": "Bir yapay zekâ sisteminin çıktılarının belirli test senaryolarıyla otomatik olarak puanlanması."
+        }
+      ]
+    },
+    {
+      "name": "egoist/mygo",
+      "url": "https://github.com/egoist/mygo",
+      "stars": "7.0k",
+      "language": "Go",
+      "sections": {
+        "serves": "**MyGo**, **Go** diliyle masaüstü (ve artık mobil) uygulama geliştirmek için açık kaynak bir framework. Tanımı: *\"Desktop apps in Go, with native UI or a web frontend\"*. Bugün Go trend listesine girdi.\n\nÇözdüğü problem: Masaüstü uygulama yazmak isteyen bir web geliştiricisinin önündeki popüler seçenek **Electron**; ama Electron her uygulamaya koca bir Chromium tarayıcı gömdüğü için uygulamalar yüzlerce MB tutuyor ve bol RAM yiyor. MyGo, Go ile yazılmış, **birkaç MB'lık tek bir binary** halinde dağıtılan, hafif uygulamalar vaat ediyor.\n\nİki farklı arayüz yolu sunuyor ve bunlar aynı uygulamada karıştırılabiliyor:\n- **Web arayüzü:** Arayüzü istediğin web araçlarıyla (React, Vue, Svelte…) yazarsın; işletim sisteminin hazır **webview**'unda çalışır, Go koduna otomatik üretilen tipli bir TypeScript istemcisiyle erişirsin\n- **Native UI:** Arayüzü tamamen Go'da `ui` paketiyle yazarsın; MyGo bunu **GPU**'da kendisi çizer. HTML, JavaScript ya da webview yoktur; pencere hızlı açılır, az bellek kullanır\n\nPlatformlar: macOS, Linux, Windows, ayrıca iOS ve Android.",
+        "tech": "**Web frontend yolu:** Pencere içeriği macOS'ta **WKWebView**, Linux'ta **WebKitGTK**, Windows'ta **WebView2** ile gösteriliyor; yani tarayıcı motoru uygulamaya gömülmüyor, sistemdeki kullanılıyor. Uygulama boyutunun küçük olmasının ana sebebi bu.\n\n**Go ↔ JS köprüsü (bindings):** Go tarafında bir servis `mygo.Bind(Greeter{})` ile kaydediliyor; MyGo bu servisin metotlarından tipli bir TypeScript istemcisi üretiyor. Frontend'de `await Greeter.greet(\"Ada\")` yazmak yetiyor. Bu tipli **IPC** katmanı, Go **channel**'ları üzerinden akış (streaming) değerleri ve tipli olayları (event) da destekliyor. Elle JSON mesajlaşması yazmaya gerek kalmıyor.\n\n**Native UI yolu:** `ui` paketi flexbox ve grid yerleşimi, giriş yöntemi (IME) destekli metin düzenleme, **sanallaştırılmış listeler**, SVG ikonlar, animasyonlar ve ekran okuyucu desteği sunuyor. Görünümler pencere açmadan test edilebiliyor. Bir eklenti, Apple'ın **Liquid Glass** görünümünü tüm platformlarda taklit ediyor.\n\n**En önemli mimari karar: cgo yok.** Go'dan C kütüphanelerine erişmek için genellikle **cgo** kullanılır ve bu, her platform için o platformda derleme yapmayı zorunlu kılar. MyGo tamamen saf Go olduğu için tek bir makineden tüm masaüstü platformlarına **çapraz derleme (cross-compile)** yapılabiliyor; bu da CI/CD sürecini ciddi şekilde basitleştiriyor.\n\n**Masaüstü API'leri:** Pencere, menü, tepsi (tray), diyaloglar, bildirimler, global kısayollar, **deep link**'ler, dosya ilişkilendirme, medya tuşları, sistem vurgu rengi, dosya izleme…\n\n**Dağıtım araçları:** macOS app bundle ve DMG, Windows kurucusu, Debian/RPM paketleri, Arch PKGBUILD, **code signing**, **notarization** ve delta destekli, imzalı otomatik güncellemeler (Sparkle benzeri güncelleme penceresiyle).\n\n**Başlangıç:** Go 1.27.3+ ve web arayüzü için **Bun** gerekiyor. `bunx mygo-cli init my-app` ya da yalnızca Go ile `go run github.com/egoist/mygo/cmd/mygo@latest init -template native my-app`.",
+        "why": "**Geliştirici kim?** egoist (Kevin Titor), JavaScript ekosisteminde tsup gibi yaygın kullanılan geliştirici araçlarıyla tanınan bir isim. Bu tanınırlık, projenin hızla görünürlük kazanmasında etkili.\n\n**Zamanlama:** AI çağında küçük masaüstü yardımcı uygulamalara (menü çubuğu araçları, yerel model arayüzleri, ajan kontrol panelleri) talep artıyor. Bunları Electron ile yazmak, 10 satırlık bir iş için 200 MB'lık uygulama dağıtmak demek. Go ekosisteminde **Wails** bu boşluğu bir ölçüde dolduruyordu; MyGo ise GPU ile çizilen native UI seçeneği, cgo'suz derleme ve mobil desteğiyle öne çıkıyor.\n\n**Kime hitap ediyor?**\n- Backend'i zaten Go olan ve aynı dille masaüstü istemci yazmak isteyen ekipler\n- Electron'un boyut ve bellek maliyetinden kaçan web geliştiricileri\n- Dahili araç geliştiren şirketler (tek binary, kolay imzalama ve otomatik güncelleme)\n- Tauri'yi beğenen ama Rust öğrenmek istemeyenler\n\n**Hazır gelen paketleme:** Code signing, notarization ve otomatik güncelleme genellikle masaüstü geliştirmenin en sancılı kısmıdır. Bunların kutudan çıkması, \"hobi projesi\"nden \"dağıtılabilir ürün\"e geçişi çok kolaylaştırıyor ve projenin çekiciliğinin önemli bir parçası.",
+        "evolve": "- **Olgunluk sinyalleri:** Sayfada belirgin bir sürüm numarası ya da kararlılık etiketi görünmüyor. Semantik sürümleme ve net bir \"1.0\" yol haritası, üretimde kullanmak isteyen ekiplerin güvenini artırır\n- **Karşılaştırma ve göç rehberi:** Electron, Wails ve Tauri'den geçiş için resmi rehberler ve boyut/bellek karşılaştırmaları benimsenmeyi hızlandırır\n- **Webview farklılıkları:** Sistem webview'u kullanmanın bedeli platformlar arası tutarsızlık (özellikle Linux'ta WebKitGTK sürümleri). Otomatik uyumluluk testleri ya da bilinen sorun listesi değerli olur\n- **Native UI ekosistemi:** Hazır bileşen kütüphaneleri (tablo, grafik, form) ve görsel tema araçları, native yolu web yolu kadar verimli hale getirir\n- **Kurumsal senaryolar:** Veritabanı istemcileri ya da ERP için hafif saha uygulamaları gibi dahili araçlar için şablonlar (ör. çevrimdışı çalışan, SQLite ile senkronlanan form uygulaması)\n- **AI entegrasyonu:** Uygulamanın kendi fonksiyonlarını bir **MCP sunucusu** olarak dışarı açan yerleşik bir modül, MyGo uygulamalarını AI asistanlarıyla kontrol edilebilir hale getirir"
+      },
+      "glossary": [
+        {
+          "term": "Go",
+          "def": "Google'ın geliştirdiği, hızlı derlenen, eşzamanlı (concurrent) programlamayı kolaylaştıran ve tek binary üreten bir programlama dili."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle masaüstü uygulaması yazmayı sağlayan framework. Her uygulamaya bir Chromium tarayıcı gömdüğü için uygulamalar büyük ve bellek tüketimi yüksek olur."
+        },
+        {
+          "term": "Webview",
+          "def": "Bir uygulamanın içine web sayfası gösterebilmek için kullanılan tarayıcı bileşeni. İşletim sisteminde hazır bulunur, bu yüzden uygulamaya ayrıca tarayıcı eklemek gerekmez."
+        },
+        {
+          "term": "WebView2 / WKWebView / WebKitGTK",
+          "def": "Sırasıyla Windows, macOS ve Linux'ta uygulamaların kullanabildiği hazır webview bileşenleri."
+        },
+        {
+          "term": "Native UI",
+          "def": "Web teknolojisi kullanmadan, doğrudan uygulamanın kendi koduyla çizilen arayüz. Genelde daha hızlı açılır ve daha az bellek kullanır."
+        },
+        {
+          "term": "GPU ile çizim",
+          "def": "Arayüz elemanlarının ekran kartı (GPU) kullanılarak çizilmesi. Animasyon ve kaydırma gibi işlemler bu sayede akıcı olur."
+        },
+        {
+          "term": "Binary",
+          "def": "Kaynak kodun derlenmesiyle oluşan, doğrudan çalıştırılabilen program dosyası."
+        },
+        {
+          "term": "Bindings",
+          "def": "İki farklı dil ya da katman arasındaki köprü kodu. Burada JavaScript'in Go fonksiyonlarını doğrudan çağırabilmesini sağlar."
+        },
+        {
+          "term": "IPC (Süreçler Arası İletişim)",
+          "def": "Bir programın farklı parçalarının (ör. arayüz ve arka plan kodu) birbirine mesaj göndermesini sağlayan mekanizma."
+        },
+        {
+          "term": "Channel",
+          "def": "Go'da eşzamanlı çalışan parçalar arasında veri aktarmak için kullanılan yapı. Bir taraf değer gönderir, diğer taraf alır."
+        },
+        {
+          "term": "cgo",
+          "def": "Go kodunun C kütüphanelerini çağırmasını sağlayan araç. Kullanıldığında her platform için ayrı C derleyicisi gerekir ve çapraz derleme zorlaşır."
+        },
+        {
+          "term": "Çapraz derleme (cross-compile)",
+          "def": "Bir işletim sisteminde çalışırken başka bir işletim sistemi için çalıştırılabilir dosya üretmek. Örneğin Linux'ta Windows uygulaması derlemek."
+        },
+        {
+          "term": "Sanallaştırılmış liste",
+          "def": "Binlerce satırlık bir listede yalnızca ekranda görünen satırların çizilmesi tekniği. Bellek ve işlemci kullanımını büyük ölçüde azaltır."
+        },
+        {
+          "term": "Deep link",
+          "def": "Bir bağlantıya tıklandığında uygulamanın açılıp doğrudan belirli bir ekrana gitmesini sağlayan özel URL."
+        },
+        {
+          "term": "Code signing",
+          "def": "Uygulamanın geliştiricinin dijital imzasıyla imzalanması. İşletim sistemi uygulamanın kimden geldiğini ve değiştirilmediğini bu imzayla doğrular."
+        },
+        {
+          "term": "Notarization",
+          "def": "Apple'ın, macOS uygulamalarını dağıtımdan önce zararlı yazılım taramasından geçirip onayladığı süreç. Onaysız uygulamalar uyarıyla açılır."
+        },
+        {
+          "term": "Delta güncelleme",
+          "def": "Güncellemede uygulamanın tamamı yerine yalnızca değişen kısımlarının indirilmesi. İndirme boyutunu küçültür."
+        },
+        {
+          "term": "Bun",
+          "def": "Hızlı bir JavaScript çalışma zamanı ve paket yöneticisi; Node.js ve npm'e alternatif olarak kullanılır."
+        },
+        {
+          "term": "Wails / Tauri",
+          "def": "Sistem webview'u kullanarak hafif masaüstü uygulamalar geliştirmeyi sağlayan framework'ler. Wails Go, Tauri ise Rust tabanlıdır."
+        },
+        {
+          "term": "MCP sunucusu",
+          "def": "Bir uygulamanın yeteneklerini Model Context Protocol üzerinden yapay zekâ asistanlarına açan program; asistan bu sayede uygulamayı kontrol edebilir."
+        }
+      ]
+    }
+  ]
+}
