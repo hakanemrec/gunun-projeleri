@@ -1,0 +1,405 @@
+{
+  "date": "2026-11-28",
+  "projects": [
+    {
+      "name": "n8n-io/nod",
+      "url": "https://github.com/n8n-io/nod",
+      "stars": "4.5k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**Nod**, otomasyon platformu **n8n**'in ekibinden çıkan, açık kaynak bir **kişisel agent**. Kendine ait bir \"bilgisayarı\" var: izole bir Linux çalışma alanı ve ayrı bir Chromium tarayıcısı. Bu sayede gerçek web sitelerinde oturum açabiliyor, form doldurabiliyor, birden fazla sekmede iş yürütebiliyor.\n\nÇözdüğü problem: Günlük işlerin önemli kısmı **API'si olmayan** ya da entegrasyonu zahmetli işler: ödenmemiş faturaları takip etmek, deneme aboneliklerini iptal etmek, bir müşteri görüşmesine hazırlanmak, ay sonu evrak işleri. Klasik otomasyon araçları bu işlerde ya yetersiz kalıyor ya da her adım için ayrı akış çizmek gerekiyor. Nod bu işleri doğal dille tarif etmenizi ve **onayınızla** yürütmesini hedefliyor.\n\nNeler yapabiliyor:\n- **Uygulamalar arası iş:** Gmail, Takvim, Slack, Notion ve web üzerinde çalışır; sizin adınıza konuşacaksa önce onay ister\n- **Görüşme brifingleri:** Her sabah e-posta zincirlerini, takvimi ve müşterinin son haberlerini okuyup görüşme başına tek sayfalık özet çıkarır\n- **Taslak yanıtlar:** Kendi fiyat listenizden yanıt taslağı yazar, yalnızca onayınızdan sonra gönderir\n- **Zamanlanmış izleme:** Bir sayfayı belli aralıklarla kontrol eder, sadece değişiklik olursa haber verir\n- **Görünür hafıza:** Öğrendiği her not, kaynağı olan mesajla birlikte görülebilir ve düzenlenebilir\n- **Arayüzler:** Masaüstü uygulaması, Telegram ve WhatsApp\n\nProje **research preview** (araştırma önizlemesi) aşamasında ve n8n'in kendi AI Assistant ürününden ayrı bir proje.",
+        "tech": "**Bileşenler:** Mimari dört parçadan oluşuyor:\n- **Nod sunucusu:** **Pi agent runtime**'ı, güven denetimini, **Vault**'u (kimlik bilgileri), hafızayı ve zamanlamaları çalıştırır\n- **Linux workspace:** Komutların çalıştığı **sandbox** konteyneri\n- **Chromium tarayıcı:** Ayrı bir konteynerde, **agent-browser** ile sürülür\n- **PostgreSQL + pg-boss:** Veri ve **iş kuyruğu** (job queue) için\n\n**Teknoloji yığını:** **TypeScript**, **Node.js 24**, sunucuda **Fastify**, arayüzde **React** ve masaüstü için **Electron**. Uygulama bağlantıları **Composio** ve **MCP** üzerinden. Model tarafında OpenAI, Anthropic, Gemini, OpenRouter, Bedrock, Vertex AI, Azure dahil 20'den fazla sağlayıcı ya da kendi barındırdığınız bir sunucu kullanılabiliyor.\n\n**En önemli mimari karar: politika prompt'ta değil, sunucuda.** Agent güvenliğinde yaygın hata, kuralları sistem prompt'una yazıp modelin uymasını ummak. Nod'da her uygulama eylemi ve web sitesinde bir şeyi değiştirebilecek her adım, sunucu tarafında sizin isteğiniz ve kurallarınızla karşılaştırılıyor; kapsam dışı kalan her şey onay bekliyor.\n\n**Güvenilmez varsayılan (untrusted by default):** Uygulamalardan, web sayfalarından ve tarayıcıdan gelen içerik **talimat değil veri** olarak işaretleniyor. Bu, **prompt injection** saldırılarına karşı temel savunma. Hafıza da yalnızca sizin mesajlarınızdan öğreniyor, okuduğu e-postalardan değil.\n\n**Sırların izolasyonu:** Sağlayıcı API anahtarları sandbox'a ve tarayıcıya hiç girmiyor. Vault, şifre, tek kullanımlık kod ve kart bilgilerini web sitelerine modelin görmesine gerek kalmadan giriyor.\n\n**Dürüst bir not:** Güvenlik denetimi bir modelin yargısına dayanıyor. README, yetenekli modellerin testlerde iyi sonuç verdiğini, ama küçük bir modelin 240 kararda 8 güvensiz eylemi geçirdiğini açıkça yazıyor.",
+        "why": "**Zamanlama:** 2026'nın sonunda \"kodlama agent'ı\" kategorisi doygunluğa ulaştı; sıradaki büyük alan **günlük işler için kişisel agent**'lar. Nod, bu alana ciddi bir şirketin açık kaynak ve yerelde çalışan bir yanıtı olarak geldi ve bir haftada **1.400'ün üzerinde yıldız** topladı.\n\n**Marka güveni:** n8n, iş akışı otomasyonunda geniş bir topluluğa sahip. \"n8n ekibinden\" etiketi, yeni bir agent projesine göre çok daha hızlı bir güven ve ilgi yaratıyor.\n\n**Güvenlik anlatısı:** Çoğu agent projesi yetenekleriyle övünürken Nod, **onay modeli**, Vault ve \"veri talimat değildir\" ilkesiyle öne çıkıyor. Kendi raporladıkları sayılar da (226 görevin %98'i tamamlandı, 678 çalıştırmada 0 güvensiz eylem) ilgi çekiyor. Bu sonuçların simüle hesap ve sitelerde alındığını kendileri belirtiyor.\n\n**Kime hitap ediyor:**\n- Serbest çalışanlar ve küçük işletme sahipleri (fatura takibi, müşteri yazışması)\n- Verisini buluta vermek istemeyen, kendi modelini seçmek isteyen kullanıcılar\n- n8n kullanıcıları: akış çizmek yerine işi tarif etmek isteyenler\n- Agent güvenliği üzerine çalışan geliştiriciler, referans mimari olarak",
+        "evolve": "**Eksikler:**\n- **Sürekli çalışma:** Zamanlamalar yalnızca bilgisayar açıkken çalışıyor. Barındırılan (hosted) sürüm planlanmış ama henüz yok\n- **Takım kullanımı:** Ekip paylaşımı ve özel skill/araç ekleme yol haritasında\n- **Gizlilik varsayılanları:** Uygulama bağlantıları varsayılan olarak n8n'in barındırdığı bir servis üzerinden geçiyor ve yeni kullanıcılar için temel kullanım verisi paylaşılıyor (kapatılabilir)\n- **Model bağımlı güvenlik:** Küçük/yerel modellerle güven denetimi zayıflıyor\n\n**Fırsatlar:**\n- **n8n ile köprü:** Nod'un keşfettiği tekrarlayan görevleri otomatik olarak deterministik bir n8n akışına dönüştürmek, hem maliyeti hem riski düşürür\n- **Kurumsal sürüm:** Denetim kaydı (audit log), rol bazlı onay zincirleri ve SSO ile şirket içi asistan olarak konumlanabilir\n- **ERP senaryoları:** Kendi tarayıcısı olduğu için API'si zayıf eski ERP ekranlarında (ör. fatura onayı, tedarikçi portalı) form doldurma ve veri çekme işleri için kullanılabilir; IFS gibi sistemlerde kullanıcı arayüzü üzerinden yapılan tekrarlı işler doğal bir aday\n- **Güvenlik denetimini ayırmak:** Güven kontrolünü küçük, özel eğitilmiş bir modele ya da kural motoruna devretmek, büyük model maliyetini düşürür"
+      },
+      "glossary": [
+        {
+          "term": "Agent",
+          "def": "Bir hedefi verildiğinde adımları kendisi planlayıp araçları kullanarak yürüten yapay zekâ programı."
+        },
+        {
+          "term": "Sandbox",
+          "def": "Programların ana sistemden yalıtılmış şekilde çalıştığı korumalı ortam; içeride olan bir hata dışarıya zarar vermez."
+        },
+        {
+          "term": "Konteyner (Container)",
+          "def": "Bir uygulamayı ihtiyaç duyduğu her şeyle birlikte paketleyip diğerlerinden yalıtılmış çalıştıran hafif sanal ortam; Docker en bilinen örneğidir."
+        },
+        {
+          "term": "Research preview",
+          "def": "Ürünün henüz kararlı olmadığını, deneme ve geri bildirim için erken erişime açıldığını belirten aşama."
+        },
+        {
+          "term": "Pi agent runtime",
+          "def": "Agent'ın düşünme-eylem döngüsünü, araç çağrılarını ve model iletişimini yöneten açık kaynak çalışma ortamı."
+        },
+        {
+          "term": "Vault",
+          "def": "Şifre, kart bilgisi gibi gizli verilerin güvenle saklandığı ve kontrollü şekilde kullanıldığı kasa bileşeni."
+        },
+        {
+          "term": "İş kuyruğu (Job queue)",
+          "def": "Yapılacak işlerin sıraya konup arka planda, sırayla ya da zamanı gelince çalıştırıldığı mekanizma."
+        },
+        {
+          "term": "pg-boss",
+          "def": "PostgreSQL veritabanını iş kuyruğu olarak kullanan Node.js kütüphanesi; ayrı bir kuyruk sunucusuna gerek bırakmaz."
+        },
+        {
+          "term": "Fastify",
+          "def": "Node.js için hızlı ve hafif bir web sunucusu çatısı (framework)."
+        },
+        {
+          "term": "Electron",
+          "def": "Web teknolojileriyle (HTML, JavaScript) masaüstü uygulaması yazmayı sağlayan çatı."
+        },
+        {
+          "term": "MCP (Model Context Protocol)",
+          "def": "Yapay zekâ modellerinin dış araçlara ve veri kaynaklarına standart bir yolla bağlanmasını sağlayan açık protokol."
+        },
+        {
+          "term": "Composio",
+          "def": "Agent'ların yüzlerce popüler uygulamaya (Gmail, Slack vb.) hazır bağlantılarla erişmesini sağlayan entegrasyon platformu."
+        },
+        {
+          "term": "Prompt injection",
+          "def": "Bir web sayfası ya da e-posta içine gizlenmiş metinle yapay zekâya istenmeyen bir talimat verdirme saldırısı."
+        },
+        {
+          "term": "Sistem prompt'u",
+          "def": "Modele konuşmanın başında verilen, nasıl davranacağını belirleyen gizli talimat metni."
+        },
+        {
+          "term": "Deterministik",
+          "def": "Aynı girdiyle her seferinde aynı sonucu üreten, sürpriz davranışı olmayan işleyiş."
+        },
+        {
+          "term": "Audit log",
+          "def": "Sistemde kimin ne zaman ne yaptığını kaydeden, sonradan denetlenebilen işlem günlüğü."
+        },
+        {
+          "term": "SSO (Single Sign-On)",
+          "def": "Tek bir kurumsal hesapla birden fazla uygulamaya giriş yapılmasını sağlayan kimlik doğrulama yöntemi."
+        }
+      ]
+    },
+    {
+      "name": "NYLLON-SOFTWARE/SignuDoc",
+      "url": "https://github.com/NYLLON-SOFTWARE/SignuDoc",
+      "stars": "3.6k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**SignuDoc**, kurumların kendi **Vercel** hesaplarında çalıştırabileceği açık kaynak ve **MIT lisanslı** bir **e-imza** uygulaması. Akış tanıdık: bir PDF yüklüyorsunuz, imza alanlarını yerleştiriyorsunuz, imzacılara bağlantı gönderiyorsunuz ve sonunda mühürlenmiş, imzalı bir kopya ile bir **denetim sertifikası** alıyorsunuz.\n\nÇözdüğü problem: DocuSign gibi ticari e-imza servisleri kullanıcı başına ve zarf başına ücretlendiriyor; küçük ekipler için yıllık maliyet hızla büyüyor. Ayrıca belgeler üçüncü taraf bir buluta gidiyor. SignuDoc, aynı temel işlevi kendi altyapınızda ve ücretsiz katmanlarda çalıştırmayı hedefliyor.\n\nÖne çıkanlar:\n- **Hesapsız imzalama:** İmzacılar e-postadaki bağlantıyı açıp her cihazdan yazarak ya da çizerek imzalıyor\n- **Esnek sıralama:** 25'e kadar imzacı; sıralı, eşzamanlı ya da karışık\n- **Zengin alan tipleri:** İmza, paraf, tarih, metin, sayı, onay kutusu, açılır liste\n- **Kimlik doğrulama:** Erişim kodu ya da e-postayla tek kullanımlık kod (**OTP**)\n- **Şablon ve toplu gönderim:** CSV'den satır başına bir zarf, tek seferde 200'e kadar\n- **API ve webhook'lar:** OpenAPI tanımı, imzalı webhook'lar, gömülü imzalama\n- **Doğrulama sayfası:** Bir kopyanın değişmediğini yalnızca dosyanın parmak izini paylaşarak kontrol etme\n- **Uyumluluk modları:** FDA **21 CFR Part 11** modu ve harici sağlayıcı üzerinden ileri/nitelikli **eIDAS** imzaları",
+        "tech": "**Yığın:** **TypeScript** ve **Next.js 16**, **Vercel Functions** üzerinde **serverless** olarak çalışıyor. Veritabanı **Neon Postgres**, dosyalar özel (public URL'siz) **Vercel Blob** deposunda, e-postalar **Resend** ile gidiyor. Hatırlatmalar, temizlik, yedekleme ve webhook yeniden denemeleri **Vercel cron** ile zamanlanıyor.\n\n**Neden bu yığın?** Hedef \"tek tıkla kur ve unut\". Deploy to Vercel düğmesi depoyu klonluyor, Neon, Resend ve Blob'u ücretsiz planlarda otomatik oluşturuyor, tablolar derleme sırasında kuruluyor ve ilk açılan hesap yönetici oluyor. Sunucu yönetimi bilmeyen bir ofis yöneticisi bile kurabilsin diye tasarlanmış.\n\n**İmza teknolojisi:**\n- İmzalı PDF'ler **PAdES** standardında mühürleniyor; bu, Adobe Reader gibi PDF okuyucuların imzayı tanıyıp doğrulayabilmesi demek\n- Varsayılan sertifika kendinden imzalı (**self-signed**); kurum kendi güvenilir sertifikasını da yükleyebiliyor\n- Uzun süreli doğrulama için (**B-LTA**) bir **zaman damgası** sunucusu kullanılıyor\n- Nitelikli imzalar için **CSC API v2** uzaktan imza arayüzü destekleniyor\n\n**Güvenlik kararları:**\n- **Hash zincirli denetim kaydı:** Her kayıt bir öncekinin özetini içeriyor; bir satır silinir ya da değiştirilirse zincir kırılıyor ve fark ediliyor. Kayıtlar ayrıca JSON olarak loglara yazılıp **SIEM**'e aktarılabiliyor\n- İmza bağlantıları veritabanında **hash'lenmiş** olarak saklanıyor; veritabanı sızsa bile bağlantılar kullanılamıyor\n- Sıkı **CSP**, OIDC ile SSO, kimlik doğrulayıcı uygulamayla iki adımlı giriş, 10 yanlış şifrede kilitlenme\n- Günlük yedekler ikinci bir özel Blob deposuna, geri yükleme script'iyle birlikte",
+        "why": "**Fiyat baskısı:** E-imza, hemen her şirketin kullandığı ama \"neden bu kadar pahalı\" diye sorulan bir kategori. SignuDoc'un README'si DocuSign ile maliyet karşılaştırması yapıyor (kendi tahminleri olduğunu belirterek) ve bu, paylaşılmaya çok uygun bir anlatı.\n\n**MIT lisansı farkı:** Bu alandaki diğer açık kaynak seçeneklerin bir kısmı **AGPL** gibi kısıtlayıcı lisanslar kullanıyor. MIT, şirketlerin kodu kendi ürünlerine gömmesini ve değiştirmesini hukuki kaygı olmadan mümkün kılıyor.\n\n**Kurulum kolaylığı:** Docker, sunucu, alan adı ayarı gibi engeller büyük ölçüde kaldırılmış. Hatta bir AI agent'ın tarayıcı üzerinden kurulumu yapabilmesi için her ekranı anlatan bir rehber var; agent çağına uygun bir dokunuş.\n\n**Ciddi uyumluluk iddiası:** ESIGN/UETA, eIDAS ve Part 11'e yapılan atıflar, projenin hobi değil iş kullanımını hedeflediğini gösteriyor. Bugün **197 yıldızla** TypeScript trend listesinde.\n\n**Kime hitap ediyor:**\n- Ayda birkaç yüz sözleşme imzalatan küçük ve orta ölçekli şirketler\n- Belgeleri kendi altyapısında tutmak isteyen hukuk, İK ve satın alma ekipleri\n- Ürününe e-imza eklemek isteyen SaaS geliştiricileri",
+        "evolve": "**Eksikler:**\n- **Yalnızca PDF** ve zarf başına tek belge; Word dosyası ya da web formu yok\n- **Dil:** İmza sayfaları sadece İngilizce; Türkçe kullanım için yerelleştirme şart\n- **Kimlik doğrulama:** SMS, telefon ya da kimlik belgesi kontrolü yok; SSO SAML desteklemiyor, sadece OIDC\n- **Nitelikli imza:** eIDAS akışı yalnızca taklit servislerle test edilmiş, gerçek sağlayıcılarla değil\n- **Ücretsiz katman sınırı:** Ayda yaklaşık 250 belge; Vercel Hobby planı ticari kullanım için uygun değil\n\n**Fırsatlar:**\n- **Türkiye uyarlaması:** 5070 sayılı Elektronik İmza Kanunu kapsamında nitelikli elektronik sertifika sağlayıcılarıyla CSC API benzeri bir entegrasyon, yerel pazarda ciddi bir boşluğu doldurur\n- **ERP entegrasyonu:** Webhook ve API sayesinde satın alma siparişi, tedarikçi sözleşmesi ya da İK evrakı ERP'de onaylandığında otomatik zarf oluşturulabilir; imza tamamlanınca durum ERP'ye geri yazılabilir. IFS gibi sistemlerde bu, PL/SQL tarafında bir REST çağrısı ve dönüş için bir webhook dinleyicisiyle kurulabilir\n- **Vercel bağımlılığını azaltmak:** Docker ile tamamen şirket içi çalışan bir dağıtım profili, veri yerelliği kaygısı olan kurumlar için önemli\n- **MCP sunucusu:** Agent'ların \"bu sözleşmeyi şu kişilere imzaya gönder\" diyebileceği bir araç katmanı doğal bir sonraki adım"
+      },
+      "glossary": [
+        {
+          "term": "E-imza",
+          "def": "Bir belgenin elektronik ortamda kim tarafından onaylandığını ve sonradan değiştirilmediğini gösteren dijital imza."
+        },
+        {
+          "term": "Zarf (Envelope)",
+          "def": "E-imza sistemlerinde imzaya gönderilen belge, imzacılar ve ayarlardan oluşan paket."
+        },
+        {
+          "term": "Denetim sertifikası",
+          "def": "Belgeyi kimin, ne zaman, hangi doğrulamayla imzaladığını listeleyen ek rapor."
+        },
+        {
+          "term": "OTP (One-Time Password)",
+          "def": "Yalnızca bir kez ve kısa süre geçerli olan, genellikle e-posta ya da SMS ile gelen doğrulama kodu."
+        },
+        {
+          "term": "Webhook",
+          "def": "Bir olay gerçekleştiğinde (ör. belge imzalandığında) sistemin başka bir adrese otomatik bildirim göndermesi."
+        },
+        {
+          "term": "OpenAPI",
+          "def": "Bir API'nin uç noktalarını ve veri yapılarını makinenin okuyabileceği standart bir formatta tanımlayan şema."
+        },
+        {
+          "term": "Serverless",
+          "def": "Sunucuyu sizin yönetmediğiniz, kodun yalnızca istek geldiğinde çalıştırılıp kullanım kadar ücretlendirildiği barındırma modeli."
+        },
+        {
+          "term": "Next.js",
+          "def": "React tabanlı, hem arayüzü hem sunucu tarafı kodu aynı projede yazmayı sağlayan web çatısı."
+        },
+        {
+          "term": "Cron",
+          "def": "Görevlerin belirli zamanlarda (ör. her gece 03:00) otomatik çalıştırılmasını sağlayan zamanlayıcı."
+        },
+        {
+          "term": "PAdES",
+          "def": "PDF belgelere gömülen gelişmiş elektronik imzalar için Avrupa standardı; PDF okuyucular imzayı doğrulayabilir."
+        },
+        {
+          "term": "Self-signed sertifika",
+          "def": "Tanınmış bir sertifika otoritesi yerine sahibinin kendisinin imzaladığı sertifika; şifreleme sağlar ama dış güven sağlamaz."
+        },
+        {
+          "term": "Zaman damgası (Timestamp)",
+          "def": "Bir belgenin belirli bir anda var olduğunu güvenilir bir üçüncü tarafın onayladığı dijital kayıt."
+        },
+        {
+          "term": "B-LTA",
+          "def": "İmzanın, sertifikalar süresi dolduktan yıllar sonra bile doğrulanabilmesini sağlayan uzun süreli arşiv imza seviyesi."
+        },
+        {
+          "term": "eIDAS",
+          "def": "Avrupa Birliği'nin elektronik kimlik ve elektronik imza düzenlemesi; basit, ileri ve nitelikli imza seviyeleri tanımlar."
+        },
+        {
+          "term": "21 CFR Part 11",
+          "def": "ABD Gıda ve İlaç Dairesi'nin (FDA) elektronik kayıt ve imzalar için koyduğu kurallar; ilaç ve sağlık sektöründe zorunludur."
+        },
+        {
+          "term": "CSC API",
+          "def": "Cloud Signature Consortium'un, imzanın uzak bir güvenli sunucuda atılmasını sağlayan standart arayüzü."
+        },
+        {
+          "term": "Hash",
+          "def": "Bir verinin tek yönlü matematiksel özeti; veri bir harf bile değişse özet tamamen değişir."
+        },
+        {
+          "term": "Hash zinciri",
+          "def": "Her kaydın bir öncekinin hash'ini içerdiği yapı; aradaki bir kayıt değiştirilirse zincir kırılır ve fark edilir."
+        },
+        {
+          "term": "SIEM",
+          "def": "Şirketin tüm sistemlerinden gelen güvenlik loglarını toplayıp analiz eden merkezi izleme platformu."
+        },
+        {
+          "term": "CSP (Content Security Policy)",
+          "def": "Tarayıcıya bir sayfanın hangi kaynaklardan script ve içerik yükleyebileceğini söyleyen güvenlik kuralı."
+        },
+        {
+          "term": "OIDC (OpenID Connect)",
+          "def": "Kurumsal hesaplarla güvenli giriş yapmayı sağlayan modern kimlik doğrulama protokolü."
+        },
+        {
+          "term": "SAML",
+          "def": "Kurumsal tek oturum açma için kullanılan, OIDC'den daha eski XML tabanlı protokol."
+        },
+        {
+          "term": "MIT lisansı",
+          "def": "Kodu kopyalama, değiştirme ve ticari üründe kullanmaya neredeyse hiç kısıt koymayan açık kaynak lisansı."
+        },
+        {
+          "term": "AGPL",
+          "def": "Kodu değiştirip ağ üzerinden hizmet olarak sunanların da değişiklikleri açık kaynak yapmasını şart koşan lisans."
+        }
+      ]
+    },
+    {
+      "name": "tianma-if/edgeever",
+      "url": "https://github.com/tianma-if/edgeever",
+      "stars": "3.7k",
+      "language": "TypeScript",
+      "sections": {
+        "serves": "**EdgeEver**, Evernote ve Obsidian'a alternatif olarak konumlanan, açık kaynak ve **AI-native** bir not alma uygulaması ve bilgi tabanı. Evernote'tan tanıdık üç panelli düzeni (klasör ağacı, not listesi, editör) koruyor ve **Cloudflare** üzerinde ücretsiz ya da kendi sunucunuzda **Docker** ile çalışabiliyor.\n\nÇözdüğü problem: Not uygulamaları ya kapalı ve aboneliğe dayalı (Evernote, Notion) ya da senkronizasyonu ek ücretli/zahmetli (Obsidian). Verinin sahibi olmak isteyenler için \"her cihazda senkron, kendi altyapımda, ücretsiz\" seçeneği nadir. EdgeEver bu boşluğu hedefliyor.\n\nÖne çıkanlar:\n- **Çift modlu editör:** Zengin metin ve Markdown arasında geçiş, şablonlar, formüller, sürüm geçmişi, sınırsız klasör derinliği\n- **Zengin not tipleri:** AI ile üretilen tablolar (filtreli görünümler ve herkese açık formlarla), zihin haritaları, **Mermaid** diyagramları, tuval tabanlı poster notlar\n- **İçerik yakalama:** 20'den fazla platformu tanıyan web kırpıcı (Chrome, Edge, Firefox), mobil paylaşım menüsü, ekran yakalama\n- **Göç araçları:** Evernote, Obsidian, Notion, Joplin, flomo ve Markdown klasörlerinden arayüzle içe aktarma\n- **Yayınlama:** Defterleri statik bilgi tabanı sitesine dönüştürme, şifreli ve süreli not paylaşımı\n- **AI ve agent'lar:** Kendi anahtarınızla çalışan kenar çubuğu asistanı ve **Remote MCP** uç noktası\n- **Eklenti ve tema pazarı**, çok kullanıcılı kurulum, **TOTP** ile iki adımlı doğrulama",
+        "tech": "**Tek backend, iki çalışma ortamı:** Sunucu tarafı tek bir **Hono** + **Zod** uygulaması; hem REST API hem Remote MCP uç noktası buradan sunuluyor. Aynı kod:\n- **Cloudflare'de:** **Workers** (kod), **D1** (veritabanı), **R2** (ek dosyalar) üzerinde\n- **Docker'da:** **Bun** çalışma zamanı, **SQLite** ve yerel diske ya da **S3 uyumlu** depolamaya\n\nBu karar sayesinde hem \"sıfır sunucu, sıfır maliyet\" isteyenlere hem de verisini evdeki NAS'ta tutmak isteyenlere aynı ürün sunuluyor.\n\n**Üç biçimde içerik:** Her not üç halde saklanıyor: editörün asıl kaynağı olan zengin metin dokümanı, API ve dışa aktarma için Markdown, arama ve indeksleme için düz metin. Bu, hem editör zenginliğini korumayı hem de agent'ların içeriği kolayca okumasını sağlıyor.\n\n**Offline-first senkronizasyon:** Web ve masaüstü istemcileri yazmayı bıraktıktan yaklaşık 30 saniye sonra değişiklikleri yüklüyor, pencere görünürken yaklaşık 5 dakikada bir uzak değişiklikleri **polling** ile soruyor. Android'de **Expo/React Native** ile yerel SQLite, iOS'ta **SwiftUI** ve **GRDB** ile bir **outbox** deseni, masaüstünde **Electron** ile birlikte yerel SQLite için bir **Rust sidecar** kullanılıyor.\n\n**Neden polling?** Cloudflare Workers'ın ücretsiz katmanında kalıcı bağlantılar (WebSocket) maliyetli ve karmaşık. Polling basit, ucuz ve not uygulaması için çoğu zaman yeterli.\n\n**Diğer kararlar:**\n- Editör **TipTap** (ProseMirror üzerinde)\n- Ön yüz: **Vite**, React, TanStack Query, Tailwind CSS, **shadcn/ui**\n- Görseller yüklemeden önce **tarayıcıda sıkıştırılıyor**; serverless backend görsel işlemeyle uğraşmıyor\n- **Bun** ile yönetilen bir **monorepo**: web, API, masaüstü, mobil, tarayıcı eklentisi ve ortak paketler tek depoda\n- MCP erişimi **token** tabanlı ve defter bazında okuma/yazma izinleriyle sınırlanıyor",
+        "why": "**Evernote yorgunluğu:** Evernote'un fiyat artışları ve ücretsiz plan kısıtlamaları yıllardır kullanıcı kaçırıyor. Tanıdık üç panelli düzen ve hazır Evernote içe aktarıcısı, geçişi neredeyse acısız hale getiriyor.\n\n**Ücretsiz bulut:** Cloudflare'in ücretsiz katmanıyla yaklaşık 150 bin kısa not ve 50 bin görsel kapasitesi, \"kendi sunucum ama sunucu yönetmeyeceğim\" isteyenler için çok cazip.\n\n**Agent çağına uyum:** Remote MCP uç noktası sayesinde Claude Code ya da Codex gibi agent'lar notları, diyagramları, tabloları doğrudan yönetebiliyor. Not uygulaması artık sadece insanın değil, agent'ın da hafızası oluyor; bu, son haftalarda trend olan \"agent hafızası\" projelerinin kullanıcı dostu bir versiyonu.\n\n**Geniş platform kapsamı:** Web, masaüstü, Android, iOS ve tarayıcı eklentisi; tek kişilik bir projeden beklenmeyecek kadar eksiksiz. Yaklaşık 3.460 commit ve 1.9k fork, aktif bir topluluk olduğunu gösteriyor. Bugün **63 yıldızla** TypeScript trend listesinde.\n\n**Kime hitap ediyor:**\n- Evernote'tan ayrılmak isteyen uzun süreli kullanıcılar\n- Notlarını kendi altyapısında tutmak isteyen gizlilik odaklı kullanıcılar\n- Notlarını AI agent'larına bağlamak isteyen geliştiriciler\n- Ekip içi küçük bilgi tabanı kurmak isteyen ekipler",
+        "evolve": "**Eksikler:**\n- **Gerçek zamanlı senkron yok:** Aralıklı polling, aynı notu iki cihazda düzenlerken çakışmalara açık; **CRDT** tabanlı birlikte düzenleme ciddi bir eksik\n- **R2 için ödeme yöntemi** gerekiyor, ücretsiz kotada kalınsa bile\n- **AGPL-3.0 lisansı:** Kurumsal ürünlere gömmek isteyenler için kısıtlayıcı\n- Linux masaüstü sürümü önizleme aşamasında; performans karşılaştırmaları projenin kendi iddiaları\n\n**Fırsatlar:**\n- **Gerçek zamanlı işbirliği:** Cloudflare **Durable Objects** ile CRDT tabanlı ortak düzenleme, platformun doğal bir sonraki adımı\n- **Semantik arama:** Cloudflare Vectorize ya da yerel **embedding**'lerle anlam tabanlı arama ve \"bu notla ilgili diğer notlar\" önerileri\n- **Kurumsal bilgi tabanı:** ERP danışmanları için müşteri bazlı defterler, PL/SQL kod parçacıkları ve IFS konfigürasyon notları; MCP üzerinden agent'ın \"bu müşterideki özel alan tanımlarını getir\" demesi gibi senaryolar\n- **Uçtan uca şifreleme:** Kendi altyapınızda bile olsa, sunucu tarafında okunamayan defterler gizlilik iddiasını güçlendirir"
+      },
+      "glossary": [
+        {
+          "term": "AI-native",
+          "def": "Yapay zekâ özelliklerinin sonradan eklenmediği, baştan ürünün temeline yerleştirildiği tasarım yaklaşımı."
+        },
+        {
+          "term": "Markdown",
+          "def": "Başlık, kalın yazı, liste gibi biçimleri basit işaretlerle (#, **, -) yazmayı sağlayan düz metin formatı."
+        },
+        {
+          "term": "Mermaid",
+          "def": "Akış şemaları ve diyagramları metin olarak yazıp otomatik çizdiren araç."
+        },
+        {
+          "term": "Cloudflare Workers",
+          "def": "Kodun Cloudflare'in dünya çapındaki sunucularında, kullanıcıya yakın yerde çalıştığı serverless platform."
+        },
+        {
+          "term": "D1",
+          "def": "Cloudflare'in SQLite tabanlı serverless veritabanı servisi."
+        },
+        {
+          "term": "R2",
+          "def": "Cloudflare'in dosya ve görsel saklamak için sunduğu, veri çıkışı ücretsiz nesne depolama servisi."
+        },
+        {
+          "term": "S3 uyumlu depolama",
+          "def": "Amazon S3'ün arayüzünü kullanan, bu yüzden aynı araçlarla erişilebilen dosya depolama servisleri."
+        },
+        {
+          "term": "Hono",
+          "def": "Cloudflare Workers, Bun ve Node.js gibi farklı ortamlarda aynı kodla çalışan hafif web çatısı."
+        },
+        {
+          "term": "Zod",
+          "def": "TypeScript'te gelen verinin beklenen yapıda olup olmadığını doğrulayan şema kütüphanesi."
+        },
+        {
+          "term": "Bun",
+          "def": "Node.js'e alternatif, hızlı bir JavaScript/TypeScript çalışma zamanı ve paket yöneticisi."
+        },
+        {
+          "term": "SQLite",
+          "def": "Tek bir dosyada çalışan, sunucu gerektirmeyen hafif ilişkisel veritabanı."
+        },
+        {
+          "term": "Offline-first",
+          "def": "Uygulamanın internet olmadan tam çalıştığı, bağlantı gelince değişiklikleri senkronladığı tasarım yaklaşımı."
+        },
+        {
+          "term": "Polling",
+          "def": "Bir istemcinin sunucuya belirli aralıklarla 'yeni bir şey var mı?' diye sorması."
+        },
+        {
+          "term": "Outbox deseni",
+          "def": "Gönderilecek değişikliklerin önce yerel bir kuyruğa yazılıp bağlantı olunca sırayla iletildiği güvenilir senkron yöntemi."
+        },
+        {
+          "term": "Sidecar",
+          "def": "Ana uygulamanın yanında çalışan, belirli bir işi (ör. veritabanı erişimi) üstlenen yardımcı süreç."
+        },
+        {
+          "term": "TipTap / ProseMirror",
+          "def": "Web'de zengin metin editörü yapmak için kullanılan, yapılandırılmış doküman modeline sahip kütüphaneler."
+        },
+        {
+          "term": "Monorepo",
+          "def": "Birden çok uygulama ve paketin tek bir kod deposunda birlikte yönetildiği yapı."
+        },
+        {
+          "term": "shadcn/ui",
+          "def": "Kopyalanıp projeye eklenen, özelleştirilebilir React arayüz bileşenleri koleksiyonu."
+        },
+        {
+          "term": "Remote MCP",
+          "def": "MCP sunucusunun yerel bir süreç yerine internet üzerinden erişilebilen bir uç nokta olarak sunulması."
+        },
+        {
+          "term": "Token",
+          "def": "Bir sisteme erişim yetkisini kanıtlayan, şifre yerine kullanılan gizli anahtar dizisi."
+        },
+        {
+          "term": "TOTP",
+          "def": "Kimlik doğrulayıcı uygulamaların her 30 saniyede bir ürettiği, zamana dayalı tek kullanımlık kod."
+        },
+        {
+          "term": "CRDT",
+          "def": "Birden fazla kişinin aynı veriyi eşzamanlı düzenlemesine izin verip çakışmaları otomatik birleştiren veri yapısı."
+        },
+        {
+          "term": "Durable Objects",
+          "def": "Cloudflare'de durum tutabilen, gerçek zamanlı işbirliği gibi işler için kullanılan tekil sunucu nesneleri."
+        },
+        {
+          "term": "Embedding",
+          "def": "Bir metnin anlamını sayı dizisine çeviren temsil; anlamca yakın metinler birbirine yakın sayılar alır."
+        },
+        {
+          "term": "AGPL",
+          "def": "Kodu değiştirip ağ üzerinden hizmet olarak sunanların da değişiklikleri açık kaynak yapmasını şart koşan lisans."
+        }
+      ]
+    },
+    {
+      "name": "juspay/hyperswitch",
+      "url": "https://github.com/juspay/hyperswitch",
+      "stars": "45.9k",
+      "language": "Rust",
+      "sections": {
+        "serves": "**Hyperswitch**, Hindistan'ın büyük ödeme altyapı şirketlerinden **Juspay**'in geliştirdiği açık kaynak ve **composable** (parça parça benimsenebilen) bir ödeme platformu. Çekirdeği, 120'den fazla ödeme sağlayıcısına (Stripe, Adyen, PayPal, bankalar vb.) bağlanan bir **Rust** uygulama sunucusu.\n\nÇözdüğü problem: Büyüyen bir işletme genellikle birden fazla ödeme sağlayıcısıyla çalışmak zorunda kalıyor: farklı ülkeler, farklı ödeme yöntemleri, daha iyi komisyon oranları, yedeklilik. Her sağlayıcının API'si, raporu ve hata kodları farklı. Bu karmaşayı yönetmek için ya pahalı bir **payment orchestration** servisi kullanıyorsunuz ya da kendiniz yazıyorsunuz. Hyperswitch bu katmanı açık kaynak olarak sunuyor ve **vendor lock-in**'i kırıyor.\n\nModüller (istediğinizi seçebiliyorsunuz):\n- **Akıllı yönlendirme:** Her işlemi, onaylanma ihtimali en yüksek sağlayıcıya gönderir\n- **Gelir kurtarma:** Başarısız ödemeleri kart BIN'i, bölge ve ödeme yöntemine göre ayarlanmış stratejilerle yeniden dener\n- **Vault:** Kart, token, cüzdan ve banka bilgileri için **PCI** uyumlu kasa; VGS veya TokenEx gibi mevcut bir kasayı da kullanabilir\n- **Mutabakat:** 2 ve 3 yönlü **mutabakatı** otomatikleştirir, geriye dönük çalıştırma ve zamanlama destekler\n- **Maliyet gözlemi:** Gizli ücretleri ve kart seviyesi düşürmelerini (downgrade) ortaya çıkarır\n- **Alternatif ödeme yöntemleri:** Apple Pay, Google Pay, PayPal, Pay by Bank ve **BNPL** için hazır widget'lar",
+        "tech": "**Neden Rust?** Ödeme sistemleri iki şeyi aynı anda ister: yüksek eşzamanlılıkta düşük gecikme ve hatasızlık. **Rust**'ın **bellek güvenliği** ve güçlü tip sistemi, tutarın yanlış para birimiyle karışması ya da bir işlemin yarım kalması gibi hataları derleme aşamasında yakalamaya yardım ediyor. **Garbage collector** olmaması da gecikmelerin öngörülebilir kalmasını sağlıyor.\n\n**Bileşenlere ayrılmış mimari:**\n- **hyperswitch app server:** Yönlendirme, yeniden deneme, kasa ve gözlem işlerinin merkezi\n- **card-vault** ve **encryption-service:** Hassas verinin ayrı, yalıtılmış servislerde tutulması; PCI denetim kapsamını daraltır\n- **prism:** Bağımsız kullanılabilen **connector** kütüphanesi; 120+ sağlayıcının farklı API'lerini ortak bir modele çevirir\n- **decision-engine:** Bağımsız yönlendirme **control plane**'i; kuralları ve tahmin modellerini ayrı yönetir\n- **control-center:** Satıcı paneli (gömülebilir bileşenleriyle birlikte)\n\n**SDK'lar:** Web için **ReScript** ve TypeScript, mobil için Kotlin, Swift, React Native ve Flutter. Ön yüzde ReScript tercihi ilginç: güçlü tip sistemi sayesinde ödeme formlarında hata olasılığını azaltıyor.\n\n**Dağıtım:**\n- Yerelde Docker/Podman ile Minimal, Standard ve Full (izleme + zamanlayıcılar dahil) profilleri\n- Bulutta **Helm** chart'ları ile AWS, GCP, Azure ya da herhangi bir **Kubernetes** ortamı; **Terraform** ile altyapı kurulumu\n- Kurulumsuz deneme için barındırılan bir sandbox\n\n**Lisans:** Apache 2.0; ticari kullanım ve değiştirme serbest.",
+        "why": "**Kalıcı bir yıldız:** 45.9k yıldızla Hyperswitch yeni bir proje değil; Rust trend listesinde istikrarlı bir yer tutuyor. Yaklaşık 8.500 commit ve 6.7k fork, gerçek üretim kullanımını işaret ediyor.\n\n**Ödeme maliyetleri gündemde:** Komisyon oranları ve başarısız ödemeler e-ticaret kârlılığını doğrudan etkiliyor. \"Onay oranını %1-2 artırmak\" büyük işletmeler için milyonlarca liralık fark demek; akıllı yönlendirme ve gelir kurtarma tam bu yüzden ilgi çekiyor.\n\n**Açık kaynak orkestrasyon nadir:** Bu alandaki çoğu çözüm kapalı ve işlem başına ücretli. Kendi altyapısında çalışan, Apache lisanslı ve modüler bir alternatif, fintech ekipleri için cazip.\n\n**Kime hitap ediyor:**\n- Birden fazla ödeme sağlayıcısı kullanan e-ticaret ve abonelik şirketleri\n- Kendi ödeme altyapısını kurmak isteyen fintech girişimleri\n- Ödeme mutabakatını ERP muhasebesiyle eşleştirmekle uğraşan finans ekipleri\n- Yüksek performanslı Rust servis mimarisi örneği arayan geliştiriciler",
+        "evolve": "**Eksikler:**\n- **Operasyon yükü:** Birden çok servis, Kubernetes ve izleme gerektiren tam kurulum küçük ekipler için ağır\n- **PCI sorumluluğu:** Kasayı kendiniz barındırırsanız PCI DSS denetimi de sizin sorumluluğunuzda\n- **Yerel sağlayıcılar:** Türkiye'deki sanal POS'lar ve yerel ödeme kuruluşları (iyzico, PayTR, banka sanal POS'ları gibi) için connector desteği sınırlı; topluluk katkısına açık bir alan\n\n**Fırsatlar:**\n- **ERP mutabakat köprüsü:** Mutabakat modülünün çıktısını doğrudan ERP muhasebe kayıtlarına bağlamak (banka ekstresi, sağlayıcı raporu ve sipariş kaydının üçlü eşleşmesi) çok değerli olur. IFS gibi bir sistemde tahsilat ve komisyon kayıtları PL/SQL ile otomatik oluşturulabilir; mutabakatsız kalan kalemler istisna listesine düşer\n- **Türkiye connector'ları:** Taksit desteği ve 3D Secure akışlarıyla yerel sanal POS'ları eklemek, projeyi bölgede doğrudan kullanılabilir yapar\n- **AI destekli yönlendirme:** decision-engine'e, geçmiş verilerle eğitilmiş ve açıklanabilir öneriler sunan bir model eklemek\n- **MCP arayüzü:** Finans ekiplerinin \"dün hangi sağlayıcıda onay oranı düştü?\" gibi soruları agent'a sorabileceği salt okunur bir araç katmanı"
+      },
+      "glossary": [
+        {
+          "term": "Composable",
+          "def": "Bir sistemin bağımsız parçalardan oluştuğu ve yalnızca ihtiyaç duyulan parçaların seçilip birleştirilebildiği yapı."
+        },
+        {
+          "term": "Payment orchestration",
+          "def": "Birden fazla ödeme sağlayıcısını tek bir katmandan yönetip işlemleri aralarında dağıtma işi."
+        },
+        {
+          "term": "Vendor lock-in",
+          "def": "Bir tedarikçiye öyle bağımlı hale gelmek ki başka bir çözüme geçmenin çok pahalı ya da zor olması."
+        },
+        {
+          "term": "Onay oranı (Authorization rate)",
+          "def": "Kartla yapılan ödeme denemelerinden bankanın onayladıklarının yüzdesi."
+        },
+        {
+          "term": "BIN",
+          "def": "Kart numarasının ilk 6-8 hanesi; kartı çıkaran bankayı, ülkeyi ve kart tipini gösterir."
+        },
+        {
+          "term": "PCI DSS",
+          "def": "Kart bilgilerini işleyen ve saklayan şirketlerin uyması gereken uluslararası güvenlik standardı."
+        },
+        {
+          "term": "Tokenizasyon",
+          "def": "Kart numarası gibi hassas verinin yerine anlamsız bir referans (token) kullanılması; gerçek veri kasada kalır."
+        },
+        {
+          "term": "Mutabakat (Reconciliation)",
+          "def": "Farklı kaynaklardaki kayıtların (sipariş, ödeme sağlayıcısı raporu, banka ekstresi) birbiriyle tutup tutmadığının kontrolü."
+        },
+        {
+          "term": "BNPL (Buy Now Pay Later)",
+          "def": "Şimdi al, sonra öde; alışverişin taksitlere bölünüp sonradan ödendiği ödeme yöntemi."
+        },
+        {
+          "term": "Rust",
+          "def": "Bellek hatalarını derleme aşamasında engelleyen, C/C++ kadar hızlı bir sistem programlama dili."
+        },
+        {
+          "term": "Bellek güvenliği",
+          "def": "Programın yanlış bellek bölgesine erişmesi gibi çökme ve güvenlik açığına yol açan hataların engellenmesi."
+        },
+        {
+          "term": "Garbage collector",
+          "def": "Kullanılmayan belleği otomatik temizleyen mekanizma; zaman zaman programı kısa süre duraklatabilir."
+        },
+        {
+          "term": "Connector",
+          "def": "Bir sistemin başka bir servise (ör. bir ödeme sağlayıcısına) bağlanmasını sağlayan uyarlayıcı modül."
+        },
+        {
+          "term": "Control plane",
+          "def": "Bir sistemde kuralların ve kararların yönetildiği katman; işi yapan katmandan (data plane) ayrıdır."
+        },
+        {
+          "term": "ReScript",
+          "def": "JavaScript'e derlenen, güçlü tip sistemine sahip ve hataları erken yakalayan bir programlama dili."
+        },
+        {
+          "term": "Kubernetes",
+          "def": "Konteynerleri çok sayıda sunucuda otomatik dağıtan, ölçekleyen ve yöneten açık kaynak platform."
+        },
+        {
+          "term": "Helm",
+          "def": "Kubernetes uygulamalarını paketleyip tek komutla kurmayı sağlayan paket yöneticisi."
+        },
+        {
+          "term": "Terraform",
+          "def": "Sunucu, ağ ve veritabanı gibi altyapıyı kod olarak tanımlayıp otomatik kuran araç."
+        },
+        {
+          "term": "3D Secure",
+          "def": "Online kart ödemelerinde bankanın SMS kodu ya da uygulama onayıyla ek doğrulama yaptığı güvenlik adımı."
+        },
+        {
+          "term": "Sanal POS",
+          "def": "İnternet üzerinden kartla ödeme almayı sağlayan, banka ya da ödeme kuruluşunun sunduğu hizmet."
+        }
+      ]
+    }
+  ]
+}
